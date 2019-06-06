@@ -1,8 +1,23 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to Tezster !!
-  </h1>
-  
+<nav class="navbar navbar-light" style="background-color: #2BFC9A;">
+  <div class="container-fluid" >
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#"><img width="180px" height="27px" alt="Angular Logo" src="assets/Tezsurelogo.png"></a>
+    </div>
+    <ul class="nav navbar-nav">      
+      <li style="padding-left: 150px;"><a (click)="accounts()" routerLink="/accounts">Accounts</a></li>
+      <li style="padding-left: 30px;"><a (click)="blocks()" routerLink="/accounts">Blocks</a></li> 
+      <li style="padding-left: 30px;"><a (click)="transactions()" routerLink="/transactions">Transactions</a></li> 
+      <li style="padding-left: 30px;"><a (click)="contracts()" routerLink="/contracts">Contracts</a></li>
+      <li style="padding-left: 30px;"><a (click)="events()" routerLink="/events">Events</a></li>              
+    </ul>  
+    <ul class="nav navbar-nav navbar-right">
+      <li style="margin-right: 20px"><a (click)="localnode()" routerLink="/localnode">Local Node</a></li> 
+      <li style="margin-right: 60px;"><a (click)="alphanet()" routerLink="/alphanet">Alphanet</a></li>
+    </ul>  
+  </div>
+</nav>
+<div class="container" style="min-width: 100%">
+  <router-outlet></router-outlet>
+</div>
 
 <router-outlet></router-outlet>
