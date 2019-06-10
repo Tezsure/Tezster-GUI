@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import {AppService} from './app.service';
-import {HttpClient } from '@angular/common/http';
+import {HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -19,7 +19,7 @@ import {HttpClient } from '@angular/common/http';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClient
+    HttpClientModule
   ],
   providers: [AppService],
   bootstrap: [AppComponent]
