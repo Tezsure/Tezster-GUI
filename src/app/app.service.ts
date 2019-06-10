@@ -1,20 +1,18 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpInterceptor, HttpRequest, HttpHandler, HttpParams, HttpErrorResponse } from '@angular/common/http';
-
+import { HttpClient, HttpHeaders, HttpRequest, HttpHandler, HttpParams, HttpErrorResponse } from '@angular/common/http';
+import {configDataTpye} from '../assets/configTypeData';
+import {Observable} from 'rxjs/Observable';
 
 
 const apiURLCall="http://localhost:18731";
 @Injectable()
 export class AppService {
-  http: any;
+private _url: string='/assets/config.json';
 
-getProviderInfo(){
-  return this.http.get(apiURLCall + 'getProvider');
-}
+  constructor(private http:HttpClient) { }
 
-getListAccounts(){
-  return this.http.get(apiURLCall + 'list-accounts');
-}
+  getConfigData():Observable<configDataTpye[]>{
+    return this.http.get<configDataTpye[]>(this._url);   
+  }
 
-  constructor() { }
 }
