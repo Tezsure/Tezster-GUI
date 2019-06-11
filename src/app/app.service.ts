@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpRequest, HttpHandler, HttpParams, HttpErro
 import {configDataTpye} from '../assets/configTypeData';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/throw';
 
 
 const apiURLCall="http://localhost:18731";

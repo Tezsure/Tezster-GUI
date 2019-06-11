@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {} from '../../assets/configTypeData';
-import {Observable} from 'rxjs';
 import {AppService} from '../app.service';
 
 @Component({
