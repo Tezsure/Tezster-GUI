@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {LocalnodeComponent} from '../localnode/localnode.component';
 import { ModalService } from '../modal.service';
+import { AlphanetComponent } from '../alphanet/alphanet.component';
 
 
 @Component({
@@ -8,21 +9,14 @@ import { ModalService } from '../modal.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit {
-  //provider: string;
+export class HeaderComponent implements OnInit {  
   constructor(private modalService: ModalService) { 
   }
-  openDialog(): void {
-    /* const dialogRef = this.dialog.open(LocalnodeComponent, {
-      width: '400px',
-      data: {provider: this.provider}
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      this.provider = result;
-    }); */
+  openDialog(): void {    
     this.modalService.openModal('localnode', LocalnodeComponent);
-
+  }
+  alphanet(): void {    
+    this.modalService.openModal('alphanet', AlphanetComponent);
   }
   ngOnInit() {
   }

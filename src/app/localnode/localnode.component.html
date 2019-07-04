@@ -11,7 +11,7 @@
     </div>
     <div class="modal-footer">
         <button class="btn btn-secondary"  (click)="onNoClick()">No</button>
-        <button  (click)="onClick()" class="btn btn-success">Change it</button>
+        <button  (click)="onClick()" class="btn btn-success" [disabled]="!userData">Change Node</button>
     </div>
 
     

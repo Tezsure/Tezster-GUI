@@ -13,7 +13,7 @@ declare var eztz: any;
 })
 export class LocalnodeComponent implements OnInit {
   public configData=[];
-  public userData;
+  public userData: string;
 
 
   constructor(public bsModalRef: BsModalRef, private _AppService:AppService, private modalService: ModalService ) { }
@@ -22,20 +22,22 @@ export class LocalnodeComponent implements OnInit {
       this.modalService.closeModal('localnode');
     }
 
-    onClick(): void {      
-      localStorage.setItem("set-provider",this.userData);
+    onClick(): void {        
+      this._AppService.setProvider(this.userData);
       eztz.node.setProvider(this.userData);      
       this.modalService.closeModal('localnode');
+     
 
     }
     ngOnInit() {
     this._AppService.configDataChangeObs$
-      .subscribe(data => {
-        console.log("Setting data in localnode coomponent.", data);
+      .subscribe(data => {        
         if (data) {
           this.configData = data
         }
-      });           
+      });    
+      
+     
   }
 
 }
