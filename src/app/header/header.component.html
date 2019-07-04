@@ -1,18 +1,33 @@
-<nav class="navbar navbar-light" style="background-color: #2BFC9A;">
+<nav class="navbar navbar-light" style="background-color: #00C68E;">
   <div class="container-fluid" >
     <div class="navbar-header">
-      <a class="navbar-brand" href="#"><img width="180px" height="27px" alt="Angular Logo" src="assets/Tezsurelogo.png"></a>
+      <a class="navbar-brand" href="#" ><img width="180px" height="33px" alt="Angular Logo" src="assets/Tezsurelogo.png"></a>
     </div>
-    <ul class="nav navbar-nav">      
-      <li style="padding-left: 150px;"><a (click)="accounts()" routerLink="/accounts">Accounts</a></li>
-      <li style="padding-left: 30px;"><a (click)="blocks()" routerLink="/Blocks">Blocks</a></li> 
-      <li style="padding-left: 30px;"><a (click)="transactions()" routerLink="/transactions">Transactions</a></li> 
-      <li style="padding-left: 30px;"><a (click)="contracts()" routerLink="/contracts">Contracts</a></li>
-      <li style="padding-left: 30px;"><a (click)="events()" routerLink="/events">Events</a></li>              
-    </ul>  
-    <ul class="nav navbar-nav navbar-right">
-      <li style="margin-right: 20px"><a (click)="localnode()" routerLink="/localnode">Local Node</a></li> 
-      <li style="margin-right: 60px;"><a (click)="alphanet()" routerLink="/alphanet">Alphanet</a></li>
-    </ul>  
+     <ul class="nav navbar-nav horizontal-navbar">      
+      <li style="padding-left: 150px;" ><a (click)="accounts()" routerLink="/accounts">Accounts</a></li>
+      <li style="padding-left: 20px;" class=""><a (click)="blocks()" routerLink="/Blocks">Blocks</a></li> 
+      <li style="padding-left: 20px;" ><a (click)="transactions()" routerLink="/transactions">Transactions</a></li> 
+      <li style="padding-left: 20px;" ><a (click)="contracts()" routerLink="/contracts">Contracts</a></li>
+      <li style="padding-left: 20px;" ><a (click)="events()" routerLink="/events">Events</a></li>
+      <li style="padding-left: 20px;" ><a (click)="wallet()" routerLink="/wallet">Wallets</a></li>                          
+    </ul>     
+    <ul class="nav navbar-nav navbar-right horizontal-navbar">      
+      <li style="margin-right: 20px" class="list-style"><button  class="btn btn-success"  (click)="openDialog()">Local Node</button></li>
+      <li style="margin-right: 60px;" class="list-style"><button  class="btn btn-success" (click)="alphanet()" routerLink="/alphanet">alphanet</button></li>
+    </ul>     
+  </div>  
+  <hr>  
+  <div class="container-fluid" id="outer-div">
+    <div class="container-fluid" id="inner-div">
+        <table id="table-data">
+            <thead>
+              <th>Block</th><th>Guess Limit</th><th>Guess Price</th><th>Network Id</th><th>RPC Server</th><th>Port</th><th>Status</th><th><input type="text" id="search" placeholder="   Block/Accounts/Contracts...."></th>           
+            </thead> 
+            <tbody><th id="block"></th><th id="guesslimit"></th><th id="guessPrice"></th><th id="network"></th><th id="rpc"></th><th id="port"></th><th id="status"></th><th></th></tbody>             
+          </table>
+
+       
+    </div>
+
   </div>
 </nav>
