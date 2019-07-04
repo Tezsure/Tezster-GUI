@@ -11,6 +11,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import {LocalnodeComponent} from './localnode/localnode.component';
 import { FormsModule } from '@angular/forms';
+import { CreateWalletComponent } from './create-wallet/create-wallet.component';
+import { RestoreWalletComponent } from './restore-wallet/restore-wallet.component';
 
 @NgModule({
   declarations: [
@@ -19,9 +21,11 @@ import { FormsModule } from '@angular/forms';
     routingComponent,
     AlphanetComponent,
     WalletComponent,
-    LocalnodeComponent    
+    LocalnodeComponent,
+    CreateWalletComponent,
+    RestoreWalletComponent    
   ],
-  entryComponents: [LocalnodeComponent],
+  entryComponents: [LocalnodeComponent,CreateWalletComponent,RestoreWalletComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

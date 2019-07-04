@@ -11,7 +11,7 @@ const apiURLCall="http://localhost:18731";
 export class AppService {
   private _url: string='/assets/config.json';
 
-  protected _configData;
+  protected _configData: any;
   public configDataChangeObs$: BehaviorSubject<any>;
 
   constructor(private http:HttpClient) { 
@@ -27,20 +27,16 @@ export class AppService {
   errorHandler(error : HttpErrorResponse){
     return Observable.throw(error.message || "Server Error");
   };
+  // public addAccount(data: { "label": string; "pkh": string; "identity": string; }) {
+  //   this.configData.accounts.push(data);
+  //   console.log("addCont", this.configData);
+  // }
 
-  /* 
-  {
-        "label": "bootstrap_3",
-        "pkh": "tz1faswCTDciRzE4oJ9jn2Vm2dvjeyA9fUzU",
-        "identity": "bootstrap3"
-      }
-  */
-
-  public addAccount(data) {
-    this.configData.accounts.push(data);
-    console.log("addCont", this.configData);
+  public setProvider(data:string) {    
+    this.configData.provider=data;
+    localStorage.setItem("rpc-node ",data);
+    console.log("addProvider", this.configData);
   }
-
   public get configData() {
     return this._configData;
   }
