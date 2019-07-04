@@ -13,6 +13,10 @@ import {LocalnodeComponent} from './localnode/localnode.component';
 import { FormsModule } from '@angular/forms';
 import { CreateWalletComponent } from './create-wallet/create-wallet.component';
 import { RestoreWalletComponent } from './restore-wallet/restore-wallet.component';
+import { BlocksComponent } from './blocks/blocks.component';
+import { ContractsComponent } from './contracts/contracts.component';
+import { EventsComponent } from './events/events.component';
+import { TransactionComponent } from './transaction/transaction.component';
 
 @NgModule({
   declarations: [
@@ -23,9 +27,13 @@ import { RestoreWalletComponent } from './restore-wallet/restore-wallet.componen
     WalletComponent,
     LocalnodeComponent,
     CreateWalletComponent,
-    RestoreWalletComponent    
+    RestoreWalletComponent,
+    BlocksComponent,
+    ContractsComponent,
+    EventsComponent,
+    TransactionComponent    
   ],
-  entryComponents: [LocalnodeComponent,CreateWalletComponent,RestoreWalletComponent],
+  entryComponents: [LocalnodeComponent,CreateWalletComponent,RestoreWalletComponent,AlphanetComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

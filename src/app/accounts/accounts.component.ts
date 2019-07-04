@@ -16,10 +16,11 @@ export class AccountsComponent implements OnInit {
    this._AppService.configDataChangeObs$
      .subscribe(data => {       
        if (data) {
-        this.configData = data;
+        this.configData = data;  
+        console.log("data check ",this.configData);      
        }
       });
-
+      console.log("data check ",this.configData);
       // setTimeout(() => {
       //   this._AppService.addAccount(
       //     {
@@ -29,8 +30,7 @@ export class AccountsComponent implements OnInit {
       //     }
       //   );
       // }, 5000);
-      
-          
+                
   }
   
 

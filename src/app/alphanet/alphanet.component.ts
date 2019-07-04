@@ -11,24 +11,25 @@ declare var eztz: any;
 export class AlphanetComponent implements OnInit {
   public userData="https://alphanet.tezrpc.me";
   public configData=[];
-
-
   constructor(public bsModalRef: BsModalRef, private _AppService:AppService, private modalService: ModalService ) { }  
 
   onClick(): void {    
-    this._AppService.setProvider(this.userData);
-    eztz.node.setProvider(this.userData);            
+    this._AppService.setProviderData(this.userData);
+    eztz.node.setProvider(this.userData);          
     this.modalService.closeModal('alphanet');
   }
 
-
-  ngOnInit() {
-    this._AppService.configDataChangeObs$
-      .subscribe(data => {        
-        if (data) {
-          this.configData = data
-        }
-      });
+  onNoClick(): void {     
+    this.modalService.closeModal('alphanet');
   }
 
+  ngOnInit() { 
+    this._AppService.getConfigData();
+   this._AppService.configDataChangeObs$
+     .subscribe(data => {       
+       if (data) {
+        this.configData = data;        
+       }
+      });
+  }
 }

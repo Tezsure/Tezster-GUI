@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {LocalnodeComponent} from '../localnode/localnode.component';
 import { ModalService } from '../modal.service';
 import { AlphanetComponent } from '../alphanet/alphanet.component';
+import {AppService} from '../app.service';
 
 
 @Component({
@@ -10,8 +11,9 @@ import { AlphanetComponent } from '../alphanet/alphanet.component';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {  
-  constructor(private modalService: ModalService) { 
-  }
+  public configData=[];    
+  constructor(private modalService: ModalService,private _AppService:AppService) {   }
+  
   openDialog(): void {    
     this.modalService.openModal('localnode', LocalnodeComponent);
   }
@@ -19,6 +21,13 @@ export class HeaderComponent implements OnInit {
     this.modalService.openModal('alphanet', AlphanetComponent);
   }
   ngOnInit() {
+    this._AppService.configDataChangeObs$
+      .subscribe(data => {        
+        if (data) {
+          this.configData = data;          
+        }
+      }); 
   }
+
 
 }

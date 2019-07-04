@@ -9,8 +9,8 @@ declare var eztz: any;
 })
 export class AppComponent implements OnInit {
   title = 'Tezsure';
-  ngOnInit():void{    
-    // console.log(JSON.stringify(eztz.crypto.generateKeys()));
+  ngOnInit():void{
+    
   }
   
 }

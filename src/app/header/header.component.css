@@ -46,18 +46,18 @@
 
 #outer-div{
     background-color: #00C68E;
-    height: 80px;
+    height: 90px;
 }
 
 #inner-div{
     background-color:white;
-    height: 65px;
+    height: 85px;
     margin-left: 30px;
     margin-right: 30px; 
     margin-bottom: 10px;   
     border: none;
     color: #03B898;
-    padding: 10px;
+    padding: 8px;
     text-align: center;
     text-decoration: none;    
     font-size: 16px;

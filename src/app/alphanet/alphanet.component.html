@@ -5,8 +5,9 @@
   </button>
 </div>
 <div class="modal-body">  
-  <p>Your Node is set to : https://alphanet.tezrpc.me</p> 
+  <h5>Do You want to set node provider as Alphanet: https://alphanet.tezrpc.me</h5> 
 </div>
-<div class="modal-footer">    
-    <button  (click)="onClick()" class="btn btn-default">Close</button>
+<div class="modal-footer">  
+    <button class="btn btn-secondary"  (click)="onNoClick()">No</button>  
+    <button  (click)="onClick()" class="btn btn-success">Yes</button>
 </div>

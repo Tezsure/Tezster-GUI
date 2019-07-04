@@ -22,18 +22,16 @@ export class LocalnodeComponent implements OnInit {
       this.modalService.closeModal('localnode');
     }
 
-    onClick(): void {        
-      this._AppService.setProvider(this.userData);
-      eztz.node.setProvider(this.userData);      
+    onClick(): void {           
+      this._AppService.setProviderData(this.userData);
+      eztz.node.setProvider(this.userData);       
       this.modalService.closeModal('localnode');
-     
-
     }
     ngOnInit() {
     this._AppService.configDataChangeObs$
       .subscribe(data => {        
         if (data) {
-          this.configData = data
+          this.configData = data;                  
         }
       });    
       

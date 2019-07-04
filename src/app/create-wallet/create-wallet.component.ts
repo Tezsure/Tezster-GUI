@@ -14,14 +14,12 @@ declare var eztz: any;
 export class CreateWalletComponent implements OnInit {
 
   public mnemonics;
-
   constructor(public bsModalRef: BsModalRef, private _AppService:AppService, private modalService: ModalService ) { }
   onNoClick(): void {     
     this.modalService.closeModal('create');
   }
 
-  onClick(): void {         
-    console.log("this is mnemonics", this.mnemonics);
+  onClick(): void {   
     this.modalService.closeModal('create');
   }
 
