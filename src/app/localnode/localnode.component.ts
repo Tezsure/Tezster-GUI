@@ -1,5 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, TemplateRef } from '@angular/core';
 import {AppService} from '../app.service';
+import { BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
+import { ModalService } from '../modal.service';
+
+
+declare var eztz: any;
 
 @Component({
   selector: 'app-localnode',
@@ -8,13 +13,29 @@ import {AppService} from '../app.service';
 })
 export class LocalnodeComponent implements OnInit {
   public configData=[];
+  public userData;
 
-  constructor(private _AppService:AppService) { }
 
-  ngOnInit() {
-    this._AppService.getConfigData()
-      .subscribe(data => this.configData=data);
+  constructor(public bsModalRef: BsModalRef, private _AppService:AppService, private modalService: ModalService ) { }
+
+    onNoClick(): void {     
+      this.modalService.closeModal('localnode');
+    }
+
+    onClick(): void {      
+      localStorage.setItem("set-provider",this.userData);
+      eztz.node.setProvider(this.userData);      
+      this.modalService.closeModal('localnode');
+
+    }
+    ngOnInit() {
+    this._AppService.configDataChangeObs$
+      .subscribe(data => {
+        console.log("Setting data in localnode coomponent.", data);
+        if (data) {
+          this.configData = data
+        }
+      });           
   }
-
 
 }

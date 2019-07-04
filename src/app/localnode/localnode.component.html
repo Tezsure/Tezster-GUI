@@ -1,3 +1,23 @@
-<p>
-  Your localnode is connected by - {{configData.provider}}
-</p>
+ 
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Your Serve Provider is connected by - {{configData.provider}}</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <p>Change your provider?</p>
+        <input type="text" [(ngModel)]="userData" id="search" placeholder="https://localhost:18731">
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-secondary"  (click)="onNoClick()">No</button>
+        <button  (click)="onClick()" class="btn btn-success">Change it</button>
+    </div>
+
+    
+    
+
+
+
+
+<!-- [mat-dialog-close]="data.provider" -->
