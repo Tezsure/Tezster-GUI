@@ -11,7 +11,7 @@ declare var eztz: any;
   templateUrl: './localnode.component.html',
   styleUrls: ['./localnode.component.css']
 })
-export class LocalnodeComponent implements OnInit {
+export class LocalnodeComponent implements OnInit {z
   public configData=[];
   public userData: string;
 
@@ -28,12 +28,13 @@ export class LocalnodeComponent implements OnInit {
       this.modalService.closeModal('localnode');
     }
     ngOnInit() {
-    this._AppService.configDataChangeObs$
-      .subscribe(data => {        
-        if (data) {
-          this.configData = data;                  
-        }
-      });    
+      this._AppService.getConfigData();
+      this._AppService.configDataChangeObs$
+       .subscribe(data => {       
+         if (data) {
+          this.configData = data;  
+          }
+        });    
       
      
   }

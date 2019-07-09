@@ -6,7 +6,6 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
 declare var eztz: any;
-const apiURLCall="http://localhost:18731";
 @Injectable()
 export class AppService {
   private _url: string='/assets/config.json';

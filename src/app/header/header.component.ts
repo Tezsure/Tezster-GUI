@@ -21,13 +21,13 @@ export class HeaderComponent implements OnInit {
     this.modalService.openModal('alphanet', AlphanetComponent);
   }
   ngOnInit() {
+    this._AppService.getConfigData();
     this._AppService.configDataChangeObs$
-      .subscribe(data => {        
-        if (data) {
-          this.configData = data;          
+     .subscribe(data => {       
+       if (data) {
+        this.configData = data;  
+        console.log(this.configData);
         }
-      }); 
+      });
   }
-
-
 }
