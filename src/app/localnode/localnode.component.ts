@@ -28,7 +28,7 @@ export class LocalnodeComponent implements OnInit {z
       this.modalService.closeModal('localnode');
     }
     ngOnInit() {
-      this._AppService.getConfigData();
+      
       this._AppService.configDataChangeObs$
        .subscribe(data => {       
          if (data) {
