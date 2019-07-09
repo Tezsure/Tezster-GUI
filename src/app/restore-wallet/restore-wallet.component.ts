@@ -44,7 +44,7 @@ export class RestoreWalletComponent implements OnInit {
   }
 
   ngOnInit() { 
-    this._AppService.getConfigData();
+    
     this._AppService.configDataChangeObs$
      .subscribe(data => {       
        if (data) {
