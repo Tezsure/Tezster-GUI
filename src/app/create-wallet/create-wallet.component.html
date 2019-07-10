@@ -4,15 +4,15 @@
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
-<div class="modal-body">
-  <label for="email">Email ID :</label>&nbsp; &nbsp; &nbsp;
-  <input type="text" [(ngModel)]="email" id="email" class="textcolor"><br><hr>
-  <label for="pass">Password : </label> &nbsp; &nbsp;
-  <input type="password" [(ngModel)]="password" id="password" class="textcolor"><br><hr>
-  <p>Seed Words/Mnenomic (leave a space between each word) <span style="color: red">*</span></p>
-  <textarea placeholder=" Enter Seed Words/Mnenomic" [(ngModel)]="Mnenomic" class="textcolor" id="textarea"></textarea>
+<div class="modal-body">    
+  <p>Please write your seed words below and store them in a secure place. These can be used to restore your wallet. If you choose to use a Passphrase, this will need to be noted down and stored as well <span style="color: red">*</span></p>
+  <div class="mnemonic text-center" >{{mnemonics}}</div>
+  <br> 
+  <button class="btn btn-primary btn-sm"  (click)="newMnemonic()">New Mnemonics</button><hr>
+  <label for="pass">Optional Passphrase: </label> &nbsp; &nbsp;
+  <input type="password" [(ngModel)]="password" id="password" class="textcolor"><br>
 </div>
 <div class="modal-footer">
     <button class="btn btn-secondary"  (click)="onNoClick()">Cancel</button>
-    <button  (click)="onClick()" class="btn btn-success" [disabled]="!Mnenomic">Next Step</button>
+    <button  (click)="onClick()" class="btn btn-success">Validate Wallet</button>
 </div>
