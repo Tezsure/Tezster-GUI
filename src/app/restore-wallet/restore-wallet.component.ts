@@ -18,7 +18,7 @@ export class RestoreWalletComponent implements OnInit {
   public cred:string;
   public keys;
   public account;
-  credD: { "pkh": any; "sk": any; "pk": any; };
+  credD: { "pkh": any; "sk": any; "pk": any; type: any };
   constructor(public bsModalRef: BsModalRef, private _AppService:AppService, private modalService: ModalService,private router: Router ) { }
   
   
@@ -26,19 +26,19 @@ export class RestoreWalletComponent implements OnInit {
     this.modalService.closeModal('restore');
   }
 
-  onClick(): void {    
+  onClick(): void {
+
     this.cred=this.email+this.password;  //elbow advance genius castle rather nerve art citizen design document juice more century gorilla pair', 'kuidbbms.jhkpkhfg@tezos.example.orgvyIxvZml6w  
     this.keys=eztz.crypto.generateKeys(this.mnenomics, this.cred); 
-    this.account=this.keys.pkh;        
+    this.account=this.keys.pkh;            
     this._AppService.addAccount(
           {
-            "label": "Main",
+            "label": "bootstrap_6",
             "pkh": this.account,
-            "identity": "bootstrap3"
+            "identity": "bootstrap6"
           }
         );      
-    this.credD={"pkh":this.keys.pkh,"sk":this.keys.sk,"pk":this.keys.pk};
-    sessionStorage.setItem("credData",JSON.stringify(this.credD));
+    this.credD={"pkh":this.keys.pkh,"sk":this.keys.sk,"pk":this.keys.pk, type : "encrypted"};    
     this.modalService.closeModal('restore'); 
     this.router.navigate(['/accounts']);   
   }

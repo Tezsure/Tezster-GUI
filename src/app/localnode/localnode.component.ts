@@ -11,7 +11,7 @@ declare var eztz: any;
   templateUrl: './localnode.component.html',
   styleUrls: ['./localnode.component.css']
 })
-export class LocalnodeComponent implements OnInit {z
+export class LocalnodeComponent implements OnInit {
   public configData=[];
   public userData: string;
 

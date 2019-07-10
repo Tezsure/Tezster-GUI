@@ -1,19 +1,19 @@
 <div class="modal-header">
-  <h4 class="modal-title pull-left">Restore your Wallet </h4>  
-  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
-    <span aria-hidden="true">&times;</span>
-  </button>  
+    <h4 class="modal-title pull-left">Restore Wallet </h4>  
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+    </button>  
 </div>
 <div class="modal-body">
-    <h6>Node provider is connected : {{configData.provider}}</h6><br>
-  <label for="email"  >Email ID :</label>&nbsp;&nbsp; &nbsp; &nbsp;
-  <input type="text" [(ngModel)]="email" id="email" class="textcolor"><span><br>Optional for localnode provider</span><br><hr>
-  <label for="pass">Password : <span style="color: red">*</span></label> &nbsp;
-  <input type="password" [(ngModel)]="password" id="password" class="textcolor"><br><hr>
-  <p>Seed Words/Mnenomic (leave a space between each word) <span style="color: red">*</span></p>
-  <textarea placeholder=" Enter Seed Words/Mnenomic" [(ngModel)]="mnenomics" class="textcolor" id="mnenomics"></textarea> 
+  	<h6>Node provider is connected : {{configData.provider}}</h6><br>
+  	<label for="email"  >Email ID :</label>&nbsp;&nbsp; &nbsp; &nbsp;
+  	<input type="text" [(ngModel)]="email" id="email" class="textcolor"><br><hr>
+  	<label for="pass">Password : <span style="color: red">*</span></label> &nbsp;
+  	<input type="password" [(ngModel)]="password" id="password" class="textcolor"><br><hr>
+  	<p>Seed Words/Mnenomic (leave a space between each word) <span style="color: red">*</span></p>
+  	<textarea placeholder=" Enter Seed Words/Mnenomic" [(ngModel)]="mnenomics" class="textcolor" id="mnenomics"></textarea> 
 </div>
 <div class="modal-footer">
     <button class="btn btn-secondary" (click)="onNoClick()">Cancel</button>
-    <button  (click)="onClick()" class="btn btn-success" [disabled]="!mnenomics">Next Step</button>
+    <button  (click)="onClick()" class="btn btn-success" [disabled]="!mnenomics">Restore Wallet</button>
 </div>
