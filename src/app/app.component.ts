@@ -10,9 +10,8 @@ declare var eztz: any;
 })
 export class AppComponent implements OnInit {
 
-    public configData = [];
-    title = 'Tezsure';
-
+    public configData=[];
+    title = 'Tezsure';    
     constructor(public _AppService: AppService) { }
 
     ngOnInit(): void {        
@@ -20,7 +19,7 @@ export class AppComponent implements OnInit {
         this._AppService.configDataChangeObs$
             .subscribe(data => {
                 if (data) {
-                    this.configData = data;
+                    this.configData = data;                                     
                     eztz.node.setProvider('https://alphanet.tezrpc.me');
                 }
             });

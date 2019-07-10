@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpInterceptor, HttpRequest, HttpHandler, HttpParams, HttpErrorResponse } from '@angular/common/http';
 import { configDataTpye } from '../assets/configTypeData';
 import { Observable, BehaviorSubject } from 'rxjs';
 import 'rxjs/add/operator/catch';
@@ -13,6 +13,7 @@ export class AppService {
     protected _configData: any;
     public amount: any;
     public configDataChangeObs$: BehaviorSubject<any>;
+    public data='';
 
     constructor(private http: HttpClient) {
         this.configDataChangeObs$ = new BehaviorSubject<any>(null);
@@ -25,12 +26,12 @@ export class AppService {
     }
 
     protected _onConfigDataResponse(data) {
-        this.configData = data;
-        console.log("data is: " + data);
+        this.configData = data;        
         this.setLocalConfigData(data);
     }
 
     public setLocalConfigData(data) {
+        data=JSON.stringify(data);        
         localStorage.setItem('configData', data);
     }
 
@@ -57,16 +58,26 @@ export class AppService {
         this.configDataChangeObs$.next(data);
     }
 
-    public getBalance(keys: string) {
+    public getBalance(keys: string) {        
         return new Promise((resolve, reject) => {
             eztz.rpc.getBalance(keys).then( (res: number) => {
                 resolve((res / 1000000).toFixed(3) + ' Tz');
             }).catch( (e: any) => {
                 console.log(e);
-                reject();
+                reject(e);
             });
         });
-
     }
 
+}
+
+@Injectable()
+export class XhrInterceptor implements HttpInterceptor {
+
+  intercept(req: HttpRequest<any>, next: HttpHandler) {
+    const xhr = req.clone({
+      headers: req.headers.set('X-Requested-With', 'XMLHttpRequest')
+    });
+    return next.handle(xhr);
+  }
 }

@@ -18,6 +18,9 @@ import { ContractsComponent } from './contracts/contracts.component';
 import { EventsComponent } from './events/events.component';
 import { TransactionComponent } from './transaction/transaction.component';
 import { AccountsComponent } from './accounts/accounts.component';
+import { FontAwesomeModule } from 'ngx-icons';
+import { ValidateWalletComponent } from './validate-wallet/validate-wallet.component';
+
 
 @NgModule({
   declarations: [
@@ -32,16 +35,18 @@ import { AccountsComponent } from './accounts/accounts.component';
     ContractsComponent,
     EventsComponent,
     AccountsComponent,
-    TransactionComponent
+    TransactionComponent,
+    ValidateWalletComponent    
   ],
-  entryComponents: [LocalnodeComponent, CreateWalletComponent, RestoreWalletComponent, AlphanetComponent],
+  entryComponents: [LocalnodeComponent, CreateWalletComponent, RestoreWalletComponent, AlphanetComponent,ValidateWalletComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
     FormsModule,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    FontAwesomeModule
   ],
   providers: [AppService],
   bootstrap: [AppComponent]
