@@ -20,22 +20,11 @@ export class AccountsComponent implements OnInit {
           this.configData = data;
         }
       });
-
-
-    // setTimeout(() => {
-    //   this._AppService.addAccount(
-    //     {
-    //       "label": "bootstrap_3",
-    //       "pkh": "tz1faswCTDciRzE4oJ9jn2Vm2dvjeyA9fUzU",
-    //       "identity": "bootstrap3"
-    //     }
-    //   );
-    // }, 5000);
-
   }
 
-  async getAccountBalance(key: string) {
+  async getAccountBalance(key: string) {    
     const data = await this._AppService.getBalance(key);
+    console.log("data" + data);
     return data;
   }
 

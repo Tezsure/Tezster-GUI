@@ -9,7 +9,7 @@
         </tr>
         <tr *ngFor="let account of configData.accounts">
           <td>{{account.label}}</td>
-          <td>{{account.pkh}}</td>
+          <td>{{account.pkh}}</td>                
           <td>{{getAccountBalance(account.pkh) | async}}</td>
           <td>0</td>
           <td>0</td>
