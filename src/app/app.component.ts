@@ -19,7 +19,8 @@ export class AppComponent implements OnInit {
         this._AppService.configDataChangeObs$
             .subscribe(data => {
                 if (data) {
-                    this.configData = data;                                     
+                    this.configData = data;                    
+                    sessionStorage.setItem('configData',JSON.stringify(this.configData));                                     
                     eztz.node.setProvider('https://alphanet.tezrpc.me');
                 }
             });

@@ -17,14 +17,14 @@ export class AccountsComponent implements OnInit {
     this._AppService.configDataChangeObs$
       .subscribe(data => {
         if (data) {
-          this.configData = data;
+          this.configData = data;          
         }
-      });
+      });      
   }
 
-  async getAccountBalance(key: string) {    
-    const data = await this._AppService.getBalance(key);
-    console.log("data" + data);
+  async getAccountBalance(key: string) {  
+    console.log("key data ",key);  
+    const data = await this._AppService.getBalance(key);    
     return data;
   }
 

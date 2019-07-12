@@ -32,11 +32,11 @@ export class AppService {
 
     public setLocalConfigData(data) {
         data=JSON.stringify(data);        
-        localStorage.setItem('configData', data);
+        sessionStorage.setItem('configData', data);
     }
 
     public getLocalConfigData() {
-        return localStorage.getItem('configData');
+        return sessionStorage.getItem('configData');
     }
 
     errorHandler(error: HttpErrorResponse) {
@@ -54,30 +54,18 @@ export class AppService {
     }
 
     public set configData(data) {
-        this._configData = data;
-        this.configDataChangeObs$.next(data);
+        this._configData = data;        
+        this.configDataChangeObs$.next(data);        
     }
 
     public getBalance(keys: string) {        
         return new Promise((resolve, reject) => {
             eztz.rpc.getBalance(keys).then( (res: number) => {
                 resolve((res / 1000000).toFixed(3) + ' Tz');
-            }).catch( (e: any) => {
+            }).catch( (e) => {
                 console.log(e);
                 reject(e);
             });
         });
     }
-
-}
-
-@Injectable()
-export class XhrInterceptor implements HttpInterceptor {
-
-  intercept(req: HttpRequest<any>, next: HttpHandler) {
-    const xhr = req.clone({
-      headers: req.headers.set('X-Requested-With', 'XMLHttpRequest')
-    });
-    return next.handle(xhr);
-  }
 }
