@@ -22,11 +22,11 @@ export class AccountsComponent implements OnInit {
       });      
   }
 
-  async getAccountBalance(key: string) {  
-    console.log("key data ",key);  
-    const data = await this._AppService.getBalance(key);    
-    return data;
-  }
+  // async getAccountBalance(key: string) {  
+  //   console.log("key ",key);  
+  //   const data = await this._AppService.getBalance(key);    
+  //   return data;
+  // }
 
 
 }

@@ -20,6 +20,8 @@ import { TransactionComponent } from './transaction/transaction.component';
 import { AccountsComponent } from './accounts/accounts.component';
 import { FontAwesomeModule } from 'ngx-icons';
 import { ValidateWalletComponent } from './validate-wallet/validate-wallet.component';
+import { SelectDropDownModule } from 'ngx-select-dropdown';
+import { BlankDataComponent } from './blank-data/blank-data.component';
 
 
 @NgModule({
@@ -36,9 +38,10 @@ import { ValidateWalletComponent } from './validate-wallet/validate-wallet.compo
     EventsComponent,
     AccountsComponent,
     TransactionComponent,
-    ValidateWalletComponent    
+    ValidateWalletComponent,
+    BlankDataComponent    
   ],
-  entryComponents: [LocalnodeComponent, CreateWalletComponent, RestoreWalletComponent, AlphanetComponent,ValidateWalletComponent],
+  entryComponents: [LocalnodeComponent, CreateWalletComponent, RestoreWalletComponent, AlphanetComponent,ValidateWalletComponent,BlankDataComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -46,7 +49,8 @@ import { ValidateWalletComponent } from './validate-wallet/validate-wallet.compo
     BrowserAnimationsModule,
     FormsModule,
     ModalModule.forRoot(),
-    FontAwesomeModule
+    FontAwesomeModule,
+    SelectDropDownModule
   ],
   providers: [AppService],
   bootstrap: [AppComponent]

@@ -1,0 +1,36 @@
+#walletDropdown{
+    margin-top: 3%;   
+}
+#text{
+    margin-left: 1%;
+}
+
+select{
+    margin-left: 1%;
+}
+
+#transactionData {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 2%; 
+	 
+  }
+  
+  #transactionData td,#transactionData th{
+    border: 1px solid #ddd;
+    padding: 20px;
+    text-align: center;
+  }
+  #transactionData tr:nth-child(even){background-color: #f2f2f2;}
+  
+  #transactionData tr:hover {background-color: #ddd;}
+
+  #transactionData th {
+    padding-top: 20px;    
+    padding-bottom: 20px;
+    text-align: center;
+    background-color: #00C68E;
+    color: white;
+  }
+  

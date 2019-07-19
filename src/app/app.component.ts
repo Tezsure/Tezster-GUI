@@ -12,18 +12,11 @@ export class AppComponent implements OnInit {
 
     public configData=[];
     title = 'Tezsure';    
+    obj: any;
     constructor(public _AppService: AppService) { }
 
-    ngOnInit(): void {        
-        this._AppService.fetchConfigData();
-        this._AppService.configDataChangeObs$
-            .subscribe(data => {
-                if (data) {
-                    this.configData = data;                    
-                    sessionStorage.setItem('configData',JSON.stringify(this.configData));                                     
-                    eztz.node.setProvider('https://alphanet.tezrpc.me');
-                }
-            });
+    ngOnInit(): void {            
+        this._AppService.fetchConfigData();       
     }
 
 }
