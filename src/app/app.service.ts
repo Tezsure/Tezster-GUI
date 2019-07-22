@@ -84,20 +84,11 @@ export class AppService {
         this._configData = data;        
         this.configDataChangeObs$.next(data);        
     }
-
-    // public get transactionData() {
-    //     return this._transactionData;
-    // }
-
-    // public set transactionData(data) {
-    //     this._transactionData = data;        
-    //     this.transactionDataChangeObs$.next(data);        
-    // }
-
-    public getBalance(keys: string) {        
+   public getBalance(keys: string) {          
         return new Promise((resolve, reject) => {
             eztz.rpc.getBalance(keys).then( (res: number) => {
-                resolve((res / 1000000).toFixed(3) + ' Tz');
+                this.amount=(res / 1000000).toFixed(3) + ' Tz';
+                resolve(this.amount);
             }).catch( (e: any) => {
                 console.log(e);
                 reject(e);

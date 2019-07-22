@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AppService } from '../app.service';
+declare var eztz: any;
 
 @Component({
   selector: 'app-accounts',
@@ -9,7 +10,7 @@ import { AppService } from '../app.service';
 export class AccountsComponent implements OnInit {
 
   public configData = null;
-
+  balance: any;
   constructor(private _AppService: AppService) { }
 
   ngOnInit() {
@@ -18,15 +19,19 @@ export class AccountsComponent implements OnInit {
       .subscribe(data => {
         if (data) {
           this.configData = data;          
+          eztz.node.setProvider("http://alphanet.tezrpc.me");
+          for(var accounts of this.configData.accounts){
+            this.getBalance(accounts.pkh);
+          }
+
         }
       });      
   }
-
-  // async getAccountBalance(key: string) {  
-  //   console.log("key ",key);  
-  //   const data = await this._AppService.getBalance(key);    
-  //   return data;
-  // }
+  async getBalance(pkh: any) {    
+     this.balance= await this._AppService.getBalance(pkh); 
+    console.log("account ",this.balance); 
+  }
+  
 
 
 }

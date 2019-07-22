@@ -22,6 +22,7 @@ import { FontAwesomeModule } from 'ngx-icons';
 import { ValidateWalletComponent } from './validate-wallet/validate-wallet.component';
 import { SelectDropDownModule } from 'ngx-select-dropdown';
 import { BlankDataComponent } from './blank-data/blank-data.component';
+import { SendtransactionComponent } from './sendtransaction/sendtransaction.component';
 
 
 @NgModule({
@@ -39,9 +40,10 @@ import { BlankDataComponent } from './blank-data/blank-data.component';
     AccountsComponent,
     TransactionComponent,
     ValidateWalletComponent,
-    BlankDataComponent    
+    BlankDataComponent,
+    SendtransactionComponent    
   ],
-  entryComponents: [LocalnodeComponent, CreateWalletComponent, RestoreWalletComponent, AlphanetComponent,ValidateWalletComponent,BlankDataComponent],
+  entryComponents: [LocalnodeComponent, CreateWalletComponent, RestoreWalletComponent, AlphanetComponent,ValidateWalletComponent,BlankDataComponent,SendtransactionComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {AppService} from '../app.service';
 import { ModalService } from '../modal.service';
 import { BlankDataComponent } from '../blank-data/blank-data.component';
+import { SendtransactionComponent } from '../sendtransaction/sendtransaction.component';
+
 
 @Component({
   selector: 'app-transaction',
@@ -25,7 +27,9 @@ export class TransactionComponent implements OnInit {
         });   
               
   }
-
+  openDialogForSend(){
+    this.modalService.openModal('Sendtransaction', SendtransactionComponent); 
+  }
     selected(){  
       this._AppService.loadtransactionData(this.accountpkh);     
         setTimeout(()=>{

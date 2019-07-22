@@ -10,13 +10,13 @@ declare var eztz: any;
 })
 export class AppComponent implements OnInit {
 
-    public configData=[];
+    public configData=[];    
     title = 'Tezsure';    
     obj: any;
     constructor(public _AppService: AppService) { }
 
     ngOnInit(): void {            
-        this._AppService.fetchConfigData();       
+        this._AppService.fetchConfigData();              
     }
 
 }
