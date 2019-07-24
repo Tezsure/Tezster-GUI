@@ -35,8 +35,7 @@ export class TransactionComponent implements OnInit {
         setTimeout(()=>{
           this.transactionData= JSON.parse(this._AppService.getLocaltransactionData());
           this.txs=[];
-          this.totalTransaction=this.transactionData.length;
-          console.log(this.totalTransaction);
+          this.totalTransaction=this.transactionData.length;          
           if(this.transactionData.length > 0){            
             for(var trans of this.transactionData){
               for(var oper of trans.type.operations){

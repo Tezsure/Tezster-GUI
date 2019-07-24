@@ -16,7 +16,7 @@ export class AppComponent implements OnInit {
     constructor(public _AppService: AppService) { }
 
     ngOnInit(): void {            
-        this._AppService.fetchConfigData();              
+        this._AppService.fetchConfigData();             
     }
 
 }

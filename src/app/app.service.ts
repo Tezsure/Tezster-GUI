@@ -30,7 +30,8 @@ export class AppService {
         return ajax;
     }
     loadtransactionData(key: any):Observable<transactionType[]> {         
-        this._transactionURL='https://api.alphanet.tzscan.io/v3/operations/'+key+'?type=Transaction&p=0&number='+ (this.maxTxs+1);         
+        this._transactionURL='https://api.alphanet.tzscan.io/v3/operations/'+key+'?type=Transaction&p=0&number='+ (this.maxTxs+1);   
+        console.log(this._transactionURL);      
         const transajax = this.http.get<transactionType[]>(this._transactionURL).catch(this.errorHandler);
         transajax.subscribe(this._transactionDataResponse.bind(this));        
         return transajax;
@@ -39,25 +40,24 @@ export class AppService {
         this.configData = data;        
         this.setLocalConfigData(data);
     }
-    protected _transactionDataResponse(data: any) {
-        //this.transactionData = data;        
+    protected _transactionDataResponse(data: any) {            
         this.setLocaltransactionData(data);
     }
     public setLocaltransactionData(data: string) {        
         data=JSON.stringify(data);             
-        sessionStorage.setItem('transactionData', data);
+        localStorage.setItem('transactionData', data);
     }
     public setLocalConfigData(data: string) {        
         data=JSON.stringify(data);             
-        sessionStorage.setItem('configData', data);
+        localStorage.setItem('configData', data);
     }
 
     public getLocalConfigData() {
-        return sessionStorage.getItem('configData');
+        return localStorage.getItem('configData');
     }
 
     public getLocaltransactionData() {
-        return sessionStorage.getItem('transactionData');
+        return localStorage.getItem('transactionData');
     }
 
     errorHandler(error: HttpErrorResponse) {

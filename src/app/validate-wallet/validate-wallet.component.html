@@ -9,7 +9,9 @@
   	  
   	<p>Seed Words/Mnenomic (leave a space between each word) <span style="color: red">*</span></p>
 	<textarea placeholder=" Enter Seed Words/Mnenomic" [(ngModel)]="mnenomics" class="textcolor" id="mnenomics"></textarea><br><hr>
-	<label for="email"  >Email ID :</label>&nbsp;&nbsp; &nbsp; &nbsp;
+	<label for="optional"  >Optional Key:</label>&nbsp;
+  	<input type="text" [(ngModel)]="optionalpass" id="optionalpass" class="textcolor"><br><hr>
+	<label for="email"  >Email-ID: </label>&nbsp;&nbsp; &nbsp; &nbsp;
   	<input type="text" [(ngModel)]="email" id="email" class="textcolor"><br><hr>
 	<label for="pass">Password : <span style="color: red">*</span></label> &nbsp;
   	<input type="password" [(ngModel)]="password" id="password" class="textcolor"><br><hr>

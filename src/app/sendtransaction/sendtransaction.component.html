@@ -1,14 +1,14 @@
 <div class="modal-header">
-    <h4 class="modal-title pull-left">Pay Premium Amount</h4>
+    <h4 class="modal-title pull-left">Send Tezos</h4>
     <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">  
-      <div id="walletDropdown"><h5 id="text">Select Wallet</h5>
+      <div id="walletDropdown"><span id="text">From wallet</span>
         <select [(ngModel)]="accountpkh" (change)="selected()" >
             <option *ngFor="let account of configData.accounts" [ngValue]="account.pkh">{{account.pkh}}</option>
-        </select> <span id="balance">{{balance}}</span>
+        </select><br> <span id="balance"> Available Tezos- {{balance}}</span>
       </div>
   </div>
   <div class="modal-footer">  

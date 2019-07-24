@@ -21,8 +21,7 @@ export class SendtransactionComponent implements OnInit {
     this.modalService.closeModal('Sendtransaction');
   } 
   async selected(){
-    this.balance= await this._AppService.getBalance(this.accountpkh); 
-    console.log("send money",this.balance);    
+    this.balance= await this._AppService.getBalance(this.accountpkh);        
     }
   ngOnInit() {
     this._AppService.configDataChangeObs$

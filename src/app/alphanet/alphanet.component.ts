@@ -9,8 +9,9 @@ declare var eztz: any;
   styleUrls: ['./alphanet.component.css']
 })
 export class AlphanetComponent implements OnInit {
-  public userData = "http://alphanet.tezrpc.me";
-  public configData = [];
+  //public userData = "http://alphanet.tezrpc.me";
+  public userData = "http://alphanet-node.tzscan.io";
+  public configData = []; 
   constructor(public bsModalRef: BsModalRef, private _AppService: AppService, private modalService: ModalService) { }
 
   onClick(): void {
