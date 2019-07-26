@@ -12,12 +12,13 @@ declare var eztz: any;
 })
 export class RestoreWalletComponent implements OnInit {
   public configData=[];
-  public mnenomics;
-  public password;
-  public email;  
+  public mnenomics: any;
+  public password: any;
+  public email: any;  
   public cred:string;
-  public keys;
-  public account;
+  public keys: { pkh: string; sk: any; pk: any; };
+  public account: string;
+  public secret: any;
   credD: { "pkh": any; "sk": any; "pk": any; type: any };
   constructor(public bsModalRef: BsModalRef, private _AppService:AppService, private modalService: ModalService,private router: Router ) { }
   
@@ -39,7 +40,7 @@ export class RestoreWalletComponent implements OnInit {
           }
         );      
     this.credD={"pkh":this.keys.pkh,"sk":this.keys.sk,"pk":this.keys.pk, type : "encrypted"};  
-    eztz.rpc.activate(this.keys.pkh, this.keys.sk).then(function(d){
+    eztz.rpc.activate(this.keys.pkh, this.secret).then(function(d){
       console.log(d);
     });  
     this.modalService.closeModal('restore'); 

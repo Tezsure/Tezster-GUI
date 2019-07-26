@@ -6,12 +6,14 @@
 </div>
 <div class="modal-body">
   	<h6>Node provider is connected : {{configData.provider}}</h6><br>
-  	<label for="email"  >Email ID :</label>&nbsp;&nbsp; &nbsp; &nbsp;
-  	<input type="text" [(ngModel)]="email" id="email" class="textcolor"><br><hr>
-  	<label for="pass">Password : <span style="color: red">*</span></label> &nbsp;
-  	<input type="password" [(ngModel)]="password" id="password" class="textcolor"><br><hr>
-  	<p>Seed Words/Mnenomic (leave a space between each word) <span style="color: red">*</span></p>
-  	<textarea placeholder=" Enter Seed Words/Mnenomic" [(ngModel)]="mnenomics" class="textcolor" id="mnenomics"></textarea> 
+  	<label for="email"  ><b>Email ID :</b></label>&nbsp;&nbsp; &nbsp; &nbsp;
+  	<input type="text" [(ngModel)]="email" id="email" class="textcolor" style="width: 340px"><br><hr>
+  	<label for="pass"><b>Password : </b><span style="color: red">*</span>&nbsp;&nbsp;</label>
+  	<input type="password" [(ngModel)]="password" id="password" class="textcolor" style="width: 338px"><br><hr>
+  	<p><b>Seed Words/Mnenomic(leave a space between each word)</b><span style="color: red">*</span></p>
+	<textarea placeholder=" Enter Seed Words/Mnenomic" [(ngModel)]="mnenomics" class="textcolor" id="mnenomics"></textarea>	<br><hr>
+	<label for="Secret"><b>Secret Key :</b></label> &nbsp;
+	<input type="password" [(ngModel)]="secret" id="secret" class="textcolor" style="width: 342px"><br><hr>
 </div>
 <div class="modal-footer">
     <button class="btn btn-secondary" (click)="onNoClick()">Cancel</button>
