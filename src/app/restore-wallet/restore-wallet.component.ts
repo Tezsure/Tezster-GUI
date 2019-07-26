@@ -28,7 +28,7 @@ export class RestoreWalletComponent implements OnInit {
 
   onClick(): void {
 
-    this.cred=this.email+this.password;  //elbow advance genius castle rather nerve art citizen design document juice more century gorilla pair', 'kuidbbms.jhkpkhfg@tezos.example.orgvyIxvZml6w  
+    this.cred=this.email+this.password;  
     this.keys=eztz.crypto.generateKeys(this.mnenomics, this.cred); 
     this.account=this.keys.pkh;            
     this._AppService.addAccount(
@@ -38,7 +38,10 @@ export class RestoreWalletComponent implements OnInit {
             "identity": "bootstrap6"
           }
         );      
-    this.credD={"pkh":this.keys.pkh,"sk":this.keys.sk,"pk":this.keys.pk, type : "encrypted"};    
+    this.credD={"pkh":this.keys.pkh,"sk":this.keys.sk,"pk":this.keys.pk, type : "encrypted"};  
+    eztz.rpc.activate(this.keys.pkh, this.keys.sk).then(function(d){
+      console.log(d);
+    });  
     this.modalService.closeModal('restore'); 
     this.router.navigate(['/accounts']);   
   }

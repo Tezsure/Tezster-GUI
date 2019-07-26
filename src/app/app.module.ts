@@ -23,6 +23,7 @@ import { ValidateWalletComponent } from './validate-wallet/validate-wallet.compo
 import { SelectDropDownModule } from 'ngx-select-dropdown';
 import { BlankDataComponent } from './blank-data/blank-data.component';
 import { SendtransactionComponent } from './sendtransaction/sendtransaction.component';
+import { TransferPreviewComponent } from './transfer-preview/transfer-preview.component';
 
 
 @NgModule({
@@ -41,9 +42,10 @@ import { SendtransactionComponent } from './sendtransaction/sendtransaction.comp
     TransactionComponent,
     ValidateWalletComponent,
     BlankDataComponent,
-    SendtransactionComponent    
+    SendtransactionComponent,
+    TransferPreviewComponent    
   ],
-  entryComponents: [LocalnodeComponent, CreateWalletComponent, RestoreWalletComponent, AlphanetComponent,ValidateWalletComponent,BlankDataComponent,SendtransactionComponent],
+  entryComponents: [LocalnodeComponent, CreateWalletComponent, RestoreWalletComponent, AlphanetComponent,ValidateWalletComponent,BlankDataComponent,SendtransactionComponent,TransferPreviewComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

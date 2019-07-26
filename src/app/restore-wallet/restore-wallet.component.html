@@ -15,5 +15,5 @@
 </div>
 <div class="modal-footer">
     <button class="btn btn-secondary" (click)="onNoClick()">Cancel</button>
-    <button  (click)="onClick()" class="btn btn-success" [disabled]="!mnenomics">Restore Wallet</button>
+    <button  (click)="onClick()" class="btn btn-success" [disabled]="!mnenomics || !password">Restore Wallet</button>
 </div>

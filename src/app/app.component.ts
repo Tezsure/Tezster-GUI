@@ -16,7 +16,13 @@ export class AppComponent implements OnInit {
     constructor(public _AppService: AppService) { }
 
     ngOnInit(): void {            
-        this._AppService.fetchConfigData();             
+        this._AppService.fetchConfigData();
+        this._AppService.configDataChangeObs$
+      .subscribe(data => {
+        if (data) {
+          this.configData = data;          
+        }
+      });                    
     }
 
 }

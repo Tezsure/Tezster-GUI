@@ -5,13 +5,20 @@
     </button>
   </div>
   <div class="modal-body">  
-      <div id="walletDropdown"><span id="text">From wallet</span>
-        <select [(ngModel)]="accountpkh" (change)="selected()" >
+      <div id="walletDropdown"><span id="text"><b>From : </b></span>
+        <select [(ngModel)]="accountpkh" (change)="selected()" class="textcolor" >
             <option *ngFor="let account of configData.accounts" [ngValue]="account.pkh">{{account.pkh}}</option>
-        </select><br> <span id="balance"> Available Tezos- {{balance}}</span>
+        </select>
       </div>
+      <hr>
+      <label for="To"><b>To : </b></label>&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;
+      <input type="text" [(ngModel)]="to" id="to" class="textcolor" style="width: 363px"><br><hr>
+      <label for="guess"><b>Amount:</b></label> &nbsp;
+  	  <input type="text" [(ngModel)]="amount" id="amount" class="textcolor" style="width: 351px"><br><hr>
+	    <label for="guess"><b>Guess price:</b></label> &nbsp;
+  	  <input type="text" [(ngModel)]="guess" id="guess" class="textcolor" style="width: 321px"><br><hr>
   </div>
   <div class="modal-footer">  
       <button class="btn btn-secondary"  (click)="onNoClick()">Cancel</button>  
-      <button  (click)="onClick()" class="btn btn-success">Pay Amount</button>
+      <button  (click)="onClick()" class="btn btn-success" [disabled]="!to || !amount">Pay Amount</button>
   </div>

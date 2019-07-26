@@ -87,12 +87,23 @@ export class AppService {
    public getBalance(keys: string) {          
         return new Promise((resolve, reject) => {
             eztz.rpc.getBalance(keys).then( (res: number) => {
-                this.amount=(res / 1000000).toFixed(3) + ' Tz';
+                this.amount=(res / 1000000).toFixed(3) + ' Tz';                
                 resolve(this.amount);
-            }).catch( (e: any) => {
-                console.log(e);
+            }).catch( (e: any) => {                
                 reject(e);
             });
+        });
+    }
+
+    public transferAmount(data:any){        
+        return new Promise((resolve, reject) => {
+            eztz.rpc.transfer(data.from, "main", data.to, data.amount, data.guess).then(function(r: { hash: string; }){
+                console.log("success");
+                resolve("Transfer complete - operation hash #" + r.hash);
+              }).catch(function(e: any){
+                  console.log(e);
+                reject(e);
+              });           
         });
     }
 }
