@@ -15,6 +15,7 @@ export class TransactionComponent implements OnInit {
   public transactionData=[]; 
   public txs = [];
   public totalTransaction: any;
+  public operValue: any;
 
   constructor(private _AppService:AppService, private modalService: ModalService) { }
   accountpkh: any; 
@@ -39,12 +40,16 @@ export class TransactionComponent implements OnInit {
           if(this.transactionData.length > 0){            
             for(var trans of this.transactionData){
               for(var oper of trans.type.operations){
-                if(oper.kind !='transaction' || oper.failed) continue;
+                //if(oper.failed) this.operValue=0;
+                if(oper.kind !='transaction' ) continue;
                 var fee=oper.fee;
                 var amount=oper.amount;
                 var status="Sent";
                 if(oper.src.tz !=this.accountpkh){
                     status="Received";
+                }
+                if(oper.failed){
+                  status="Transaction Failed";
                 }
                 this.txs.push({
                   "amount" : (amount/1000000).toFixed(3)+" Tz",
