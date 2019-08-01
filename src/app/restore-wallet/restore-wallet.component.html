@@ -5,7 +5,7 @@
     </button>  
 </div>
 <div class="modal-body">
-  	<h6>Node provider is connected : {{configData.provider}}</h6><br>
+  	<h6>Node provider is connected : {{configData.provider}}</h6><p>For Alphanet Account Email+password+Secret Key is required<br>click on Activate alphanet account</p><hr>
   	<label for="email"  ><b>Email ID :</b></label>&nbsp;&nbsp; &nbsp; &nbsp;
   	<input type="text" [(ngModel)]="email" id="email" class="textcolor" style="width: 340px"><br><hr>
   	<label for="pass"><b>Password : </b><span style="color: red">*</span>&nbsp;&nbsp;</label>
@@ -13,9 +13,11 @@
   	<p><b>Seed Words/Mnenomic(leave a space between each word)</b><span style="color: red">*</span></p>
 	<textarea placeholder=" Enter Seed Words/Mnenomic" [(ngModel)]="mnenomics" class="textcolor" id="mnenomics"></textarea>	<br><hr>
 	<label for="Secret"><b>Secret Key :</b></label> &nbsp;
-	<input type="password" [(ngModel)]="secret" id="secret" class="textcolor" style="width: 342px"><br><hr>
+	<input type="password" [(ngModel)]="secret" id="secret" class="textcolor" style="width: 342px"><br>
+	<hr>
 </div>
 <div class="modal-footer">
+	<button class="btn btn-secondary" (click)="activateAlphanet()" [disabled]="configData.provider != 'http://alphanet-node.tzscan.io' || !mnenomics || !password || !secret ">Activate Alphanet account</button>
     <button class="btn btn-secondary" (click)="onNoClick()">Cancel</button>
-    <button  (click)="onClick()" class="btn btn-success" [disabled]="!mnenomics || !password">Restore Wallet</button>
+    <button  (click)="onClick()" class="btn btn-success" [disabled]="!mnenomics || !password || configData.provider == 'http://alphanet-node.tzscan.io'" >Restore Wallet without Alphanet</button>
 </div>

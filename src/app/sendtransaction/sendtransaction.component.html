@@ -9,8 +9,7 @@
         <select [(ngModel)]="accountpkh" (change)="selected()" class="textcolor" >
             <option *ngFor="let account of configData.accounts" [ngValue]="account.pkh">{{account.pkh}}</option>
         </select>
-      </div>
-      <hr>
+      </div>     
       <label for="To"><b>To : </b></label>&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;
       <input type="text" [(ngModel)]="to" id="to" class="textcolor" style="width: 363px"><br><hr>
       <label for="guess"><b>Amount:</b></label> &nbsp;

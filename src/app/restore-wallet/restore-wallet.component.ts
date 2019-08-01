@@ -12,6 +12,7 @@ declare var eztz: any;
 })
 export class RestoreWalletComponent implements OnInit {
   public configData=[];
+  public data: string;
   public mnenomics: any;
   public password: any;
   public email: any;  
@@ -28,25 +29,38 @@ export class RestoreWalletComponent implements OnInit {
   }
 
   onClick(): void {
-
     this.cred=this.email+this.password;  
     this.keys=eztz.crypto.generateKeys(this.mnenomics, this.cred); 
     this.account=this.keys.pkh;            
     this._AppService.addAccount(
           {
-            "label": "bootstrap_6",
+            "label": "bootstrap_6_localnode",
             "pkh": this.account,
             "identity": "bootstrap6"
           }
-        );      
-    this.credD={"pkh":this.keys.pkh,"sk":this.keys.sk,"pk":this.keys.pk, type : "encrypted"};  
-    eztz.rpc.activate(this.keys.pkh, this.secret).then(function(d){
-      console.log(d);
-    });  
+        );     
+	
     this.modalService.closeModal('restore'); 
     this.router.navigate(['/accounts']);   
   }
-
+  activateAlphanet(): void{	 
+	this.cred=this.email+this.password;  
+    this.keys=eztz.crypto.generateKeys(this.mnenomics, this.cred); 
+	this.account=this.keys.pkh;    
+	eztz.rpc.activate(this.keys.pkh, this.secret).then(function(d){		
+		console.log(d);
+	});          
+    this._AppService.addAccount(
+          {
+            "label": "bootstrap_6_Alphanet",
+            "pkh": this.account,
+            "identity": "bootstrap6_alphanet"
+          }
+        );     
+	
+    this.modalService.closeModal('restore'); 
+    this.router.navigate(['/accounts']);   
+  }
   ngOnInit() { 
     
     this._AppService.configDataChangeObs$

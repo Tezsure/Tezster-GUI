@@ -32,9 +32,9 @@ export class ValidateWalletComponent implements OnInit {
   		this.account=this.keys.pkh;         
   		this._AppService.addAccount(
 			{
-		  		"label": "bootstrap_7",
+		  		"label": "bootstrap_7_localNode",
 		  		"pkh": this.account,
-				"identity": "bootstrap7"
+				"identity": "bootstrap7_localNode"
 			}
 	  	);      
   		this.credD={"pkh":this.keys.pkh,"sk":this.keys.sk,"pk":this.keys.pk , type : "encrypted"};

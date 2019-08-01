@@ -13,7 +13,7 @@ declare var eztz: any;
     styleUrls: ['./create-wallet.component.css']
 })
 export class CreateWalletComponent implements OnInit {
-
+    public configData=[];
     public mnemonics: any;
     public showSeed='';
     public mm: any;
@@ -32,6 +32,12 @@ export class CreateWalletComponent implements OnInit {
   	} 
   
   	ngOnInit() {
+        this._AppService.configDataChangeObs$
+        .subscribe(data => {       
+          if (data) {
+           this.configData = data;  
+         }
+       });
     	this.newMnemonic();
   	}
 
