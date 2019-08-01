@@ -16,7 +16,8 @@ export class TransferPreviewComponent implements OnInit {
   onNoClick(): void {     
     this.modalService.closeModal('transfer');
   }
-   async onClick(){   
+   async onClick(){
+     console.log("send tezos Data ", this.data); 
    this.result=await this._AppService.transferAmount(this.data);
    setTimeout(()=>{
       console.log(this.result);

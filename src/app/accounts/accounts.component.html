@@ -1,4 +1,10 @@
-<table id="customers" *ngIf="configData && configData.accounts">
+<div class="main">          
+    	       
+			  <button  class="btn  btn-md custom" style="float: right; margin-top: 1%;" (click)="create()">Create Account</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			  <button  class="btn  btn-md custom" style="float: right;margin-top: 1%;margin-right: 12px;" (click)="restore()">Restore Account</button>
+  
+
+	<table id="customers" *ngIf="configData && configData.accounts">
         <tr>
           <th>Account Label</th>
           <th>Account Address</th>
@@ -15,4 +21,5 @@
           <td>0</td>
           <td>{{acc.sec}}</td>
         </tr>
-      </table>
+    </table>
+</div>

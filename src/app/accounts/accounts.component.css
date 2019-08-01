@@ -2,25 +2,33 @@
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     width: 100%;
-    margin-top: 8%;  
+    margin-top: 3%;  
   }
   
-  #customers td,#customers th{
-    border: 1px solid #ddd;
-    padding: 20px;
+  #customers td,#customers th{    
+    padding: 35px;
     text-align: center;
   }
-  #customers tr:nth-child(even){background-color: #f2f2f2;}
-  
-  #customers tr:hover {background-color: #ddd;}
+  #customers tr:nth-child(even){background-color: #f2f2f2;}  
+
 
   #customers th {
     padding-top: 12px;    
     padding-bottom: 12px;
-    text-align: center;
-    background-color: #00C68E;
-    color: white;
+    text-align: center;   
+    color:#00C68E;;
   }
-  
  
+  .custom {background-color: #00C68E;color:white;border-radius: 10px;}
+  .custom:hover,
+  .custom:focus {
+    /* background-color: white; */
+    border: none;
+    /* color: #03B898; */
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;    
+    font-size: 16px;
+    border-radius: 26px;    
+}
 
