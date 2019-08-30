@@ -11,7 +11,7 @@ declare var eztz: any;
 export class AppService {
     private _url: string = '/assets/config.json';
     private _transactionURL: string;
-
+    public keys: any;
     protected _configData: any;
     protected _transactionData: any;
     public amount: any;
@@ -19,7 +19,8 @@ export class AppService {
     public data='';
     public obj: any;   
     private maxTxs=20; 
-    public transactionDataChangeObs$: BehaviorSubject<any>;
+    public trans: any;
+    public transactionDataChangeObs$: BehaviorSubject<any>;        
     constructor(private http: HttpClient) {
         this.configDataChangeObs$ = new BehaviorSubject<any>(null);        
     }
@@ -95,15 +96,15 @@ export class AppService {
         });
     }
 
-    public transferAmount(data:any){        
+    public transferAmount(data:any){               
         return new Promise((resolve, reject) => {
-            eztz.rpc.transfer(data.from, "main", data.to, data.amount, data.guess).then(function(r: { hash: string; }){
-                console.log("success");
-                resolve("Transfer complete - operation hash #" + r.hash);
-              }).catch(function(e: any){
-                  console.log(e);
+            this.keys=JSON.parse(localStorage.getItem("keys"));                                                                 
+            eztz.rpc.transfer(data.from, this.keys, data.to, data.amount,1400).then(function(r: { hash: any; }){                                                                                  
+                resolve(r.hash);                
+              }).catch(function(e: any){                  
                 reject(e);
               });           
         });
-    }
+    }    
 }
+
