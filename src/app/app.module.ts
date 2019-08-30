@@ -27,36 +27,45 @@ import { TransferPreviewComponent } from './transfer-preview/transfer-preview.co
 
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HeaderComponent,
-    AlphanetComponent,
-    WalletComponent,
-    LocalnodeComponent,
-    CreateWalletComponent,
-    RestoreWalletComponent,
-    BlocksComponent,
-    ContractsComponent,
-    EventsComponent,
-    AccountsComponent,
-    TransactionComponent,
-    ValidateWalletComponent,
-    BlankDataComponent,
-    SendtransactionComponent,
-    TransferPreviewComponent    
-  ],
-  entryComponents: [LocalnodeComponent, CreateWalletComponent, RestoreWalletComponent, AlphanetComponent,ValidateWalletComponent,BlankDataComponent,SendtransactionComponent,TransferPreviewComponent],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    FormsModule,
-    ModalModule.forRoot(),
-    FontAwesomeModule,
-    SelectDropDownModule
-  ],
-  providers: [AppService],
-  bootstrap: [AppComponent]
+	declarations: [
+		AppComponent,
+		HeaderComponent,
+		AlphanetComponent,
+		WalletComponent,
+		LocalnodeComponent,
+		CreateWalletComponent,
+		RestoreWalletComponent,
+		BlocksComponent,
+		ContractsComponent,
+		EventsComponent,
+		AccountsComponent,
+		TransactionComponent,
+		ValidateWalletComponent,
+		BlankDataComponent,
+		SendtransactionComponent,
+		TransferPreviewComponent    
+	],
+  	entryComponents: [
+		LocalnodeComponent,
+		CreateWalletComponent,
+		RestoreWalletComponent,
+		AlphanetComponent,
+		ValidateWalletComponent,
+		BlankDataComponent,
+		SendtransactionComponent,
+		TransferPreviewComponent
+	],
+	imports: [
+		BrowserModule,
+		AppRoutingModule,
+		HttpClientModule,
+		BrowserAnimationsModule,
+		FormsModule,
+		ModalModule.forRoot(),
+		FontAwesomeModule,
+		SelectDropDownModule
+	],
+	providers: [AppService],
+	bootstrap: [AppComponent]
 })
 export class AppModule { }
