@@ -1,18 +1,29 @@
-<div class="modal-header">
-  <h4 class="modal-title pull-left">Transaction Data Preview</h4>
-  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
-    <span aria-hidden="true">&times;</span>
-  </button>
+<div class="modal-header" style="font-family: 'Century gothic pro regular'">
+	<h4 class="modal-title pull-left">Transaction Data Preview</h4>
+	<button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()"> <span aria-hidden="true">&times;</span>
+	</button>
 </div>
-<div class="modal-body">   
-  <table id='transactionDatapreview'>
-    <tr><td>From Address: </td><td>{{data.from}}</td></tr>
-    <tr><td>To Address: </td><td>{{data.to}}</td></tr>
-    <tr><td>Amount: </td><td>{{data.amount}}</td></tr>
-    <tr><td>Guess Price:</td><td>{{data.guess}}</td></tr>   
-  </table>
+<div class="modal-body" style="font-family: 'Century gothic pro regular'">
+	<table id='transactionDatapreview'>
+		<tr>
+			<td class="head">From Address:</td>
+			<td>{{data.from}}</td>
+		</tr>
+		<tr>
+			<td class="head">To Address:</td>
+			<td>{{data.to}}</td>
+		</tr>
+		<tr>
+			<td class="head">Amount:</td>
+			<td>{{data.amount}}</td>
+		</tr>
+		<tr>
+			<td class="head">GAS Price:</td>
+			<td>{{data.guess}}</td>
+		</tr>
+	</table>
 </div>
-<div class="modal-footer">  
-    <button class="btn btn-secondary"  (click)="onNoClick()">Cancel</button>  
-    <button  (click)="onClick()" class="btn btn-success">Send Tezos</button>
+<div class="modal-footer" style="font-family: 'Century gothic pro regular'">
+	<button class="btn btn-secondary" (click)="onNoClick()">Cancel</button>
+	<button (click)="onClick()" class="btn btn-success">Send Tezos</button>
 </div>
