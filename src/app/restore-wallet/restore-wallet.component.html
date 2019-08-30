@@ -1,23 +1,41 @@
-<div class="modal-header">
-    <h4 class="modal-title pull-left">Restore Wallet </h4>  
-    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
-        <span aria-hidden="true">&times;</span>
-    </button>  
+<div class="modal-header" style="font-family: 'Century gothic pro regular'">
+	<h4 class="modal-title pull-left">Restore Wallet </h4> 
+	<button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()"> <span aria-hidden="true">&times;</span>
+	</button>
 </div>
-<div class="modal-body">
-  	<h6>Node provider is connected : {{configData.provider}}</h6><p>For Alphanet Account Email+password+Secret Key is required<br>click on Activate alphanet account</p><hr>
-  	<label for="email"  ><b>Email ID :</b></label>&nbsp;&nbsp; &nbsp; &nbsp;
-  	<input type="text" [(ngModel)]="email" id="email" class="textcolor" style="width: 340px"><br><hr>
-  	<label for="pass"><b>Password : </b><span style="color: red">*</span>&nbsp;&nbsp;</label>
-  	<input type="password" [(ngModel)]="password" id="password" class="textcolor" style="width: 338px"><br><hr>
-  	<p><b>Seed Words/Mnenomic(leave a space between each word)</b><span style="color: red">*</span></p>
-	<textarea placeholder=" Enter Seed Words/Mnenomic" [(ngModel)]="mnenomics" class="textcolor" id="mnenomics"></textarea>	<br><hr>
-	<label for="Secret"><b>Secret Key :</b></label> &nbsp;
-	<input type="password" [(ngModel)]="secret" id="secret" class="textcolor" style="width: 342px"><br>
+<div class="modal-body" style="font-family: 'Century gothic pro regular'">
+	<h6>Node provider is connected : {{configData.provider}}</h6>
+	<div>For Alphanet Account Email+password+Secret Key is required
+		<br>click on Activate alphanet account</div>
+	<hr>
+	<label for="email"><b>Email ID :</b>
+	</label>
+	<input type="text" [(ngModel)]="email" id="email" class="textcolor" style="width: 330px">
+	<br>
+	<hr>
+	<label for="pass"><b>Password : </b>
+	</label>
+	<!-- <span style="color: red">*</span> -->
+	<input type="password" [(ngModel)]="password" id="password" class="textcolor" style="width: 330px">
+	<br>
+	<hr>
+	<p><b>Seed Words/Mnenomics</b>(leave a space between each word)</p>
+	<textarea placeholder=" Enter Seed Words/Mnenomic" [(ngModel)]="mnenomics" class="textcolor" id="mnenomics"></textarea>
+	<br>
+	<hr>
+	<label for="Secret"><b>Secret Key :</b>
+	</label>
+	<input type="password" [(ngModel)]="secret" id="secret" class="textcolor" style="width: 330px">
+	<br>
+	<hr>
+	<label for="label"><b>Acc. Label : </b>
+	</label>
+	<input type="text" [(ngModel)]="label" id="label" class="textcolor" style="width: 330px;">
+	<br>
 	<hr>
 </div>
-<div class="modal-footer">
-	<button class="btn btn-secondary" (click)="activateAlphanet()" [disabled]="configData.provider != 'http://alphanet-node.tzscan.io' || !mnenomics || !password || !secret ">Activate Alphanet account</button>
-    <button class="btn btn-secondary" (click)="onNoClick()">Cancel</button>
-    <button  (click)="onClick()" class="btn btn-success" [disabled]="!mnenomics || !password || configData.provider == 'http://alphanet-node.tzscan.io'" >Restore Wallet without Alphanet</button>
+<div class="modal-footer" style="font-family: 'Century gothic pro regular'">
+	<button class="btn btn-secondary btn-danger" (click)="activateAlphanet()" [disabled]="configData.provider != 'http://alphanet-node.tzscan.io' || !mnenomics || !password || !secret || !email ">Activate Alphanet account</button>
+	<button class="btn btn-secondary btn-default" id="btn" (click)="onNoClick()">Cancel</button>
+	<button (click)="onClick()" class="btn btn-success" [disabled]="!mnenomics || !password || configData.provider == 'http://alphanet-node.tzscan.io'">Restore Wallet LocalNode</button>
 </div>

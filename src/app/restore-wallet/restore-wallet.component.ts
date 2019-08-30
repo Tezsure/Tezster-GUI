@@ -6,69 +6,74 @@ import { Router } from '@angular/router';
 declare var eztz: any;
 
 @Component({
-  selector: 'app-restore-wallet',
-  templateUrl: './restore-wallet.component.html',
-  styleUrls: ['./restore-wallet.component.css']
+    selector: 'app-restore-wallet',
+    templateUrl: './restore-wallet.component.html',
+    styleUrls: ['./restore-wallet.component.css']
 })
 export class RestoreWalletComponent implements OnInit {
-  public configData=[];
-  public data: string;
-  public mnenomics: any;
-  public password: any;
-  public email: any;  
-  public cred:string;
-  public keys: { pkh: string; sk: any; pk: any; };
-  public account: string;
-  public secret: any;
-  credD: { "pkh": any; "sk": any; "pk": any; type: any };
-  constructor(public bsModalRef: BsModalRef, private _AppService:AppService, private modalService: ModalService,private router: Router ) { }
-  
+    public configData=[];
+    public data: string;
+    public mnenomics: any;
+    public password: any;
+    public email: any;  
+    public cred:string;
+    public keys: { pkh: string; sk: any; pk: any; };
+    public account: string;
+    public secret: any;
+    credD: { "pkh": any; "sk": any; "pk": any; label: any };
+    public obj;	
+    public label;
+    constructor(public bsModalRef: BsModalRef, private _AppService:AppService, private modalService: ModalService,private router: Router ) { }
+    
   
   onNoClick(): void {     
-    this.modalService.closeModal('restore');
+      this.modalService.closeModal('restore');
   }
 
   onClick(): void {
-    this.cred=this.email+this.password;  
-    this.keys=eztz.crypto.generateKeys(this.mnenomics, this.cred); 
-    this.account=this.keys.pkh;            
-    this._AppService.addAccount(
+      this.cred=this.email+this.password;  
+      this.keys=eztz.crypto.generateKeys(this.mnenomics, this.cred); 
+      this.account=this.keys.pkh;            
+      this._AppService.addAccount(
           {
-            "label": "bootstrap_6_localnode",
-            "pkh": this.account,
-            "identity": "bootstrap6"
+              "label": this.label,
+              "pkh": this.account,
+              "identity": this.label
           }
-        );     
-	
-    this.modalService.closeModal('restore'); 
-    this.router.navigate(['/accounts']);   
+      );     
+      this.credD={"pkh":this.keys.pkh,"sk":this.keys.sk,"pk":this.keys.pk ,"label":this.label};		
+      this.obj=JSON.parse(this._AppService.getLocalConfigData());
+      this.obj.identities.push(this.credD);
+      this._AppService.setLocalConfigData(this.obj);
+      this.modalService.closeModal('restore'); 
+      this.router.navigate(['/accounts']);   
   }
   activateAlphanet(): void{	 
-	this.cred=this.email+this.password;  
-    this.keys=eztz.crypto.generateKeys(this.mnenomics, this.cred); 
-	this.account=this.keys.pkh;    
-	eztz.rpc.activate(this.keys.pkh, this.secret).then(function(d){		
-		console.log(d);
-	});          
-    this._AppService.addAccount(
-          {
-            "label": "bootstrap_6_Alphanet",
-            "pkh": this.account,
-            "identity": "bootstrap6_alphanet"
-          }
-        );     
-	
-    this.modalService.closeModal('restore'); 
-    this.router.navigate(['/accounts']);   
+      this.cred=this.email+this.password;  
+      this.keys=eztz.crypto.generateKeys(this.mnenomics, this.cred); 
+      this.account=this.keys.pkh;	          
+      this._AppService.addAccount(
+            {
+              "label": this.label,
+              "pkh": this.account,
+              "identity": this.label
+            }
+      );           
+      this.credD={"pkh":this.keys.pkh,"sk":this.keys.sk,"pk":this.keys.pk ,"label":this.label};		
+      this.obj=JSON.parse(this._AppService.getLocalConfigData());
+      this.obj.identities.push(this.credD);
+      this._AppService.setLocalConfigData(this.obj);
+      this.modalService.closeModal('restore'); 
+      this.router.navigate(['/accounts']);   
   }
   ngOnInit() { 
     
-    this._AppService.configDataChangeObs$
-     .subscribe(data => {       
-       if (data) {
-        this.configData = data;  
-      }
-    });
+      this._AppService.configDataChangeObs$
+      .subscribe(data => {       
+          if (data) {
+              this.configData = data;  
+          }
+      });
   }
 
 }
