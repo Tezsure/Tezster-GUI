@@ -7,36 +7,34 @@ import { ModalService } from '../modal.service';
 declare var eztz: any;
 
 @Component({
-  selector: 'app-localnode',
-  templateUrl: './localnode.component.html',
-  styleUrls: ['./localnode.component.css']
+	selector: 'app-localnode',
+	templateUrl: './localnode.component.html',
+	styleUrls: ['./localnode.component.css']
 })
 export class LocalnodeComponent implements OnInit {
-  public configData=[];
-  public userData: string;
+	public configData=[];
+	public userData: string;
 
 
-  constructor(public bsModalRef: BsModalRef, private _AppService:AppService, private modalService: ModalService ) { }
+  	constructor(public bsModalRef: BsModalRef, private _AppService:AppService, private modalService: ModalService ) { }
 
     onNoClick(): void {     
-      this.modalService.closeModal('localnode');
+      	this.modalService.closeModal('localnode');
     }
 
     onClick(): void {           
-      this._AppService.setProviderData(this.userData);
-      eztz.node.setProvider(this.userData);       
-      this.modalService.closeModal('localnode');
+		this._AppService.setProviderData(this.userData);
+		eztz.node.setProvider(this.userData);       
+		this.modalService.closeModal('localnode');
     }
     ngOnInit() {
       
-      this._AppService.configDataChangeObs$
-       .subscribe(data => {       
-         if (data) {
-          this.configData = data;  
-          }
-        });    
-      
-     
-  }
+      	this._AppService.configDataChangeObs$
+       		.subscribe(data => {       
+         		if (data) {
+          			this.configData = data;  
+          		}
+        });       
+    }
 
 }
