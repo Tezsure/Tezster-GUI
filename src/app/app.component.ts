@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { AppService } from './app.service';
 declare var eztz: any;
 
-
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
@@ -12,17 +11,17 @@ export class AppComponent implements OnInit {
 
     public configData=[];    
     title = 'Tezsure';    
-    obj: any;
     constructor(public _AppService: AppService) { }
 
-    ngOnInit(): void {            
+    ngOnInit(): void {
+		                
         this._AppService.fetchConfigData();
         this._AppService.configDataChangeObs$
-      .subscribe(data => {
-        if (data) {
-          this.configData = data;          
-        }
-      });                    
+      		.subscribe(data => {
+        		if (data) {
+          			this.configData = data;          
+        		}
+      	});                    
     }
 
 }
