@@ -1,5 +1,5 @@
 #customers {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-family: "Century Gothic","Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     width: 100%;
     margin-top: 3%;  
@@ -16,19 +16,19 @@
     padding-top: 12px;    
     padding-bottom: 12px;
     text-align: center;   
-    color:#00C68E;;
+    color:#00C68E;
   }
  
-  .custom {background-color: #00C68E;color:white;border-radius: 10px;}
+  .custom {background-color: #00C68E;color:white;border-radius: 5px;}
   .custom:hover,
   .custom:focus {
-    /* background-color: white; */
+    background-color: white;
     border: none;
-    /* color: #03B898; */
+    color: #03B898;
     padding: 10px;
     text-align: center;
     text-decoration: none;    
     font-size: 16px;
-    border-radius: 26px;    
+    border-radius: 5px;    
 }
 
