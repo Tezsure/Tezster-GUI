@@ -105,6 +105,9 @@ export class AppService {
                 reject(e);
               });           
         });
+    }
+    public deployContract(keys:any,contract:any,label:any,init:any,tezosProvider:any){        
+
     }    
 }
 
