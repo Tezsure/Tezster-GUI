@@ -35,7 +35,7 @@
 	<hr>
 </div>
 <div class="modal-footer" style="font-family: 'Century gothic pro regular'">
-	<button class="btn btn-secondary btn-danger" (click)="activateAlphanet()" [disabled]="configData.provider != 'http://alphanet-node.tzscan.io' || !mnenomics || !password || !secret || !email ">Activate Alphanet account</button>
+	<button class="btn btn-secondary btn-danger" (click)="activateAlphanet()" [disabled]="configData.provider != 'http://alphanet-node.tzscan.io' || !mnenomics || !password || !secret || !email || !label ">Activate Alphanet account</button>
 	<button class="btn btn-secondary btn-default" id="btn" (click)="onNoClick()">Cancel</button>
 	<button (click)="onClick()" class="btn btn-success" [disabled]="!mnenomics || !password || configData.provider == 'http://alphanet-node.tzscan.io'">Restore Wallet LocalNode</button>
 </div>
