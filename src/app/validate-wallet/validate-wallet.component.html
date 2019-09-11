@@ -1,0 +1,35 @@
+<div class="modal-header" style="font-family: 'Century gothic pro regular'">
+	<h4 class="modal-title pull-left">Validate Wallet</h4>
+	<button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">	<span aria-hidden="true">&times;</span>
+	</button>
+</div>
+<div class="modal-body" style="font-family: 'Century gothic pro regular'">
+	<h6>Node provider is connected : {{configData.provider}}</h6>
+	<br>
+	<p>Seed Words/Mnenomic (leave a space between each word) <span style="color: red">*</span>
+	</p>
+	<textarea placeholder=" Enter Seed Words/Mnenomic" [(ngModel)]="mnenomics" class="textcolor" id="mnenomics"></textarea>
+	<br>
+	<hr>
+	<label for="optional">Optional Key:</label>
+	<input type="text" [(ngModel)]="optionalpass" id="optionalpass" class="textcolor" style="width: 300px;">
+	<br>
+	<hr>
+	<label for="email">Email-ID:</label>
+	<input type="text" [(ngModel)]="email" id="email" class="textcolor" style="width: 300px;">
+	<br>
+	<hr>
+	<label for="pass">Password : <span style="color: red">*</span>
+	</label>
+	<input type="password" [(ngModel)]="password" id="password" class="textcolor" style="width: 300px;">
+	<br>
+	<hr>
+	<label for="label">Account Label:</label>
+	<input type="text" [(ngModel)]="label" id="label" class="textcolor" style="width: 300px;">
+	<br>
+	<hr>
+</div>
+<div class="modal-footer" style="font-family: 'Century gothic pro regular'">
+	<button class="btn btn-secondary" (click)="onNoClick()">Cancel</button>
+	<button (click)="onClick()" class="btn btn-success" [disabled]="!mnenomics || !password">Create Wallet</button>
+</div>

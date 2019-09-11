@@ -1,0 +1,26 @@
+<div id="walletDropdown" style="font-family: 'Century gothic pro regular'">
+	<h4 id="text">Select Wallet</h4>
+	<select [(ngModel)]="accountpkh" (change)="selected()">
+		<option *ngFor="let account of configData.accounts" [ngValue]="account.pkh">{{account.pkh}}</option>
+	</select>&nbsp;&nbsp;<span *ngIf="totalTransaction">No of transaction : {{totalTransaction}}</span>
+	<button class="btn btn-success" (click)="openDialogForSend()">Send Tezos</button>
+</div>
+<hr>
+<div id="transactions" style="overflow:auto; height: 600px;width: 100%;font-family: 'Century gothic pro regular'">
+	<table id='transactionData' *ngIf='transactionData.length > 0'>
+		<tr>
+			<th>From</th>
+			<th>To</th>
+			<th>amount</th>
+			<th>Time</th>
+			<th>Status</th>
+		</tr>
+		<tr *ngFor="let trans of txs">
+			<td>{{trans.source}}</td>
+			<td>{{trans.destination}}</td>
+			<td>{{trans.amount}}</td>
+			<td>{{trans.time}}</td>
+			<td>{{trans.status}}</td>
+		</tr>
+	</table>
+</div>
