@@ -1,18 +1,26 @@
 <div class="main" id="header">
-    <h2>Smart Contract Deployment</h2>    
+	<h2>Smart Contract Deployment</h2> 
 </div>
 <div id="action-button">
-        <button  class="btn  btn-md custom" id="b1" (click)="ShowContract()">Show Contract</button>
-        <button  class="btn  btn-md custom" id="b2" (click)="deployContract()">Deploy Contract</button>
-        <button  class="btn  btn-md custom" id="b3" (click)="callContract()">Call Contract</button>
-    </div>
-<div class="main">   
-    <div class="row">
-        <label for ="account"><b>Select Account<span style="color:red">*</span></b></label><select [(ngModel)]="accountpkh" (change)="selected()" class="select">        
-            <option *ngFor="let account of configData.accounts" [ngValue]="account.pkh">{{account.pkh}}</option> 
-        </select> 
-        <label for="Smart Contract File"><b>Upload smart contract<span style="color:red">*</span></b></label><input type="file" (change)="fileChange($event)" placeholder="Upload file" accept=".tz">
-        <label for="contract label"><b>Contract label<span style="color:red">*</span></b></label><input type="text" [(ngModel)]="contract" class="textcolor" style="width: 230px">
-        <label for="contract label"> <b>Contract</b>(init value)<b><span style="color:red">*</span></b></label><input type="text" [(ngModel)]="initValue" class="textcolor" style="width: 230px">      
-    </div>	
+	<button class="btn  btn-md custom" id="b1" (click)="getStorage()">Show Contract</button>
+	<button class="btn  btn-md custom" id="b2" (click)="deployContract()">Deploy Contract</button>
+	<button class="btn  btn-md custom" id="b3" (click)="callContract()">Call Contract</button>
+</div>
+<div class="main">
+	<div class="row">
+		<label for="account"><b>Select Account<span style="color:red">*</span></b>
+		</label>
+		<select [(ngModel)]="accountpkh" (change)="selected()" class="select">
+			<option *ngFor="let account of configData.accounts" [ngValue]="account.pkh">{{account.pkh}}</option>
+		</select>
+		<label for="Smart Contract File"><b>Upload smart contract<span style="color:red">*</span></b>
+		</label>
+		<input type="file" (change)="fileChange($event)" placeholder="Upload file" accept=".tz">
+		<label for="contract label"><b>Contract label<span style="color:red">*</span></b>
+		</label>
+		<input type="text" [(ngModel)]="contract" class="textcolor" style="width: 230px">
+		<label for="contract label"> <b>Contract</b>(init value)<b><span style="color:red">*</span></b>
+		</label>
+		<input type="text" [(ngModel)]="initValue" class="textcolor" style="width: 230px">
+	</div>
 </div>
