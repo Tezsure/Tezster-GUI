@@ -1,5 +1,5 @@
 <nav class="navbar navbar-light" style="background-color: #00C68E; font-family: 'Century Gothic Pro Regular'">
-  <div class="container-fluid" >
+  <div class="container-fluid" id="header" >
     <div class="navbar-header">
       <a class="navbar-brand" routerLink="/accounts" ><img width="180px" height="33px" alt="Angular Logo" src="assets/Tezsurelogowhitefull.png"></a>
     </div>
@@ -21,9 +21,9 @@
     <div class="container-fluid" id="inner-div">      
         <table id="table-data">
             <thead>
-              <th>BLOCK</th><th>GAS LIMIT</th><th>GAS PRICE</th><th>NETWORK ID</th><th style="width: 200px">RPC SERVER</th><th>PORT</th><th>STATUS</th><th><input type="text" id="search" placeholder="   Block/Accounts/Contracts...."></th>           
+              <th>BLOCK</th><th>GAS LIMIT</th><th>GAS PRICE</th><th>NETWORK ID</th><th style="width: 300px">RPC SERVER</th><th>PORT</th><th>STATUS</th><th><input type="text" id="search" placeholder="   Block/Accounts/Contracts...."></th>           
             </thead> 
-            <tbody ><th></th><th></th><th></th><th></th><th style="width: 300px" >{{configData.provider}}</th><th></th><th></th><th></th></tbody>             
+            <tbody ><th></th><th></th><th></th><th></th><th style="width: 400px" >{{configData.provider}}</th><th></th><th></th><th></th></tbody>             
           </table>      
     </div>
 
