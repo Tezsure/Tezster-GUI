@@ -6,7 +6,7 @@
 	<button class="btn btn-success" (click)="openDialogForSend()">Send Tezos</button>
 </div>
 <hr>
-<div id="transactions" style="overflow:auto; height: 600px;width: 100%;font-family: 'Century gothic pro regular'">
+<div id="transactions" *ngIf='transactionData.length > 0' style="overflow:auto; height: 600px;width: 100%;font-family: 'Century gothic pro regular'">
 	<table id='transactionData' *ngIf='transactionData.length > 0'>
 		<tr>
 			<th>From</th>

@@ -1,33 +1,32 @@
-h2,h4{
+h3,h4{
     color: #00C68E;
 }
 
 #header{
-    margin-top: 2%;
+    margin-top: .5%;
     margin-left: 33%;
     margin-right: 37%;
-    font-family: 'Century gothic pro regular';
+    font-family: "Century Gothic Pro Regular";
 }
 
 .select{
-    width: 340px;
+    width: 280px;
     margin-right: 10px;
 }
 
-label{
-    /* display: inline-block; */
-    /* width: 160px; */
+label{      
     text-align: right;
     margin-right: 10px;
-    margin-left: 10px;    
-    font: bold; 
-    padding: 2px; 
-    color: #00C68E;          
+    margin-left: 5px;
+    font: bold;
+    padding: 2px;
+    color: #00C68E;
 }
 
 .main{
-    font-family: 'Century gothic pro regular';
-    margin-top: 2%;
+    font-family: "Century Gothic Pro Regular";
+    margin-top: 1.0%;
+    line-height: 1.15;
 }
 
 .textcolor:focus {
@@ -40,30 +39,31 @@ label{
     background-color: #00C68E;
     color:white;
     border-radius: 5px;
-    margin-top: 1%;
-    padding: 10px;
-    font-family: 'Century gothic pro regular';
+    /* margin-top: 1%;
+    padding: 10px; */
+    font-family: "Century Gothic Pro Regular";
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    margin-left: 50%;
+}
+  .custom:hover,
+  .custom:focus {
+    background-color: white;
+    color: #03B898;
+    border-radius: 5px;
+    /* border: none; */
+    /* padding: 10px; */
+    font-family: "Century Gothic Pro Regular";
     font-size: 16px;
     text-align: center;
     text-decoration: none;
 }
-  .custom:hover,
-  .custom:focus {
-    background-color: white;    
-    color: #03B898;
-    border-radius: 5px;
-    border: none;    
-    padding: 10px;
-    font-family: 'Century gothic pro regular';
-    font-size: 16px;
-    text-align: center;
-    text-decoration: none;       
-}
 
 #b2,#b3{
-    margin-left: 1.5%;
+    margin-left: 2%;
 }
 
 #action-button{
-    margin-left:75%;
+    margin-left:60%;
 }

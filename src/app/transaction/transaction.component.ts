@@ -39,7 +39,7 @@ export class TransactionComponent implements OnInit {
 					this.txs=[];
 					this.totalTransaction=0;					
 					this.transactionData= JSON.parse(localStorage.getItem('transactionData'));
-					console.log("from alphanet",this.transactionData);
+					// console.log("from alphanet",this.transactionData);
 					this.totalTransaction=this.transactionData.length;                  
 					if(this.transactionData.length > 0){            
 						for(var trans of this.transactionData){
