@@ -45,7 +45,8 @@ export class RestoreWalletComponent implements OnInit {
       this.obj=JSON.parse(this._AppService.getLocalConfigData());
       this.obj.identities.push(this.credD);
       this._AppService.setLocalConfigData(this.obj);
-      this.modalService.closeModal('restore'); 
+      this.modalService.closeModal('restore');
+      alert("An account "+this.label+ " has been restored with Identity - " + this.account);
       this.router.navigate(['/accounts']);   
   }
   activateAlphanet(): void{	 

@@ -1,8 +1,8 @@
 <div class="main">
-	<button  class="btn  btn-md custom" style="float: right; margin-top: 1%;font-family: 'Century gothic pro regular'" (click)="create()">Create Account</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<button  class="btn  btn-md custom" (click)="create()">Create Account</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			  
-	<button  class="btn  btn-md custom" style="float: right;margin-top: 1%;margin-right: 12px;font-family: 'Century gothic pro regular'" (click)="restore()">Restore Account</button>
-	<table id="customers" *ngIf="configData && configData.accounts" style="font-family: 'Century gothic pro regular'">
+	<button  class="btn  btn-md custom" style="margin-right: 12px;" (click)="restore()">Restore Account</button>
+	<table id="customers" *ngIf="configData && configData.accounts">
 		<tr>
 			<th>Account Label</th>
 			<th>Account Address</th>
