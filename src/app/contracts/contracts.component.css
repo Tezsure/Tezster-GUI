@@ -38,32 +38,27 @@ label{
 .custom {
     background-color: #00C68E;
     color:white;
-    border-radius: 5px;
-    /* margin-top: 1%;
-    padding: 10px; */
+    border-radius: 5px;    
     font-family: "Century Gothic Pro Regular";
     font-size: 16px;
     text-align: center;
     text-decoration: none;
-    margin-left: 50%;
+    margin-left:65%;
+    
 }
   .custom:hover,
   .custom:focus {
     background-color: white;
     color: #03B898;
-    border-radius: 5px;
-    /* border: none; */
-    /* padding: 10px; */
+    border-radius: 5px;    
     font-family: "Century Gothic Pro Regular";
     font-size: 16px;
     text-align: center;
     text-decoration: none;
+    margin-left:65%;
 }
 
 #b2,#b3{
-    margin-left: 2%;
+    margin-left: 1.5%;
 }
 
-#action-button{
-    margin-left:60%;
-}
