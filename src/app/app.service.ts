@@ -140,26 +140,31 @@ export class AppService {
 					this.obj.contracts.push(this.contractData);
 					this.setLocalConfigData(this.obj);	
 					let res=`contract ${label} has been deployed at ${this.opHash}`;
-					console.log(res);						
+					alert(res);						
 					return res;
 				case 'failed':
 				default:
-					return ("Contract deployment has failed :" + result.results.contents[0].metadata.operation_result);
+					let res1="Contract deployment has failed :" + result.results.contents[0].metadata.operation_result;
+					alert(res1);
+					return res1;
 				}
 			}		
-			return ("Contract deployment has failed :" + result);
+			let res2="Contract deployment has failed :" + result;
+			alert(res2);
 		} catch (error) {
+			alert(error);
 			return error;
 		}
 	}
 	
 	async callContract(keys: any, label: any, init: any, tezosProvider: any, keysStore: any) {
-		let initValue = "'\'" + init + "'\'";
-		try {
-			let result = await conseiljs.TezosNodeWriter.sendContractInvocationOperation(tezosProvider, keysStore, keys, 0, 100000, '', 1000, 100000, initValue, conseiljs.TezosParameterFormat.Michelson);
-			if (result.results) {
+		let initValue = '\"' + init + '\"';	
+		try {			
+			let result = await conseiljs.TezosNodeWriter.sendContractInvocationOperation(
+				tezosProvider, keysStore, keys, 0, 100000, '', 1000, 100000, initValue, conseiljs.TezosParameterFormat.Michelson);
+			if (result.results) {					
 				switch (result.results.contents[0].metadata.operation_result.status) {
-				case 'applied':
+				case 'applied':					
 					let opHash = result.operationGroupID.slice(1, result.operationGroupID.length - 2);
 					this.transHash = {
 						"operation": "contract-call",
@@ -169,29 +174,36 @@ export class AppService {
 						"amount": 0,
 						"status": "Success",
 						"time": ""
-					};
+					};					
 					this.obj = JSON.parse(this.getLocalConfigData());					
 					this.obj.transactions.push(this.contractData);
 					this.setLocalConfigData(this.obj);
-					return ("Injected operation with hash" + opHash);
+					let res="Injected operation with hash" + opHash;
+					alert(res);
+					return res;
 				case 'failed':
 				default:
-					return ("Contract calling has failed " + result.results.contents[0].metadata.operation_result);
+					let res1="Contract calling has failed inside  " + result.results.contents[0].metadata.operation_result;
+					alert(res1);
+					return res1;
 				}
 			}
-			return ("Contract calling has failed :" + result);
+			let res2="Contract calling has failed :" + result;
+			alert(res2);
+			return res2;
 		} catch (error) {
 			return error;
 		}
 	}
 	
-	public getStorage(contractAddress) {
-		return new Promise((resolve, reject) => {
-			eztz.contract.storage(contractAddress).then(function (r: any) {
-				resolve(r);
-			}).catch(function (e: any) {
-				reject(e);
-			});
-		});
-	}
+	// async getStorage(contractAddress: any) {				
+	// 	try {
+	// 		let storage = await eztz.contract.storage(contractAddress);
+	// 		alert(storage);
+	// 		return (JSON.stringify(storage));
+	// 	  }
+	// 	  catch(error) {
+	// 		return (error);
+	// 	  }
+	// }
 }
