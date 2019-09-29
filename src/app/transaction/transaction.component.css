@@ -1,5 +1,5 @@
 #walletDropdown {
-  margin-top: 3%;
+  margin-top: 1%;
 }
 
 #text {
@@ -10,16 +10,24 @@ select {
   margin-left: 1%;
 }
 
+#transactions{
+  overflow:scroll;
+  height: 345px;
+  width: 100%;
+}
+
 #transactionData {
   font-family: "Century Gothic","Trebuchet MS", Arial, Helvetica, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-  margin-top: 2%;
+  border-collapse: collapse;  
+  margin-top: .5%;
+  width: 100%; 
+  height: 400px;  
+  
 }
 
 #transactionData td,#transactionData th {
   border: 1px solid #ddd;
-  padding: 20px;
+  padding: 15px;
   text-align: center;
 }
 
@@ -32,8 +40,8 @@ select {
 }
 
 #transactionData th {
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding-top: 15px;
+  padding-bottom: 15px;
   text-align: center;
   background-color: #00C68E;
   color: white;
@@ -43,22 +51,16 @@ select {
   border: none;
   background-color: #00C68E;
   color: white;
-  padding: 7px;
+  padding-left: 7px;
+  padding-right: 7px;
   text-align: center;
   text-decoration: none;
   font-size: 16px;
   border-radius: 5px;
-  margin-left: 60%;
+  float: right;
+  margin-right: 80px;
+  margin-bottom: 1%;
+  /* margin-left: 768px; */
+  
 }
 
-/* .btn-success:hover,
-.btn-success:focus {
-    background-color: white;
-    border: none;
-    color: #03B898;
-    padding: 10px;
-    text-align: center;
-    text-decoration: none;    
-    font-size: 16px;
-    border-radius: 26px;    
-} */

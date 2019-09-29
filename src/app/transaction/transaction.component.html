@@ -6,20 +6,20 @@
 	<button class="btn btn-success" (click)="openDialogForSend()">Send Tezos</button>
 </div>
 <hr>
-<div id="transactions" *ngIf='transactionData.length > 0' style="overflow:auto; height: 600px;width: 100%;font-family: 'Century gothic pro regular'">
+<div id="transactions" *ngIf='transactionData.length > 0'>
 	<table id='transactionData' *ngIf='transactionData.length > 0'>
 		<tr>
 			<th>From</th>
 			<th>To</th>
 			<th>amount</th>
-			<th>Time</th>
+			<th>OpHash</th>
 			<th>Status</th>
 		</tr>
 		<tr *ngFor="let trans of txs">
 			<td>{{trans.source}}</td>
 			<td>{{trans.destination}}</td>
 			<td>{{trans.amount}}</td>
-			<td>{{trans.time}}</td>
+			<td>{{trans.hash}}</td>
 			<td>{{trans.status}}</td>
 		</tr>
 	</table>
