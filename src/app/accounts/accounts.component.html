@@ -1,23 +1,24 @@
 <div class="main">
-	<button  class="btn  btn-md custom" (click)="create()">Create Account</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			  
-	<button  class="btn  btn-md custom" style="margin-right: 12px;" (click)="restore()">Restore Account</button>
-	<table id="customers" *ngIf="configData && configData.accounts">
-		<tr>
-			<th>Account Label</th>
-			<th>Account Address</th>
-			<th>Account Balance</th>
-			<th>TX Count</th>
-			<th>Index</th>
-			<th>Secret Key</th>
-		</tr>
-		<tr *ngFor="let acc of acc">
-			<td>{{acc.label}}</td>
-			<td>{{acc.address}}</td>
-			<td>{{acc.balance | async}}</td>
-			<td>0</td>
-			<td>0</td>
-			<td>COPY</td>
-		</tr>
-	</table>
+    <button  class="btn  btn-md custom" (click)="create()">Create Account</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <button  class="btn  btn-md custom" style="margin-right: 12px;" (click)="restore()">Restore Account</button>
+    <div id="accountDiv" *ngIf='configData && configData.accounts'>
+        <table id="customers" *ngIf='configData && configData.accounts'>
+            <tr>
+                <th>Account Label</th>
+                <th>Account Address</th>
+                <th>Account Balance</th>
+                <th>TX Count</th>
+                <th>Index</th>
+                <th>Secret Key</th>
+            </tr>
+            <tr *ngFor="let acc of acc">
+                <td>{{acc.label}}</td>
+                <td>{{acc.address}}</td>
+                <td>{{acc.balance | async}}</td>
+                <td>0</td>
+                <td>0</td>
+                <td>COPY</td>
+            </tr>
+        </table>
+    </div>
 </div>

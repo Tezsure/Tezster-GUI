@@ -1,66 +1,62 @@
 #walletDropdown {
-  margin-top: 1%;
+	margin-top: 1%;
 }
 
 #text {
-  margin-left: 1%;
+	margin-left: 1%;
 }
 
 select {
-  margin-left: 1%;
+	margin-left: 1%;
 }
 
-#transactions{
-  overflow:scroll;
-  height: 345px;
-  width: 100%;
+#transactions {
+	overflow: scroll;
+	height: auto;
+	width: 100%;
 }
 
 #transactionData {
-  font-family: "Century Gothic","Trebuchet MS", Arial, Helvetica, sans-serif;
-  border-collapse: collapse;  
-  margin-top: .5%;
-  width: 100%; 
-  /* height: 400px;   */
-  
+	font-family: "Century Gothic", "Trebuchet MS", Arial, Helvetica, sans-serif;
+	border-collapse: collapse;
+	margin-top: .5%;
+	width: 100%;
 }
 
-#transactionData td,#transactionData th {
-  border: 1px solid #ddd;
-  padding: 15px;
-  text-align: center;
+#transactionData td,
+#transactionData th {
+	border: 1px solid #ddd;
+	padding: 15px;
+	text-align: center;
 }
 
 #transactionData tr:nth-child(even) {
-  background-color: #f2f2f2;
+	background-color: #f2f2f2;
 }
 
 #transactionData tr:hover {
-  background-color: #ddd;
+	background-color: #ddd;
 }
 
 #transactionData th {
-  padding-top: 10px;
-  padding-bottom: 10px;
-  text-align: center;
-  background-color: #00C68E;
-  color: white;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	text-align: center;
+	background-color: #00C68E;
+	color: white;
 }
 
 .btn-success {
-  border: none;
-  background-color: #00C68E;
-  color: white;
-  padding-left: 7px;
-  padding-right: 7px;
-  text-align: center;
-  text-decoration: none;
-  font-size: 16px;
-  border-radius: 5px;
-  float: right;
-  margin-right: 80px;
-  margin-bottom: 1%;
-  /* margin-left: 768px; */
-  
+	border: none;
+	background-color: #00C68E;
+	color: white;
+	padding-left: 7px;
+	padding-right: 7px;
+	text-align: center;
+	text-decoration: none;
+	font-size: 16px;
+	border-radius: 5px;
+	float: right;
+	margin-right: 80px;
+	margin-bottom: 1%;
 }
-
