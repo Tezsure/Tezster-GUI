@@ -117,6 +117,7 @@ export class AppService {
 			}) {
 				resolve(r.hash);
 			}).catch(function (e: any) {
+				alert(e);
 				reject(e);
 			});
 		});

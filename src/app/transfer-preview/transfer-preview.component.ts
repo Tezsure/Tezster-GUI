@@ -67,10 +67,10 @@ import { Router } from '@angular/router';
 			this.obj = JSON.parse(this._AppService.getLocalConfigData());
 			this.obj.transactions.push(this.transHash);
 			this._AppService.setLocalConfigData(this.obj);
-		}
-		this.modalService.closeModal('transfer');
-		this.modalService.closeModal('Sendtransaction');
+		}		
 	}, 3000);
+	this.modalService.closeModal('transfer');
+	this.modalService.closeModal('Sendtransaction');
   }
 	ngOnInit() {
 		this.data = JSON.parse(localStorage.getItem("transfer"));
