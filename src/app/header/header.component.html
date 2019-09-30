@@ -39,7 +39,7 @@
                 <ng-template #other_content>Localnode</ng-template>
               <td style="width: 400px" >{{configData.provider}}</td>
               <td *ngIf="configData.provider=='http://alphanet-node.tzscan.io';then content1 else other_content1"></td>    
-                <ng-template #content1>alphanet</ng-template>
+                <ng-template #content1>Default port</ng-template>
                 <ng-template #other_content1>18731</ng-template>
               <td class="img__wrap"><img width="16px" height="16px" alt="running" src="assets/running.png"><p class="img__des">running</p></td>
               <td></td>
