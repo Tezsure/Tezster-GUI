@@ -1,31 +1,50 @@
 <nav class="navbar navbar-light" style="background-color: #00C68E; font-family: 'Century Gothic Pro Regular'">
   <div class="container-fluid" id="header" >
-    <div class="navbar-header">
-      <a class="navbar-brand" routerLink="/accounts" ><img width="180px" height="33px" alt="Angular Logo" src="assets/Tezsurelogowhitefull.png"></a>
-    </div>
-     <ul class="nav navbar-nav horizontal-navbar">      
-      <li style="padding-left: 0px;"><a  routerLink="/accounts">ACCOUNTS</a></li>
-      <li style="padding-left: 18px;" ><a  routerLink="/blocks">BLOCKS</a></li> 
-      <li style="padding-left: 18px;" ><a  routerLink="/transactions">TRANSACTIONS</a></li> 
-      <li style="padding-left: 18px;" ><a  routerLink="/contracts">CONTRACTS</a></li>
-      <!-- <li style="padding-left: 20px;" ><a  routerLink="/events">EVENTS</a></li> -->
-      <!-- <li style="padding-left: 20px;" ><a  routerLink="/wallet">WALLETS</a></li>                           -->
-    </ul>     
-    <ul class="nav navbar-nav navbar-right horizontal-navbar">      
-      <li style="margin-right: 20px" class="list-style"><button  class="btn btn-success"  (click)="openDialog()">LOCAL NODE</button></li>
-      <li style="margin-right: 60px;" class="list-style"><button  class="btn btn-success" (click)="alphanet()">ALPHANET</button></li>
-    </ul>      
+     <div class="navbar-header">
+        <a class="navbar-brand" routerLink="/accounts" ><img width="210px" height="50px" alt="Angular Logo" src="assets/tezster_white_logo.png"></a>
+     </div>
+     <ul class="nav navbar-nav horizontal-navbar">
+        <li style="padding-left: 0px;"><a  routerLink="/accounts">ACCOUNTS</a></li>
+        <li style="padding-left: 18px;" ><a  routerLink="/blocks">BLOCKS</a></li>
+        <li style="padding-left: 18px;" ><a  routerLink="/transactions">TRANSACTIONS</a></li>
+        <li style="padding-left: 18px;" ><a  routerLink="/contracts">CONTRACTS</a></li>
+        <!-- <li style="padding-left: 20px;" ><a  routerLink="/events">EVENTS</a></li> -->
+        <!-- <li style="padding-left: 20px;" ><a  routerLink="/wallet">WALLETS</a></li>                           -->
+     </ul>
+     <ul class="nav navbar-nav navbar-right horizontal-navbar">
+        <li style="margin-right: 20px" class="list-style"><button  class="btn btn-success"  (click)="openDialog()">LOCAL NODE</button></li>
+        <li style="margin-right: 60px;" class="list-style"><button  class="btn btn-success" (click)="alphanet()">ALPHANET</button></li>
+     </ul>
   </div>
-  <hr> 
+  <hr>
   <div class="container-fluid" id="outer-div">
-    <div class="container-fluid" id="inner-div">      
+     <div class="container-fluid" id="inner-div">
         <table id="table-data">
-            <thead>
-              <th>BLOCK</th><th>GAS LIMIT</th><th>GAS PRICE</th><th>NETWORK ID</th><th style="width: 300px">RPC SERVER</th><th>PORT</th><th>STATUS</th><th><input type="text" id="search" placeholder="   Block/Accounts/Contracts...."></th>           
-            </thead> 
-            <tbody ><th></th><th></th><th></th><th></th><th style="width: 400px" >{{configData.provider}}</th><th></th><th></th><th></th></tbody>             
-          </table>      
-    </div>
-
+           <thead>
+              <th>CHAIN ID</th>
+              <th>GAS LIMIT</th>
+              <th>GAS PRICE</th>
+              <th>NETWORK ID</th>              
+              <th style="width: 300px">RPC SERVER</th>
+              <th>PORT</th>
+              <th>STATUS</th>
+              <th><input type="text" id="search" placeholder="   Block/Accounts/Contracts...."></th>
+           </thead>
+           <tbody >
+              <td>NetXgtSLGNJvNye</td>
+              <td>10200</td>
+              <td>10200</td>
+              <td *ngIf="configData.provider=='http://alphanet-node.tzscan.io';then content else other_content"></td>    
+                <ng-template #content>Alphanet</ng-template>
+                <ng-template #other_content>Localnode</ng-template>
+              <td style="width: 400px" >{{configData.provider}}</td>
+              <td *ngIf="configData.provider=='http://alphanet-node.tzscan.io';then content1 else other_content1"></td>    
+                <ng-template #content1>alphanet</ng-template>
+                <ng-template #other_content1>18731</ng-template>
+              <td class="img__wrap"><img width="16px" height="16px" alt="running" src="assets/running.png"><p class="img__des">running</p></td>
+              <td></td>
+           </tbody>
+        </table>
+     </div>
   </div>
 </nav>
