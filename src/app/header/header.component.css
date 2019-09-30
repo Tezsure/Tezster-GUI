@@ -57,11 +57,9 @@
     background-color: white;
     height: 75px;    
     border: none;
-    color: #00C68E;
-    /* padding: 8px; */
+    color: #00C68E;    
     text-align: center;
-    text-decoration: none;
-    /* font-size: 14px; */
+    text-decoration: none;   
     border-radius: 10px;
 }
   
@@ -77,19 +75,13 @@
     margin-left: 30px;
     margin-right: 32px;
     margin-bottom: 10px;
+    font-size: 14px;
+
 }
   
-#table-data th {
-    padding-top: 0px;
-    padding-bottom: 0px;
-    text-align: center;
-    font-size: 14px;
-    color: #4A4A4A;
-    margin-left: 30px;
-    margin-right: 32px;
-    margin-bottom: 10px;
-    width: 190px;
-
+#table-data th {       
+    color: #4A4A4A;    
+    width: 185px;
 }
   
 #search {
