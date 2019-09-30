@@ -57,36 +57,31 @@
     background-color: white;
     height: 75px;    
     border: none;
-    color: #03B898;
-    /* padding: 8px; */
+    color: #00C68E;    
     text-align: center;
-    text-decoration: none;
-    /* font-size: 14px; */
+    text-decoration: none;   
     border-radius: 10px;
 }
   
 #table-data {
-    font-family: 'Century Gothic Pro Regular';
-    color: #4A4A4A;
+    font-family: 'Century Gothic Pro Regular';    
     border-collapse: collapse;
     width: 100%;
 }
   
-#table-data td,#table-data th {
-    /* padding: 10px; */
+#table-data td,#table-data th {    
     text-align: center;
-    width: 175px;
+    width: 185px;
     margin-left: 30px;
-    margin-right: 30px;
+    margin-right: 32px;
     margin-bottom: 10px;
-}
-  
-#table-data th {
-    padding-top: 0px;
-    padding-bottom: 0px;
-    text-align: center;
     font-size: 14px;
 
+}
+  
+#table-data th {       
+    color: #4A4A4A;    
+    width: 185px;
 }
   
 #search {
@@ -106,4 +101,21 @@ hr {
     background-color: #FFFFFF;
     height: 1px;
 }
-    
+  
+.img__des {
+  position: absolute; 
+  color: #03B898;
+  visibility: hidden;
+  opacity: 0;
+  top:155px;
+  left:670px;
+  right:370px;
+  bottom: 970px;
+  /* transition effect. not necessary */
+  transition: opacity .2s, visibility .2s;
+}
+
+.img__wrap:hover .img__des {
+  visibility: visible;
+  opacity: 1;
+}
