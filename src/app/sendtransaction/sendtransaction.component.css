@@ -1,0 +1,31 @@
+#walletDropdown {
+    margin-top: 3%;
+    display: inline-block;
+    width: 120px;
+    text-align: right;
+    margin-right: 10px;
+    font: bold;
+    color: #00C68E;
+  }
+  
+  #text {
+    margin-left: 1%;
+  }
+  
+  .textcolor:focus {
+    border-color: #4CAF50;
+    box-shadow: 0px 1px 1px rgb(8, 235, 167) inset, 0px 0px 8px rgba(14, 243, 64, 0.993);
+  }
+  
+  label {
+    display: inline-block;
+    width: 120px;
+    text-align: right;
+    margin-right: 10px;
+    font: bold;
+    color: #00C68E;
+  }
+  
+  h4 {
+    color: #00C68E;
+  }

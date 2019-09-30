@@ -1,0 +1,109 @@
+.btn-success {
+    border: none;
+    background-color: #00C68E;
+    color: white;
+    padding: 8px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 5px;
+    margin-top: 8px;
+  }
+  
+  .btn-success:hover,
+  .btn-success:focus {
+    background-color: white;
+    border: none;
+    color: #00C68E;
+    padding: 8px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 5px;
+  }
+  
+  .nav.navbar-nav li a {
+    background-color: #00C68E;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    font-family: 'Century Gothic';
+    font-size: 16px;
+    margin-top: 8px;
+    
+  }
+  
+  .nav.navbar-nav li a:hover,
+  .nav.navbar-nav li a:focus {
+    background-color: white;
+    border: none;
+    color: #00C68E;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 5px;
+    font-family: 'Century Gothic';
+  }
+  
+#outer-div {
+    background-color: #00C68E;
+    height: 80px;
+    margin-top: 5px;
+}
+  
+#inner-div {
+    background-color: white;
+    height: 75px;    
+    border: none;
+    color: #03B898;
+    /* padding: 8px; */
+    text-align: center;
+    text-decoration: none;
+    /* font-size: 14px; */
+    border-radius: 10px;
+}
+  
+#table-data {
+    font-family: 'Century Gothic Pro Regular';
+    color: #4A4A4A;
+    border-collapse: collapse;
+    width: 100%;
+}
+  
+#table-data td,#table-data th {
+    /* padding: 10px; */
+    text-align: center;
+    width: 175px;
+    margin-left: 30px;
+    margin-right: 30px;
+    margin-bottom: 10px;
+}
+  
+#table-data th {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    text-align: center;
+    font-size: 14px;
+
+}
+  
+#search {
+    margin-right: 0;
+    margin-top: 5px;
+    width: 450px;
+    height: 40px;
+    border-radius: 25px;
+    border: 1px solid #03B898;
+}
+  
+hr {
+    border: 0;
+    clear: both;
+    display: block;
+    width: 100%;
+    background-color: #FFFFFF;
+    height: 1px;
+}
+    

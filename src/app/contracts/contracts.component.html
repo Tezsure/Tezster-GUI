@@ -1,0 +1,29 @@
+<div class="main" id="header">
+	<h3>Smart Contract Deployment</h3>
+ </div>
+ <div id="action-button">
+	<button class="btn  btn-md custom" id="b1" (click)="deployContract()">Deploy Contract</button>
+	<button class="btn  btn-md custom" id="b2" (click)="callContract()">Call Contract</button>
+	<button class="btn  btn-md custom" id="b3" (click)="getStorage()">View Initial Value</button>
+ </div>
+ <hr>
+ <div class="main">
+	<div class="row">
+	   <label for="account"><b>Select Account</b><span style="color:red">*</span>
+	   </label>
+	   <select [(ngModel)]="accountpkh" (change)="selected()" class="select">
+	   <option *ngFor="let account of configData.accounts" [ngValue]="account.pkh">{{account.pkh}}</option>
+	   </select>
+	   <label for="Smart Contract File"><b>Upload Contract<span style="color:red">*</span></b>
+	   </label>
+	   <input type="file" (change)="fileChange($event)" placeholder="Upload file" accept=".tz">
+	   <label for="contract label"><b>Contract label</b><span style="color:red">*</span>
+	   </label>
+	   <input type="text" [(ngModel)]="contract" class="textcolor" style="width: 280px" placeholder="Contract Label/Name">
+	</div>
+	<div class="row" style="margin-top: 1%;margin-left: 0.5%">
+	   <label for="contract label"> <b>Inital Value</b><span style="color:red;">*</span>
+	   </label>
+	   <input type="text" [(ngModel)]="initValue" class="textcolor" style="width: 280px" placeholder='Intial Value for account'>
+	</div>
+ </div>
