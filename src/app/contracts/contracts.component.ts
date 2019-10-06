@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {AppService} from '../app.service';
 import { timeout } from 'q';
+import { BlankDataComponent } from '../blank-data/blank-data.component';
 
 declare var eztz: any;
 declare var conseiljs: any;
@@ -90,7 +91,7 @@ export class ContractsComponent implements OnInit {
 
 					this.result = this._AppService.deployContract(this.accountpkh, this.contractText,
 						this.contract, this.initValue, this.tezosProvider, this.keysStore);
-					setTimeout(() => {																							
+					setTimeout(() => {
 						//console.log(this.result);
 						alert(`If you're running a local node, Please run "tezster bake-for <account-name> to bake this operation
 				\n If you're using alphanet node, use https://alphanet.tzscan.io to check contract/transactions`);

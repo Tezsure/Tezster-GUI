@@ -27,6 +27,7 @@ export class AppService {
 		"label": any;
 		"pkh": any;
 		"identity": any;
+		"IntialValue": any;
 	};
 	transHash: {
 		"operation": any;
@@ -46,7 +47,8 @@ export class AppService {
 		return ajax;
 	}
 	loadtransactionData(key: any): Observable < transactionType[] > {
-		this._transactionURL = 'https://api.alphanet.tzscan.io/v3/operations/' + key + '?type=Transaction&p=0&number=' + (this.maxTxs + 1);
+		this._transactionURL = ' https://tezos-dev.cryptonomic-infra.tech/v3/operations/' + key + '?type=Transaction&p=0&number=' + (this.maxTxs + 1);
+		console.log(this._transactionURL);
 		const transajax = this.http.get < transactionType[] > (this._transactionURL).catch(this.errorHandler);
 		transajax.subscribe(this._transactionDataResponse.bind(this));
 		return transajax;
@@ -135,7 +137,8 @@ export class AppService {
 						this.contractData = {
 							"label": label,
 							"pkh": this.opHash,
-							"identity": keys
+							"identity": keys,
+							"IntialValue":initValue
 						};
 						this.obj = JSON.parse(this.getLocalConfigData());
 						this.obj.contracts.push(this.contractData);

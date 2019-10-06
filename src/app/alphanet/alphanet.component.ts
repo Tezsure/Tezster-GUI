@@ -8,14 +8,14 @@ declare var eztz: any;
   templateUrl: './alphanet.component.html',
   styleUrls: ['./alphanet.component.css']
 })
-export class AlphanetComponent implements OnInit {  
-  	public userData = "http://alphanet-node.tzscan.io";
-  	public configData = []; 
+export class AlphanetComponent implements OnInit {
+  	public userData = " https://tezos-dev.cryptonomic-infra.tech/";
+  	public configData = [];
   	constructor(public bsModalRef: BsModalRef, private _AppService: AppService, private modalService: ModalService) { }
 
 	onClick(): void {
-		eztz.node.setProvider("http://alphanet-node.tzscan.io");
-		this._AppService.setProviderData(this.userData);		
+    eztz.node.setProvider(this.userData);
+		this._AppService.setProviderData(this.userData);
 		this.modalService.closeModal('alphanet');
 	}
 

@@ -1,4 +1,4 @@
-<div id="walletDropdown" style="font-family: 'Century gothic pro regular'">
+<div id="walletDropdown" style="font-family: 'Roboto'">
 	<h4 id="text">Select Wallet</h4>
 	<select [(ngModel)]="accountpkh" (change)="selected()">
 		<option *ngFor="let account of configData.accounts" [ngValue]="account.pkh">{{account.pkh}}</option>

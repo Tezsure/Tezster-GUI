@@ -34,10 +34,10 @@ import { Router } from '@angular/router';
 		this.now = Date.now();
 	setTimeout(() => {
 		this.keys = JSON.parse(localStorage.getItem("keys"));
-		if (this.configData["provider"] == "http://alphanet-node.tzscan.io" && this.result != '') {
-			alert("\nTransfer complete - operation hash #" + this.result + "for alphanet you can visit <a href='https://alphanet.tzscan.io/'" + this.result + '>' + this.result + "</a>");
-		} else if (this.configData["provider"] == "http://alphanet-node.tzscan.io" && this.result == '') {
-			alert("\nTransfer Failed !! for alphanet you can visit <a href='https://alphanet.tzscan.io/'></a>");
+		if (this.configData["provider"] == " https://tezos-dev.cryptonomic-infra.tech/" && this.result != '') {
+			alert("\nTransfer complete - operation hash #" + this.result + "for alphanet you can visit <a href=' https://tezos-dev.cryptonomic-infra.tech/'" + this.result + '>' + this.result + "</a>");
+		} else if (this.configData["provider"] == " https://tezos-dev.cryptonomic-infra.tech/" && this.result == '') {
+			alert("\nTransfer Failed !! for alphanet you can visit <a href=' https://tezos-dev.cryptonomic-infra.tech/'></a>");
 		} else if (this.result != '') {
 			this.transHash = {
 				"operation": "transfer",
@@ -67,7 +67,7 @@ import { Router } from '@angular/router';
 			this.obj = JSON.parse(this._AppService.getLocalConfigData());
 			this.obj.transactions.push(this.transHash);
 			this._AppService.setLocalConfigData(this.obj);
-		}		
+		}
 	}, 3000);
 	this.modalService.closeModal('transfer');
 	this.modalService.closeModal('Sendtransaction');

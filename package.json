@@ -37,6 +37,7 @@
     "ngx-select-dropdown": "^1.0.1",
     "node-cmd": "^3.0.0",
     "pbkdf2": "^3.0.17",
+    "roboto-fontface": "^0.10.0",
     "rxjs": "~6.4.0",
     "rxjs-compat": "^6.5.2",
     "tslib": "^1.9.0",

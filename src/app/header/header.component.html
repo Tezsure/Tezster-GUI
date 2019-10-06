@@ -1,4 +1,4 @@
-<nav class="navbar navbar-light" style="background-color: #00C68E; font-family: 'Century Gothic Pro Regular'">
+<nav class="navbar navbar-light" style="background-color: #00C68E; font-family: 'Roboto'">
   <div class="container-fluid" id="header" >
      <div class="navbar-header">
         <a class="navbar-brand" routerLink="/accounts" ><img width="210px" height="50px" alt="Angular Logo" src="assets/tezster_white_logo.png"></a>
@@ -24,7 +24,7 @@
               <th>CHAIN ID</th>
               <th>GAS LIMIT</th>
               <th>GAS PRICE</th>
-              <th>NETWORK ID</th>              
+              <th>NETWORK ID</th>
               <th style="width: 300px">RPC SERVER</th>
               <th>PORT</th>
               <th>STATUS</th>
@@ -34,13 +34,13 @@
               <td>NetXgtSLGNJvNye</td>
               <td>10200</td>
               <td>10200</td>
-              <td *ngIf="configData.provider=='http://alphanet-node.tzscan.io';then content else other_content"></td>    
+              <td *ngIf="configData.provider==' https://tezos-dev.cryptonomic-infra.tech/';then content else other_content"></td>
                 <ng-template #content>Alphanet</ng-template>
                 <ng-template #other_content>Localnode</ng-template>
               <td style="width: 400px" >{{configData.provider}}</td>
-              <td *ngIf="configData.provider=='http://alphanet-node.tzscan.io';then content1 else other_content1"></td>    
+              <td *ngIf="configData.provider==' https://tezos-dev.cryptonomic-infra.tech/';then content1 else other_content1"></td>
                 <ng-template #content1>Default port</ng-template>
-                <ng-template #other_content1>18731</ng-template>
+                <ng-template #other_content1>{{port_id}}</ng-template>
               <td class="img__wrap"><img width="16px" height="16px" alt="running" src="assets/running.png"><p class="img__des">running</p></td>
               <td></td>
            </tbody>

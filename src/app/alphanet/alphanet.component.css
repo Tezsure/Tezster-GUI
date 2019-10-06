@@ -1,13 +1,13 @@
 p:focus {
     border-color: #4CAF50;
     box-shadow: 0px 1px 1px rgb(8, 235, 167) inset, 0px 0px 8px rgba(14, 243, 64, 0.993);
-    font-family: "Century Gothic";
+    font-family: "Roboto";
   }
-  
+
   .btn-sm {
     margin-right: 5px;
   }
-  
+
   .mnemonic text-center {
     border-block-color: 1px solid black;
   }
