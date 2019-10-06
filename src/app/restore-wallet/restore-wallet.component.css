@@ -6,7 +6,7 @@
 textarea{
     width:460px;
     height:75px;
-    font-family: "Century Gothic";
+    font-family: "Roboto";
 }
 
 label{
@@ -14,8 +14,8 @@ label{
     width: 120px;
     text-align: right;
     margin-right: 10px;
-    font: bold;  
-    color: #00C68E;          
+    font: bold;
+    color: #00C68E;
 }
 
 h4,p{

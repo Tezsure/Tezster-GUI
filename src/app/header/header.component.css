@@ -5,11 +5,12 @@
     padding: 8px;
     text-align: center;
     text-decoration: none;
+      font-family: 'Roboto';
     font-size: 16px;
     border-radius: 5px;
     margin-top: 8px;
   }
-  
+
   .btn-success:hover,
   .btn-success:focus {
     background-color: white;
@@ -21,55 +22,50 @@
     font-size: 16px;
     border-radius: 5px;
   }
-  
+
   .nav.navbar-nav li a {
     background-color: #00C68E;
     color: white;
     padding: 10px;
     text-align: center;
     text-decoration: none;
-    font-family: 'Century Gothic';
+    font-family: 'Roboto';
     font-size: 16px;
     margin-top: 8px;
-    
+
   }
-  
+
   .nav.navbar-nav li a:hover,
   .nav.navbar-nav li a:focus {
     background-color: white;
     border: none;
     color: #00C68E;
-    padding: 10px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 16px;
     border-radius: 5px;
-    font-family: 'Century Gothic';
   }
-  
+
 #outer-div {
     background-color: #00C68E;
     height: 80px;
     margin-top: 5px;
 }
-  
+
 #inner-div {
     background-color: white;
-    height: 75px;    
+    height: 75px;
     border: none;
-    color: #00C68E;    
+    color: #00C68E;
     text-align: center;
-    text-decoration: none;   
+    text-decoration: none;
     border-radius: 10px;
 }
-  
+
 #table-data {
-    font-family: 'Century Gothic Pro Regular';    
+    font-family: 'Roboto';
     border-collapse: collapse;
     width: 100%;
 }
-  
-#table-data td,#table-data th {    
+
+#table-data td,#table-data th {
     text-align: center;
     width: 185px;
     margin-left: 30px;
@@ -78,12 +74,12 @@
     font-size: 14px;
 
 }
-  
-#table-data th {       
-    color: #4A4A4A;    
+
+#table-data th {
+    color: #4A4A4A;
     width: 185px;
 }
-  
+
 #search {
     margin-right: 0;
     margin-top: 5px;
@@ -92,7 +88,7 @@
     border-radius: 25px;
     border: 1px solid #03B898;
 }
-  
+
 hr {
     border: 0;
     clear: both;
@@ -101,14 +97,14 @@ hr {
     background-color: #FFFFFF;
     height: 1px;
 }
-  
+
 .img__des {
-  position: absolute; 
+  position: absolute;
   color: #03B898;
   visibility: hidden;
   opacity: 0;
   top:155px;
-  left:670px;
+  left:870px;
   right:370px;
   bottom: 970px;
   /* transition effect. not necessary */

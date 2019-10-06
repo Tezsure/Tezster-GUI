@@ -2,11 +2,11 @@
     border-color: #4CAF50;
     box-shadow: 0px 1px 1px rgb(8, 235, 167) inset, 0px 0px 8px rgba(14, 243, 64, 0.993);
   }
-  
+
   textarea {
     width: 450px;
     height: 75px;
-    font-family: "Century Gothic";
+    font-family: "Roboto";
   }
   
   label {
@@ -17,7 +17,7 @@
     font: bold;
     color: #00C68E;
   }
-  
+
   h4 {
     color: #00C68E;
   }

@@ -1,10 +1,10 @@
-<div class="modal-header" style="font-family: 'Century gothic pro regular'">
-	<h4 class="modal-title pull-left">Restore Wallet </h4> 
+<div class="modal-header" style="font-family: 'Roboto'">
+	<h4 class="modal-title pull-left">Restore Wallet </h4>
 	<button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()"> <span aria-hidden="true">&times;</span>
 	</button>
 </div>
-<div class="modal-body" style="font-family: 'Century gothic pro regular'">
-	<h6>Node provider is connected : {{configData.provider}}</h6><hr>	
+<div class="modal-body" style="font-family: 'Roboto'">
+	<h6>Node provider is connected : {{configData.provider}}</h6><hr>
 	<div>For Alphanet Account Email+password+Secret Key is required
 		<br> and change node provider to Alphanet</div>
 	<hr>
@@ -37,8 +37,8 @@
 	<br>
 	<hr>
 </div>
-<div class="modal-footer" style="font-family: 'Century gothic pro regular'">
-	<button class="btn btn-secondary btn-danger" (click)="activateAlphanet()" [disabled]="configData.provider != 'http://alphanet-node.tzscan.io' || !mnenomics || !password || !secret || !email || !label ">Activate Alphanet account</button>
+<div class="modal-footer" style="font-family: 'Roboto'">
+	<button class="btn btn-secondary btn-danger" (click)="activateAlphanet()" [disabled]="configData.provider != ' https://tezos-dev.cryptonomic-infra.tech/' || !mnenomics || !password || !secret || !email || !label ">Activate Alphanet account</button>
 	<button class="btn btn-secondary btn-default" id="btn" (click)="onNoClick()">Cancel</button>
-	<button (click)="onClick()" class="btn btn-success" [disabled]="!mnenomics || !password || configData.provider == 'http://alphanet-node.tzscan.io'">Restore Wallet LocalNode</button>
+	<button (click)="onClick()" class="btn btn-success" [disabled]="!mnenomics || !password || configData.provider == ' https://tezos-dev.cryptonomic-infra.tech/'">Restore Wallet LocalNode</button>
 </div>

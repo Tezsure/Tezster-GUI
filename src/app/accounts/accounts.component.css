@@ -2,12 +2,13 @@
   overflow: scroll;
   height: auto;;
   width: 100%;
+  margin-top: 4%;
 }
 
 #customers {
-  font-family: 'Century gothic pro regular';
+  font-family: 'Roboto';
   border-collapse: collapse;
-  width: 100%;    
+  width: 100%;
   margin-top: 1.5%;
 }
 
@@ -32,7 +33,7 @@
   background-color: #00C68E;
   color: white;
   border-radius: 5px;
-  font-family: 'Century gothic pro regular';
+  font-family: 'Roboto';
   float: right;
   margin-top: 1%;
 }

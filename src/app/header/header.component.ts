@@ -12,6 +12,8 @@ import { AppService } from '../app.service';
 })
 export class HeaderComponent implements OnInit {
     public configData = [];
+    public port=[];
+    public port_id: any;
     constructor(private modalService: ModalService, private _AppService: AppService) { }
 
     openDialog(): void {
@@ -22,11 +24,14 @@ export class HeaderComponent implements OnInit {
       	this.modalService.openModal('alphanet', AlphanetComponent);
   	}
 
-  	ngOnInit() {    
+  	ngOnInit() {
     	this._AppService.configDataChangeObs$
       	.subscribe(data => {
         	if (data) {
           		this.configData = data;
+              this.port=this.configData['provider'].split(":",3);
+              this.port_id=this.port[2];
+
         	}
     	});
   	}

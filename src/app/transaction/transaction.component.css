@@ -17,7 +17,7 @@ select {
 }
 
 #transactionData {
-	font-family: "Century Gothic", "Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-family: 'Roboto';
 	border-collapse: collapse;
 	margin-top: .5%;
 	width: 100%;

@@ -1,9 +1,9 @@
-<div class="modal-header" style="font-family: 'Century gothic pro regular'">
+<div class="modal-header" style="font-family: 'Roboto'">
 	<h4 class="modal-title pull-left">Validate Wallet</h4>
 	<button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">	<span aria-hidden="true">&times;</span>
 	</button>
 </div>
-<div class="modal-body" style="font-family: 'Century gothic pro regular'">
+<div class="modal-body" style="font-family: 'Roboto'">
 	<h6>Node provider is connected : {{configData.provider}}</h6>
 	<br>
 	<p>Seed Words/Mnenomic (leave a space between each word) <span style="color: red">*</span>
@@ -29,7 +29,7 @@
 	<br>
 	<hr>
 </div>
-<div class="modal-footer" style="font-family: 'Century gothic pro regular'">
+<div class="modal-footer" style="font-family: 'Roboto'">
 	<button class="btn btn-secondary" (click)="onNoClick()">Cancel</button>
 	<button (click)="onClick()" class="btn btn-success" [disabled]="!mnenomics || !password">Create Wallet</button>
 </div>

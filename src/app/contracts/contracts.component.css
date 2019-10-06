@@ -7,7 +7,7 @@ h4 {
 	margin-top: .5%;
 	margin-left: 33%;
 	margin-right: 37%;
-	font-family: "Century Gothic Pro Regular";
+	font-family: "Roboto";
 }
 
 .select {
@@ -25,7 +25,7 @@ label {
 }
 
 .main {
-	font-family: "Century Gothic Pro Regular";
+	font-family: "Roboto";
 	margin-top: 1.0%;
 	line-height: 1.15;
 }
@@ -40,7 +40,7 @@ label {
 	background-color: #00C68E;
 	color: white;
 	border-radius: 5px;
-	font-family: "Century Gothic Pro Regular";
+	font-family: "Roboto";
 	font-size: 16px;
 	text-align: center;
 	text-decoration: none;
@@ -52,7 +52,7 @@ label {
 	background-color: white;
 	color: #03B898;
 	border-radius: 5px;
-	font-family: "Century Gothic Pro Regular";
+	font-family: "Roboto";
 	font-size: 16px;
 	text-align: center;
 	text-decoration: none;
@@ -66,4 +66,40 @@ label {
 
 #b3{
 	margin-right: .5%;
+}
+
+#transactions {
+	overflow: scroll;
+	height: auto;
+	width: 100%;
+}
+
+#transactionData {
+	font-family: 'Roboto';
+	border-collapse: collapse;
+	margin-top: .5%;
+	width: 100%;
+}
+
+#transactionData td,
+#transactionData th {
+	border: 1px solid #ddd;
+	padding: 15px;
+	text-align: center;
+}
+
+#transactionData tr:nth-child(even) {
+	background-color: #f2f2f2;
+}
+
+#transactionData tr:hover {
+	background-color: #ddd;
+}
+
+#transactionData th {
+	padding-top: 10px;
+	padding-bottom: 10px;
+	text-align: center;
+	background-color: #00C68E;
+	color: white;
 }
