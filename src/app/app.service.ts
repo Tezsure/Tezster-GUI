@@ -179,9 +179,9 @@ export class AppService {
 							"amount": 0,
 							"status": "Success",
 							"time": ""
-						};
+						};						
 						this.obj = JSON.parse(this.getLocalConfigData());
-						this.obj.transactions.push(this.contractData);
+						this.obj.transactions.push(this.transHash);						
 						this.setLocalConfigData(this.obj);
 						let res = "Injected operation with hash" + opHash;
 						alert(res);

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {AppService} from '../app.service';
 import { timeout } from 'q';
 import { BlankDataComponent } from '../blank-data/blank-data.component';
+import { ModalService } from '../modal.service';
 
 declare var eztz: any;
 declare var conseiljs: any;
@@ -38,7 +39,16 @@ export class ContractsComponent implements OnInit {
 	tempData: any;
 	contData: any;
 	obj: any;
-	constructor(private _AppService: AppService) {}
+	public contractData=[];
+	public cont_txs=[];
+	public totalcontract: any;
+	public operValue: any;	
+	public now:number;
+	public tempcontData: any;
+	transactionData: any;
+	totalTransaction: any;
+
+	constructor(private _AppService: AppService , private modalService: ModalService) {}
 	ngOnInit() {
 		this._AppService.configDataChangeObs$.subscribe(data => {
 			if (data) {
@@ -62,7 +72,7 @@ export class ContractsComponent implements OnInit {
 		}
 	}
 	public deployContract() {
-		if (typeof this.accountpkh !== 'undefined' && typeof this.contract !== 'undefined' && typeof this.initValue !== 'undefined') {
+		if (typeof this.accountpkh !== 'undefined' && this.contract != '' && this.initValue != '') {
 			this.config = JSON.parse(localStorage.getItem('configData'));
 			this.tezosProvider = this.config['provider'];
 			let accounts = this.findKeyObj(this.config['identities'], this.accountpkh);
@@ -165,4 +175,69 @@ export class ContractsComponent implements OnInit {
 		}
 		return false;
 	}
+
+	public viewContract(){
+		if (typeof this.accountpkh !== 'undefined') {
+		if(this.configData['provider'] == " https://tezos-dev.cryptonomic-infra.tech/"){  
+				//this._AppService.loadtransactionData(this.accountpkh);
+				setTimeout(()=>{
+					this.cont_txs=[];
+					this.totalcontract=0;
+					this.contractData= JSON.parse(localStorage.getItem('contractsData'));
+					console.log("from alphanet",this.contractData);
+					this.totalcontract=this.contractData.length;
+					if(this.contractData.length > 0){
+						for(var transdata of this.contractData){
+							console.log(transdata);							
+							if(transdata["identity"] == this.accountpkh){
+								this.cont_txs.push({									
+									"label" : transdata["to"],
+									"identity" : transdata["identity"],
+									"pkh" : transdata["pkh"],
+									"IntialValue" : transdata["IntialValue"],
+									"status":"on call"
+								});
+							}						
+						}
+
+					}
+					else{
+							this.modalService.openModal('blankData', BlankDataComponent);
+					}
+				}, 2000);
+		}
+			else{
+				setTimeout(()=>{
+					this.cont_txs=[];
+					this.totalcontract=0;
+					this.tempcontData=JSON.parse(this._AppService.getLocalConfigData());
+					this.contractData=this.tempcontData["contracts"];
+					this.totalcontract=this.contractData.length;
+					this.transactionData=this.tempcontData["transactions"];					
+					this.now=Date.now();
+					if(this.contractData.length >0){
+						for(let transdata of this.contractData){													
+							if(transdata["identity"] == this.accountpkh){
+								this.cont_txs.push({									
+									"label" : transdata["label"],
+									"identity" : transdata["identity"],
+									"pkh" : transdata["pkh"],
+									"IntialValue" : transdata["IntialValue"],
+									"status":"on call"
+								});
+							}
+						}						
+					}
+					else{
+						this.modalService.openModal('blankData', BlankDataComponent);
+					}
+				}, 2000);
+			}
+
+		}
+		else{
+			alert('Please select an account..');
+		}
+	}
+
 }

@@ -25,10 +25,13 @@
 	   <label for="contract label"> <b>Inital Value</b><span style="color:red;">*</span>
 	   </label>
 	   <input type="text" [(ngModel)]="initValue" class="textcolor" style="width: 280px" placeholder='Intial Value for account'>
+	   &nbsp;&nbsp;&nbsp;<button class="btn  btn-md contractCustom" (click)="viewContract()"> View Contract's</button>
+
 	</div>
+
  </div>
 
- <!-- <hr>
+ <hr>
  <div id="transactions" *ngIf='contractData.length > 0'>
  	<table id='transactionData' *ngIf='contractData.length > 0'>
  		<tr>
@@ -38,12 +41,12 @@
  			<th>Intial Contract Value</th>
  			<th>Status</th>
  		</tr>
- 		<tr *ngFor="let trans of txs">
+ 		<tr *ngFor="let trans of cont_txs">
  			<td>{{trans.label}}</td>
  			<td>{{trans.identity}}</td>
  			<td>{{trans.pkh}}</td>
  			<td>{{trans.IntialValue}}</td>
- 			<td>Success</td>
+ 			<td>{{trans.status}}</td>
  		</tr>
  	</table>
- </div> -->
+ </div>
