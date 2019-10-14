@@ -163,7 +163,7 @@ export class AppService {
 
 	async callContract(keys: any, label: any, init: any, tezosProvider: any, keysStore: any) {
 		let initValue = '\"' + init + '\"';
-		let res: any;
+		let res: any;		
 		try {
 			let result = await conseiljs.TezosNodeWriter.sendContractInvocationOperation(
 				tezosProvider, keysStore, keys, 0, 100000, '', 1000, 100000, initValue, conseiljs.TezosParameterFormat.Michelson);
@@ -174,7 +174,7 @@ export class AppService {
 						this.transHash = {
 							"operation": "contract-call",
 							"hash": opHash,
-							"from": keys,
+							"from": keysStore.publicKeyHash,
 							"to": label,
 							"amount": 0,
 							"status": "Success",

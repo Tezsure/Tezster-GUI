@@ -141,6 +141,7 @@ export class ContractsComponent implements OnInit {
 					alert(`couldn't find the contract, please make sure contract label or address is correct!`);
 				} else {
 					let contractAdd = cont.pkh;
+					console.log(contractAdd);
 					this.result = this._AppService.callContract(contractAdd, this.contract, this.initValue, this.tezosProvider, this.keysStore);
 					setTimeout(() => {
 						//console.log(this.result);
@@ -183,8 +184,7 @@ export class ContractsComponent implements OnInit {
 				setTimeout(()=>{
 					this.cont_txs=[];
 					this.totalcontract=0;
-					this.contractData= JSON.parse(localStorage.getItem('contractsData'));
-					console.log("from alphanet",this.contractData);
+					this.contractData= JSON.parse(localStorage.getItem('contractsData'));					
 					this.totalcontract=this.contractData.length;
 					if(this.contractData.length > 0){
 						for(var transdata of this.contractData){
@@ -195,7 +195,7 @@ export class ContractsComponent implements OnInit {
 									"identity" : transdata["identity"],
 									"pkh" : transdata["pkh"],
 									"IntialValue" : transdata["IntialValue"],
-									"status":"on call"
+									"status":"Deployed Contract"
 								});
 							}						
 						}
@@ -210,10 +210,18 @@ export class ContractsComponent implements OnInit {
 				setTimeout(()=>{
 					this.cont_txs=[];
 					this.totalcontract=0;
+					let status: any;
 					this.tempcontData=JSON.parse(this._AppService.getLocalConfigData());
 					this.contractData=this.tempcontData["contracts"];
 					this.totalcontract=this.contractData.length;
-					this.transactionData=this.tempcontData["transactions"];					
+					this.transactionData=this.tempcontData["transactions"];	
+					let contTxn = this.findKeyObjTxn(this.tempcontData["transactions"], this.accountpkh);								
+					if(!contTxn){
+						status="Contract ceployed";
+					}
+					else{
+						status="Contract deployed & called";
+					}
 					this.now=Date.now();
 					if(this.contractData.length >0){
 						for(let transdata of this.contractData){													
@@ -223,7 +231,7 @@ export class ContractsComponent implements OnInit {
 									"identity" : transdata["identity"],
 									"pkh" : transdata["pkh"],
 									"IntialValue" : transdata["IntialValue"],
-									"status":"on call"
+									"status":status
 								});
 							}
 						}						
@@ -238,6 +246,13 @@ export class ContractsComponent implements OnInit {
 		else{
 			alert('Please select an account..');
 		}
+	}
+
+	findKeyObjTxn(list, t) {		
+		for (var i = 0; i < list.length; i++) {			
+			if (list[i].from == t && list[i].operation !='') return list[i];
+		}
+		return false;
 	}
 
 }
