@@ -217,7 +217,7 @@ export class ContractsComponent implements OnInit {
 					this.transactionData=this.tempcontData["transactions"];	
 					let contTxn = this.findKeyObjTxn(this.tempcontData["transactions"], this.accountpkh);								
 					if(!contTxn){
-						status="Contract ceployed";
+						status="Contract deployed";
 					}
 					else{
 						status="Contract deployed & called";
