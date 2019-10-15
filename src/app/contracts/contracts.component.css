@@ -58,6 +58,26 @@ label {
 	text-decoration: none;
 	margin-left: 65%;
 }
+.contractCustom {
+	background-color: #00C68E;
+	color: white;
+	border-radius: 5px;
+	font-family: "Roboto";
+	font-size: 16px;
+	text-align: center;
+	text-decoration: none;	
+}
+
+.contractCustom:hover,
+.contractCustom:focus {
+	background-color: white;
+	color: #03B898;
+	border-radius: 5px;
+	font-family: "Roboto";
+	font-size: 16px;
+	text-align: center;
+	text-decoration: none;	
+}
 
 #b2,
 #b3 {
@@ -70,7 +90,7 @@ label {
 
 #transactions {
 	overflow: scroll;
-	height: auto;
+	height: 350px;
 	width: 100%;
 }
 
