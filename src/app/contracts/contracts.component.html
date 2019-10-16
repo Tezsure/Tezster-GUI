@@ -1,31 +1,31 @@
 <div class="main" id="header">
-	<h3>Smart Contract Deployment</h3>
+	<h3>Smart contract deployment</h3>
  </div>
  <div id="action-button">
-	<button class="btn  btn-md custom" id="b1" (click)="deployContract()">Deploy Contract</button>
-	<button class="btn  btn-md custom" id="b2" (click)="callContract()">Call Contract</button>
-	<button class="btn  btn-md custom" id="b3" (click)="getStorage()">View Initial Value</button>
+	<button class="btn  btn-md custom" id="b1" (click)="deployContract()">Deploy contract</button>
+	<button class="btn  btn-md custom" id="b2" (click)="callContract()">Call contract</button>
+	<button class="btn  btn-md custom" id="b3" (click)="getStorage()">View initial value</button>
  </div>
  <hr>
  <div class="main">
 	<div class="row">
-	   <label for="account"><b>Select Account</b><span style="color:red">*</span>
+	   <label for="account"><b>Select an account</b><span style="color:red">*</span>
 	   </label>
 	   <select [(ngModel)]="accountpkh" (change)="selected()" class="select">
 	   <option *ngFor="let account of configData.accounts" [ngValue]="account.pkh">{{account.pkh}}</option>
 	   </select>
-	   <label for="Smart Contract File"><b>Upload Contract<span style="color:red">*</span></b>
+	   <label for="Smart Contract File"><b>Upload contract<span style="color:red">*</span></b>
 	   </label>
 	   <input type="file" (change)="fileChange($event)" placeholder="Upload file" accept=".tz">
 	   <label for="contract label"><b>Contract label</b><span style="color:red">*</span>
 	   </label>
-	   <input type="text" [(ngModel)]="contract" class="textcolor" style="width: 280px" placeholder="Contract Label/Name">
+	   <input type="text" [(ngModel)]="contract" class="textcolor" style="width: 280px" placeholder="Contract label/name">
 	</div>
 	<div class="row" style="margin-top: 1%;margin-left: 0.5%">
-	   <label for="contract label"> <b>Inital Value</b><span style="color:red;">*</span>
+	   <label for="contract label"> <b>Inital value</b><span style="color:red;">*</span>
 	   </label>
-	   <input type="text" [(ngModel)]="initValue" class="textcolor" style="width: 280px" placeholder='Intial Value for account'>
-	   &nbsp;&nbsp;&nbsp;<button class="btn  btn-md contractCustom" (click)="viewContract()"> View Contract's</button>
+	   <input type="text" [(ngModel)]="initValue" class="textcolor" style="width: 280px" placeholder='Intial value for account'>
+	   &nbsp;&nbsp;&nbsp;<button class="btn  btn-md contractCustom" (click)="viewContract()"> View contracts</button>
 
 	</div>
 
@@ -35,10 +35,10 @@
  <div id="transactions" *ngIf='contractData.length > 0'>
  	<table id='transactionData' *ngIf='contractData.length > 0'>
  		<tr>
- 			<th>Contract Name</th>
- 			<th>Contract Identity</th>
- 			<th>Contract Hash</th>
- 			<th>Intial Contract Value</th>
+ 			<th>Contract label</th>
+ 			<th>Contract identity</th>
+ 			<th>Contract hash</th>
+ 			<th>Intial contract value</th>
  			<th>Status</th>
  		</tr>
  		<tr *ngFor="let trans of cont_txs">

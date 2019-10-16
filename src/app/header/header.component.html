@@ -40,7 +40,7 @@
               <td style="width: 400px" >{{configData.provider}}</td>
               <td *ngIf="configData.provider==' https://tezos-dev.cryptonomic-infra.tech/';then content1 else other_content1"></td>
                 <ng-template #content1>Default port</ng-template>
-                <ng-template #other_content1>{{port_id}}</ng-template>
+                <ng-template #other_content1>{{port_id()}}</ng-template>
               <td class="img__wrap"><img width="16px" height="16px" alt="running" src="assets/running.png"><p class="img__des">running</p></td>
               <td></td>
            </tbody>

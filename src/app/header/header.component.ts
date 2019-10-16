@@ -13,26 +13,30 @@ import { AppService } from '../app.service';
 export class HeaderComponent implements OnInit {
     public configData = [];
     public port=[];
-    public port_id: any;
+    port_no: any;
+    
     constructor(private modalService: ModalService, private _AppService: AppService) { }
 
     openDialog(): void {
         this.modalService.openModal('localnode', LocalnodeComponent);
     }
-
+    
     alphanet(): void {
       	this.modalService.openModal('alphanet', AlphanetComponent);
   	}
-
+    port_id():void{        
+        this.port=this.configData['provider'].split(":",3);
+        this.port_no=this.port[2];
+        return this.port_no;
+      }
   	ngOnInit() {
     	this._AppService.configDataChangeObs$
       	.subscribe(data => {
         	if (data) {
-          		this.configData = data;
-              this.port=this.configData['provider'].split(":",3);
-              this.port_id=this.port[2];
+          		this.configData = data;             
 
         	}
     	});
-  	}
+      }
+      
 }

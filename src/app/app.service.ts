@@ -38,6 +38,7 @@ export class AppService {
 		"status": any;
 		"time": any
 	};
+	public contObj;
 	constructor(private http: HttpClient) {
 		this.configDataChangeObs$ = new BehaviorSubject < any > (null);
 	}
@@ -140,9 +141,9 @@ export class AppService {
 							"identity": keys,
 							"IntialValue":initValue
 						};
-						this.obj = JSON.parse(this.getLocalConfigData());
-						this.obj.contracts.push(this.contractData);
-						this.setLocalConfigData(this.obj);
+						this.contObj = JSON.parse(this.getLocalConfigData());
+						this.contObj.contracts.push(this.contractData);
+						this.setLocalConfigData(this.contObj);
 						res = `contract ${label} has been deployed at ${this.opHash}`;
 						alert(res);
 						return res;
