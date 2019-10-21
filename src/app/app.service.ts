@@ -54,7 +54,7 @@ export class AppService {
 		transajax.subscribe(this._transactionDataResponse.bind(this));
 		return transajax;
 	}
-	protected _onConfigDataResponse(data: any) {
+	public _onConfigDataResponse(data: any) {
 		this.configData = data;
 		this.setLocalConfigData(data);
 	}
