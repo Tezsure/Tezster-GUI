@@ -26,6 +26,7 @@ export class LocalnodeComponent implements OnInit {
 		this._AppService.setProviderData(this.userData);
 		eztz.node.setProvider(this.userData);       
 		this.modalService.closeModal('localnode');
+		window.location.reload();
     }
     ngOnInit() {
       

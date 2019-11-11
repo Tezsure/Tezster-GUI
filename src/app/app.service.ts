@@ -48,7 +48,7 @@ export class AppService {
 		return ajax;
 	}
 	loadtransactionData(key: any): Observable < transactionType[] > {
-		this._transactionURL = ' https://tezos-dev.cryptonomic-infra.tech/v3/operations/' + key + '?type=Transaction&p=0&number=' + (this.maxTxs + 1);
+		this._transactionURL = ' https://babylonnet.tzstats.com/v3/operations/' + key + '?type=Transaction&p=0&number=' + (this.maxTxs + 1);
 		console.log(this._transactionURL);
 		const transajax = this.http.get < transactionType[] > (this._transactionURL).catch(this.errorHandler);
 		transajax.subscribe(this._transactionDataResponse.bind(this));
