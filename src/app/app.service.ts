@@ -128,8 +128,8 @@ export class AppService {
 		let initValue = '\"' + init + '\"';
 		let res: any;
 		try {
-			const result = await conseiljs.TezosNodeWriter.sendContractOriginationOperation(tezosProvider, keysStore, 0, undefined, false, true, 100000, '', 1000, 100000, contract, initValue, conseiljs.TezosParameterFormat.Michelson);
-
+			const result = await conseiljs.TezosNodeWriter.sendContractOriginationOperation(tezosProvider, keysStore, 0, undefined, 100000, '', 1000, 100000, contract, initValue, conseiljs.TezosParameterFormat.Michelson);
+						   //  conseiljs.TezosNodeWriter.sendContractOriginationOperation(tezosNode, keystore, 0, undefined,100000, '', 1000, 100000, contract, initValue, conseiljs.TezosParameterFormat.Michelson);
 			if (result.results) {
 				switch (result.results.contents[0].metadata.operation_result.status) {
 					case 'applied':
@@ -166,9 +166,10 @@ export class AppService {
 		let initValue = '\"' + init + '\"';
 		let res: any;		
 		try {
-			let result = await conseiljs.TezosNodeWriter.sendContractInvocationOperation(
-				tezosProvider, keysStore, keys, 0, 100000, '', 1000, 100000, initValue, conseiljs.TezosParameterFormat.Michelson);
-			if (result.results) {
+			let result = await conseiljs.TezosNodeWriter.sendContractInvocationOperation(tezosProvider, keysStore, keys, 0, 100000, '', 1000, 100000,undefined, initValue, conseiljs.TezosParameterFormat.Michelson);
+							// conseiljs.TezosNodeWriter.sendContractInvocationOperation(tezosNode, keystore, contractAddress, 0, 100000, '', 1000, 100000, undefined, argument, conseiljs.TezosParameterFormat.Michelson);
+							
+				if (result.results) {
 				switch (result.results.contents[0].metadata.operation_result.status) {
 					case 'applied':
 						let opHash = result.operationGroupID.slice(1, result.operationGroupID.length - 2);
