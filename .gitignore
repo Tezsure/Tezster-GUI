@@ -23,7 +23,10 @@ speed-measure-plugin.json
 *.launch
 .settings/
 *.sublime-workspace
-
+browserslist
+tsconfig.app.json
+tsconfig.spec.json
+/src/app/wallet/*
 # IDE - VSCode
 .vscode/*
 !.vscode/settings.json
