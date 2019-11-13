@@ -183,7 +183,10 @@ export class ContractsComponent implements OnInit {
 				setTimeout(()=>{
 					this.cont_txs=[];
 					this.totalcontract=0;
-					this.contractData= JSON.parse(localStorage.getItem('contractsData'));					
+					// this.contractData= JSON.parse(localStorage.getItem('contractsData'));
+					this.tempcontData=JSON.parse(this._AppService.getLocalConfigData());
+					this.contractData=this.tempcontData["contracts"];
+					console.log(this.contractData);				
 					this.totalcontract=this.contractData.length;
 					if(this.contractData.length > 0){
 						for(var transdata of this.contractData){

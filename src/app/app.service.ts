@@ -141,6 +141,7 @@ export class AppService {
 							"identity": keys,
 							"IntialValue":initValue
 						};
+						console.log(this.contractData);
 						this.contObj = JSON.parse(this.getLocalConfigData());
 						this.contObj.contracts.push(this.contractData);
 						this.setLocalConfigData(this.contObj);
