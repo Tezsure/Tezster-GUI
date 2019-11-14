@@ -77,9 +77,10 @@ export class RestoreWalletComponent implements OnInit {
         this.obj = JSON.parse(this._AppService.getLocalConfigData());
         this.obj.identities.push(this.credD);
         this._AppService.setLocalConfigData(this.obj);
-        alert(`successfully restored alphanet faucet account: ${this.label}-${this.account}`);
+        alert(`successfully restored babylonnet faucet account: ${this.label}-${this.account}`);
         this.modalService.closeModal('restore');
-        this.router.navigate(['/accounts']);
+        window.location.reload();
+        //this.router.navigate(['/accounts']);
     }
     ngOnInit() {
 

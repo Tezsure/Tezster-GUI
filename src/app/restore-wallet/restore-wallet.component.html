@@ -5,7 +5,7 @@
 </div>
 <div class="modal-body" style="font-family: 'Roboto'">
 	<h6>Node provider is connected : {{configData.provider}}</h6><hr>
-	<div>For Alphanet Account Email+password+Secret Key is required
+	<div>For babylonnet Account Email+password+Secret Key is required
 		<br> and change node provider to Alphanet</div>
 	<hr>
 	<div>For LocalNode Account Email+password is required
@@ -38,7 +38,7 @@
 	<hr>
 </div>
 <div class="modal-footer" style="font-family: 'Roboto'">
-	<button class="btn btn-secondary btn-danger" (click)="activateAlphanet()" [disabled]="configData.provider != ' https://tezos-dev.cryptonomic-infra.tech/' || !mnenomics || !password || !secret || !email || !label ">Activate Alphanet account</button>
+	<button class="btn btn-secondary btn-danger" (click)="activateAlphanet()" [disabled]="configData.provider != ' https://tezos-dev.cryptonomic-infra.tech/' || !mnenomics || !password || !secret || !email || !label ">Activate babylonnet account</button>
 	<button class="btn btn-secondary btn-default" id="btn" (click)="onNoClick()">Cancel</button>
 	<button (click)="onClick()" class="btn btn-success" [disabled]="!mnenomics || !password || configData.provider == ' https://tezos-dev.cryptonomic-infra.tech/'">Restore Wallet LocalNode</button>
 </div>

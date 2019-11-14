@@ -13,7 +13,7 @@
      </ul>
      <ul class="nav navbar-nav navbar-right horizontal-navbar">
         <li style="margin-right: 20px" class="list-style"><button  class="btn btn-success"  (click)="openDialog()">LOCAL NODE</button></li>
-        <li style="margin-right: 60px;" class="list-style"><button  class="btn btn-success" (click)="alphanet()">ALPHANET</button></li>
+        <li style="margin-right: 60px;" class="list-style"><button  class="btn btn-success" (click)="alphanet()">BABYLONNET</button></li>
      </ul>
   </div>
   <hr>
@@ -35,7 +35,7 @@
               <td>10200</td>
               <td>10200</td>
               <td *ngIf="configData.provider==' https://tezos-dev.cryptonomic-infra.tech/';then content else other_content"></td>
-                <ng-template #content>Alphanet</ng-template>
+                <ng-template #content>babylonnet</ng-template>
                 <ng-template #other_content>Localnode</ng-template>
               <td style="width: 400px" >{{configData.provider}}</td>
               <td *ngIf="configData.provider==' https://tezos-dev.cryptonomic-infra.tech/';then content1 else other_content1"></td>

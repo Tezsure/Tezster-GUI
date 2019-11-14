@@ -104,7 +104,7 @@ export class ContractsComponent implements OnInit {
 					setTimeout(() => {
 						//console.log(this.result);
 						alert(`If you're running a local node, Please run "tezster bake-for <account-name> to bake this operation
-				\n If you're using alphanet node, use https://alphanet.tzscan.io to check contract/transactions`);
+				\n If you're using alphanet node, use https://babylonnet.tzstats.com to check contract/transactions`);
 
 					}, 2000);
 				}
@@ -140,11 +140,10 @@ export class ContractsComponent implements OnInit {
 				if (!cont) {
 					alert(`couldn't find the contract, please make sure contract label or address is correct!`);
 				} else {
-					let contractAdd = cont.pkh;
-					console.log(contractAdd);
+					let contractAdd = cont.pkh;					
 					this.result = this._AppService.callContract(contractAdd, this.contract, this.initValue, this.tezosProvider, this.keysStore);
 					setTimeout(() => {
-						//console.log(this.result);
+						console.log(this.result);
 					}, 2000);
 				}
 			}
@@ -184,7 +183,10 @@ export class ContractsComponent implements OnInit {
 				setTimeout(()=>{
 					this.cont_txs=[];
 					this.totalcontract=0;
-					this.contractData= JSON.parse(localStorage.getItem('contractsData'));					
+					// this.contractData= JSON.parse(localStorage.getItem('contractsData'));
+					this.tempcontData=JSON.parse(this._AppService.getLocalConfigData());
+					this.contractData=this.tempcontData["contracts"];
+					console.log(this.contractData);				
 					this.totalcontract=this.contractData.length;
 					if(this.contractData.length > 0){
 						for(var transdata of this.contractData){

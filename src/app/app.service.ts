@@ -48,13 +48,13 @@ export class AppService {
 		return ajax;
 	}
 	loadtransactionData(key: any): Observable < transactionType[] > {
-		this._transactionURL = ' https://tezos-dev.cryptonomic-infra.tech/v3/operations/' + key + '?type=Transaction&p=0&number=' + (this.maxTxs + 1);
+		this._transactionURL = ' https://babylonnet.tzstats.com/' + key;
 		console.log(this._transactionURL);
 		const transajax = this.http.get < transactionType[] > (this._transactionURL).catch(this.errorHandler);
 		transajax.subscribe(this._transactionDataResponse.bind(this));
 		return transajax;
 	}
-	protected _onConfigDataResponse(data: any) {
+	public _onConfigDataResponse(data: any) {
 		this.configData = data;
 		this.setLocalConfigData(data);
 	}
@@ -128,8 +128,8 @@ export class AppService {
 		let initValue = '\"' + init + '\"';
 		let res: any;
 		try {
-			const result = await conseiljs.TezosNodeWriter.sendContractOriginationOperation(tezosProvider, keysStore, 0, undefined, false, true, 100000, '', 1000, 100000, contract, initValue, conseiljs.TezosParameterFormat.Michelson);
-
+			const result = await conseiljs.TezosNodeWriter.sendContractOriginationOperation(tezosProvider, keysStore, 0, undefined, 100000, '', 1000, 100000, contract, initValue, conseiljs.TezosParameterFormat.Michelson);
+						   //  conseiljs.TezosNodeWriter.sendContractOriginationOperation(tezosNode, keystore, 0, undefined,100000, '', 1000, 100000, contract, initValue, conseiljs.TezosParameterFormat.Michelson);
 			if (result.results) {
 				switch (result.results.contents[0].metadata.operation_result.status) {
 					case 'applied':
@@ -141,6 +141,7 @@ export class AppService {
 							"identity": keys,
 							"IntialValue":initValue
 						};
+						console.log(this.contractData);
 						this.contObj = JSON.parse(this.getLocalConfigData());
 						this.contObj.contracts.push(this.contractData);
 						this.setLocalConfigData(this.contObj);
@@ -166,9 +167,10 @@ export class AppService {
 		let initValue = '\"' + init + '\"';
 		let res: any;		
 		try {
-			let result = await conseiljs.TezosNodeWriter.sendContractInvocationOperation(
-				tezosProvider, keysStore, keys, 0, 100000, '', 1000, 100000, initValue, conseiljs.TezosParameterFormat.Michelson);
-			if (result.results) {
+			let result = await conseiljs.TezosNodeWriter.sendContractInvocationOperation(tezosProvider, keysStore, keys, 0, 100000, '', 1000, 100000,undefined, initValue, conseiljs.TezosParameterFormat.Michelson);
+							// conseiljs.TezosNodeWriter.sendContractInvocationOperation(tezosNode, keystore, contractAddress, 0, 100000, '', 1000, 100000, undefined, argument, conseiljs.TezosParameterFormat.Michelson);
+							
+				if (result.results) {
 				switch (result.results.contents[0].metadata.operation_result.status) {
 					case 'applied':
 						let opHash = result.operationGroupID.slice(1, result.operationGroupID.length - 2);

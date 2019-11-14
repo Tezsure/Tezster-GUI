@@ -14,9 +14,10 @@ export class AlphanetComponent implements OnInit {
   	constructor(public bsModalRef: BsModalRef, private _AppService: AppService, private modalService: ModalService) { }
 
 	onClick(): void {
-    eztz.node.setProvider(this.userData);
+    	eztz.node.setProvider(this.userData);
 		this._AppService.setProviderData(this.userData);
 		this.modalService.closeModal('alphanet');
+		window.location.reload();
 	}
 
 	onNoClick(): void {

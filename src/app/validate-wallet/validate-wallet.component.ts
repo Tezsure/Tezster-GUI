@@ -49,7 +49,8 @@ export class ValidateWalletComponent implements OnInit {
 		this.modalService.closeModal('validate');
 		this.modalService.closeModal('create');
 		alert("New account "+this.label+ " has been created with Identity" + this.account);
-		this.router.navigate(['/accounts']);    
+		window.location.reload();
+		//this.router.navigate(['/accounts']);    
   	}
     
 	ngOnInit() {
