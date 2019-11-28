@@ -38,33 +38,32 @@ export class TransactionComponent implements OnInit {
 				setTimeout(()=>{
 					this.txs=[];
 					this.totalTransaction=0;
-					this.transactionData= JSON.parse(localStorage.getItem('transactionData'));
-					// console.log("from alphanet",this.transactionData);
-					this.totalTransaction=this.transactionData.length;
+					this.transactionData= JSON.parse(localStorage.getItem('transactionData'));					
+					this.totalTransaction=this.transactionData.length;					
 					if(this.transactionData.length > 0){
 						for(var trans of this.transactionData){
-							for(var oper of trans.type.operations){
-								if(oper.kind !='transaction' ) continue;
-									var fee=oper.fee;
-									var amount=oper.amount;
+							console.log(trans.tx);															
+								if(trans.tx.kind !='transaction' ) continue;
+									var fee=trans.tx.fee;
+									var amount=trans.tx.amount;
 									var status="Sent";
-								if(oper.src.tz !=this.accountpkh){
+								if(trans.tx.source !=this.accountpkh){
 									status="Received";
 								}
-								if(oper.failed){
+								if(trans.tx.failed){
 									status="Transaction Failed";
 								}
 								this.txs.push({
 									"amount" : (amount/1000000).toFixed(3)+" Tz",
 									"fee" : (fee/1000000).toFixed(3)+" Tz",
-									"destination" : oper.destination.tz,
-									"hash" : trans.hash,
-									"source" : oper.src.tz,
-									"time" : oper.timestamp,
-									"operationHash" : trans.hash,
+									"destination" : trans.tx.destination,
+									"hash" : trans.tx.blockHash,
+									"source" : trans.tx.source,
+									"time" : trans.tx.insertedTimestamp,
+									"operationHash" : trans.op.opHash,
 									"status":status
 								});
-							}
+							
 						}
 
 					}
