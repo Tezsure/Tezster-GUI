@@ -47,8 +47,8 @@ export class AppService {
 		ajax.subscribe(this._onConfigDataResponse.bind(this));
 		return ajax;
 	}
-	loadtransactionData(key: any): Observable < transactionType[] > {
-		this._transactionURL = ' https://babylonnet.tzstats.com/' + key;
+	loadtransactionData(key: any): Observable < transactionType[] > {		
+		this._transactionURL = 'https://api.tezos.id/mooncake/babylonnet/v1/transactions?p=0&n=10&account='+key;
 		console.log(this._transactionURL);
 		const transajax = this.http.get < transactionType[] > (this._transactionURL).catch(this.errorHandler);
 		transajax.subscribe(this._transactionDataResponse.bind(this));
@@ -58,11 +58,11 @@ export class AppService {
 		this.configData = data;
 		this.setLocalConfigData(data);
 	}
-	protected _transactionDataResponse(data: any) {
+	protected _transactionDataResponse(data: any) {		
 		this.setLocaltransactionData(data);
 	}
 	public setLocaltransactionData(data: string) {
-		data = JSON.stringify(data);
+		data = JSON.stringify(data);		
 		localStorage.setItem('transactionData', data);
 	}
 	public setLocalConfigData(data: string) {
