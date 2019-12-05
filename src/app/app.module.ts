@@ -24,6 +24,18 @@ import { SelectDropDownModule } from 'ngx-select-dropdown';
 import { BlankDataComponent } from './blank-data/blank-data.component';
 import { SendtransactionComponent } from './sendtransaction/sendtransaction.component';
 import { TransferPreviewComponent } from './transfer-preview/transfer-preview.component';
+import {MatButtonModule} from '@angular/material/button'
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatInputModule, MatOptionModule,MatDialogModule, MatSelectModule,
+        MatTableModule, MatIconModule, MatChipsModule, MatCheckboxModule,
+        MatDatepickerModule, MatTooltipModule, MatProgressSpinnerModule,
+        MatNativeDateModule,MatSnackBarModule,MatProgressBarModule,
+        MatPaginatorModule, MatStepperModule, MatMenuModule, MatGridListModule} from '@angular/material';
+
+import {MatToolbarModule} from '@angular/material/toolbar';
+import { ReactiveFormsModule} from '@angular/forms';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatTabsModule} from '@angular/material/tabs';
 
 
 @NgModule({
@@ -63,7 +75,15 @@ import { TransferPreviewComponent } from './transfer-preview/transfer-preview.co
 		FormsModule,
 		ModalModule.forRoot(),
 		FontAwesomeModule,
-		SelectDropDownModule
+		SelectDropDownModule,
+		MatTabsModule,
+		MatSidenavModule, MatToolbarModule,
+    	ReactiveFormsModule, MatFormFieldModule,MatInputModule,
+    	MatOptionModule, MatSelectModule, MatButtonModule, MatDialogModule,
+    	MatTableModule, MatIconModule, MatChipsModule, MatCheckboxModule,
+    	MatDatepickerModule,MatTooltipModule,MatProgressSpinnerModule,
+    	MatNativeDateModule,MatSnackBarModule,MatProgressBarModule,MatPaginatorModule,
+    	MatStepperModule, MatMenuModule, MatGridListModule
 	],
 	providers: [AppService],
 	bootstrap: [AppComponent]

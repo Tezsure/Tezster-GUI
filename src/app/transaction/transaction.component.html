@@ -1,26 +1,39 @@
-<div id="walletDropdown" style="font-family: 'Roboto'">
-	<h4 id="text">Select Wallet</h4>
-	<select [(ngModel)]="accountpkh" (change)="selected()">
-		<option *ngFor="let account of configData.accounts" [ngValue]="account.pkh">{{account.pkh}}</option>
-	</select>&nbsp;&nbsp;<span *ngIf="totalTransaction">No of transaction : {{totalTransaction}}</span>
-	<button class="btn btn-success" (click)="openDialogForSend()">Send Tezos</button>
-</div>
-<hr>
-<div id="transactions" *ngIf='transactionData.length > 0'>
-	<table id='transactionData' *ngIf='transactionData.length > 0'>
-		<tr>
-			<th>From</th>
-			<th>To</th>
-			<th>amount</th>
-			<th>OpHash</th>
-			<th>Status</th>
-		</tr>
-		<tr *ngFor="let trans of txs">
-			<td>{{trans.source}}</td>
-			<td>{{trans.destination}}</td>
-			<td>{{trans.amount}}</td>
-			<td>{{trans.hash}}</td>
-			<td>{{trans.status}}</td>
-		</tr>
-	</table>
-</div>
+<mat-tab-group mat-align-tabs="end">
+		<mat-tab label="Txn History">
+			<div id="walletDropdown" style="font-family: 'Roboto'">
+				<h4 id="text">Select Wallet</h4>
+				<select [(ngModel)]="accountpkh" (change)="selected()">
+					<option *ngFor="let account of configData.accounts" [ngValue]="account.pkh">{{account.pkh}}</option>
+				</select>&nbsp;&nbsp;<span *ngIf="totalTransaction">No of transaction : {{totalTransaction}}</span>
+			</div>
+			<hr>
+			<div id="transactions" *ngIf='transactionData.length > 0'>
+				<table id='transactionData' *ngIf='transactionData.length > 0'>
+					<tr>
+						<th>From</th>
+						<th>To</th>
+						<th>amount</th>
+						<th>OpHash</th>
+						<th>Status</th>
+					</tr>
+					<tr *ngFor="let trans of txs">
+						<td>{{trans.source}}</td>
+						<td>{{trans.destination}}</td>
+						<td>{{trans.amount}}</td>
+						<td>{{trans.hash}}</td>
+						<td>{{trans.status}}</td>
+					</tr>
+				</table>
+			</div>
+		</mat-tab>
+		<mat-tab label="Pay Tezos">
+			<div id="walletDropdown" style="font-family: 'Roboto'">
+				<h4 id="text">Select Wallet</h4>
+				<select [(ngModel)]="accountpkh" (change)="selected()">
+					<option *ngFor="let account of configData.accounts" [ngValue]="account.pkh">{{account.pkh}}</option>
+				</select>
+				<button class="btn btn-success" (click)="openDialogForSend()">Send Tezos</button>
+			</div></mat-tab>		
+	  </mat-tab-group>
+
+

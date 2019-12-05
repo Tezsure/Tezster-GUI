@@ -23,12 +23,16 @@
               "src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.css",
               "node_modules/font-awesome/css/font-awesome.css",
               "node_modules/ngx-select-dropdown/dist/assets/style.css"
             ],
-            "scripts": ["src/vendor/eztz.min.js","src/vendor/conseiljs.min.js"]
+            "scripts": [
+              "src/vendor/eztz.min.js",
+              "src/vendor/conseiljs.min.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -86,6 +90,7 @@
               "src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.css"
             ],
             "scripts": []
@@ -117,6 +122,7 @@
           }
         }
       }
-    }},
+    }
+  },
   "defaultProject": "Tezster-GUI"
 }
