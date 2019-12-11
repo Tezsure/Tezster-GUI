@@ -48,7 +48,7 @@ export class ValidateWalletComponent implements OnInit {
         this._AppService.setLocalConfigData(this.obj);
 		this.modalService.closeModal('validate');
 		this.modalService.closeModal('create');
-		alert("New account "+this.label+ " has been created with Identity" + this.account);
+		this._AppService.openSnackBar("New account "+this.label+ " has been created with Identity" + this.account);
 		window.location.reload();
 		//this.router.navigate(['/accounts']);    
   	}

@@ -15,6 +15,7 @@ export class AppComponent implements OnInit {
     constructor(public _AppService: AppService) { }
 
     ngOnInit(): void {
+        this._AppService.openSnackBar("Tezster GUI : Application installed successfully.. ");
         this.obj = JSON.parse(this._AppService.getLocalConfigData());
         if(this.obj){
             this._AppService._onConfigDataResponse(this.obj);

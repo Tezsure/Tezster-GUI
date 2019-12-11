@@ -5,6 +5,8 @@ import { transactionType } from '../assets/transactionType';
 import { Observable, BehaviorSubject } from 'rxjs';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
+import {MatSnackBar} from '@angular/material/snack-bar';
+
 
 declare var eztz: any;
 declare var conseiljs: any;
@@ -39,9 +41,15 @@ export class AppService {
 		"time": any
 	};
 	public contObj;
-	constructor(private http: HttpClient) {
+	constructor(private http: HttpClient, private _AlertSnackBar: MatSnackBar) {
 		this.configDataChangeObs$ = new BehaviorSubject < any > (null);
 	}
+
+	openSnackBar(message: string) {
+		this._AlertSnackBar.open(message, 'close', {
+		  duration: 4000,
+		});
+	  }
 	fetchConfigData(): Observable < configDataTpye[] > {
 		const ajax = this.http.get < configDataTpye[] > (this._url).catch(this.errorHandler);
 		ajax.subscribe(this._onConfigDataResponse.bind(this));
@@ -146,19 +154,19 @@ export class AppService {
 						this.contObj.contracts.push(this.contractData);
 						this.setLocalConfigData(this.contObj);
 						res = `contract ${label} has been deployed at ${this.opHash}`;
-						alert(res);
+						this.openSnackBar(res);
 						return res;
 					case 'failed':
 					default:
 						res = "Contract deployment has failed :" + result.results.contents[0].metadata.operation_result;
-						alert(res);
+						this.openSnackBar(res);
 						return res;
 				}
 			}
 			res = "Contract deployment has failed :" + result;
-			alert(res);
+			this.openSnackBar(res);
 		} catch (error) {
-			alert(error);
+			this.openSnackBar(error);
 			return error;
 		}
 	}
@@ -187,17 +195,17 @@ export class AppService {
 						this.obj.transactions.push(this.transHash);						
 						this.setLocalConfigData(this.obj);
 						let res = "Injected operation with hash" + opHash;
-						alert(res);
+						this.openSnackBar(res);
 						return res;
 					case 'failed':
 					default:
 						res = "Contract calling has failed due to node error :" + result.results.contents[0].metadata.operation_result;
-						alert(res);
+						this.openSnackBar(res);
 						return res;
 				}
 			}
 			res = "Contract calling has failed :" + result;
-			alert(res);
+			this.openSnackBar(res);
 			return res;
 		} catch (error) {
 			return error;

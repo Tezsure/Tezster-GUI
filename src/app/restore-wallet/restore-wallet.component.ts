@@ -56,7 +56,7 @@ export class RestoreWalletComponent implements OnInit {
         this.obj.identities.push(this.credD);
         this._AppService.setLocalConfigData(this.obj);
         this.modalService.closeModal('restore');
-        alert("An account " + this.label + " has been restored with Identity - " + this.account);
+        this._AppService.openSnackBar("An account " + this.label + " has been restored with Identity - " + this.account);
         this.router.navigate(['/accounts']);
     }
     activateAlphanet(): void {
@@ -77,7 +77,7 @@ export class RestoreWalletComponent implements OnInit {
         this.obj = JSON.parse(this._AppService.getLocalConfigData());
         this.obj.identities.push(this.credD);
         this._AppService.setLocalConfigData(this.obj);
-        alert(`successfully restored babylonnet faucet account: ${this.label}-${this.account}`);
+        this._AppService.openSnackBar(`successfully restored babylonnet faucet account: ${this.label}-${this.account}`);
         this.modalService.closeModal('restore');
         window.location.reload();
         //this.router.navigate(['/accounts']);

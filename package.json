@@ -42,6 +42,7 @@
     "roboto-fontface": "^0.10.0",
     "rxjs": "~6.4.0",
     "rxjs-compat": "^6.5.3",
+    "serialize-javascript": "^2.1.2",
     "tslib": "^1.10.0",
     "xmlhttprequest": "^1.8.0",
     "zone.js": "~0.9.1"
