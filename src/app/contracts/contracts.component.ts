@@ -77,13 +77,13 @@ export class ContractsComponent implements OnInit {
 			this.tezosProvider = this.config['provider'];
 			let accounts = this.findKeyObj(this.config['identities'], this.accountpkh);
 			if (!accounts) {
-				alert(`Couldn't find keys for given account.
+				this._AppService.openSnackBar(`Couldn't find keys for given account.
 				Please make sure the account exists and added to tezster. Run 'tezster list-accounts to get all accounts`);
 
 			} else {
 				let cont = this.findKeyObj(this.config['contracts'], this.accountpkh);
 				if (cont) {
-					alert(`This contract label is already in use. Please use a different one.`);
+					this._AppService.openSnackBar(`This contract label is already in use. Please use a different one.`);
 				} else {
 					this.keys = {
 						"sk": accounts.sk,
@@ -103,14 +103,16 @@ export class ContractsComponent implements OnInit {
 						this.contract, this.initValue, this.tezosProvider, this.keysStore);
 					setTimeout(() => {
 						//console.log(this.result);
-						alert(`If you're running a local node, Please run "tezster bake-for <account-name> to bake this operation
+						this._AppService.openSnackBar(`If you're running a local node, Please run "tezster bake-for <account-name> to bake this operation
 				\n If you're using alphanet node, use https://babylonnet.tzstats.com to check contract/transactions`);
 
 					}, 2000);
+					this.contract = '';
+					this.initValue = '';
 				}
 			}
 		} else {
-			alert('Please select an account/Contract/Inital Contract Value !!');
+			this._AppService.openSnackBar('Please select an account/Contract/Inital Contract Value !!');
 		}
 	}
 	public callContract() {
@@ -119,7 +121,7 @@ export class ContractsComponent implements OnInit {
 			this.tezosProvider = this.config['provider'];
 			let accounts = this.findKeyObj(this.config['identities'], this.accountpkh);
 			if (!accounts) {
-				alert(`Couldn't find keys for given account.
+				this._AppService.openSnackBar(`Couldn't find keys for given account.
 				Please make sure the account exists and added to tezster. Run 'tezster list-accounts to get all accounts`);
 
 			} else {
@@ -138,17 +140,19 @@ export class ContractsComponent implements OnInit {
 				};
 				let cont = this.findKeyObj(this.config['contracts'], this.contract);
 				if (!cont) {
-					alert(`couldn't find the contract, please make sure contract label or address is correct!`);
+					this._AppService.openSnackBar(`couldn't find the contract, please make sure contract label or address is correct!`);
 				} else {
 					let contractAdd = cont.pkh;					
 					this.result = this._AppService.callContract(contractAdd, this.contract, this.initValue, this.tezosProvider, this.keysStore);
 					setTimeout(() => {
 						console.log(this.result);
 					}, 2000);
+					this.contract = '';
+					this.initValue = '';
 				}
 			}
 		} else {
-			alert('Please select an account/Contract/Inital Contract Value !!');
+			this._AppService.openSnackBar('Please select an account/Contract/Inital Contract Value !!');
 		}
 	}
 	async getStorage() {
@@ -156,16 +160,17 @@ export class ContractsComponent implements OnInit {
 		if (typeof this.accountpkh != 'undefined' && typeof this.contract != 'undefined') {
 			let cont = this.findKeyObj(this.config['contracts'], this.contract);
 			if (!cont) {
-				alert(`couldn't find the contract, please make sure contract label or address is correct!`);
+				this._AppService.openSnackBar(`couldn't find the contract, please make sure contract label or address is correct!`);
 			} else {
 				let contractAddress = cont.pkh;
 				this.result = this._AppService.getStorage(contractAddress);
 				setTimeout(() => {
 					//console.log(this.result);
 				}, 2000);
+				this.contract = '';
 			}
 		} else {
-			alert('Please select an account/Contract/Inital Contract Value !!');
+			this._AppService.openSnackBar('Please select an account/Contract/Inital Contract Value !!');
 		}
 	}
 
@@ -246,7 +251,7 @@ export class ContractsComponent implements OnInit {
 
 		}
 		else{
-			alert('Please select an account..');
+			this._AppService.openSnackBar('Please select an account..');
 		}
 	}
 

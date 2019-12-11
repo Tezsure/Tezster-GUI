@@ -30,7 +30,9 @@ import {MatInputModule, MatOptionModule,MatDialogModule, MatSelectModule,
         MatTableModule, MatIconModule, MatChipsModule, MatCheckboxModule,
         MatDatepickerModule, MatTooltipModule, MatProgressSpinnerModule,
         MatNativeDateModule,MatSnackBarModule,MatProgressBarModule,
-        MatPaginatorModule, MatStepperModule, MatMenuModule, MatGridListModule} from '@angular/material';
+		MatPaginatorModule, MatStepperModule, MatMenuModule, MatGridListModule} from '@angular/material';
+
+
 
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { ReactiveFormsModule} from '@angular/forms';
@@ -83,7 +85,7 @@ import {MatTabsModule} from '@angular/material/tabs';
     	MatTableModule, MatIconModule, MatChipsModule, MatCheckboxModule,
     	MatDatepickerModule,MatTooltipModule,MatProgressSpinnerModule,
     	MatNativeDateModule,MatSnackBarModule,MatProgressBarModule,MatPaginatorModule,
-    	MatStepperModule, MatMenuModule, MatGridListModule
+		MatStepperModule, MatMenuModule, MatGridListModule,
 	],
 	providers: [AppService],
 	bootstrap: [AppComponent]

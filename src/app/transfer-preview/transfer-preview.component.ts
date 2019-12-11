@@ -35,9 +35,9 @@ import { Router } from '@angular/router';
 	setTimeout(() => {
 		this.keys = JSON.parse(localStorage.getItem("keys"));
 		if (this.configData["provider"] == " https://tezos-dev.cryptonomic-infra.tech/" && this.result != '') {
-			alert("\nTransfer complete - operation hash #" + this.result + "for alphanet you can visit <a href=' https://tezos-dev.cryptonomic-infra.tech/'" + this.result + '>' + this.result + "</a>");
+			this._AppService.openSnackBar("\nTransfer complete - operation hash #" + this.result + "for alphanet you can visit <a href=' https://tezos-dev.cryptonomic-infra.tech/'" + this.result + '>' + this.result + "</a>");
 		} else if (this.configData["provider"] == " https://tezos-dev.cryptonomic-infra.tech/" && this.result == '') {
-			alert("\nTransfer Failed !! for alphanet you can visit <a href=' https://tezos-dev.cryptonomic-infra.tech/'></a>");
+			this._AppService.openSnackBar("\nTransfer Failed !! for alphanet you can visit <a href=' https://tezos-dev.cryptonomic-infra.tech/'></a>");
 		} else if (this.result != '') {
 			this.transHash = {
 				"operation": "transfer",
@@ -52,9 +52,9 @@ import { Router } from '@angular/router';
 			this.obj = JSON.parse(this._AppService.getLocalConfigData());
 			this.obj.transactions.push(this.transHash);
 			this._AppService.setLocalConfigData(this.obj);
-			alert("\nTransfer complete - operation hash #" + this.result + "\n Please run 'tezster bake-for <account-name>' to bake this operation");
+			this._AppService.openSnackBar("\nTransfer complete - operation hash #" + this.result + "\n Please run 'tezster bake-for <account-name>' to bake this operation");
 		} else {
-			alert("Transfer Failed");
+			this._AppService.openSnackBar("Transfer Failed");
 			this.transHash = {
 				"operation": "transfer",
 				"hash": "",
