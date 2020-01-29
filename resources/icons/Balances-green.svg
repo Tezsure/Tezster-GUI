@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22.019" height="22.019" viewBox="0 0 22.019 22.019">
+  <g id="Balances" transform="translate(1 -0.251)">
+    <g id="_24px_wallet-90" data-name="24px_wallet-90" transform="translate(0 1.251)" opacity="0.8">
+      <path id="Path" d="M5,0H2A1.942,1.942,0,0,0,0,1.877H0A1.942,1.942,0,0,0,2,3.753" transform="translate(0 1.251)" fill="none" stroke="#3dcc8e" stroke-linecap="square" stroke-miterlimit="10" stroke-width="2"/>
+      <path id="Path-2" data-name="Path" d="M0,5V0H12.512V5" transform="translate(5.005)" fill="none" stroke="#3dcc8e" stroke-linecap="square" stroke-miterlimit="10" stroke-width="2"/>
+      <path id="Path-3" data-name="Path" d="M20.019,1.807H1.82A1.813,1.813,0,0,1,0,0V13.554a2.72,2.72,0,0,0,2.73,2.711H20.019Z" transform="translate(0 3.753)" fill="none" stroke="#3dcc8e" stroke-linecap="square" stroke-miterlimit="10" stroke-width="2"/>
+      <circle id="Oval" cx="2" cy="2" r="2" transform="translate(12.693 11.209)" fill="none" stroke="#3dcc8e" stroke-linecap="square" stroke-miterlimit="10" stroke-width="2"/>
+    </g>
+  </g>
+</svg>

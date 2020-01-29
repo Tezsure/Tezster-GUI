@@ -1,0 +1,24 @@
+.accounts-container {
+  padding: 10px;
+  background: #fff;
+  margin-top: 10px;
+}
+.accounts-table-container {
+  background-color: #ffff !important;
+  color: #727d95 !important;
+  font-weight: 700;
+}
+.icon-key {
+  background: url('../../../resources/icons/Group 7.svg');
+  display: inline-flex;
+  height: 2rem;
+  width: 2rem;
+  background-repeat: no-repeat;
+}
+.accounts-table-container {
+  overflow-y: scroll;
+  max-height: 380px;
+}
+p {
+  word-break: break-all;
+}

@@ -1,0 +1,72 @@
+.container-dashboard {
+  background-color: #cccc;
+  padding: 10px;
+  overflow: hidden;
+}
+.cards {
+  padding: 10px;
+  background-color: #ffff;
+  color: #727d95;
+  font-weight: 700;
+  font-size: 0.875rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.cards-header > h4 {
+  font-size: 0.875rem;
+  color: #727d95 !important;
+}
+.cards-contents > p {
+  font-size: 0.875rem;
+  color: #727d95 !important;
+  margin-bottom: 0;
+}
+.cards-container {
+  display: inline-flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.save-button {
+  width: 50%;
+  border: 1px solid #39b999;
+  color: #fff;
+  background-color: #39b999;
+  padding-right: 18px;
+  padding-left: 18px;
+  font-size: medium;
+  align-self: center;
+  text-align: center;
+  border-radius: 15px 0 0 15px;
+}
+.switch-button {
+  width: 50%;
+  border: 1px solid #39b999;
+  color: #fff;
+  background-color: #39b999;
+  padding-right: 18px;
+  padding-left: 18px;
+  font-size: medium;
+  align-self: center;
+  text-align: center;
+  border-radius: 0 15px 15px 0;
+  border-left: 1px solid #fff;
+}
+.button-card {
+  display: flex;
+  flex-direction: row;
+}
+
+.dashboard-header {
+  overflow: hidden;
+  background-color: #fff;
+}
+@media only screen and (max-width: 1050px) {
+  .dashboard-header {
+    overflow-x: scroll;
+  }
+}
+h4 {
+  color: #727d95 !important;
+}

@@ -1,0 +1,43 @@
+.container-sidebar {
+  background-color: #f1f3f5;
+  overflow: auto;
+}
+.sidebar-content-container {
+  list-style: none;
+  padding-left: 0;
+  line-height: 2.8;
+  padding-top: 50px;
+}
+.sidebar-content {
+  cursor: pointer;
+  color: #727d95;
+  padding-left: 2.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  font-weight: 700;
+  display: flex;
+  flex-direction: row;
+}
+.sidebar-content-active {
+  cursor: pointer;
+  color: #727d95;
+  padding-left: 2.3rem;
+  border-left: 0.2rem solid #39b999;
+  background-color: #fff;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  font-weight: 700;
+  display: flex;
+  flex-direction: row;
+}
+.sidebar-content-active > svg {
+  color: #09ba97;
+  font-weight: 700;
+}
+.sidebar-text-collapsed {
+  display: none;
+}
