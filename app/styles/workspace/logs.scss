@@ -1,0 +1,15 @@
+.logs-container > .cards-container {
+  height: 500px;
+}
+.logs-container > .cards-container > .cards {
+  width: 100%;
+}
+.logs-container > .cards-container > .cards > .cards-contents {
+  height: 100%;
+  width: 100%;
+  padding: 10px;
+  background-color: #f1f3f5;
+}
+.logs-container > .cards-container > .cards > .cards-header {
+  padding: 10px 0 10px 0;
+}

@@ -1,0 +1,21 @@
+.events-table-container {
+  overflow-y: scroll;
+  max-height: 500px;
+  background-color: #ffff !important;
+  color: #727d95 !important;
+  font-weight: 700;
+  padding: 10px;
+}
+.events-table-container > table {
+  background-color: #f1f3f5 !important;
+}
+.events-table-container .cards-container {
+  background-color: #f1f3f5 !important;
+}
+.events-table-container .cards-container .cards {
+  background-color: #f1f3f5 !important;
+}
+.events-container {
+  background-color: #f1f3f5 !important;
+  padding: 10px;
+}
