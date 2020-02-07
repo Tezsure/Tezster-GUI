@@ -1,7 +1,19 @@
 .transaction-container {
   padding: 10px;
   background: #fff;
-  margin-top: 10px;
+  border-top: 0.5px solid #dee2e6;
+}
+.transaction-status-button {
+  background-color: #727d95;
+  padding: 4px 18px 4px 18px;
+  border-radius: 18px;
+  color: #fff;
+}
+.transaction-container .cards {
+  justify-content: flex-end !important;
+}
+.transaction-container p {
+  word-break: break-all;
 }
 .transaction-status-button {
   background-color: #727d95;

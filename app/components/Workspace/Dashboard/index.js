@@ -11,6 +11,7 @@ import Settings from '../Settings';
 import Header from './Header';
 
 function Dashboard(props) {
+  console.log('Dashboard====>>>>', props);
   let DashboardContent = <Accounts {...props} />;
   if (props.currentTab === 'accounts') {
     DashboardContent = <Accounts {...props} />;
@@ -31,7 +32,7 @@ function Dashboard(props) {
   }
   return (
     <main className="container-dashboard">
-      <Header />
+      <Header {...props} />
       {DashboardContent}
     </main>
   );

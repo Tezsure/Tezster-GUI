@@ -1,20 +1,29 @@
 import React from 'react';
 
-function Header() {
+function Header(props) {
+  const {
+    currentBlock,
+    gasPrice,
+    gasLimit,
+    chainId,
+    rpcServer
+  } = props.dashboardHeader;
   return (
     <div className="dashboard-header">
       <div className="cards-container">
         <div className="cards">
           <div className="cards-header">
-            <h4>00</h4>
+            <h4 title="running">
+              <span className="active-status" />
+            </h4>
           </div>
           <div className="cards-contents">
-            <p>Current Block</p>
+            <p>Status</p>
           </div>
         </div>
         <div className="cards">
           <div className="cards-header">
-            <h4>$6000000</h4>
+            <h4>${gasPrice}</h4>
           </div>
           <div className="cards-contents">
             <p>Gas Price</p>
@@ -22,40 +31,26 @@ function Header() {
         </div>
         <div className="cards">
           <div className="cards-header">
-            <h4>
-              <i
-                className="fas fa-long-arrow-alt-up"
-                style={{ color: '#30d530' }}
-              />{' '}
-              Petersburg
-            </h4>
+            <h4>${gasLimit}</h4>
           </div>
           <div className="cards-contents">
-            <p>Hard Fork</p>
+            <p>Gas Limit</p>
           </div>
         </div>
         <div className="cards">
           <div className="cards-header">
-            <h4>17156</h4>
+            <h4>{chainId}</h4>
           </div>
           <div className="cards-contents">
-            <p>Network Id</p>
+            <p>Chain Id</p>
           </div>
         </div>
         <div className="cards">
           <div className="cards-header">
-            <h4>https://127.0.0.1:7545</h4>
+            <h4>{rpcServer}</h4>
           </div>
           <div className="cards-contents">
             <p>Rpc Server</p>
-          </div>
-        </div>
-        <div className="cards">
-          <div className="cards-header">
-            <h4>automining</h4>
-          </div>
-          <div className="cards-contents">
-            <p>Mining status</p>
           </div>
         </div>
         <div className="cards">

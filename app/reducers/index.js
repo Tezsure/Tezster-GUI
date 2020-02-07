@@ -8,6 +8,8 @@ import {
   currentTab,
   blockAccordionIndex
 } from './Workspace/sidebar';
+import { userAccounts, userBalances } from './Workspace/accounts';
+import dashboardHeader from './Workspace/dashboardHeader';
 
 export default function createRootReducer(history: HashHistory) {
   return combineReducers<{}, *>({
@@ -15,6 +17,9 @@ export default function createRootReducer(history: HashHistory) {
     counter,
     sidebarToggleState,
     blockAccordionIndex,
+    dashboardHeader,
+    userAccounts,
+    userBalances,
     currentTab
   });
 }
