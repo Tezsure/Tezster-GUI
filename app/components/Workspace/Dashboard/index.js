@@ -11,7 +11,6 @@ import Settings from '../Settings';
 import Header from './Header';
 
 function Dashboard(props) {
-  console.log('Dashboard====>>>>', props);
   let DashboardContent = <Accounts {...props} />;
   if (props.currentTab === 'accounts') {
     DashboardContent = <Accounts {...props} />;

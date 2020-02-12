@@ -10,6 +10,11 @@ import {
 } from './Workspace/sidebar';
 import { userAccounts, userBalances } from './Workspace/accounts';
 import dashboardHeader from './Workspace/dashboardHeader';
+import {
+  userTransactions,
+  selectedWallet,
+  transactionsSuccess
+} from './Workspace/transactions';
 
 export default function createRootReducer(history: HashHistory) {
   return combineReducers<{}, *>({
@@ -20,6 +25,9 @@ export default function createRootReducer(history: HashHistory) {
     dashboardHeader,
     userAccounts,
     userBalances,
+    userTransactions,
+    transactionsSuccess,
+    selectedWallet,
     currentTab
   });
 }

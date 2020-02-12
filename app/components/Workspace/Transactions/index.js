@@ -1,199 +1,87 @@
-import React from 'react';
+import React, { Component } from 'react';
+import TransactionModal from './TransactionModal';
+import TransactionTable from './TransactionTable';
 
-function Transactions() {
-  return (
-    <div className="transaction-container">
-      <div className="transactions-contents">
-        <div className="cards-container">
-          <div className="cards">
-            <div className="cards-header">
-              <h4>TX HASH</h4>
-            </div>
-            <div className="cards-contents">
-              <p>0jkdhwio3789652332897asjhas732askjhc89yekqj2</p>
-            </div>
-          </div>
-          <div className="cards">
-            <div className="cards-contents">
-              <span className="transaction-status-button">
-                CONTRACT CREATION
-              </span>
-            </div>
-          </div>
-        </div>
-        <div className="transaction-table-container">
-          <table className="table table-bordered">
-            <tbody>
-              <tr className="table-row">
-                <td className="table-body-cell">
-                  <div className="cards-header">
-                    <h4>FROM ADDRESS</h4>
-                  </div>
-                  <div className="cards-contents">
-                    <p className="account-address-content">
-                      0jkdhwio3789652332897asjhas732askjhc89yekqj2
-                    </p>
-                  </div>
-                </td>
-                <td className="table-body-cell">
-                  <div className="cards-header">
-                    <h4>TO ADDRESS</h4>
-                  </div>
-                  <div className="cards-contents">
-                    <p className="account-address-content">
-                      0jkdhwio3789652332897asjhas732askjhc89yekqj2
-                    </p>
-                  </div>
-                </td>
-                <td className="table-body-cell">
-                  <div className="cards-header">
-                    <h4>GAS USED</h4>
-                  </div>
-                  <div className="cards-contents">
-                    <p className="account-address-content">280000</p>
-                  </div>
-                </td>
-                <td className="table-body-cell">
-                  <div className="cards-header">
-                    <h4>VALUE</h4>
-                  </div>
-                  <div className="cards-contents">
-                    <p className="account-address-content">0</p>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div className="transactions-contents">
-        <div className="cards-container">
-          <div className="cards">
-            <div className="cards-header">
-              <h4>TX HASH</h4>
-            </div>
-            <div className="cards-contents">
-              <p>0jkdhwio3789652332897asjhas732askjhc89yekqj2</p>
+class Transactions extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showModal: false,
+      selectedAccount: '0'
+    };
+    this.handleModalToggle = this.handleModalToggle.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+  }
+
+  handleInputChange(event) {
+    this.props.selectWalletAction({
+      accountId: event.target.value,
+      ...this.props
+    });
+  }
+
+  handleModalToggle() {
+    this.setState({ showModal: !this.state.showModal });
+  }
+
+  render() {
+    console.log('====>>>>', this.props);
+    const Accounts = this.props.userAccounts.map(elem => (
+      <option key={elem.contracts} value={elem.contracts}>
+        {elem.contracts}
+      </option>
+    ));
+    const Transactions =
+      this.props.userTransactions.length > 0 ? (
+        <TransactionTable {...this.props} />
+      ) : (
+        <div>No Transactions To Display</div>
+      );
+    return (
+      <>
+        <div className="transaction-container">
+          <div className="cards-container">
+            <div className="cards button-card accounts-button-container">
+              <div className="button-accounts">
+                <button
+                  type="button"
+                  onClick={this.handleModalToggle}
+                  className="btn btn-success"
+                >
+                  Transfer Tezos
+                </button>
+              </div>
             </div>
           </div>
-          <div className="cards">
-            <div className="cards-contents">
-              <span className="transaction-status-button">
-                CONTRACT CREATION
-              </span>
+          <div className="transactions-contents">
+            <div className="modal-input">
+              <div className="input-container">Select Wallet </div>
+              <select
+                className="custom-select"
+                name="accounts"
+                onChange={this.handleInputChange}
+                value={this.props.selectedWallet}
+              >
+                <option value="0" disabled>
+                  Select account to display transactions
+                </option>
+                {Accounts}
+              </select>
             </div>
           </div>
+          <div className="transactions-contents">{Transactions}</div>
+          {this.state.showModal ? (
+            <TransactionModal
+              {...this.props}
+              handleModalToggle={this.handleModalToggle}
+            />
+          ) : (
+            <></>
+          )}
         </div>
-        <div className="transaction-table-container">
-          <table className="table table-bordered">
-            <tbody>
-              <tr className="table-row">
-                <td className="table-body-cell">
-                  <div className="cards-header">
-                    <h4>FROM ADDRESS</h4>
-                  </div>
-                  <div className="cards-contents">
-                    <p className="account-address-content">
-                      0jkdhwio3789652332897asjhas732askjhc89yekqj2
-                    </p>
-                  </div>
-                </td>
-                <td className="table-body-cell">
-                  <div className="cards-header">
-                    <h4>TO ADDRESS</h4>
-                  </div>
-                  <div className="cards-contents">
-                    <p className="account-address-content">
-                      0jkdhwio3789652332897asjhas732askjhc89yekqj2
-                    </p>
-                  </div>
-                </td>
-                <td className="table-body-cell">
-                  <div className="cards-header">
-                    <h4>GAS USED</h4>
-                  </div>
-                  <div className="cards-contents">
-                    <p className="account-address-content">280000</p>
-                  </div>
-                </td>
-                <td className="table-body-cell">
-                  <div className="cards-header">
-                    <h4>VALUE</h4>
-                  </div>
-                  <div className="cards-contents">
-                    <p className="account-address-content">0</p>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div className="transactions-contents">
-        <div className="cards-container">
-          <div className="cards">
-            <div className="cards-header">
-              <h4>TX HASH</h4>
-            </div>
-            <div className="cards-contents">
-              <p>0jkdhwio3789652332897asjhas732askjhc89yekqj2</p>
-            </div>
-          </div>
-          <div className="cards">
-            <div className="cards-contents">
-              <span className="transaction-status-button">
-                CONTRACT CREATION
-              </span>
-            </div>
-          </div>
-        </div>
-        <div className="transaction-table-container">
-          <table className="table table-bordered">
-            <tbody>
-              <tr className="table-row">
-                <td className="table-body-cell">
-                  <div className="cards-header">
-                    <h4>FROM ADDRESS</h4>
-                  </div>
-                  <div className="cards-contents">
-                    <p className="account-address-content">
-                      0jkdhwio3789652332897asjhas732askjhc89yekqj2
-                    </p>
-                  </div>
-                </td>
-                <td className="table-body-cell">
-                  <div className="cards-header">
-                    <h4>TO ADDRESS</h4>
-                  </div>
-                  <div className="cards-contents">
-                    <p className="account-address-content">
-                      0jkdhwio3789652332897asjhas732askjhc89yekqj2
-                    </p>
-                  </div>
-                </td>
-                <td className="table-body-cell">
-                  <div className="cards-header">
-                    <h4>GAS USED</h4>
-                  </div>
-                  <div className="cards-contents">
-                    <p className="account-address-content">280000</p>
-                  </div>
-                </td>
-                <td className="table-body-cell">
-                  <div className="cards-header">
-                    <h4>VALUE</h4>
-                  </div>
-                  <div className="cards-contents">
-                    <p className="account-address-content">0</p>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  );
+      </>
+    );
+  }
 }
 
 export default Transactions;

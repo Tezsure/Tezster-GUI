@@ -1,7 +1,6 @@
 import React from 'react';
 
 function index(props) {
-  console.log('---->>>', props);
   return (
     <div className="blocks-container">
       <div className="blocks-parent">

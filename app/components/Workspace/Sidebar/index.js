@@ -15,7 +15,10 @@ function Sidebar(props) {
               ? 'sidebar-content-active'
               : 'sidebar-content'
           }
-          onClick={() => props.handleTabChangeAction('accounts')}
+          onClick={() => {
+            props.getAccountsAction({ ...this.props });
+            props.handleTabChangeAction('accounts');
+          }}
         >
           <span
             className={

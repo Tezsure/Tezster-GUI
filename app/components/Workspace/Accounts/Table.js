@@ -1,7 +1,6 @@
 import React from 'react';
 
 function Table(props) {
-  console.log('props===>>>>', props);
   const Accounts = props.userAccounts.map(userAccount => {
     return (
       <tr className="table-row" key={userAccount.contracts}>

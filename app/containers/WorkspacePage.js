@@ -12,6 +12,11 @@ import {
   createAccountsAction,
   getBalanceAction
 } from '../actions/Workspace/accounts';
+import {
+  executeTransactionAction,
+  getTransactionsAction,
+  selectWalletAction
+} from '../actions/Workspace/transactions';
 import getDashboardHeaderAction from '../actions/Workspace/dashboardHeader';
 
 class WorkspacePage extends Component {
@@ -26,11 +31,15 @@ class WorkspacePage extends Component {
 const mapDispatchToProps = dispatch => ({
   getBalanceAction: payload => dispatch(getBalanceAction(payload)),
   getAccountsAction: payload => dispatch(getAccountsAction(payload)),
+  getTransactionsAction: payload => dispatch(getTransactionsAction(payload)),
   createAccountsAction: payload => dispatch(createAccountsAction(payload)),
   getDashboardHeaderAction: payload =>
     dispatch(getDashboardHeaderAction(payload)),
   sidebarToggleAction: payload => dispatch(sidebarToggleAction(payload)),
+  selectWalletAction: payload => dispatch(selectWalletAction(payload)),
   handleTabChangeAction: payload => dispatch(handleTabChangeAction(payload)),
+  executeTransactionAction: payload =>
+    dispatch(executeTransactionAction(payload)),
   handleAccordionAction: payload => dispatch(handleAccordionAction(payload))
 });
 const mapStateToProps = state => ({
@@ -39,6 +48,9 @@ const mapStateToProps = state => ({
   userBalances: state.userBalances,
   sidebarToggleState: state.sidebarToggleState,
   blockAccordionIndex: state.blockAccordionIndex,
+  userTransactions: state.userTransactions,
+  selectedWallet: state.selectedWallet,
+  transactionsSuccess: state.transactionsSuccess,
   currentTab: state.currentTab
 });
 
