@@ -94,7 +94,7 @@ export function getCounter(payload, callback) {
       ? localNodeCounters
       : testNodeCounters;
   axios
-    .get(`${__url}/${payload.selectedWallet}/counter`)
+    .get(`${__url}/${payload.senderAccount}/counter`)
     .then(response => {
       callback(null, response.data);
     })
@@ -108,7 +108,7 @@ export function getManagerKey(payload, callback) {
       ? localNodeCounters
       : testNodeCounters;
   axios
-    .get(`${__url}/${payload.selectedWallet}/manager_key`)
+    .get(`${__url}/${payload.senderAccount}/manager_key`)
     .then(response => {
       callback(null, response.data);
     })

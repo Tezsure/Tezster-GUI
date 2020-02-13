@@ -8,7 +8,7 @@ export function userTransactions(initialState = [], action) {
       return initialState;
   }
 }
-export function selectedWallet(initialState = '0', action) {
+export function selectedTransactionWallet(initialState = '0', action) {
   switch (action.type) {
     case 'SELECT_TRANSACTION_ACCOUNT':
       return action.payload;

@@ -16,7 +16,7 @@ function Sidebar(props) {
               : 'sidebar-content'
           }
           onClick={() => {
-            props.getAccountsAction({ ...this.props });
+            props.getAccountsAction({ ...props });
             props.handleTabChangeAction('accounts');
           }}
         >

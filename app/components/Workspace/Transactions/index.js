@@ -6,8 +6,7 @@ class Transactions extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showModal: false,
-      selectedAccount: '0'
+      showModal: false
     };
     this.handleModalToggle = this.handleModalToggle.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -25,7 +24,6 @@ class Transactions extends Component {
   }
 
   render() {
-    console.log('====>>>>', this.props);
     const Accounts = this.props.userAccounts.map(elem => (
       <option key={elem.contracts} value={elem.contracts}>
         {elem.contracts}
@@ -60,7 +58,7 @@ class Transactions extends Component {
                 className="custom-select"
                 name="accounts"
                 onChange={this.handleInputChange}
-                value={this.props.selectedWallet}
+                value={this.props.selectedTransactionWallet}
               >
                 <option value="0" disabled>
                   Select account to display transactions

@@ -5,11 +5,10 @@ const {
   getCounter,
   getManagerKey,
   forgeOperations,
-  preApplyOperations,
-  injectOperation
+  preApplyOperations
 } = require('../app.service.js');
 
-export function selectWalletAction(payload) {
+export function selectTransactionWalletAction(payload) {
   return dispatch => {
     dispatch({
       type: 'SELECT_TRANSACTION_ACCOUNT',
@@ -106,86 +105,6 @@ export function executeTransactionAction(payload) {
             );
           }
         );
-      });
-    });
-  };
-}
-export function getChainIdAction(payload) {
-  return dispatch => {
-    getChainId(payload, (err, response) => {
-      if (err) {
-        dispatch({
-          type: 'GET_CHAIN_ID_ERR',
-          payload: err
-        });
-      }
-      dispatch({
-        type: 'GET_CHAIN_ID',
-        payload: response
-      });
-    });
-  };
-}
-export function getManagerKeyAction(payload) {
-  return dispatch => {
-    getManagerKey(payload, (err, response) => {
-      if (err) {
-        dispatch({
-          type: 'GET_MANAGER_KEY_ERR',
-          payload: err
-        });
-      }
-      dispatch({
-        type: 'GET_MANAGER_KEY',
-        payload: response
-      });
-    });
-  };
-}
-export function forgeOperationAction(payload) {
-  return dispatch => {
-    forgeOperations(payload, (err, response) => {
-      if (err) {
-        dispatch({
-          type: 'FORGE_OPERATION_ERR',
-          payload: err
-        });
-      }
-      dispatch({
-        type: 'FORGE_OPERATION_ERR',
-        payload: response
-      });
-    });
-  };
-}
-export function preApplyOperationsAction(payload) {
-  return dispatch => {
-    preApplyOperations(payload, (err, response) => {
-      if (err) {
-        dispatch({
-          type: 'PRE_APPLY_OPERATIONS_ERR',
-          payload: err
-        });
-      }
-      dispatch({
-        type: 'PRE_APPLY_OPERATIONS',
-        payload: response
-      });
-    });
-  };
-}
-export function injectOperationAction(payload) {
-  return dispatch => {
-    injectOperation(payload, (err, response) => {
-      if (err) {
-        dispatch({
-          type: 'PRE_APPLY_OPERATIONS_ERR',
-          payload: err
-        });
-      }
-      dispatch({
-        type: 'PRE_APPLY_OPERATIONS',
-        payload: response
       });
     });
   };

@@ -12,9 +12,11 @@ import { userAccounts, userBalances } from './Workspace/accounts';
 import dashboardHeader from './Workspace/dashboardHeader';
 import {
   userTransactions,
-  selectedWallet,
+  selectedTransactionWallet,
   transactionsSuccess
 } from './Workspace/transactions';
+
+import selectedContractsTab from './Workspace/contracts';
 
 export default function createRootReducer(history: HashHistory) {
   return combineReducers<{}, *>({
@@ -22,12 +24,13 @@ export default function createRootReducer(history: HashHistory) {
     counter,
     sidebarToggleState,
     blockAccordionIndex,
+    selectedContractsTab,
     dashboardHeader,
     userAccounts,
     userBalances,
     userTransactions,
     transactionsSuccess,
-    selectedWallet,
+    selectedTransactionWallet,
     currentTab
   });
 }
