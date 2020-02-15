@@ -1,8 +1,10 @@
-const { getBlockHeads } = require('../app.service.js');
+const { __getBlockHeads } = require('../../apis/eztz.service');
 
 export default function getBlockHeadsActions(payload) {
-  return dispatch =>
-    getBlockHeads(payload, (err, response) => {
+  debugger;
+
+  return dispatch => {
+    __getBlockHeads(payload, (err, response) => {
       if (err) {
         dispatch({
           type: 'GET_BLOCKS_ERR',
@@ -14,4 +16,5 @@ export default function getBlockHeadsActions(payload) {
         payload: response
       });
     });
+  };
 }

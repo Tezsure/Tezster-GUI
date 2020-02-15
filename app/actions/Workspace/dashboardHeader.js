@@ -1,4 +1,4 @@
-const { getBlockHeads } = require('../app.service.js');
+const { __getBlockHeads } = require('../../apis/eztz.service');
 
 let headerData = {
   chainId: '',
@@ -11,7 +11,7 @@ let headerData = {
 
 export default function getDashboardHeaderAction(payload) {
   return dispatch => {
-    getBlockHeads(payload, (err, response) => {
+    __getBlockHeads({ ...payload }, (err, response) => {
       if (err) {
         dispatch({
           type: 'GET_DASHBOARD_HEADER_ERR',
@@ -20,6 +20,7 @@ export default function getDashboardHeaderAction(payload) {
       }
       headerData = {
         ...headerData,
+        protocol: response.protocol,
         chainId: response.chain_id,
         currentBlock: '00',
         gasLimit: '00',

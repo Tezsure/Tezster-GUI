@@ -1,100 +1,104 @@
-const { getContracts, getBalance } = require('../app.service.js');
+const {
+  __getBalance,
+  __getAccounts,
+  __activateAccount,
+  __generateMnemonic
+} = require('../../apis/eztz.service');
 
-export function getAccountsAction(payload) {
+export function getAccountsAction({ ...params }) {
   return dispatch => {
-    if (
-      localStorage.getItem('reduxState') &&
-      JSON.parse(localStorage.getItem('reduxState')).userAccounts &&
-      JSON.parse(localStorage.getItem('reduxState')).userAccounts.length > 0
-    ) {
-      const accounts = JSON.parse(localStorage.getItem('reduxState'))
-        .userAccounts;
+    if (localStorage.hasOwnProperty('tezsure')) {
       dispatch({
         type: 'GET_ACCOUNTS',
-        payload: accounts
+        payload: JSON.parse(localStorage.getItem('tezsure')).userAccounts
       });
     } else {
-      getContracts(payload.dashboardHeader.networkId, (err, result) => {
+      __getAccounts({ ...params }, (err, accounts) => {
+        debugger;
         if (err) {
           dispatch({
             type: 'GET_ACCOUNTS_ERR',
             payload: err
           });
         }
-        const accountsWithBalance = result.map(async res => {
-          const balance = await getBalanceForAccounts({
-            env: payload.dashboardHeader.networkId,
-            contracts: res
+        Promise.all(accounts).then(response => {
+          localStorage.setItem(
+            'tezsure',
+            JSON.stringify({ userAccounts: response })
+          );
+          dispatch({
+            type: 'GET_ACCOUNTS',
+            payload: response
           });
-          return balance;
         });
-        Promise.all(accountsWithBalance)
-          .then(accounts => {
-            return dispatch({
-              type: 'GET_ACCOUNTS',
-              payload: accounts
-            });
-          })
-          .catch(exceptions => {
-            dispatch({
-              type: 'GET_ACCOUNTS_ERR',
-              payload: exceptions
-            });
-          });
       });
     }
   };
 }
 
-function getBalanceForAccounts(payload) {
-  return new Promise(resolve => {
-    getBalance(
-      { env: payload.env, contracts: payload.contracts },
-      (error, response) => {
-        if (error) {
-          resolve({ contracts: payload.contracts, balance: 0 });
-        }
-        resolve({ contracts: payload.contracts, balance: response });
-      }
-    );
-  });
-}
-
 export function getBalanceAction(payload) {
-  return dispatch =>
-    getBalance(payload.dashboardHeader.networkId, (err, response) => {
-      if (err) {
-        dispatch({
-          type: 'GET_BALANCE_ERR',
-          payload: err
-        });
-      }
+  return dispatch => {
+    if (localStorage.getItem('tezsure')) {
       dispatch({
         type: 'GET_BALANCE',
-        payload: response
+        payload: localStorage.getItem('tezsure').userAccounts
       });
-    });
+    } else {
+      getBalance(payload.dashboardHeader.networkId, (err, response) => {
+        if (err) {
+          dispatch({
+            type: 'GET_BALANCE_ERR',
+            payload: err
+          });
+        }
+        dispatch({
+          type: 'GET_BALANCE',
+          payload: response
+        });
+      });
+    }
+  };
 }
 
 export function createAccountsAction(payload) {
-  const env = payload.dashboardHeader.networkId;
-  if (env === 'Localnode') {
-    payload.userAccounts.push({ contracts: payload.optionalKey, balance: 0 });
-    return {
-      type: 'GET_ACCOUNTS',
-      payload: payload.userAccounts
-    };
-  }
-  const balance = getBalanceForAccounts({
-    env: payload.dashboardHeader.networkId,
-    contracts: payload.optionalKey
-  });
-  payload.userAccounts.push({
-    contracts: payload.optionalKey,
-    balance
-  });
-  return {
-    type: 'GET_ACCOUNTS',
-    payload: payload.userAccounts
+  const { userAccounts } = JSON.parse(localStorage.getItem('tezsure'));
+  return dispatch => {
+    if (payload.dashboardHeader.networkId === 'Localnode') {
+      payload.userAccounts.push({ account: payload.optionalKey, balance: 0 });
+      dispatch({
+        type: 'GET_ACCOUNTS',
+        payload: payload.userAccounts
+      });
+    }
+    Promise.all([__getBalance({ pkh: payload.optionalKey })]).then(response => {
+      userAccounts.push(response[0]);
+      localStorage.setItem('tezsure', JSON.stringify({ userAccounts }));
+      dispatch({
+        type: 'GET_ACCOUNTS',
+        payload: userAccounts
+      });
+    });
+  };
+}
+
+export function restoreAccountAction(payload) {
+  const { userAccounts } = JSON.parse(localStorage.getItem('tezsure'));
+  return dispatch => {
+    __activateAccount({ ...payload }, (err, account) => {
+      if (err) {
+        dispatch({
+          type: 'GET_ACCOUNTS_ERR',
+          payload: err
+        });
+      }
+      Promise.all([__getBalance({ pkh: account })]).then(response => {
+        userAccounts.push(response[0]);
+        localStorage.setItem('tezsure', JSON.stringify({ userAccounts }));
+        dispatch({
+          type: 'GET_ACCOUNTS',
+          payload: userAccounts
+        });
+      });
+    });
   };
 }

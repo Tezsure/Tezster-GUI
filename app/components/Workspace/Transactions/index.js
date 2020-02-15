@@ -13,7 +13,7 @@ class Transactions extends Component {
   }
 
   handleInputChange(event) {
-    this.props.selectWalletAction({
+    this.props.selectTransactionWalletAction({
       accountId: event.target.value,
       ...this.props
     });
@@ -25,8 +25,8 @@ class Transactions extends Component {
 
   render() {
     const Accounts = this.props.userAccounts.map(elem => (
-      <option key={elem.contracts} value={elem.contracts}>
-        {elem.contracts}
+      <option key={elem.account} value={elem.account}>
+        {elem.account}
       </option>
     ));
     const Transactions =

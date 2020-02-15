@@ -1,12 +1,11 @@
 const {
-  getTransactions,
-  getBalance,
-  getChainId,
-  getCounter,
-  getManagerKey,
-  forgeOperations,
-  preApplyOperations
-} = require('../app.service.js');
+  __getBalance,
+  __getAccounts,
+  __sendOperation,
+  __activateAccount,
+  __generateMnemonic,
+  __listAccountTransactions
+} = require('../../apis/eztz.service');
 
 export function selectTransactionWalletAction(payload) {
   return dispatch => {
@@ -18,17 +17,16 @@ export function selectTransactionWalletAction(payload) {
   };
 }
 
-export function getTransactionsAction(payload) {
+export function getTransactionsAction({ ...params }) {
   return dispatch => {
-    if (payload.dashboardHeader.networkId === 'Localnode') {
-      const { transactions } = JSON.parse(localStorage.getItem('reduxState'));
+    if (params.dashboardHeader.networkId === 'Localnode') {
+      const { transactions } = JSON.parse(localStorage.getItem('tezsure'));
       dispatch({
         type: 'GET_TRANSACTIONS',
         payload: transactions
       });
     }
-
-    getTransactions(payload.accountId, (err, response) => {
+    __listAccountTransactions({ ...params }, (err, response) => {
       if (err) {
         dispatch({
           type: 'GET_TRANSACTIONS_ERR',
@@ -58,53 +56,18 @@ export function getBalanceAction(payload) {
     });
   };
 }
-export function executeTransactionAction(payload) {
+export function executeTransactionAction(params) {
   return dispatch => {
-    getChainId(payload, (chainIdErr, chainIds) => {
-      getCounter(payload, (counterErr, counter) => {
-        getManagerKey(
-          { ...payload, ...chainIds },
-          (managerKeyErr, managerKey) => {
-            const operationsPayload = {
-              branch: chainIds.hash,
-              contents: [
-                {
-                  kind: 'transaction',
-                  fee: '1400',
-                  gas_limit: '20200',
-                  storage_limit: '300',
-                  amount: '1000000000',
-                  destination: payload.recieverAccount,
-                  source: payload.senderAccount,
-                  counter
-                }
-              ]
-            };
-            forgeOperations(
-              {
-                ...payload,
-                ...managerKey,
-                ...chainIds,
-                operationsPayload
-              },
-              (operationsErr, operationsHash) => {
-                operationsPayload.protocol = chainIds.protocol;
-                operationsPayload.signature = chainIds.signature;
-                const preApplyOperationPayload = [];
-                preApplyOperationPayload.push(operationsPayload);
-                preApplyOperations(
-                  { ...payload, preApplyOperationPayload },
-                  (err, response) => {
-                    dispatch({
-                      type: 'EXECUTE_TRANSACTIONS_SUCCESS',
-                      payload: response
-                    });
-                  }
-                );
-              }
-            );
-          }
-        );
+    __sendOperation({ ...params }, (err, response) => {
+      if (err) {
+        dispatch({
+          type: 'EXECUTE_TRANSACTIONS_ERR',
+          payload: response
+        });
+      }
+      dispatch({
+        type: 'EXECUTE_TRANSACTIONS_SUCCESS',
+        payload: response
       });
     });
   };

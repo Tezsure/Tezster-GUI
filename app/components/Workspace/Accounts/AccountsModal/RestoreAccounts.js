@@ -116,7 +116,12 @@ class RestoreAccounts extends Component {
             <button
               type="button"
               className="btn btn-success"
-              onClick={() => this.props.handleCreateAccount({ ...this.state })}
+              onClick={() =>
+                this.props.restoreAccountAction({
+                  ...this.state,
+                  ...this.props
+                })
+              }
             >
               Activate Babylonnet Account
             </button>

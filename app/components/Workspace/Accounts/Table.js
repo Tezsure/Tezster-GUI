@@ -1,15 +1,15 @@
 import React from 'react';
 
 function Table(props) {
-  const Accounts = props.userAccounts.map(userAccount => {
+  const Accounts = props.userAccounts.map(elem => {
     return (
-      <tr className="table-row" key={userAccount.contracts}>
+      <tr className="table-row" key={elem.account}>
         <td className="table-body-cell">
           <div className="cards-header">
             <h4>ADDRESS</h4>
           </div>
           <div className="cards-contents">
-            <p className="account-address-content">{userAccount.contracts}</p>
+            <p className="account-address-content">{elem.account}</p>
           </div>
         </td>
         <td className="table-body-cell">
@@ -17,7 +17,7 @@ function Table(props) {
             <h4>BALANCE</h4>
           </div>
           <div className="cards-contents">
-            <p className="account-address-content">{userAccount.balance} Tz</p>
+            <p className="account-address-content">{elem.balance} Tz</p>
           </div>
         </td>
         <td className="table-body-cell">

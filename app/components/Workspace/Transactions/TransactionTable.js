@@ -8,6 +8,7 @@ class TransactionTable extends Component {
 
   render() {
     const Transactions = this.props.userTransactions.map(elem => {
+      const balance = (elem.tx.amount / 1000000).toFixed(3) + 'Tz';
       return (
         <tr className="table-row" key={elem.op.opHash}>
           <td className="table-body-cell">
@@ -31,7 +32,7 @@ class TransactionTable extends Component {
               <h4>AMOUNT</h4>
             </div>
             <div className="cards-contents">
-              <p className="account-address-content">{elem.tx.amount}</p>
+              <p className="account-address-content">{balance}</p>
             </div>
           </td>
           <td className="table-body-cell">
