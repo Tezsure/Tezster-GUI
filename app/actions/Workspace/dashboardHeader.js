@@ -5,7 +5,7 @@ let headerData = {
   currentBlock: '',
   gasLimit: '',
   gasPrice: '',
-  networkId: 'babylonnet',
+  networkId: 'Localnode',
   rpcServer: 'http://localhost:18731'
 };
 

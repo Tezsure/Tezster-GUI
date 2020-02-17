@@ -8,10 +8,15 @@ import {
   currentTab,
   blockAccordionIndex
 } from './Workspace/sidebar';
-import { userAccounts, userBalances } from './Workspace/accounts';
+import {
+  userAccounts,
+  userBalances,
+  showAccountsModal
+} from './Workspace/accounts';
 import dashboardHeader from './Workspace/dashboardHeader';
 import {
   userTransactions,
+  showTransactionModal,
   selectedTransactionWallet,
   transactionsSuccess
 } from './Workspace/transactions';
@@ -23,6 +28,8 @@ export default function createRootReducer(history: HashHistory) {
     router: connectRouter(history),
     counter,
     sidebarToggleState,
+    showAccountsModal,
+    showTransactionModal,
     blockAccordionIndex,
     selectedContractsTab,
     dashboardHeader,

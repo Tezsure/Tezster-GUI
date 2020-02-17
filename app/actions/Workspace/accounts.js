@@ -5,6 +5,13 @@ const {
   __generateMnemonic
 } = require('../../apis/eztz.service');
 
+export function toggleAccountsModalAction(modalType) {
+  return {
+    type: 'TOGGLE_ACCOUNTS_MODAL',
+    payload: modalType
+  };
+}
+
 export function getAccountsAction({ ...params }) {
   return dispatch => {
     if (localStorage.hasOwnProperty('tezsure')) {
@@ -14,7 +21,6 @@ export function getAccountsAction({ ...params }) {
       });
     } else {
       __getAccounts({ ...params }, (err, accounts) => {
-        debugger;
         if (err) {
           dispatch({
             type: 'GET_ACCOUNTS_ERR',
@@ -70,12 +76,16 @@ export function createAccountsAction(payload) {
         payload: payload.userAccounts
       });
     }
-    Promise.all([__getBalance({ pkh: payload.optionalKey })]).then(response => {
+    Promise.all([__getBalance({ ...payload.optionalKey })]).then(response => {
       userAccounts.push(response[0]);
       localStorage.setItem('tezsure', JSON.stringify({ userAccounts }));
       dispatch({
         type: 'GET_ACCOUNTS',
         payload: userAccounts
+      });
+      dispatch({
+        type: 'TOGGLE_ACCOUNTS_MODAL',
+        payload: ''
       });
     });
   };
@@ -91,12 +101,16 @@ export function restoreAccountAction(payload) {
           payload: err
         });
       }
-      Promise.all([__getBalance({ pkh: account })]).then(response => {
+      Promise.all([__getBalance({ ...account })]).then(response => {
         userAccounts.push(response[0]);
         localStorage.setItem('tezsure', JSON.stringify({ userAccounts }));
         dispatch({
           type: 'GET_ACCOUNTS',
           payload: userAccounts
+        });
+        dispatch({
+          type: 'TOGGLE_ACCOUNTS_MODAL',
+          payload: ''
         });
       });
     });

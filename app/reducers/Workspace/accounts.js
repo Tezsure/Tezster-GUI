@@ -1,3 +1,12 @@
+export function showAccountsModal(initialState = '', action) {
+  switch (action.type) {
+    case 'TOGGLE_ACCOUNTS_MODAL':
+      return action.payload;
+    default:
+      return initialState;
+  }
+}
+
 export function userAccounts(initialState = [], action) {
   switch (action.type) {
     case 'GET_ACCOUNTS':

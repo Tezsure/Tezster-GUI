@@ -7,6 +7,13 @@ const {
   __listAccountTransactions
 } = require('../../apis/eztz.service');
 
+export function toggleTransactionModalAction(modalState) {
+  return {
+    type: 'TOGGLE_TRANSACTION_MODAL',
+    payload: modalState
+  };
+}
+
 export function selectTransactionWalletAction(payload) {
   return dispatch => {
     dispatch({
@@ -19,13 +26,6 @@ export function selectTransactionWalletAction(payload) {
 
 export function getTransactionsAction({ ...params }) {
   return dispatch => {
-    if (params.dashboardHeader.networkId === 'Localnode') {
-      const { transactions } = JSON.parse(localStorage.getItem('tezsure'));
-      dispatch({
-        type: 'GET_TRANSACTIONS',
-        payload: transactions
-      });
-    }
     __listAccountTransactions({ ...params }, (err, response) => {
       if (err) {
         dispatch({

@@ -2,8 +2,9 @@
 require('dotenv').config();
 const conseiljs = require('conseiljs');
 import axios from 'axios';
+var fs = require('fs');
 
-import { accounts } from './config';
+import { identities } from './config';
 const { localNodeAddress, testNodeAddress, testNodeTransactions } = process.env;
 
 export function __getAccounts({ ...params }, callback) {
@@ -12,18 +13,29 @@ export function __getAccounts({ ...params }, callback) {
       ? localNodeAddress
       : testNodeAddress;
   eztz.node.setProvider(__url);
-  const totalAccounts = accounts.map(async elem => __getBalance({ ...elem }));
+  const totalAccounts = identities.map(async elem =>
+    __getBalance({ ...elem, ...params })
+  );
   callback(null, totalAccounts);
 }
 
 export async function __activateAccount({ ...params }, callback) {
+  const __url =
+    params.dashboardHeader.networkId === 'Localnode'
+      ? localNodeAddress
+      : testNodeAddress;
+  eztz.node.setProvider(__url);
   const cred = params.email + params.password;
   const keys = await eztz.crypto.generateKeys(params.mnemonic, cred);
-  const account = keys.pkh;
-  callback(null, account);
+  callback(null, keys);
 }
 
 export async function __getBlockHeads({ ...params }, callback) {
+  const __url =
+    params.dashboardHeader.networkId === 'Localnode'
+      ? localNodeAddress
+      : testNodeAddress;
+  eztz.node.setProvider(__url);
   eztz.rpc
     .getHead()
     .then(function(res) {
@@ -35,7 +47,12 @@ export async function __getBlockHeads({ ...params }, callback) {
 }
 
 export async function __getBalance({ ...params }) {
+  const __url =
+    params.dashboardHeader.networkId === 'Localnode'
+      ? localNodeAddress
+      : testNodeAddress;
   return new Promise((resolve, reject) => {
+    eztz.node.setProvider(__url);
     eztz.rpc
       .getBalance(params.pkh)
       .then((res: number) => {
@@ -56,20 +73,32 @@ export async function __generateMnemonic() {
   return mnemonics;
 }
 export async function __sendOperation({ ...params }, callback) {
-  var operation = {
-    kind: 'transaction',
-    amount: params.amount,
-    destination: params.recieverAccount
+  var keys = params.userAccounts.find(
+    elem => elem.pkh === params.senderAccount
+  );
+  const tezosNode =
+    params.dashboardHeader.networkId === 'Localnode'
+      ? localNodeAddress
+      : testNodeAddress;
+  const keystore = {
+    publicKey: keys.pk,
+    privateKey: keys.sk,
+    publicKeyHash: keys.pkh,
+    seed: '',
+    storeType: conseiljs.StoreType.Fundraiser
   };
-  eztz.rpc
-    .sendOperation(params.senderAccount, operation, keys)
-    .then(function(res) {
-      callback(null, res);
-    })
-    .catch(function(e) {
-      callback(err, null);
-    });
+
+  const result = await conseiljs.TezosNodeWriter.sendTransactionOperation(
+    tezosNode,
+    keystore,
+    params.recieverAccount,
+    params.amount,
+    params.gasPrice,
+    ''
+  );
+  callback(null, result.operationGroupID);
 }
+
 export async function __listAccountTransactions({ ...params }, callback) {
   const __url = testNodeTransactions;
   axios
@@ -82,24 +111,26 @@ export async function __listAccountTransactions({ ...params }, callback) {
     });
 }
 export async function __deployContract({ ...params }, callback) {
-  debugger;
+  var keys = params.userAccounts.find(elem => elem.pkh === params.accounts);
   const contract = fs
     .readFileSync(params.contractFile[0].path)
     .toString('utf-8');
-  const tezosProvider =
+  const tezosNode =
     params.dashboardHeader.networkId === 'Localnode'
       ? localNodeAddress
       : testNodeAddress;
-  const keysStore = {
-    publicKey: params.pk,
-    privateKey: params.sk,
-    publicKeyHash: params.pkh,
+  const keystore = {
+    publicKey: keys.pk,
+    privateKey: keys.sk,
+    publicKeyHash: keys.pkh,
     seed: '',
     storeType: conseiljs.StoreType.Fundraiser
   };
+  const storage = '{"string": "Sample"}';
+  debugger;
   const result = await conseiljs.TezosNodeWriter.sendContractOriginationOperation(
-    tezosProvider,
-    keysStore,
+    tezosNode,
+    keystore,
     0,
     undefined,
     100000,
@@ -107,7 +138,8 @@ export async function __deployContract({ ...params }, callback) {
     1000,
     100000,
     contract,
-    params.initValue,
-    conseiljs.TezosParameterFormat.Michelson
+    storage,
+    conseiljs.TezosParameterFormat.Micheline
   );
+  callback(null, result);
 }

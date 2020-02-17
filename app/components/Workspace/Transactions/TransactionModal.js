@@ -5,11 +5,52 @@ class TransactionModal extends Component {
     super(props);
     this.state = {
       senderAccount: '0',
+      senderAccountErr: '',
       recieverAccount: '0',
+      recieverAccountErr: '',
       amount: '',
-      gasPrice: ''
+      amountErr: '',
+      gasPrice: '',
+      gasPriceErr: ''
     };
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleExecuteTransaction = this.handleExecuteTransaction.bind(this);
+  }
+
+  handleExecuteTransaction() {
+    let errorFlag = false;
+    let stateParams = {
+      ...this.state,
+      senderAccountErr: '',
+      recieverAccountErr: '',
+      amountErr: '',
+      gasPriceErr: ''
+    };
+    if (stateParams.senderAccount === '0') {
+      stateParams.senderAccountErr = 'Please select senders account';
+      errorFlag = true;
+    }
+    if (stateParams.recieverAccount === '0') {
+      stateParams.recieverAccountErr = 'Please select recievers account';
+      errorFlag = true;
+    }
+    if (stateParams.amount === '') {
+      stateParams.amountErr = 'Please enter amount';
+      errorFlag = true;
+    }
+    if (stateParams.gasPrice === '') {
+      stateParams.gasPriceErr = 'Please enter gas price';
+      errorFlag = true;
+    }
+
+    if (!errorFlag) {
+      this.props.executeTransactionAction({
+        ...this.props,
+        ...this.state
+      });
+    } else {
+      this.setState(stateParams);
+    }
   }
 
   handleInputChange(event) {
@@ -18,10 +59,14 @@ class TransactionModal extends Component {
 
   render() {
     const sendersAccounts = this.props.userAccounts.map(elem => (
-      <option value={elem.account}>{elem.account}</option>
+      <option key={elem.account} value={elem.account}>
+        {elem.account}
+      </option>
     ));
     const recieverAccounts = this.props.userAccounts.map(elem => (
-      <option value={elem.account}>{elem.account}</option>
+      <option key={elem.account} value={elem.account}>
+        {elem.account}
+      </option>
     ));
     return (
       <div
@@ -55,12 +100,13 @@ class TransactionModal extends Component {
                 value={this.state.senderAccount}
                 onChange={this.handleInputChange}
               >
-                <option value="0" selected disabled>
+                <option value="0" disabled>
                   Select Sender&rsquo;s Account
                 </option>
                 {sendersAccounts}
               </select>
             </div>
+            <span className="error-msg">{this.state.senderAccountErr}</span>
             <div className="modal-input">
               <div className="input-container">To </div>
               <select
@@ -69,12 +115,13 @@ class TransactionModal extends Component {
                 value={this.state.recieverAccount}
                 onChange={this.handleInputChange}
               >
-                <option value="0" selected disabled>
+                <option value="0" disabled>
                   Select Sender&rsquo;s Account
                 </option>
                 {recieverAccounts}
               </select>
             </div>
+            <span className="error-msg">{this.state.recieverAccountErr}</span>
             <div className="modal-input">
               <div className="input-container">Amount </div>
               <input
@@ -86,6 +133,7 @@ class TransactionModal extends Component {
                 onChange={this.handleInputChange}
               />
             </div>
+            <span className="error-msg">{this.state.amountErr}</span>
             <div className="modal-input">
               <div className="input-container">Gas Price </div>
               <input
@@ -97,6 +145,8 @@ class TransactionModal extends Component {
                 onChange={this.handleInputChange}
               />
             </div>
+            <span className="error-msg">{this.state.gasPriceErr}</span>
+            <br />
             <div className="modal-footer">
               <button
                 type="button"
@@ -109,12 +159,7 @@ class TransactionModal extends Component {
               <button
                 type="button"
                 className="btn btn-success"
-                onClick={() =>
-                  this.props.executeTransactionAction({
-                    ...this.props,
-                    ...this.state
-                  })
-                }
+                onClick={() => this.handleExecuteTransaction()}
               >
                 Pay Amount
               </button>

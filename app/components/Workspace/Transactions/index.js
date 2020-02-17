@@ -20,7 +20,7 @@ class Transactions extends Component {
   }
 
   handleModalToggle() {
-    this.setState({ showModal: !this.state.showModal });
+    this.props.toggleTransactionModalAction(!this.props.showTransactionModal);
   }
 
   render() {
@@ -68,7 +68,7 @@ class Transactions extends Component {
             </div>
           </div>
           <div className="transactions-contents">{Transactions}</div>
-          {this.state.showModal ? (
+          {this.props.showTransactionModal ? (
             <TransactionModal
               {...this.props}
               handleModalToggle={this.handleModalToggle}

@@ -11,9 +11,11 @@ import {
   getAccountsAction,
   createAccountsAction,
   restoreAccountAction,
+  toggleAccountsModalAction,
   getBalanceAction
 } from '../actions/Workspace/accounts';
 import {
+  toggleTransactionModalAction,
   executeTransactionAction,
   getTransactionsAction,
   selectTransactionWalletAction
@@ -36,11 +38,15 @@ class WorkspacePage extends Component {
 }
 const mapDispatchToProps = dispatch => ({
   restoreAccountAction: payload => dispatch(restoreAccountAction(payload)),
+  toggleTransactionModalAction: payload =>
+    dispatch(toggleTransactionModalAction(payload)),
   getBalanceAction: payload => dispatch(getBalanceAction(payload)),
   getAccountsAction: payload => dispatch(getAccountsAction(payload)),
   getTransactionsAction: payload => dispatch(getTransactionsAction(payload)),
   deployContractAction: payload => dispatch(deployContractAction(payload)),
   createAccountsAction: payload => dispatch(createAccountsAction(payload)),
+  toggleAccountsModalAction: payload =>
+    dispatch(toggleAccountsModalAction(payload)),
   showContractHistoryAction: payload =>
     dispatch(showContractHistoryAction(payload)),
   getDashboardHeaderAction: payload =>
@@ -57,6 +63,8 @@ const mapDispatchToProps = dispatch => ({
 });
 const mapStateToProps = state => ({
   userAccounts: state.userAccounts,
+  showTransactionModal: state.showTransactionModal,
+  showAccountsModal: state.showAccountsModal,
   dashboardHeader: state.dashboardHeader,
   userBalances: state.userBalances,
   sidebarToggleState: state.sidebarToggleState,

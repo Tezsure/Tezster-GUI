@@ -1,3 +1,12 @@
+export function showTransactionModal(initialState = false, action) {
+  switch (action.type) {
+    case 'TOGGLE_TRANSACTION_MODAL':
+      return action.payload;
+    default:
+      return initialState;
+  }
+}
+
 export function userTransactions(initialState = [], action) {
   switch (action.type) {
     case 'GET_TRANSACTIONS':

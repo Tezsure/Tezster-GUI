@@ -11,8 +11,49 @@ class RestoreAccounts extends Component {
       password: ''
     };
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleRestoreAccount = this.handleRestoreAccount.bind(this);
   }
-
+  handleRestoreAccount() {
+    let errFlag = false;
+    const stateParams = {
+      ...this.state,
+      mnemonicErr: '',
+      secretKeyErr: '',
+      accountLabelErr: '',
+      emailErr: '',
+      passwordErr: ''
+    };
+    if (stateParams.mnemonic === '') {
+      stateParams.mnemonicErr = 'Please enter mnemonic';
+      errFlag = true;
+    }
+    if (stateParams.secretKey === '') {
+      stateParams.secretKeyErr = 'Please enter secret key';
+      errFlag = true;
+    }
+    if (stateParams.accountLabel === '') {
+      stateParams.accountLabelErr = 'Please enter account label';
+      errFlag = true;
+    }
+    if (stateParams.email === '') {
+      stateParams.emailErr = 'Please enter email';
+      errFlag = true;
+    }
+    if (stateParams.password === '') {
+      stateParams.passwordErr = 'Please enter password';
+      errFlag = true;
+    }
+    if (errFlag === false) {
+      this.props.dashboardHeader.networkId === 'Localnode'
+        ? this.props.handleCreateAccount({ ...this.state })
+        : this.props.restoreAccountAction({
+            ...this.state,
+            ...this.props
+          });
+    } else {
+      this.setState(stateParams);
+    }
+  }
   handleInputChange(event) {
     this.setState({ [event.target.name]: event.target.value });
   }
@@ -58,6 +99,7 @@ class RestoreAccounts extends Component {
             placeholder="Enter your Email Id"
           />
         </div>
+        <span className="error-msg">{this.state.emailErr}</span>
         <div className="modal-input">
           <div className="input-container">Password </div>
           <input
@@ -69,6 +111,7 @@ class RestoreAccounts extends Component {
             placeholder="Enter your password"
           />
         </div>
+        <span className="error-msg">{this.state.passwordErr}</span>
         <div className="modal-body">
           <p>Seed Words/Mnenomics(leave a space between each word)</p>
           <textarea
@@ -80,6 +123,8 @@ class RestoreAccounts extends Component {
             onChange={this.handleInputChange}
             className="textArea"
           />
+          <br />
+          <span className="error-msg">{this.state.mnemonicErr}</span>
         </div>
         <div className="modal-input">
           <div className="input-container">Secret Key </div>
@@ -92,6 +137,7 @@ class RestoreAccounts extends Component {
             name="secretKey"
           />
         </div>
+        <span className="error-msg">{this.state.secretKeyErr}</span>
         <div className="modal-input">
           <div className="input-container">Account Label </div>
           <input
@@ -103,12 +149,13 @@ class RestoreAccounts extends Component {
             name="accountLabel"
           />
         </div>
+        <span className="error-msg">{this.state.accountLabelErr}</span>
         <div className="modal-footer">
           {this.props.dashboardHeader.networkId === 'Localnode' ? (
             <button
               type="button"
               className="btn btn-success"
-              onClick={() => this.props.handleCreateAccount({ ...this.state })}
+              onClick={() => this.handleRestoreAccount()}
             >
               Restore Wallet Account
             </button>
@@ -116,12 +163,7 @@ class RestoreAccounts extends Component {
             <button
               type="button"
               className="btn btn-success"
-              onClick={() =>
-                this.props.restoreAccountAction({
-                  ...this.state,
-                  ...this.props
-                })
-              }
+              onClick={() => this.handleRestoreAccount()}
             >
               Activate Babylonnet Account
             </button>

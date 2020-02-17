@@ -5,7 +5,7 @@ import ValidateWallet from './ValidateWallet';
 
 function AccountsModal(props) {
   const modalBody = () => {
-    switch (props.modalType) {
+    switch (props.showAccountsModal) {
       case 'create-accounts':
         return <CreateAccounts {...props} />;
       case 'restore-accounts':

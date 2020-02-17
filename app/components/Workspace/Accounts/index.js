@@ -15,16 +15,11 @@ class Accounts extends Component {
   }
 
   handleModalToggle(modalType) {
-    this.setState({
-      showModal: !this.state.showModal,
-      modalType
-    });
+    this.props.toggleAccountsModalAction(modalType);
   }
 
   handleValidateModalOpen(modalType) {
-    this.setState({
-      modalType
-    });
+    this.props.toggleAccountsModalAction(modalType);
   }
 
   handleCreateAccount({ ...accounts }) {
@@ -59,17 +54,16 @@ class Accounts extends Component {
           </div>
         </div>
         <Table {...this.props} />
-        {this.state.showModal ? (
+        {this.props.showAccountsModal === '' ? (
+          <React.Fragment />
+        ) : (
           <AccountsModal
             {...this.props}
             modalType={this.state.modalType}
-            showModal={this.state.showModal}
             handleModalToggle={this.handleModalToggle}
             handleCreateAccount={this.handleCreateAccount}
             handleValidateModalOpen={this.handleValidateModalOpen}
           />
-        ) : (
-          <React.Fragment />
         )}
       </>
     );

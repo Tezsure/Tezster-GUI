@@ -10,6 +10,40 @@ class ValidateWallet extends Component {
       password: ''
     };
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleSubmitValidateWallet = this.handleSubmitValidateWallet.bind(
+      this
+    );
+  }
+  handleSubmitValidateWallet() {
+    let errorFlag = false;
+    const stateParams = {
+      ...this.state,
+      mnemonicErr: '',
+      optionalKeyErr: '',
+      emailErr: '',
+      passwordErr: ''
+    };
+    if (stateParams.mnemonic === '') {
+      stateParams.mnemonicErr = 'Please enter mnemonic';
+      errorFlag = true;
+    }
+    if (stateParams.optionalKey === '') {
+      stateParams.optionalKeyErr = 'Please enter optional key';
+      errorFlag = true;
+    }
+    if (stateParams.email === '') {
+      stateParams.emailErr = 'Please enter email';
+      errorFlag = true;
+    }
+    if (stateParams.password === '') {
+      stateParams.passwordErr = 'Please enter password';
+      errorFlag = true;
+    }
+    if (errorFlag === false) {
+      this.props.handleCreateAccount({ ...this.state });
+    } else {
+      this.setState(stateParams);
+    }
   }
 
   handleInputChange(event) {
@@ -46,6 +80,7 @@ class ValidateWallet extends Component {
             onChange={this.handleInputChange}
             className="textArea"
           />
+          <span className="error-msg">{this.state.mnemonicErr}</span>
         </div>
         <div className="modal-input">
           <div className="input-container">Optional Key</div>
@@ -58,6 +93,7 @@ class ValidateWallet extends Component {
             placeholder="Enter your optional key"
           />
         </div>
+        <span className="error-msg">{this.state.optionalKeyErr}</span>
         <div className="modal-input">
           <div className="input-container">Email-Id</div>
           <input
@@ -69,6 +105,7 @@ class ValidateWallet extends Component {
             placeholder="Enter your email id"
           />
         </div>
+        <span className="error-msg">{this.state.emailErr}</span>
         <div className="modal-input">
           <div className="input-container">Password*</div>
           <input
@@ -80,6 +117,7 @@ class ValidateWallet extends Component {
             placeholder="Enter your password"
           />
         </div>
+        <span className="error-msg">{this.state.passwordErr}</span>
         <div className="modal-footer">
           <button
             type="button"
@@ -92,7 +130,7 @@ class ValidateWallet extends Component {
           <button
             type="button"
             className="btn btn-success"
-            onClick={() => this.props.handleCreateAccount({ ...this.state })}
+            onClick={() => this.handleSubmitValidateWallet()}
           >
             Save changes
           </button>

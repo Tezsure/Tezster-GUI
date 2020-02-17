@@ -1,8 +1,8 @@
 {
-  "name": "electron-react-boilerplate",
-  "productName": "ElectronReact",
-  "version": "0.18.1",
-  "description": "Electron application boilerplate based on React, React Router, Webpack, React Hot Loader for rapid application development",
+  "name": "tezster-gui-v2.0",
+  "productName": "Tezster-GUI",
+  "version": "2.0.0",
+  "description": "Tezster-GUI",
   "scripts": {
     "build": "concurrently \"yarn build-main\" \"yarn build-renderer\"",
     "build-dll": "cross-env NODE_ENV=development webpack --config ./configs/webpack.config.renderer.dev.dll.babel.js --colors",
@@ -56,7 +56,7 @@
     ]
   },
   "build": {
-    "productName": "ElectronReact",
+    "productName": "Tezster",
     "appId": "org.develar.ElectronReact",
     "files": [
       "dist/",
@@ -100,8 +100,8 @@
     },
     "publish": {
       "provider": "github",
-      "owner": "electron-react-boilerplate",
-      "repo": "electron-react-boilerplate",
+      "owner": "TEZSURE GUI V2.0",
+      "repo": "TEZSURE GUI V2.0",
       "private": false
     }
   },
