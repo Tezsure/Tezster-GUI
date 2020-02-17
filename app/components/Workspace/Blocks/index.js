@@ -3,7 +3,8 @@ import React from 'react';
 function index(props) {
   return (
     <div className="blocks-container">
-      <div className="blocks-parent">
+      Comming soon...
+      {/* <div className="blocks-parent">
         <div className="blocks-accordion-container">
           <div className="blocks-button-container">
             <button
@@ -170,7 +171,7 @@ function index(props) {
             <p>098UFQEUIF7R237RQUHF89Q3YKLSJC89WY478RYKDFN89R46TR83RKL</p>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

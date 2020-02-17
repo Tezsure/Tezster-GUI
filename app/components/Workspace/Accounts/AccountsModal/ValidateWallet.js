@@ -5,7 +5,7 @@ class ValidateWallet extends Component {
     super(props);
     this.state = {
       mnemonic: '',
-      optionalKey: '',
+      pkh: '',
       email: '',
       password: ''
     };
@@ -14,6 +14,7 @@ class ValidateWallet extends Component {
       this
     );
   }
+
   handleSubmitValidateWallet() {
     let errorFlag = false;
     const stateParams = {
@@ -27,7 +28,7 @@ class ValidateWallet extends Component {
       stateParams.mnemonicErr = 'Please enter mnemonic';
       errorFlag = true;
     }
-    if (stateParams.optionalKey === '') {
+    if (stateParams.pkh === '') {
       stateParams.optionalKeyErr = 'Please enter optional key';
       errorFlag = true;
     }
@@ -40,7 +41,7 @@ class ValidateWallet extends Component {
       errorFlag = true;
     }
     if (errorFlag === false) {
-      this.props.handleCreateAccount({ ...this.state });
+      this.props.handleCreateAccount({ ...this.state, ...this.props });
     } else {
       this.setState(stateParams);
     }
@@ -86,8 +87,8 @@ class ValidateWallet extends Component {
           <div className="input-container">Optional Key</div>
           <input
             type="text"
-            name="optionalKey"
-            value={this.state.optionalKey}
+            name="pkh"
+            value={this.state.pkh}
             className="form-control"
             onChange={this.handleInputChange}
             placeholder="Enter your optional key"

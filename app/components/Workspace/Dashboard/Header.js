@@ -6,6 +6,7 @@ function Header(props) {
     gasPrice,
     gasLimit,
     chainId,
+    networkId,
     rpcServer
   } = props.dashboardHeader;
   return (
@@ -62,11 +63,25 @@ function Header(props) {
           </div>
         </div>
         <div className="cards button-card">
-          <button type="button" className="save-button">
-            save
+          <button
+            type="button"
+            className="save-button"
+            disabled={networkId === 'Babylonnet'}
+            onClick={() =>
+              props.handleNetworkChangeAction({ env: 'Babylonnet', ...props })
+            }
+          >
+            Babylonnet
           </button>
-          <button type="button" className="switch-button">
-            switch
+          <button
+            type="button"
+            className="switch-button"
+            disabled={networkId === 'Localnode'}
+            onClick={() =>
+              props.handleNetworkChangeAction({ env: 'Localnode', ...props })
+            }
+          >
+            Localnode
           </button>
         </div>
       </div>

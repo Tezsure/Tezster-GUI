@@ -1,3 +1,5 @@
+import swal from 'sweetalert';
+
 const {
   __getBalance,
   __getAccounts,
@@ -40,22 +42,7 @@ export function getTransactionsAction({ ...params }) {
     });
   };
 }
-export function getBalanceAction(payload) {
-  return dispatch => {
-    getBalance(payload.dashboardHeader.networkId, (err, response) => {
-      if (err) {
-        dispatch({
-          type: 'GET_BALANCE_ERR',
-          payload: err
-        });
-      }
-      dispatch({
-        type: 'GET_BALANCE',
-        payload: response
-      });
-    });
-  };
-}
+
 export function executeTransactionAction(params) {
   return dispatch => {
     __sendOperation({ ...params }, (err, response) => {
@@ -65,6 +52,7 @@ export function executeTransactionAction(params) {
           payload: response
         });
       }
+      swal('Success!', 'Transaction executed successfully', 'success');
       dispatch({
         type: 'EXECUTE_TRANSACTIONS_SUCCESS',
         payload: response

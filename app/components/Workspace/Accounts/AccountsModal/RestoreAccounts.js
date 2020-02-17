@@ -13,6 +13,7 @@ class RestoreAccounts extends Component {
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleRestoreAccount = this.handleRestoreAccount.bind(this);
   }
+
   handleRestoreAccount() {
     let errFlag = false;
     const stateParams = {
@@ -44,16 +45,15 @@ class RestoreAccounts extends Component {
       errFlag = true;
     }
     if (errFlag === false) {
-      this.props.dashboardHeader.networkId === 'Localnode'
-        ? this.props.handleCreateAccount({ ...this.state })
-        : this.props.restoreAccountAction({
-            ...this.state,
-            ...this.props
-          });
+      this.props.restoreAccountAction({
+        ...this.state,
+        ...this.props
+      });
     } else {
       this.setState(stateParams);
     }
   }
+
   handleInputChange(event) {
     this.setState({ [event.target.name]: event.target.value });
   }

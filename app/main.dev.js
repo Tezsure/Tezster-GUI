@@ -63,7 +63,7 @@ const createWindow = async () => {
     webPreferences: {
       nodeIntegration: true
     },
-    icon: path.join(__dirname, '../resources/icons/16x16.png')
+    icon: path.join(__dirname, '../resources/icons/Artboard – 1@2x (1).png')
   });
 
   mainWindow.loadURL(`file://${__dirname}/app.html`);

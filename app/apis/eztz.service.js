@@ -1,10 +1,14 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-underscore-dangle */
-require('dotenv').config();
-const conseiljs = require('conseiljs');
 import axios from 'axios';
-var fs = require('fs');
 
 import { identities } from './config';
+
+const conseiljs = require('conseiljs');
+const randomstring = require('randomstring');
+require('dotenv').config();
+const fs = require('fs');
+
 const { localNodeAddress, testNodeAddress, testNodeTransactions } = process.env;
 
 export function __getAccounts({ ...params }, callback) {
@@ -38,10 +42,10 @@ export async function __getBlockHeads({ ...params }, callback) {
   eztz.node.setProvider(__url);
   eztz.rpc
     .getHead()
-    .then(function(res) {
-      callback(null, res);
+    .then(res => {
+      return callback(null, res);
     })
-    .catch(function(e) {
+    .catch(err => {
       callback(err, null);
     });
 }
@@ -57,14 +61,14 @@ export async function __getBalance({ ...params }) {
       .getBalance(params.pkh)
       .then((res: number) => {
         const balance = (res / 1000000).toFixed(3);
-        resolve({
+        return resolve({
           balance,
           ...params,
           account: params.pkh
         });
       })
-      .catch((e: any) => {
-        reject(e);
+      .catch(exp => {
+        reject(exp);
       });
   });
 }
@@ -73,7 +77,7 @@ export async function __generateMnemonic() {
   return mnemonics;
 }
 export async function __sendOperation({ ...params }, callback) {
-  var keys = params.userAccounts.find(
+  const keys = params.userAccounts.find(
     elem => elem.pkh === params.senderAccount
   );
   const tezosNode =
@@ -104,14 +108,18 @@ export async function __listAccountTransactions({ ...params }, callback) {
   axios
     .get(`${__url}?p=0&n=10&account=${params.accountId}`)
     .then(response => {
-      callback(null, response.data);
+      return callback(null, response.data);
     })
     .catch(exception => {
       callback(exception, null);
     });
 }
 export async function __deployContract({ ...params }, callback) {
-  var keys = params.userAccounts.find(elem => elem.pkh === params.accounts);
+  const storageString = randomstring.generate({
+    length: 12,
+    charset: 'alphabetic'
+  });
+  const keys = params.userAccounts.find(elem => elem.pkh === params.accounts);
   const contract = fs
     .readFileSync(params.contractFile[0].path)
     .toString('utf-8');
@@ -126,8 +134,7 @@ export async function __deployContract({ ...params }, callback) {
     seed: '',
     storeType: conseiljs.StoreType.Fundraiser
   };
-  const storage = '{"string": "Sample"}';
-  debugger;
+  const storage = `{"string": "${storageString}"}`;
   const result = await conseiljs.TezosNodeWriter.sendContractOriginationOperation(
     tezosNode,
     keystore,
@@ -143,3 +150,15 @@ export async function __deployContract({ ...params }, callback) {
   );
   callback(null, result);
 }
+// export async function __getBlocks({ ...params }, callback) {
+//   const serverInfo =
+//     params.dashboardHeader.networkId === 'Localnode'
+//       ? localNodeAddress
+//       : testNodeAddress;
+//   const network =
+//   const result = await conseiljs.TezosNodeWriter.getBlocks(
+//     serverInfo,
+//     network,
+//     query
+//   );
+// }

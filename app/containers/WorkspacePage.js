@@ -22,10 +22,12 @@ import {
 } from '../actions/Workspace/transactions';
 import {
   handleContractsTabChangeAction,
-  deployContractAction,
-  showContractHistoryAction
+  deployContractAction
 } from '../actions/Workspace/contracts';
-import getDashboardHeaderAction from '../actions/Workspace/dashboardHeader';
+import {
+  getDashboardHeaderAction,
+  handleNetworkChangeAction
+} from '../actions/Workspace/dashboardHeader';
 
 class WorkspacePage extends Component {
   componentDidMount() {
@@ -38,6 +40,8 @@ class WorkspacePage extends Component {
 }
 const mapDispatchToProps = dispatch => ({
   restoreAccountAction: payload => dispatch(restoreAccountAction(payload)),
+  handleNetworkChangeAction: payload =>
+    dispatch(handleNetworkChangeAction(payload)),
   toggleTransactionModalAction: payload =>
     dispatch(toggleTransactionModalAction(payload)),
   getBalanceAction: payload => dispatch(getBalanceAction(payload)),
@@ -47,8 +51,6 @@ const mapDispatchToProps = dispatch => ({
   createAccountsAction: payload => dispatch(createAccountsAction(payload)),
   toggleAccountsModalAction: payload =>
     dispatch(toggleAccountsModalAction(payload)),
-  showContractHistoryAction: payload =>
-    dispatch(showContractHistoryAction(payload)),
   getDashboardHeaderAction: payload =>
     dispatch(getDashboardHeaderAction(payload)),
   sidebarToggleAction: payload => dispatch(sidebarToggleAction(payload)),

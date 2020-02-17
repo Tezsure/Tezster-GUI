@@ -30,7 +30,7 @@ class index extends Component {
               Deploy contract
             </span>
           </li>
-          <li className="nav-item">
+          {/* <li className="nav-item">
             <span
               className={
                 CurrentTab === 'callContract' ? 'nav-link active' : 'nav-link'
@@ -78,7 +78,7 @@ class index extends Component {
             >
               Applied contract history
             </span>
-          </li>
+          </li>*/}
         </ul>
         <div className="tab-content" id="myTabContent">
           <div
@@ -93,7 +93,7 @@ class index extends Component {
           >
             <DeployContract {...this.props} />
           </div>
-          <div
+          {/* <div
             className={
               CurrentTab === 'callContract'
                 ? 'tab-pane fade show active'
@@ -128,7 +128,7 @@ class index extends Component {
             aria-labelledby="contact-tab"
           >
             <ShowContract {...this.props} />
-          </div>
+          </div>*/}
         </div>
       </div>
     );

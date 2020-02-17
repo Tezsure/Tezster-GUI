@@ -1,8 +1,9 @@
+import swal from 'sweetalert';
+
 const {
   __getBalance,
   __getAccounts,
-  __activateAccount,
-  __generateMnemonic
+  __activateAccount
 } = require('../../apis/eztz.service');
 
 export function toggleAccountsModalAction(modalType) {
@@ -50,7 +51,7 @@ export function getBalanceAction(payload) {
         payload: localStorage.getItem('tezsure').userAccounts
       });
     } else {
-      getBalance(payload.dashboardHeader.networkId, (err, response) => {
+      __getBalance({ ...payload }, (err, response) => {
         if (err) {
           dispatch({
             type: 'GET_BALANCE_ERR',
@@ -76,9 +77,10 @@ export function createAccountsAction(payload) {
         payload: payload.userAccounts
       });
     }
-    Promise.all([__getBalance({ ...payload.optionalKey })]).then(response => {
+    Promise.all([__getBalance(payload)]).then(response => {
       userAccounts.push(response[0]);
       localStorage.setItem('tezsure', JSON.stringify({ userAccounts }));
+      swal('Success!', 'Account created successfully', 'success');
       dispatch({
         type: 'GET_ACCOUNTS',
         payload: userAccounts
@@ -94,16 +96,17 @@ export function createAccountsAction(payload) {
 export function restoreAccountAction(payload) {
   const { userAccounts } = JSON.parse(localStorage.getItem('tezsure'));
   return dispatch => {
-    __activateAccount({ ...payload }, (err, account) => {
+    __activateAccount(payload, (err, account) => {
       if (err) {
         dispatch({
           type: 'GET_ACCOUNTS_ERR',
           payload: err
         });
       }
-      Promise.all([__getBalance({ ...account })]).then(response => {
+      Promise.all([__getBalance({ ...account, ...payload })]).then(response => {
         userAccounts.push(response[0]);
         localStorage.setItem('tezsure', JSON.stringify({ userAccounts }));
+        swal('Success!', 'Account registered successfully', 'success');
         dispatch({
           type: 'GET_ACCOUNTS',
           payload: userAccounts

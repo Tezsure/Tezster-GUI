@@ -116,7 +116,7 @@ function Sidebar(props) {
             Contracts
           </span>
         </li>
-        <li
+        {/* <li
           className={
             props.currentTab === 'events'
               ? 'sidebar-content-active'
@@ -215,7 +215,7 @@ function Sidebar(props) {
             {' '}
             Settings
           </span>
-        </li>
+        </li>*/}
       </ul>
     </aside>
   );
