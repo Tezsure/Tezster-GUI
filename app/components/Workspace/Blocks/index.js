@@ -1,7 +1,7 @@
 import React from 'react';
 
 function index(props) {
-  return <div className="blocks-container">Comming soon...</div>;
+  return <div className="blocks-container">Coming soon...</div>;
 }
 
 export default index;
