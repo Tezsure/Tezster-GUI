@@ -19,15 +19,6 @@ function Header(props) {
               placeholder="Search for block numbers and tx hashes"
             />
           </div>
-          {/* <div className="user-profile-container">
-            <span className="notification-icon" />
-            <img
-              src="https://logos-download.com/wp-content/uploads/2016/09/GitHub_logo.png"
-              className="profile-image"
-              alt="404 not found"
-            />
-            <span className="name-container">Hello, Aditya</span>
-          </div> */}
         </div>
       </div>
     </header>
