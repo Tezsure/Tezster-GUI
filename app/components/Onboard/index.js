@@ -25,13 +25,6 @@ function Onboard() {
           >
             Quick Start
           </Link>
-          <Link
-            to="/workspace"
-            className="btn btn-success btn-lg
-                          new-workspace-button"
-          >
-            New Workspace
-          </Link>
         </div>
         <div className="workplace-update-container">
           <div className="footer-text">

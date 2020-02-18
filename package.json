@@ -1,8 +1,8 @@
 {
-  "name": "electron-react-boilerplate",
-  "productName": "ElectronReact",
-  "version": "0.18.1",
-  "description": "Electron application boilerplate based on React, React Router, Webpack, React Hot Loader for rapid application development",
+  "name": "tezster-gui-v2.0",
+  "productName": "Tezster-GUI",
+  "version": "2.0.0",
+  "description": "Tezster-GUI",
   "scripts": {
     "build": "concurrently \"yarn build-main\" \"yarn build-renderer\"",
     "build-dll": "cross-env NODE_ENV=development webpack --config ./configs/webpack.config.renderer.dev.dll.babel.js --colors",
@@ -56,7 +56,7 @@
     ]
   },
   "build": {
-    "productName": "ElectronReact",
+    "productName": "Tezster",
     "appId": "org.develar.ElectronReact",
     "files": [
       "dist/",
@@ -100,8 +100,8 @@
     },
     "publish": {
       "provider": "github",
-      "owner": "electron-react-boilerplate",
-      "repo": "electron-react-boilerplate",
+      "owner": "TEZSURE GUI V2.0",
+      "repo": "TEZSURE GUI V2.0",
       "private": false
     }
   },
@@ -196,9 +196,9 @@
     "css-loader": "^3.3.2",
     "detect-port": "^1.3.0",
     "electron": "7.1.4",
-    "electron-builder": "^22.2.0",
+    "electron-builder": "^22.3.2",
     "electron-devtools-installer": "^2.2.4",
-    "electron-rebuild": "^1.8.8",
+    "electron-rebuild": "^1.10.0",
     "enzyme": "^3.7.0",
     "enzyme-adapter-react-16": "^1.7.0",
     "enzyme-to-json": "^3.3.4",
@@ -256,14 +256,17 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.12.0",
     "@hot-loader/react-dom": "^16.11.0",
+    "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
     "connected-react-router": "^6.6.1",
+    "conseiljs": "^0.3.7",
     "core-js": "^3.5.0",
     "devtron": "^1.4.0",
     "electron-debug": "^3.0.1",
     "electron-log": "^4.0.0",
     "electron-updater": "^4.2.0",
     "history": "^4.10.1",
+    "randomstring": "^1.1.5",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-hot-loader": "^4.12.18",
@@ -272,7 +275,8 @@
     "react-router-dom": "^5.1.2",
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0",
-    "source-map-support": "^0.5.16"
+    "source-map-support": "^0.5.16",
+    "sweetalert": "^2.1.2"
   },
   "devEngines": {
     "node": ">=7.x",

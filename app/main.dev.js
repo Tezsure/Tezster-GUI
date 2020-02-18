@@ -14,6 +14,7 @@ import { app, BrowserWindow } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
+var path = require('path');
 
 export default class AppUpdater {
   constructor() {
@@ -61,13 +62,12 @@ const createWindow = async () => {
     height: 728,
     webPreferences: {
       nodeIntegration: true
-    }
+    },
+    icon: path.join(__dirname, '../resources/icons/Artboard – 1@2x (1).png')
   });
 
   mainWindow.loadURL(`file://${__dirname}/app.html`);
 
-  // @TODO: Use 'ready-to-show' event
-  //        https://github.com/electron/electron/blob/master/docs/api/browser-window.md#using-ready-to-show-event
   mainWindow.webContents.on('did-finish-load', () => {
     if (!mainWindow) {
       throw new Error('"mainWindow" is not defined');

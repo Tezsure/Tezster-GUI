@@ -31,7 +31,7 @@ function Dashboard(props) {
   }
   return (
     <main className="container-dashboard">
-      <Header />
+      <Header {...props} />
       {DashboardContent}
     </main>
   );

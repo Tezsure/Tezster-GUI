@@ -70,3 +70,36 @@
 h4 {
   color: #727d95 !important;
 }
+.active-status {
+  background: #39b999;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  z-index: 999999;
+  display: inline-block;
+  cursor: pointer;
+}
+.inactive-status {
+  background: #cccc;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  z-index: 999999;
+  display: inline-block;
+  cursor: pointer;
+}
+.button-accounts {
+  margin-left: 10px;
+}
+.accounts-button-container {
+  left: 0;
+  justify-content: flex-end;
+  align-items: end;
+}
+.button-accounts > .btn-success {
+  color: #fff !important;
+  background-color: #39b999 !important;
+  border-color: #39b999 !important;
+  border: 1px solid #39b999;
+  border-radius: 0;
+}

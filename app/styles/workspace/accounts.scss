@@ -1,7 +1,7 @@
 .accounts-container {
   padding: 10px;
   background: #fff;
-  margin-top: 10px;
+  border-top: 0.5px solid #dee2e6;
 }
 .accounts-table-container {
   background-color: #ffff !important;
@@ -17,8 +17,59 @@
 }
 .accounts-table-container {
   overflow-y: scroll;
-  max-height: 380px;
+  max-height: 400px;
 }
-p {
+.blocks-cards-container p {
   word-break: break-all;
+}
+.modal {
+  display: block !important;
+  padding-right: 15px;
+  opacity: 1 !important;
+}
+.important-symbol {
+  color: red;
+  font-weight: bold;
+}
+.modal-footer > .btn {
+  border-radius: 0 !important;
+}
+.btn-success {
+  background-color: #39b999 !important;
+  border: 1px solid #39b999;
+}
+.btn-success:hover {
+  background-color: #39b999 !important;
+  border: 1px solid #39b999;
+}
+.modal-content {
+  border-radius: 0px;
+}
+.modal-body {
+  border-bottom: 1px solid #dee2e6;
+}
+.modal-input {
+  display: flex;
+  flex-direction: row;
+  padding: 1rem;
+  align-items: baseline;
+}
+.input-container {
+  width: 35%;
+}
+.modal-dialog {
+  max-height: 600px;
+  overflow: auto;
+}
+.modal {
+  background-color: rgba(0, 0, 0, 0.4) !important;
+}
+span.error-msg {
+  text-align: end;
+  margin-right: 20px;
+  color: red;
+}
+button:disabled {
+  cursor: not-allowed;
+  pointer-events: all !important;
 }
