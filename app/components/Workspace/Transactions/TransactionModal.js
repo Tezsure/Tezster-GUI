@@ -58,13 +58,13 @@ class TransactionModal extends Component {
   }
 
   render() {
-    const sendersAccounts = this.props.userAccounts.map(elem => (
-      <option key={elem.account} value={elem.account}>
+    const sendersAccounts = this.props.userAccounts.map((elem, index) => (
+      <option key={elem.account + index} value={elem.account}>
         {elem.account}
       </option>
     ));
-    const recieverAccounts = this.props.userAccounts.map(elem => (
-      <option key={elem.account} value={elem.account}>
+    const recieverAccounts = this.props.userAccounts.map((elem, index) => (
+      <option key={elem.account + index} value={elem.account}>
         {elem.account}
       </option>
     ));

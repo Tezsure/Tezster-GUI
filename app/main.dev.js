@@ -14,7 +14,8 @@ import { app, BrowserWindow } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
-var path = require('path');
+
+const path = require('path');
 
 export default class AppUpdater {
   constructor() {

@@ -21,8 +21,8 @@ class DeployContract extends Component {
   }
 
   render() {
-    const Accounts = this.props.userAccounts.map(elem => (
-      <option key={elem.account} value={elem.account}>
+    const Accounts = this.props.userAccounts.map((elem, index) => (
+      <option key={elem.account + index} value={elem.account}>
         {elem.account}
       </option>
     ));

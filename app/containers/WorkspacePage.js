@@ -28,14 +28,19 @@ import {
   getDashboardHeaderAction,
   handleNetworkChangeAction
 } from '../actions/Workspace/dashboardHeader';
+import checkTezsterCliAction from '../actions/Onboard';
+import Error from '../components/Error';
 
 class WorkspacePage extends Component {
   componentDidMount() {
-    this.props.getAccountsAction({ ...this.props });
-    this.props.getDashboardHeaderAction({ ...this.props });
+    this.props.checkTezsterCliAction();
   }
+
   render() {
-    return <Workspace {...this.props} />;
+    if (this.props.isAvailableTezsterCli) {
+      return <Workspace {...this.props} />;
+    }
+    return <Error {...this.props} />;
   }
 }
 const mapDispatchToProps = dispatch => ({
@@ -61,9 +66,11 @@ const mapDispatchToProps = dispatch => ({
     dispatch(executeTransactionAction(payload)),
   handleContractsTabChangeAction: payload =>
     dispatch(handleContractsTabChangeAction(payload)),
+  checkTezsterCliAction: payload => dispatch(checkTezsterCliAction(payload)),
   handleAccordionAction: payload => dispatch(handleAccordionAction(payload))
 });
 const mapStateToProps = state => ({
+  currentTab: state.currentTab,
   userAccounts: state.userAccounts,
   showTransactionModal: state.showTransactionModal,
   showAccountsModal: state.showAccountsModal,
@@ -75,7 +82,7 @@ const mapStateToProps = state => ({
   selectedTransactionWallet: state.selectedTransactionWallet,
   transactionsSuccess: state.transactionsSuccess,
   selectedContractsTab: state.selectedContractsTab,
-  currentTab: state.currentTab
+  isAvailableTezsterCli: state.isAvailableTezsterCli
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WorkspacePage);

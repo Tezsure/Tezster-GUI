@@ -22,6 +22,7 @@ import {
 } from './Workspace/transactions';
 
 import selectedContractsTab from './Workspace/contracts';
+import isAvailableTezsterCli from './onBoard';
 
 export default function createRootReducer(history: HashHistory) {
   return combineReducers<{}, *>({
@@ -38,6 +39,7 @@ export default function createRootReducer(history: HashHistory) {
     userTransactions,
     transactionsSuccess,
     selectedTransactionWallet,
+    isAvailableTezsterCli,
     currentTab
   });
 }

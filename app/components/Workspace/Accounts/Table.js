@@ -1,9 +1,9 @@
 import React from 'react';
 
 function Table(props) {
-  const Accounts = props.userAccounts.map(elem => {
+  const Accounts = props.userAccounts.map((elem, index) => {
     return (
-      <tr className="table-row" key={elem.account}>
+      <tr className="table-row" key={elem.account + index}>
         <td className="table-body-cell">
           <div className="cards-header">
             <h4>ADDRESS</h4>

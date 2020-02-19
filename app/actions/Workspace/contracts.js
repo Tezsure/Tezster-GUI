@@ -1,5 +1,5 @@
-import { __deployContract } from '../../apis/eztz.service';
 import swal from 'sweetalert';
+import { __deployContract } from '../../apis/eztz.service';
 
 export function handleContractsTabChangeAction(tabName) {
   return {

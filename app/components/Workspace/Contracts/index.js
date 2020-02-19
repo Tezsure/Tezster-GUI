@@ -30,55 +30,6 @@ class index extends Component {
               Deploy contract
             </span>
           </li>
-          {/* <li className="nav-item">
-            <span
-              className={
-                CurrentTab === 'callContract' ? 'nav-link active' : 'nav-link'
-              }
-              id="profile-tab"
-              data-toggle="tab"
-              role="tab"
-              onClick={() =>
-                this.props.handleContractsTabChangeAction('callContract')
-              }
-            >
-              Call contract
-            </span>
-          </li>
-          <li className="nav-item">
-            <span
-              className={
-                CurrentTab === 'viewStorage' ? 'nav-link active' : 'nav-link'
-              }
-              id="contact-tab"
-              data-toggle="tab"
-              role="tab"
-              onClick={() =>
-                this.props.handleContractsTabChangeAction('viewStorage')
-              }
-            >
-              View storage value
-            </span>
-          </li>
-          <li className="nav-item">
-            <span
-              className={
-                CurrentTab === 'appliedContractHistory'
-                  ? 'nav-link active'
-                  : 'nav-link'
-              }
-              id="contact-tab"
-              data-toggle="tab"
-              role="tab"
-              onClick={() =>
-                this.props.handleContractsTabChangeAction(
-                  'appliedContractHistory'
-                )
-              }
-            >
-              Applied contract history
-            </span>
-          </li>*/}
         </ul>
         <div className="tab-content" id="myTabContent">
           <div
@@ -93,42 +44,6 @@ class index extends Component {
           >
             <DeployContract {...this.props} />
           </div>
-          {/* <div
-            className={
-              CurrentTab === 'callContract'
-                ? 'tab-pane fade show active'
-                : 'tab-pane fade'
-            }
-            id="profile"
-            role="tabpanel"
-            aria-labelledby="profile-tab"
-          >
-            <CallContract {...this.props} />
-          </div>
-          <div
-            className={
-              CurrentTab === 'viewStorage'
-                ? 'tab-pane fade show active'
-                : 'tab-pane fade'
-            }
-            id="contact"
-            role="tabpanel"
-            aria-labelledby="contact-tab"
-          >
-            <ViewStorageValue {...this.props} />
-          </div>
-          <div
-            className={
-              CurrentTab === 'appliedContractHistory'
-                ? 'tab-pane fade show active'
-                : 'tab-pane fade'
-            }
-            id="contact"
-            role="tabpanel"
-            aria-labelledby="contact-tab"
-          >
-            <ShowContract {...this.props} />
-          </div>*/}
         </div>
       </div>
     );

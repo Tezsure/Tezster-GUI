@@ -6,13 +6,15 @@ class Transactions extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showModal: false
+      showModal: false,
+      accountId: '0'
     };
     this.handleModalToggle = this.handleModalToggle.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
   }
 
   handleInputChange(event) {
+    this.setState({ accountId: event.target.value });
     this.props.selectTransactionWalletAction({
       accountId: event.target.value,
       ...this.props
@@ -24,8 +26,8 @@ class Transactions extends Component {
   }
 
   render() {
-    const Accounts = this.props.userAccounts.map(elem => (
-      <option key={elem.account} value={elem.account}>
+    const Accounts = this.props.userAccounts.map((elem, index) => (
+      <option key={elem.account + index} value={elem.account}>
         {elem.account}
       </option>
     ));
@@ -71,6 +73,7 @@ class Transactions extends Component {
           {this.props.showTransactionModal ? (
             <TransactionModal
               {...this.props}
+              {...this.state}
               handleModalToggle={this.handleModalToggle}
             />
           ) : (

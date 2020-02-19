@@ -7,10 +7,10 @@ class TransactionTable extends Component {
   }
 
   render() {
-    const Transactions = this.props.userTransactions.map(elem => {
+    const Transactions = this.props.userTransactions.map((elem, index) => {
       const balance = (elem.tx.amount / 1000000).toFixed(3) + 'Tz';
       return (
-        <tr className="table-row" key={elem.op.opHash}>
+        <tr className="table-row" key={elem.op.opHash + index}>
           <td className="table-body-cell">
             <div className="cards-header">
               <h4>SOURCE</h4>

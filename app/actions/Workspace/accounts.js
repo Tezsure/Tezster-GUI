@@ -31,7 +31,7 @@ export function getAccountsAction({ ...params }) {
         Promise.all(accounts).then(response => {
           localStorage.setItem(
             'tezsure',
-            JSON.stringify({ userAccounts: response })
+            JSON.stringify({ userAccounts: response, transactions: {} })
           );
           dispatch({
             type: 'GET_ACCOUNTS',

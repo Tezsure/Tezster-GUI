@@ -1,11 +1,7 @@
 import swal from 'sweetalert';
 
 const {
-  __getBalance,
-  __getAccounts,
   __sendOperation,
-  __activateAccount,
-  __generateMnemonic,
   __listAccountTransactions
 } = require('../../apis/eztz.service');
 
@@ -28,35 +24,94 @@ export function selectTransactionWalletAction(payload) {
 
 export function getTransactionsAction({ ...params }) {
   return dispatch => {
-    __listAccountTransactions({ ...params }, (err, response) => {
-      if (err) {
-        dispatch({
-          type: 'GET_TRANSACTIONS_ERR',
-          payload: err
+    if (params.hasOwnProperty('accountId')) {
+      if (params.dashboardHeader.networkId === 'Localnode') {
+        if (localStorage.getItem('tezsure')) {
+          const { transactions } = JSON.parse(localStorage.getItem('tezsure'));
+          if (
+            transactions.length === 0 &&
+            transactions.hasOwnProperty(params.accountId)
+          ) {
+            dispatch({
+              type: 'GET_TRANSACTIONS',
+              payload: []
+            });
+          } else {
+            dispatch({
+              type: 'GET_TRANSACTIONS',
+              payload: transactions.hasOwnProperty(params.accountId)
+                ? transactions[params.accountId]
+                : []
+            });
+          }
+        } else {
+          dispatch({
+            type: 'GET_TRANSACTIONS',
+            payload: []
+          });
+        }
+      } else {
+        __listAccountTransactions({ ...params }, (err, response) => {
+          if (err) {
+            dispatch({
+              type: 'GET_TRANSACTIONS_ERR',
+              payload: err
+            });
+          }
+          dispatch({
+            type: 'GET_TRANSACTIONS',
+            payload: response
+          });
         });
       }
-      dispatch({
-        type: 'GET_TRANSACTIONS',
-        payload: response
-      });
-    });
+    }
   };
 }
 
 export function executeTransactionAction(params) {
   return dispatch => {
-    __sendOperation({ ...params }, (err, response) => {
-      if (err) {
-        dispatch({
-          type: 'EXECUTE_TRANSACTIONS_ERR',
-          payload: response
-        });
+    if (params.dashboardHeader.networkId === 'Localnode') {
+      const __localStorage = JSON.parse(localStorage.getItem('tezsure'));
+      if (
+        !__localStorage.transactions.hasOwnProperty(params.senderAccount) ||
+        __localStorage.transactions[params.senderAccount].length === 0
+      ) {
+        __localStorage.transactions = {};
+        __localStorage.transactions[params.senderAccount] = [];
       }
+      __localStorage.transactions[params.senderAccount].push({
+        op: {
+          opHash: 'N/A'
+        },
+        tx: {
+          source: params.senderAccount,
+          destination: params.recieverAccount,
+          amount: params.amount,
+          operationResultStatus: 'applied'
+        }
+      });
+      localStorage.setItem('tezsure', JSON.stringify({ ...__localStorage }));
       swal('Success!', 'Transaction executed successfully', 'success');
       dispatch({
         type: 'EXECUTE_TRANSACTIONS_SUCCESS',
-        payload: response
+        payload: __localStorage.transactions[params.senderAccount]
       });
-    });
+    } else {
+      __sendOperation({ ...params }, (err, response) => {
+        if (err) {
+          dispatch({
+            type: 'EXECUTE_TRANSACTIONS_ERR',
+            payload: response
+          });
+        }
+        swal('Success!', 'Transaction executed successfully', 'success');
+        dispatch({
+          type: 'EXECUTE_TRANSACTIONS_SUCCESS',
+          payload: response
+        });
+      });
+    }
+    // dispatch(toggleTransactionModalAction(false));
+    dispatch(getTransactionsAction({ ...params }));
   };
 }
