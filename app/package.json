@@ -1,0 +1,18 @@
+{
+  "name": "tezster",
+  "productName": "Tezster",
+  "version": "2.0.0",
+  "description": "Tezster-GUI to interact with tezster cli",
+  "main": "./main.prod.js",
+  "author": {
+    "name": "Tezster",
+    "email": "aditya@tezsure.com",
+    "url": "https://github.com/Tezster-2.0"
+  },
+  "scripts": {
+    "electron-rebuild": "node -r ../internals/scripts/BabelRegister.js ../internals/scripts/ElectronRebuild.js",
+    "postinstall": "yarn electron-rebuild"
+  },
+  "license": "MIT",
+  "dependencies": {}
+}
