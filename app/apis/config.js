@@ -66,5 +66,11 @@ module.exports = {
   ],
   contracts: [],
   programs: [],
+  endPoints: {
+    localNodeAddress: 'http://localhost:18731/',
+    testNodeAddress: 'https://tezos-dev.cryptonomic-infra.tech/',
+    testNodeTransactions:
+      'https://api.tezos.id/mooncake/babylonnet/v1/transactions/'
+  },
   transactions: []
 };

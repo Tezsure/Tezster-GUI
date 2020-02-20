@@ -2,14 +2,14 @@
 /* eslint-disable no-underscore-dangle */
 import axios from 'axios';
 
-import { identities } from './config';
+import { identities, endPoints } from './config';
 
 const conseiljs = require('conseiljs');
 const randomstring = require('randomstring');
 require('dotenv').config();
 const fs = require('fs');
 
-const { localNodeAddress, testNodeAddress, testNodeTransactions } = process.env;
+const { localNodeAddress, testNodeAddress, testNodeTransactions } = endPoints;
 
 export function __getAccounts({ ...params }, callback) {
   const __url =
@@ -36,7 +36,7 @@ export async function __activateAccount({ ...params }, callback) {
 
 export async function __getBlockHeads({ ...params }, callback) {
   const __url =
-    params.dashboardHeader.networkId === 'Localnode'
+    params.dashboardHeader.networkId !== 'Localnode'
       ? localNodeAddress
       : testNodeAddress;
   eztz.node.setProvider(__url);
@@ -150,15 +150,3 @@ export async function __deployContract({ ...params }, callback) {
   );
   callback(null, result);
 }
-// export async function __getBlocks({ ...params }, callback) {
-//   const serverInfo =
-//     params.dashboardHeader.networkId === 'Localnode'
-//       ? localNodeAddress
-//       : testNodeAddress;
-//   const network =
-//   const result = await conseiljs.TezosNodeWriter.getBlocks(
-//     serverInfo,
-//     network,
-//     query
-//   );
-// }

@@ -1,6 +1,6 @@
 {
-  "name": "tezster-gui",
-  "productName": "tezster-gui",
+  "name": "tezster",
+  "productName": "Tezster",
   "version": "2.0.0",
   "description": "Tezster-GUI to interact with tezster cli",
   "main": "./main.prod.js",

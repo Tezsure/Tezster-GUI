@@ -30,7 +30,7 @@ function Onboard() {
           <div className="footer-text">
             learn more about products &amp; upcomming updates
           </div>
-          <a href="ll" className="update-link">
+          <a href="javascript:void(0);" className="update-link">
             check for updates
           </a>
         </div>

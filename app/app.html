@@ -30,7 +30,11 @@
       if (process.env.NODE_ENV === 'development') {
         scripts.push('../dll/renderer.dev.dll.js');
       }
-
+      scripts.push(
+        process.env.START_HOT
+          ? `./apis/eztz.min.js`
+          : './dist/eztz.min.js'
+      );
       // Dynamically insert the bundled app script in the renderer process
       const port = process.env.PORT || 1212;
       scripts.push(
@@ -46,8 +50,6 @@
       );
     }
   </script>
-
-  <script src="./apis/eztz.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"
     integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
