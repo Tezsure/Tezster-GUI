@@ -1,0 +1,23 @@
+.contracts-table-container {
+  overflow-y: scroll;
+  max-height: 500px;
+  background-color: #ffff !important;
+  color: #727d95 !important;
+  font-weight: 700;
+  padding: 10px;
+  border-top: 0.5px solid #dee2e6;
+}
+.contract-deployed {
+  background: #39b999;
+  color: #fff;
+  padding: 4px;
+  padding-right: 18px;
+  padding-left: 18px;
+  position: inherit;
+  margin-top: 1rem;
+  border-radius: 18px;
+  margin-left: 0.5rem;
+}
+.contract-status-container {
+  margin-top: 10px;
+}
