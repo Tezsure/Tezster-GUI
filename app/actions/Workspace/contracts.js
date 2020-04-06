@@ -11,7 +11,14 @@ export function handleContractsTabChangeAction(tabName) {
 export function deployContractAction({ ...params }) {
   return dispatch => {
     __deployContract({ ...params }, (err, response) => {
-      swal('Success!', 'Contract deployed successfully', 'success');
+      if (err) {
+        swal('Error!', 'Contract deployment failed', 'error');
+        dispatch({
+          type: 'DEPLOY_CONTRACT_ERR',
+          payload: response
+        });
+      }
+      swal('Success!', `Contract ${response} deployed successfully`, 'success');
       dispatch({
         type: 'DEPLOY_CONTRACT_SUCCESS',
         payload: response

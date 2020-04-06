@@ -1,3 +1,5 @@
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-prototype-builtins */
 import swal from 'sweetalert';
 
 const {

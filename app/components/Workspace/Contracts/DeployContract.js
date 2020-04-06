@@ -1,4 +1,11 @@
+/* eslint-disable promise/catch-or-return */
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable react/prop-types */
+/* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
+import swal from 'sweetalert';
+
+const fs = require('fs');
 
 class DeployContract extends Component {
   constructor(props) {
@@ -7,9 +14,46 @@ class DeployContract extends Component {
       accounts: '0',
       contractFile: '',
       contractLabel: '',
-      initialValue: ''
+      storageValue: '',
+      error: '',
+      enteredContract: ''
     };
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleDeployContract = this.handleDeployContract.bind(this);
+  }
+
+  handleDeployContract() {
+    let error = '';
+    if (this.state.accounts === '0') {
+      error = 'Please select an account';
+    } else if (
+      this.state.contractFile === '' &&
+      this.state.enteredContract === ''
+    ) {
+      error = 'Please upload a contract or paste a contract code';
+    } else if (this.state.contractLabel === '') {
+      error = 'Please enter contract label';
+    } else if (this.state.storageValue === '') {
+      error = 'Please enter storage value';
+    }
+    if (error === '') {
+      let contract = '';
+      if (this.state.contractFile !== '') {
+        contract = fs
+          .readFileSync(this.state.contractFile[0].path)
+          .toString('utf-8');
+      } else if (this.state.enteredContract !== '') {
+        contract = this.state.enteredContract;
+      }
+      this.props.deployContractAction({
+        contract,
+        ...this.props,
+        ...this.state
+      });
+    }
+    if (error !== '') {
+      this.setState({ error });
+    }
   }
 
   handleInputChange(event) {
@@ -26,6 +70,11 @@ class DeployContract extends Component {
         {elem.account}
       </option>
     ));
+    if (this.state.error !== '') {
+      swal('Error!', this.state.error, 'error').then(() => {
+        return this.setState({ error: '' });
+      });
+    }
     return (
       <div className="transactions-contents">
         <div className="modal-input">
@@ -55,22 +104,39 @@ class DeployContract extends Component {
           </div>
         </div>
         <div className="modal-input">
+          <div className="input-container">----- OR -----</div>
+        </div>
+        <div className="modal-input">
+          <div className="input-container">Enter Contract </div>
+          <div className="custom-file">
+            <textarea
+              placeholder="Enter your michelson contract"
+              name="contractFile"
+              className="form-control"
+              accept=".tz"
+              onChange={this.handleInputChange}
+            />
+          </div>
+        </div>
+        <div className="modal-input">
           <div className="input-container">Contract label </div>
           <input
             type="text"
             name="contractLabel"
             className="form-control"
             placeholder="Contract Label"
+            value={this.state.contractLabel}
             onChange={this.handleInputChange}
           />
         </div>
         <div className="modal-input">
-          <div className="input-container">Initial Value </div>
+          <div className="input-container">Initial Storage </div>
           <input
-            type="number"
-            name="initialValue"
+            type="text"
+            name="storageValue"
             className="form-control"
             placeholder="Initial value for account"
+            value={this.state.storageValue}
             onChange={this.handleInputChange}
           />
         </div>
@@ -80,18 +146,16 @@ class DeployContract extends Component {
               <button
                 type="button"
                 className="btn btn-success"
-                onClick={() =>
-                  this.props.deployContractAction({
-                    ...this.props,
-                    ...this.state
-                  })
-                }
+                onClick={this.handleDeployContract}
               >
                 Deploy Contract
               </button>
             </div>
           </div>
         </div>
+        <br />
+        <br />
+        <br />
       </div>
     );
   }

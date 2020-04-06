@@ -19,7 +19,7 @@ class TransactionModal extends Component {
 
   handleExecuteTransaction() {
     let errorFlag = false;
-    let stateParams = {
+    const stateParams = {
       ...this.state,
       senderAccountErr: '',
       recieverAccountErr: '',

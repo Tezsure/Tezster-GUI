@@ -1,3 +1,5 @@
+/* eslint-disable promise/always-return */
+/* eslint-disable no-prototype-builtins */
 import swal from 'sweetalert';
 
 const {
@@ -15,7 +17,10 @@ export function toggleAccountsModalAction(modalType) {
 
 export function getAccountsAction({ ...params }) {
   return dispatch => {
-    if (localStorage.hasOwnProperty('tezsure')) {
+    if (
+      localStorage.hasOwnProperty('tezsure') &&
+      params.dashboardHeader.networkId === 'Localnode'
+    ) {
       dispatch({
         type: 'GET_ACCOUNTS',
         payload: JSON.parse(localStorage.getItem('tezsure')).userAccounts
@@ -28,16 +33,25 @@ export function getAccountsAction({ ...params }) {
             payload: err
           });
         }
-        Promise.all(accounts).then(response => {
-          localStorage.setItem(
-            'tezsure',
-            JSON.stringify({ userAccounts: response, transactions: {} })
-          );
-          dispatch({
-            type: 'GET_ACCOUNTS',
-            payload: response
+        Promise.all(accounts)
+          .then(response => {
+            if (!localStorage.hasOwnProperty('tezsure')) {
+              localStorage.setItem(
+                'tezsure',
+                JSON.stringify({ userAccounts: response, transactions: {} })
+              );
+            }
+            dispatch({
+              type: 'GET_ACCOUNTS',
+              payload: response
+            });
+          })
+          .catch(accountsErr => {
+            dispatch({
+              type: 'GET_ACCOUNTS_ERR',
+              payload: accountsErr
+            });
           });
-        });
       });
     }
   };
@@ -45,7 +59,10 @@ export function getAccountsAction({ ...params }) {
 
 export function getBalanceAction(payload) {
   return dispatch => {
-    if (localStorage.getItem('tezsure')) {
+    if (
+      localStorage.getItem('tezsure') &&
+      payload.dashboardHeader.networkId === 'Localnode'
+    ) {
       dispatch({
         type: 'GET_BALANCE',
         payload: localStorage.getItem('tezsure').userAccounts

@@ -7,6 +7,8 @@ import {
   handleTabChangeAction
 } from '../actions/Workspace/sidebar';
 
+import getBlockHeadsActions from '../actions/Workspace/blocks';
+
 import {
   getAccountsAction,
   createAccountsAction,
@@ -28,16 +30,24 @@ import {
   getDashboardHeaderAction,
   handleNetworkChangeAction
 } from '../actions/Workspace/dashboardHeader';
-import checkTezsterCliAction from '../actions/Onboard';
+import {
+  checkTezsterCliAction,
+  getLocalConfigAction
+} from '../actions/Onboard';
 import Error from '../components/Error';
 
 class WorkspacePage extends Component {
   componentDidMount() {
     this.props.checkTezsterCliAction();
+    this.props.getLocalConfigAction();
+    this.props.getBlockHeadsActions({ ...this.props });
   }
 
   render() {
-    if (this.props.isAvailableTezsterCli) {
+    if (
+      this.props.isAvailableTezsterCli &&
+      this.props.isAvailableTezsterCli !== 'pending'
+    ) {
       return <Workspace {...this.props} />;
     }
     return <Error {...this.props} />;
@@ -51,6 +61,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(toggleTransactionModalAction(payload)),
   getBalanceAction: payload => dispatch(getBalanceAction(payload)),
   getAccountsAction: payload => dispatch(getAccountsAction(payload)),
+  getBlockHeadsActions: payload => dispatch(getBlockHeadsActions(payload)),
   getTransactionsAction: payload => dispatch(getTransactionsAction(payload)),
   deployContractAction: payload => dispatch(deployContractAction(payload)),
   createAccountsAction: payload => dispatch(createAccountsAction(payload)),
@@ -67,9 +78,11 @@ const mapDispatchToProps = dispatch => ({
   handleContractsTabChangeAction: payload =>
     dispatch(handleContractsTabChangeAction(payload)),
   checkTezsterCliAction: payload => dispatch(checkTezsterCliAction(payload)),
+  getLocalConfigAction: payload => dispatch(getLocalConfigAction(payload)),
   handleAccordionAction: payload => dispatch(handleAccordionAction(payload))
 });
 const mapStateToProps = state => ({
+  blocks: state.blocks,
   currentTab: state.currentTab,
   userAccounts: state.userAccounts,
   showTransactionModal: state.showTransactionModal,
@@ -81,6 +94,7 @@ const mapStateToProps = state => ({
   userTransactions: state.userTransactions,
   selectedTransactionWallet: state.selectedTransactionWallet,
   transactionsSuccess: state.transactionsSuccess,
+  localConfig: state.localConfig,
   selectedContractsTab: state.selectedContractsTab,
   isAvailableTezsterCli: state.isAvailableTezsterCli
 });

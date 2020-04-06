@@ -275,8 +275,10 @@
     "react-router-dom": "^5.1.2",
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0",
+    "rotating-file-stream": "^2.0.2",
     "source-map-support": "^0.5.16",
-    "sweetalert": "^2.1.2"
+    "sweetalert": "^2.1.2",
+    "winston": "^3.2.1"
   },
   "devEngines": {
     "node": ">=7.x",

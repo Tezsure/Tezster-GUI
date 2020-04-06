@@ -3,6 +3,7 @@ import { combineReducers } from 'redux';
 import { connectRouter } from 'connected-react-router';
 import type { HashHistory } from 'history';
 import counter from './counter';
+import blocks from './Workspace/blocks';
 import {
   sidebarToggleState,
   currentTab,
@@ -22,11 +23,12 @@ import {
 } from './Workspace/transactions';
 
 import selectedContractsTab from './Workspace/contracts';
-import isAvailableTezsterCli from './onBoard';
+import { isAvailableTezsterCli, localConfig } from './onBoard';
 
 export default function createRootReducer(history: HashHistory) {
   return combineReducers<{}, *>({
     router: connectRouter(history),
+    blocks,
     counter,
     sidebarToggleState,
     showAccountsModal,
@@ -40,6 +42,7 @@ export default function createRootReducer(history: HashHistory) {
     transactionsSuccess,
     selectedTransactionWallet,
     isAvailableTezsterCli,
+    localConfig,
     currentTab
   });
 }

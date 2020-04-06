@@ -1,92 +1,94 @@
-const { __getBlockHeads } = require('../../apis/eztz.service');
+import { TzStatsApiEndpoint } from '../../apis/config';
 
-let LocalNodeHeaderData = {
-  chainId: '',
+const { getBlockHeight, getBlockData } = require('../../apis/tzstats.service');
+
+const localnodeData = {
+  chainId: '00',
   currentBlock: '00',
-  gasLimit: '32311',
-  gasPrice: '0.1228',
+  gas_limit: '32311',
+  gas_price: '0.1228',
   networkId: 'Localnode',
   rpcServer: 'http://localhost:18731'
 };
 
-let BabylonnetHeaderData = {
-  chainId: '',
-  currentBlock: '00',
-  gasLimit: '32311',
-  gasPrice: '0.1228',
-  networkId: 'Babylonnet',
-  rpcServer: 'https://tezos-dev.cryptonomic-infra.tech'
-};
-
-let headerData = {
-  chainId: '',
-  currentBlock: '00',
-  gasLimit: '32311',
-  gasPrice: '0.1228',
-  networkId: 'Localnode',
-  rpcServer: 'http://localhost:18731'
-};
-
-export function getDashboardHeaderAction(payload) {
+export function getDashboardHeaderAction(args) {
   return dispatch => {
-    __getBlockHeads({ ...payload }, (err, response) => {
-      if (err) {
-        dispatch({
-          type: 'GET_DASHBOARD_HEADER_ERR',
-          payload: err
-        });
-      }
-      headerData = {
-        ...headerData,
-        protocol: response.protocol,
-        chainId: response.chain_id,
-        currentBlock: '00',
-        gasLimit: '32311',
-        gasPrice: '0.1228'
-      };
+    if (args.dashboardHeader.networkId === 'Localnode') {
       dispatch({
         type: 'GET_DASHBOARD_HEADER',
-        payload: headerData
+        payload: localnodeData
       });
-    });
+    } else {
+      getBlockHeight(args, (blockHeightError, blockHeightResponse) => {
+        if (blockHeightError) {
+          dispatch({
+            type: 'GET_DASHBOARD_HEADER_ERR',
+            payload: blockHeightError
+          });
+        }
+        getBlockData(
+          { blockId: blockHeightResponse.height, ...args },
+          (blockDataError, blockDataResponse) => {
+            if (blockDataError) {
+              dispatch({
+                type: 'GET_DASHBOARD_HEADER_ERR',
+                payload: blockDataError
+              });
+            }
+            dispatch({
+              type: 'GET_DASHBOARD_HEADER',
+              payload: {
+                currentBlock: blockHeightResponse.height,
+                chainId: blockHeightResponse.height,
+                ...blockDataResponse,
+                ...blockHeightResponse
+              }
+            });
+          }
+        );
+      });
+    }
   };
 }
-export function handleNetworkChangeAction(params) {
+
+export function handleNetworkChangeAction(args) {
   return dispatch => {
-    __getBlockHeads(params, (err, response) => {
-      if (err) {
-        dispatch({
-          type: 'GET_DASHBOARD_HEADER_ERR',
-          payload: err
-        });
-      }
-      if (params.env === 'Localnode') {
-        LocalNodeHeaderData = {
-          ...LocalNodeHeaderData,
-          protocol: response.protocol,
-          chainId: response.chain_id,
-          currentBlock: '00',
-          gasLimit: '32311',
-          gasPrice: '0.1228'
-        };
-        dispatch({
-          type: 'GET_DASHBOARD_HEADER',
-          payload: LocalNodeHeaderData
-        });
-      } else {
-        BabylonnetHeaderData = {
-          ...BabylonnetHeaderData,
-          protocol: response.protocol,
-          chainId: response.chain_id,
-          currentBlock: '00',
-          gasLimit: '32311',
-          gasPrice: '0.1228'
-        };
-        dispatch({
-          type: 'GET_DASHBOARD_HEADER',
-          payload: BabylonnetHeaderData
-        });
-      }
-    });
+    if (args.dashboardHeader.networkId === 'Localnode') {
+      dispatch({
+        type: 'GET_DASHBOARD_HEADER',
+        payload: localnodeData
+      });
+    } else {
+      getBlockHeight(args, (blockHeightError, blockHeightResponse) => {
+        if (blockHeightError) {
+          dispatch({
+            type: 'GET_DASHBOARD_HEADER_ERR',
+            payload: blockHeightError
+          });
+        }
+        getBlockData(
+          { blockId: blockHeightResponse.height, ...args },
+          (blockDataError, blockDataResponse) => {
+            if (blockDataError) {
+              dispatch({
+                type: 'GET_DASHBOARD_HEADER_ERR',
+                payload: blockDataError
+              });
+            }
+            dispatch({
+              type: 'GET_DASHBOARD_HEADER',
+              payload: {
+                currentBlock: blockHeightResponse.height,
+                chainId: blockHeightResponse.height,
+                networkId: args.dashboardHeader.networkId,
+                rpcServer: TzStatsApiEndpoint[args.dashboardHeader.networkId],
+                ...blockDataResponse,
+                ...blockHeightResponse
+              }
+            });
+          }
+        );
+      });
+    }
   };
 }

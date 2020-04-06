@@ -66,11 +66,18 @@ module.exports = {
   ],
   contracts: [],
   programs: [],
-  endPoints: {
-    localNodeAddress: 'http://localhost:18731/',
-    testNodeAddress: 'https://tezos-dev.cryptonomic-infra.tech/',
-    testNodeTransactions:
-      'https://api.tezos.id/mooncake/babylonnet/v1/transactions/'
+  Nodes: ['Localnode', 'Carthagenet'],
+  apiEndPoints: {
+    Localnode: 'http://localhost:18731',
+    Carthagenet: 'https://carthagenet.SmartPy.io'
+  },
+  TzStatsApiEndpoint: {
+    Localnode: 'http://localhost:18731',
+    Carthagenet: 'https://api.carthagenet.tzstats.com'
+  },
+  ConceilJS: {
+    url: 'https://conseil-dev.cryptonomic-infra.tech',
+    apiKey: '04c98bd2-7cc5-49f2-9108-2d48efcbd660'
   },
   transactions: []
 };
