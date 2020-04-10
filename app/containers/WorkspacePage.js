@@ -24,7 +24,9 @@ import {
 } from '../actions/Workspace/transactions';
 import {
   handleContractsTabChangeAction,
-  deployContractAction
+  handleInvokeContractAction,
+  deployContractAction,
+  getAccountBalanceAction
 } from '../actions/Workspace/contracts';
 import {
   getDashboardHeaderAction,
@@ -63,7 +65,11 @@ const mapDispatchToProps = dispatch => ({
   getAccountsAction: payload => dispatch(getAccountsAction(payload)),
   getBlockHeadsActions: payload => dispatch(getBlockHeadsActions(payload)),
   getTransactionsAction: payload => dispatch(getTransactionsAction(payload)),
+  handleInvokeContractAction: payload =>
+    dispatch(handleInvokeContractAction(payload)),
   deployContractAction: payload => dispatch(deployContractAction(payload)),
+  getAccountBalanceAction: payload =>
+    dispatch(getAccountBalanceAction(payload)),
   createAccountsAction: payload => dispatch(createAccountsAction(payload)),
   toggleAccountsModalAction: payload =>
     dispatch(toggleAccountsModalAction(payload)),
@@ -96,6 +102,7 @@ const mapStateToProps = state => ({
   transactionsSuccess: state.transactionsSuccess,
   localConfig: state.localConfig,
   selectedContractsTab: state.selectedContractsTab,
+  selectedContractAmountBalance: state.selectedContractAmountBalance,
   isAvailableTezsterCli: state.isAvailableTezsterCli
 });
 

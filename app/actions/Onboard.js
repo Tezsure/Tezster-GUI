@@ -25,7 +25,7 @@ export function checkTezsterCliAction() {
           }
         }
       );
-    }, 5000);
+    }, 1000);
   };
 }
 

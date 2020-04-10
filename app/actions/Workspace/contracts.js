@@ -1,5 +1,10 @@
+/* eslint-disable promise/always-return */
 import swal from 'sweetalert';
-import { __deployContract } from '../../apis/eztz.service';
+import {
+  __deployContract,
+  __getBalance,
+  __invokeContract
+} from '../../apis/eztz.service';
 
 export function handleContractsTabChangeAction(tabName) {
   return {
@@ -21,6 +26,41 @@ export function deployContractAction({ ...params }) {
       swal('Success!', `Contract ${response} deployed successfully`, 'success');
       dispatch({
         type: 'DEPLOY_CONTRACT_SUCCESS',
+        payload: response
+      });
+    });
+  };
+}
+
+export function getAccountBalanceAction({ ...params }) {
+  return dispatch => {
+    __getBalance({ ...params })
+      .then(response => {
+        dispatch({
+          type: 'GET_CONTRACT_AMOUNT',
+          payload: response.balance
+        });
+      })
+      .catch(err => {
+        dispatch({
+          type: 'GET_CONTRACT_AMOUNT_ERR',
+          payload: err
+        });
+      });
+  };
+}
+
+export function handleInvokeContractAction({ ...params }) {
+  return dispatch => {
+    __invokeContract({ ...params }, (err, response) => {
+      if (err) {
+        dispatch({
+          type: 'INVOKE_CONTRACT_ERR',
+          payload: err
+        });
+      }
+      dispatch({
+        type: 'INVOKE_CONTRACT',
         payload: response
       });
     });

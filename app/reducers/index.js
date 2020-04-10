@@ -22,7 +22,10 @@ import {
   transactionsSuccess
 } from './Workspace/transactions';
 
-import selectedContractsTab from './Workspace/contracts';
+import {
+  selectedContractsTab,
+  selectedContractAmountBalance
+} from './Workspace/contracts';
 import { isAvailableTezsterCli, localConfig } from './onBoard';
 
 export default function createRootReducer(history: HashHistory) {
@@ -35,6 +38,7 @@ export default function createRootReducer(history: HashHistory) {
     showTransactionModal,
     blockAccordionIndex,
     selectedContractsTab,
+    selectedContractAmountBalance,
     dashboardHeader,
     userAccounts,
     userBalances,

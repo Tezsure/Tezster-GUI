@@ -1,4 +1,4 @@
-import { TzStatsApiEndpoint } from '../../apis/config';
+import { apiEndPoints } from '../../apis/config';
 
 const { getBlockHeight, getBlockData } = require('../../apis/tzstats.service');
 
@@ -81,7 +81,7 @@ export function handleNetworkChangeAction(args) {
                 currentBlock: blockHeightResponse.height,
                 chainId: blockHeightResponse.height,
                 networkId: args.dashboardHeader.networkId,
-                rpcServer: TzStatsApiEndpoint[args.dashboardHeader.networkId],
+                rpcServer: apiEndPoints[args.dashboardHeader.networkId],
                 ...blockDataResponse,
                 ...blockHeightResponse
               }

@@ -198,7 +198,10 @@ export async function __listAccountTransactions({ ...params }, callback) {
 
 export async function __deployContract({ ...params }, callback) {
   try {
-    const tezosNode = 'https://tezos-dev.cryptonomic-infra.tech';
+    const tezosNode =
+      params.dashboardHeader.networkId === 'Carthagenet'
+        ? 'https://tezos-dev.cryptonomic-infra.tech'
+        : apiEndPoints[params.dashboardHeader.networkId];
     const network = params.dashboardHeader.networkId.toLowerCase();
     const conseilServer = {
       url: ConceilJS.url,
@@ -206,16 +209,16 @@ export async function __deployContract({ ...params }, callback) {
       network
     };
     const { contract } = params;
-    // const keys = params.userAccounts.find(elem => elem.pkh === params.accounts);
+    const keys = params.userAccounts.find(elem => elem.pkh === params.accounts);
     const keystore = {
-      publicKey: 'edpkv4h6yyAPZpve8jQyDiQCAZMHNt6Q796o6eHZxvPEyBiCui4ehv',
-      privateKey:
-        'edskS6kYsCqdbnMTrV9GYDv562KSCCB17TfukonGG9py3PHPtxxgij31ETbjcfSoKLzQLf1NYKDEkECNNQnv7iugWXbd7p8rc6',
-      publicKeyHash: 'tz1ckEA7Ebqg2hNsRJgsyoMDcCsRS2mbkPzp',
+      publicKey: keys.pk,
+      privateKey: keys.sk,
+      publicKeyHash: keys.pkh,
       seed: '',
       storeType: conseiljs.StoreType.Fundraiser
     };
     const storage = `${params.storageValue}`;
+
     const nodeResult = await conseiljs.TezosNodeWriter.sendContractOriginationOperation(
       tezosNode,
       keystore,
@@ -230,16 +233,54 @@ export async function __deployContract({ ...params }, callback) {
       conseiljs.TezosParameterFormat.Michelson
     );
 
-    const groupid = nodeResult.operationGroupID
-      .replace(/\"/g, '')
-      .replace(/\n/, ''); // clean up RPC output
-    const conseilResult = await conseiljs.TezosConseilClient.awaitOperationConfirmation(
-      conseilServer,
-      'carthagenet',
-      groupid,
-      5
+    const __localStorage__ = JSON.parse(localStorage.getItem('tezsure'));
+    __localStorage__.contracts.push({
+      name: params.contractLabel,
+      originated_contracts:
+        nodeResult.results.contents[0].metadata.operation_result
+          .originated_contracts[0],
+      contract
+    });
+    localStorage.setItem('tezsure', JSON.stringify({ ...__localStorage__ }));
+    callback(
+      null,
+      nodeResult.results.contents[0].metadata.operation_result
+        .originated_contracts[0]
     );
-    callback(null, conseilResult[0].originated_contracts);
+  } catch (exp) {
+    callback(exp, null);
+  }
+}
+export async function __invokeContract({ ...params }, callback) {
+  try {
+    const tezosNode =
+      params.dashboardHeader.networkId === 'Carthagenet'
+        ? 'https://tezos-dev.cryptonomic-infra.tech'
+        : apiEndPoints[params.dashboardHeader.networkId];
+    const keys = params.userAccounts.find(elem => elem.pkh === params.accounts);
+    const keystore = {
+      publicKey: keys.pk,
+      privateKey: keys.sk,
+      publicKeyHash: keys.pkh,
+      seed: '',
+      storeType: conseiljs.StoreType.Fundraiser
+    };
+    const contractAddress = params.selectedContracts;
+    const storage = `${params.storageValue}`;
+    const result = await conseiljs.TezosNodeWriter.sendContractInvocationOperation(
+      tezosNode,
+      keystore,
+      contractAddress,
+      10000,
+      100000,
+      '',
+      1000,
+      100000,
+      storage,
+      conseiljs.TezosParameterFormat.Michelson
+    );
+    console.log('=====>>>>>>>>>', result);
+    callback(null, result.operationGroupID);
   } catch (exp) {
     callback(exp, null);
   }

@@ -8,6 +8,8 @@ const {
   __activateAccount
 } = require('../../apis/eztz.service');
 
+const config = require('../../apis/config');
+
 export function toggleAccountsModalAction(modalType) {
   return {
     type: 'TOGGLE_ACCOUNTS_MODAL',
@@ -38,7 +40,7 @@ export function getAccountsAction({ ...params }) {
             if (!localStorage.hasOwnProperty('tezsure')) {
               localStorage.setItem(
                 'tezsure',
-                JSON.stringify({ userAccounts: response, transactions: {} })
+                JSON.stringify({ userAccounts: response, ...config })
               );
             }
             dispatch({

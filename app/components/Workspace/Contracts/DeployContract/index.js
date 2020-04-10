@@ -33,8 +33,18 @@ class DeployContract extends Component {
       error = 'Please upload a contract or paste a contract code';
     } else if (this.state.contractLabel === '') {
       error = 'Please enter contract label';
+    } else if (this.state.contractAmount === '') {
+      error = 'Please enter contract amount';
     } else if (this.state.storageValue === '') {
       error = 'Please enter storage value';
+    } else if (this.props.selectedContractAmountBalance === '0.000') {
+      error = 'Not enough balance to deploy the contract';
+    } else if (
+      parseInt(this.state.contractAmount, 10) >
+      parseInt(this.props.selectedContractAmountBalance, 10)
+    ) {
+      error =
+        'The entered contract amount should be less than available account balance';
     }
     if (error === '') {
       let contract = '';
@@ -59,6 +69,13 @@ class DeployContract extends Component {
   handleInputChange(event) {
     if (event.target.name === 'contractFile') {
       this.setState({ [event.target.name]: event.target.files });
+    } else if (event.target.name === 'accounts') {
+      this.setState({ [event.target.name]: event.target.value }, () => {
+        this.props.getAccountBalanceAction({
+          ...this.props,
+          pkh: this.state.accounts
+        });
+      });
     } else {
       this.setState({ [event.target.name]: event.target.value });
     }
@@ -86,11 +103,20 @@ class DeployContract extends Component {
             onChange={this.handleInputChange}
           >
             <option value="0" disabled>
-              Select account to display transactions
+              Select account to deploy contract
             </option>
             {Accounts}
           </select>
         </div>
+        {this.state.accounts !== '0' ? (
+          <div className="container-msg">
+            <div className="success-msg">
+              {`available balance in the account ${this.props.selectedContractAmountBalance}`}
+            </div>
+          </div>
+        ) : (
+          ''
+        )}
         <div className="modal-input">
           <div className="input-container">Upload Contract </div>
           <div className="custom-file">
@@ -124,15 +150,25 @@ class DeployContract extends Component {
             type="text"
             name="contractLabel"
             className="form-control"
-            placeholder="Contract Label"
+            placeholder="Enter label name to identify contract"
             value={this.state.contractLabel}
             onChange={this.handleInputChange}
           />
         </div>
         <div className="modal-input">
-          <div className="input-container">Initial Storage </div>
+          <div className="input-container">Contract Amount </div>
           <input
-            type="text"
+            type="number"
+            name="contractAmount"
+            className="form-control"
+            placeholder="Enter amount to deploy contract"
+            value={this.state.contractAmount}
+            onChange={this.handleInputChange}
+          />
+        </div>
+        <div className="modal-input">
+          <div className="input-container">Initial Storage </div>
+          <textarea
             name="storageValue"
             className="form-control"
             placeholder="Initial value for account"

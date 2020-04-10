@@ -5,10 +5,7 @@ class CallContract extends Component {
     super(props);
 
     this.state = {};
-    this.handleCallContract = this.handleCallContract.bind(this);
   }
-
-  handleCallContract(event) {}
 
   render() {
     const Accounts = this.props.userAccounts.map(elem => (
