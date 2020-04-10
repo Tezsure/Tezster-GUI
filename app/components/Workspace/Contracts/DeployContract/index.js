@@ -15,6 +15,7 @@ class DeployContract extends Component {
       contractFile: '',
       contractLabel: '',
       storageValue: '',
+      contractAmount: '',
       error: '',
       enteredContract: ''
     };

@@ -54,11 +54,13 @@ export function handleInvokeContractAction({ ...params }) {
   return dispatch => {
     __invokeContract({ ...params }, (err, response) => {
       if (err) {
+        swal('Error!', 'Contract invocation failed', 'error');
         dispatch({
           type: 'INVOKE_CONTRACT_ERR',
           payload: err
         });
       }
+      swal('Success!', `${response} originated contract`, 'success');
       dispatch({
         type: 'INVOKE_CONTRACT',
         payload: response

@@ -6,6 +6,7 @@
 import { identities, apiEndPoints, ConceilJS } from './config';
 
 const conseiljs = require('conseiljs');
+
 require('dotenv').config();
 
 export async function __getAccounts({ ...params }, callback) {
@@ -200,14 +201,8 @@ export async function __deployContract({ ...params }, callback) {
   try {
     const tezosNode =
       params.dashboardHeader.networkId === 'Carthagenet'
-        ? 'https://tezos-dev.cryptonomic-infra.tech'
+        ? 'https://carthagenet.smartpy.io'
         : apiEndPoints[params.dashboardHeader.networkId];
-    const network = params.dashboardHeader.networkId.toLowerCase();
-    const conseilServer = {
-      url: ConceilJS.url,
-      apiKey: ConceilJS.apiKey,
-      network
-    };
     const { contract } = params;
     const keys = params.userAccounts.find(elem => elem.pkh === params.accounts);
     const keystore = {
@@ -218,35 +213,40 @@ export async function __deployContract({ ...params }, callback) {
       storeType: conseiljs.StoreType.Fundraiser
     };
     const storage = `${params.storageValue}`;
-
     const nodeResult = await conseiljs.TezosNodeWriter.sendContractOriginationOperation(
       tezosNode,
       keystore,
-      0,
+      parseInt(params.contractAmount, 10),
       undefined,
       100000,
       '',
-      1000,
+      10000,
       100000,
       contract,
       storage,
       conseiljs.TezosParameterFormat.Michelson
     );
 
-    const __localStorage__ = JSON.parse(localStorage.getItem('tezsure'));
-    __localStorage__.contracts.push({
-      name: params.contractLabel,
-      originated_contracts:
+    if (
+      nodeResult.results.contents[0].metadata.operation_result.status ===
+      'applied'
+    ) {
+      const __localStorage__ = JSON.parse(localStorage.getItem('tezsure'));
+      __localStorage__.contracts.push({
+        name: params.contractLabel,
+        originated_contracts:
+          nodeResult.results.contents[0].metadata.operation_result
+            .originated_contracts[0],
+        contract
+      });
+      localStorage.setItem('tezsure', JSON.stringify({ ...__localStorage__ }));
+      callback(
+        null,
         nodeResult.results.contents[0].metadata.operation_result
-          .originated_contracts[0],
-      contract
-    });
-    localStorage.setItem('tezsure', JSON.stringify({ ...__localStorage__ }));
-    callback(
-      null,
-      nodeResult.results.contents[0].metadata.operation_result
-        .originated_contracts[0]
-    );
+          .originated_contracts[0]
+      );
+    }
+    callback('Contract not deployed', null);
   } catch (exp) {
     callback(exp, null);
   }
@@ -255,7 +255,7 @@ export async function __invokeContract({ ...params }, callback) {
   try {
     const tezosNode =
       params.dashboardHeader.networkId === 'Carthagenet'
-        ? 'https://tezos-dev.cryptonomic-infra.tech'
+        ? 'https://carthagenet.smartpy.io'
         : apiEndPoints[params.dashboardHeader.networkId];
     const keys = params.userAccounts.find(elem => elem.pkh === params.accounts);
     const keystore = {
@@ -267,7 +267,7 @@ export async function __invokeContract({ ...params }, callback) {
     };
     const contractAddress = params.selectedContracts;
     const storage = `${params.storageValue}`;
-    const result = await conseiljs.TezosNodeWriter.sendContractInvocationOperation(
+    conseiljs.TezosNodeWriter.sendContractInvocationOperation(
       tezosNode,
       keystore,
       contractAddress,
@@ -276,11 +276,22 @@ export async function __invokeContract({ ...params }, callback) {
       '',
       1000,
       100000,
+      undefined,
       storage,
       conseiljs.TezosParameterFormat.Michelson
-    );
-    console.log('=====>>>>>>>>>', result);
-    callback(null, result.operationGroupID);
+    )
+      .then(nodeResult => {
+        if (
+          nodeResult.results.contents[0].metadata.operation_result.status ===
+          'applied'
+        ) {
+          return callback(null, nodeResult.operationGroupID.replace(/\"/g, ''));
+        }
+        return callback('Contract invocation failed', null);
+      })
+      .catch(exp => {
+        return callback(exp, null);
+      });
   } catch (exp) {
     callback(exp, null);
   }
