@@ -165,7 +165,7 @@ class RestoreAccounts extends Component {
               className="btn btn-success"
               onClick={() => this.handleRestoreAccount()}
             >
-              Activate Babylonnet Account
+              Activate Carthagenet Account
             </button>
           )}
           <button

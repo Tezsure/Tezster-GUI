@@ -26,6 +26,7 @@ import {
   handleContractsTabChangeAction,
   handleInvokeContractAction,
   deployContractAction,
+  getContractStorageAction,
   getAccountBalanceAction
 } from '../actions/Workspace/contracts';
 import {
@@ -83,6 +84,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(executeTransactionAction(payload)),
   handleContractsTabChangeAction: payload =>
     dispatch(handleContractsTabChangeAction(payload)),
+  getContractStorageAction: payload =>
+    dispatch(getContractStorageAction(payload)),
   checkTezsterCliAction: payload => dispatch(checkTezsterCliAction(payload)),
   getLocalConfigAction: payload => dispatch(getLocalConfigAction(payload)),
   handleAccordionAction: payload => dispatch(handleAccordionAction(payload))
@@ -102,6 +105,7 @@ const mapStateToProps = state => ({
   transactionsSuccess: state.transactionsSuccess,
   localConfig: state.localConfig,
   selectedContractsTab: state.selectedContractsTab,
+  selectedContractStorage: state.selectedContractStorage,
   selectedContractAmountBalance: state.selectedContractAmountBalance,
   isAvailableTezsterCli: state.isAvailableTezsterCli
 });

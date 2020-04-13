@@ -15,3 +15,12 @@ export function selectedContractAmountBalance(initialState = '0', action) {
       return initialState;
   }
 }
+
+export function selectedContractStorage(initialState = '', action) {
+  switch (action.type) {
+    case 'DEPLOY_CONTRACT_STORAGE':
+      return action.payload;
+    default:
+      return initialState;
+  }
+}

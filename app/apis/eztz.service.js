@@ -15,17 +15,58 @@ export async function __getAccounts({ ...params }, callback) {
   const totalAccounts = await identities.map(async elem =>
     __getBalance({ ...elem, ...params })
   );
-  callback(null, totalAccounts);
+  return callback(null, totalAccounts);
 }
-
 export async function __activateAccount({ ...params }, callback) {
   const __url = apiEndPoints[params.dashboardHeader.networkId];
   eztz.node.setProvider(__url);
   const cred = params.email + params.password;
   const keys = await eztz.crypto.generateKeys(params.mnemonic, cred);
-  callback(null, keys);
+  return callback(null, keys);
 }
-
+export async function __activateAccountOperation({ ...params }, callback) {
+  try {
+    const tezosNode = apiEndPoints[params.dashboardHeader.networkId];
+    const faucet = await conseiljs.TezosWalletUtil.unlockFundraiserIdentity(
+      params.faucet.mnemonic.join(' '),
+      params.faucet.email,
+      params.faucet.password,
+      params.faucet.pkh
+    );
+    const keystore = {
+      publicKey: faucet.publicKey,
+      privateKey: faucet.privateKey,
+      publicKeyHash: params.faucet.pkh,
+      seed: '',
+      storeType: conseiljs.StoreType.Fundraiser
+    };
+    const activationResult = await conseiljs.TezosNodeWriter.sendIdentityActivationOperation(
+      tezosNode,
+      keystore,
+      params.faucet.secret
+    );
+    if (
+      JSON.parse(activationResult.operationGroupID)[0].id &&
+      JSON.parse(activationResult.operationGroupID)[0].id === 'failure'
+    ) {
+      return callback(
+        JSON.parse(activationResult.operationGroupID)[0].msg,
+        null
+      );
+    }
+    const revelationResult = await conseiljs.TezosNodeWriter.sendKeyRevealOperation(
+      tezosNode,
+      keystore
+    );
+    return callback(null, {
+      ...activationResult,
+      ...faucet,
+      operationGroupID: revelationResult.operationGroupID
+    });
+  } catch (exp) {
+    return callback(exp, null);
+  }
+}
 export async function __getBlockHeads({ ...params }, callback) {
   const __url = apiEndPoints[params.dashboardHeader.networkId];
   eztz.node.setProvider(__url);
@@ -35,18 +76,17 @@ export async function __getBlockHeads({ ...params }, callback) {
       return callback(null, res);
     })
     .catch(err => {
-      callback(err, null);
+      return callback(err, null);
     });
 }
-
 export async function __getBalance({ ...params }) {
   const __url = apiEndPoints[params.dashboardHeader.networkId];
   return new Promise((resolve, reject) => {
     eztz.node.setProvider(__url);
     eztz.rpc
       .getBalance(params.pkh)
-      .then((res: number) => {
-        const balance = (res / 1000000).toFixed(3);
+      .then(res => {
+        const balance = (parseInt(res, 10) / 1000000).toFixed(3);
         return resolve({
           balance,
           ...params,
@@ -57,6 +97,18 @@ export async function __getBalance({ ...params }) {
         reject(exp);
       });
   });
+}
+export async function __getStorage({ ...params }, callback) {
+  const __url = apiEndPoints[params.dashboardHeader.networkId];
+  eztz.node.setProvider(__url);
+  eztz.contract
+    .storage(params.selectedContracts)
+    .then(storage => {
+      return callback(null, storage);
+    })
+    .catch(exp => {
+      return callback(exp, null);
+    });
 }
 export async function __generateMnemonic() {
   const mnemonics = await eztz.crypto.generateMnemonic();
@@ -83,9 +135,8 @@ export async function __sendOperation({ ...params }, callback) {
     params.gasPrice,
     ''
   );
-  callback(null, result.operationGroupID);
+  return callback(null, result.operationGroupID);
 }
-
 export async function __listAccountTransactions({ ...params }, callback) {
   try {
     const platform = 'tezos';
@@ -191,18 +242,14 @@ export async function __listAccountTransactions({ ...params }, callback) {
     const transactions = sendResult.concat(receiveResult).sort((a, b) => {
       return a.timestamp - b.timestamp;
     });
-    callback(null, transactions);
+    return callback(null, transactions);
   } catch (exp) {
-    callback(exp, null);
+    return callback(exp, null);
   }
 }
-
 export async function __deployContract({ ...params }, callback) {
   try {
-    const tezosNode =
-      params.dashboardHeader.networkId === 'Carthagenet'
-        ? 'https://carthagenet.smartpy.io'
-        : apiEndPoints[params.dashboardHeader.networkId];
+    const tezosNode = apiEndPoints[params.dashboardHeader.networkId];
     const { contract } = params;
     const keys = params.userAccounts.find(elem => elem.pkh === params.accounts);
     const keystore = {
@@ -240,23 +287,20 @@ export async function __deployContract({ ...params }, callback) {
         contract
       });
       localStorage.setItem('tezsure', JSON.stringify({ ...__localStorage__ }));
-      callback(
+      return callback(
         null,
         nodeResult.results.contents[0].metadata.operation_result
           .originated_contracts[0]
       );
     }
-    callback('Contract not deployed', null);
+    return callback('Contract not deployed', null);
   } catch (exp) {
-    callback(exp, null);
+    return callback(exp, null);
   }
 }
 export async function __invokeContract({ ...params }, callback) {
   try {
-    const tezosNode =
-      params.dashboardHeader.networkId === 'Carthagenet'
-        ? 'https://carthagenet.smartpy.io'
-        : apiEndPoints[params.dashboardHeader.networkId];
+    const tezosNode = apiEndPoints[params.dashboardHeader.networkId];
     const keys = params.userAccounts.find(elem => elem.pkh === params.accounts);
     const keystore = {
       publicKey: keys.pk,
@@ -293,6 +337,6 @@ export async function __invokeContract({ ...params }, callback) {
         return callback(exp, null);
       });
   } catch (exp) {
-    callback(exp, null);
+    return callback(exp, null);
   }
 }

@@ -16,6 +16,10 @@ export default function getBlockHeadsActions(args) {
         type: 'GET_DASHBOARD_HEADER',
         payload: localnodeData
       });
+      dispatch({
+        type: 'GET_BLOCKS',
+        payload: localnodeData
+      });
     } else {
       getBlockHeight(args, (blockHeightError, blockHeightResponse) => {
         if (blockHeightError) {

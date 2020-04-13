@@ -1,3 +1,6 @@
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-return-await */
+/* eslint-disable promise/catch-or-return */
 /* eslint-disable promise/always-return */
 /* eslint-disable no-prototype-builtins */
 import swal from 'sweetalert';
@@ -5,7 +8,8 @@ import swal from 'sweetalert';
 const {
   __getBalance,
   __getAccounts,
-  __activateAccount
+  __activateAccount,
+  __activateAccountOperation
 } = require('../../apis/eztz.service');
 
 const config = require('../../apis/config');
@@ -89,24 +93,37 @@ export function getBalanceAction(payload) {
 export function createAccountsAction(payload) {
   const { userAccounts } = JSON.parse(localStorage.getItem('tezsure'));
   return dispatch => {
-    if (payload.dashboardHeader.networkId === 'Localnode') {
-      payload.userAccounts.push({ account: payload.optionalKey, balance: 0 });
-      dispatch({
-        type: 'GET_ACCOUNTS',
-        payload: payload.userAccounts
-      });
-    }
-    Promise.all([__getBalance(payload)]).then(response => {
-      userAccounts.push(response[0]);
-      localStorage.setItem('tezsure', JSON.stringify({ userAccounts }));
-      swal('Success!', 'Account created successfully', 'success');
-      dispatch({
-        type: 'GET_ACCOUNTS',
-        payload: userAccounts
-      });
-      dispatch({
-        type: 'TOGGLE_ACCOUNTS_MODAL',
-        payload: ''
+    __activateAccountOperation(payload, (err, result) => {
+      if (err) {
+        swal('Error!', err, 'error');
+        return dispatch({
+          type: 'GET_ACCOUNTS',
+          payload: userAccounts
+        });
+      }
+      const activatedAccount = {
+        sk: result.privateKey,
+        pk: result.publicKey,
+        pkh: payload.faucet.pkh,
+        label: `bootstrap${userAccounts.length + 1}`,
+        dashboardHeader: payload.dashboardHeader
+      };
+      payload.userAccounts.push({ ...activatedAccount });
+      Promise.all(
+        payload.userAccounts.map(async elem => await __getBalance({ ...elem }))
+      ).then(response => {
+        const __localStorage = JSON.parse(localStorage.getItem('tezsure'));
+        __localStorage.userAccounts = response;
+        localStorage.setItem('tezsure', JSON.stringify({ ...__localStorage }));
+        swal('Success!', 'Account created successfully', 'success');
+        dispatch({
+          type: 'GET_ACCOUNTS',
+          payload: response
+        });
+        dispatch({
+          type: 'TOGGLE_ACCOUNTS_MODAL',
+          payload: ''
+        });
       });
     });
   };

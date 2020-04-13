@@ -3,6 +3,7 @@ import swal from 'sweetalert';
 import {
   __deployContract,
   __getBalance,
+  __getStorage,
   __invokeContract
 } from '../../apis/eztz.service';
 
@@ -26,6 +27,28 @@ export function deployContractAction({ ...params }) {
       swal('Success!', `Contract ${response} deployed successfully`, 'success');
       dispatch({
         type: 'DEPLOY_CONTRACT_SUCCESS',
+        payload: response
+      });
+    });
+  };
+}
+
+export function getContractStorageAction({ ...params }) {
+  return dispatch => {
+    __getStorage({ ...params }, (err, response) => {
+      if (err) {
+        swal(
+          'Error!',
+          'Contract storage not available on selected network',
+          'error'
+        );
+        return dispatch({
+          type: 'DEPLOY_CONTRACT_STORAGE_ERR',
+          payload: err
+        });
+      }
+      return dispatch({
+        type: 'DEPLOY_CONTRACT_STORAGE',
         payload: response
       });
     });
