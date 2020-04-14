@@ -35,13 +35,6 @@ module.exports = {
       pk: 'edpkv8EUUH68jmo3f7Um5PezmfGrRF24gnfLpH3sVNwJnV5bVCxL2n',
       pkh: 'tz1ddb9NMYHZi5UzPdzTZMYQQZoMub195zgv',
       label: 'bootstrap5'
-    },
-    {
-      sk:
-        'edskSAeU882765sMXMVZdEMoVP8Pum6CBbqq1e9nkmm46fA67SFCTGYxbXXwFu6SHpA5o8JNnT7vf4bfjetuPamS73LBKZhzUS',
-      pk: 'edpkthSikHfS5VQcHjAGPsQhhcsjPpaKYXkGUXfh84zhXE6JN95Dio',
-      pkh: 'tz1NhyVwa8AfLzNSCheDSg5P13hs3r2c2fd8',
-      label: 'bootstrap6'
     }
   ],
   accounts: [
@@ -69,11 +62,6 @@ module.exports = {
       label: 'bootstrap_5',
       pkh: 'tz1ddb9NMYHZi5UzPdzTZMYQQZoMub195zgv',
       identity: 'bootstrap5'
-    },
-    {
-      label: 'bootstrap_6',
-      pkh: 'tz1NhyVwa8AfLzNSCheDSg5P13hs3r2c2fd8',
-      identity: 'bootstrap6'
     }
   ],
   contracts: [],

@@ -22,8 +22,13 @@ class Accounts extends Component {
     this.props.toggleAccountsModalAction(modalType);
   }
 
+<<<<<<< HEAD
   handleCreateAccount({ ...args }) {
     this.props.createAccountsAction({ ...args });
+=======
+  handleCreateAccount({ ...accounts }) {
+    this.props.createAccountsAction({ ...accounts, ...this.props });
+>>>>>>> 6ff14c40e42950d9ad12ef638ae9a25ef90863e1
   }
 
   render() {

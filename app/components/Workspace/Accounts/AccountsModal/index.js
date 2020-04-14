@@ -1,6 +1,10 @@
 import React from 'react';
 import CreateAccounts from './CreateAccounts';
 import RestoreAccounts from './RestoreAccounts';
+<<<<<<< HEAD
+=======
+import ValidateWallet from './ValidateWallet';
+>>>>>>> 6ff14c40e42950d9ad12ef638ae9a25ef90863e1
 
 function AccountsModal(props) {
   const modalBody = () => {
@@ -9,6 +13,11 @@ function AccountsModal(props) {
         return <CreateAccounts {...props} />;
       case 'restore-accounts':
         return <RestoreAccounts {...props} />;
+<<<<<<< HEAD
+=======
+      case 'validate-wallets':
+        return <ValidateWallet {...props} />;
+>>>>>>> 6ff14c40e42950d9ad12ef638ae9a25ef90863e1
       default:
         return <div />;
     }

@@ -6,7 +6,11 @@ class RestoreAccounts extends Component {
     this.state = {
       mnemonic: '',
       secretKey: '',
+<<<<<<< HEAD
       label: '',
+=======
+      accountLabel: '',
+>>>>>>> 6ff14c40e42950d9ad12ef638ae9a25ef90863e1
       email: '',
       password: ''
     };
@@ -20,7 +24,11 @@ class RestoreAccounts extends Component {
       ...this.state,
       mnemonicErr: '',
       secretKeyErr: '',
+<<<<<<< HEAD
       labelErr: '',
+=======
+      accountLabelErr: '',
+>>>>>>> 6ff14c40e42950d9ad12ef638ae9a25ef90863e1
       emailErr: '',
       passwordErr: ''
     };
@@ -32,8 +40,13 @@ class RestoreAccounts extends Component {
       stateParams.secretKeyErr = 'Please enter secret key';
       errFlag = true;
     }
+<<<<<<< HEAD
     if (stateParams.label === '') {
       stateParams.labelErr = 'Please enter account label';
+=======
+    if (stateParams.accountLabel === '') {
+      stateParams.accountLabelErr = 'Please enter account label';
+>>>>>>> 6ff14c40e42950d9ad12ef638ae9a25ef90863e1
       errFlag = true;
     }
     if (stateParams.email === '') {
@@ -68,10 +81,14 @@ class RestoreAccounts extends Component {
             className="close"
             data-dismiss="modal"
             aria-label="Close"
+<<<<<<< HEAD
             onClick={() => {
               this.props.handleModalToggle('');
               this.props.toggleButtonState();
             }}
+=======
+            onClick={() => this.props.handleModalToggle('')}
+>>>>>>> 6ff14c40e42950d9ad12ef638ae9a25ef90863e1
           >
             <span aria-hidden="true">×</span>
           </button>
@@ -148,41 +165,65 @@ class RestoreAccounts extends Component {
             className="form-control"
             placeholder="Enter account label"
             onChange={this.handleInputChange}
+<<<<<<< HEAD
             value={this.state.label}
             name="label"
           />
         </div>
         <span className="error-msg">{this.state.labelErr}</span>
+=======
+            value={this.state.accountLabel}
+            name="accountLabel"
+          />
+        </div>
+        <span className="error-msg">{this.state.accountLabelErr}</span>
+>>>>>>> 6ff14c40e42950d9ad12ef638ae9a25ef90863e1
         <div className="modal-footer">
           {this.props.dashboardHeader.networkId === 'Localnode' ? (
             <button
               type="button"
               className="btn btn-success"
+<<<<<<< HEAD
               disabled={this.props.buttonState}
               onClick={() => this.handleRestoreAccount()}
             >
               {this.props.buttonState ? 'loading...' : 'Restore Wallet Account'}
+=======
+              onClick={() => this.handleRestoreAccount()}
+            >
+              Restore Wallet Account
+>>>>>>> 6ff14c40e42950d9ad12ef638ae9a25ef90863e1
             </button>
           ) : (
             <button
               type="button"
               className="btn btn-success"
+<<<<<<< HEAD
               disabled={this.props.buttonState}
               onClick={() => this.handleRestoreAccount()}
             >
               {this.props.buttonState
                 ? 'loading...'
                 : 'Activate Carthagenet Account'}
+=======
+              onClick={() => this.handleRestoreAccount()}
+            >
+              Activate Babylonnet Account
+>>>>>>> 6ff14c40e42950d9ad12ef638ae9a25ef90863e1
             </button>
           )}
           <button
             type="button"
             className="btn btn-secondary"
             data-dismiss="modal"
+<<<<<<< HEAD
             onClick={() => {
               this.props.handleModalToggle('');
               this.props.toggleButtonState();
             }}
+=======
+            onClick={() => this.props.handleModalToggle('')}
+>>>>>>> 6ff14c40e42950d9ad12ef638ae9a25ef90863e1
           >
             Close
           </button>
