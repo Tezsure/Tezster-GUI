@@ -1,9 +1,10 @@
+/* eslint-disable promise/always-return */
 /* eslint-disable no-useless-escape */
 /* eslint-disable no-undef */
 /* eslint-disable no-underscore-dangle */
 // import axios from 'axios';
 
-import { identities, apiEndPoints, ConceilJS } from './config';
+import { apiEndPoints, ConceilJS } from './config';
 
 const conseiljs = require('conseiljs');
 
@@ -12,7 +13,7 @@ require('dotenv').config();
 export async function __getAccounts({ ...params }, callback) {
   const __url = apiEndPoints[params.dashboardHeader.networkId];
   eztz.node.setProvider(__url);
-  const totalAccounts = await identities.map(async elem =>
+  const totalAccounts = await params.userAccounts.map(async elem =>
     __getBalance({ ...elem, ...params })
   );
   return callback(null, totalAccounts);
@@ -89,7 +90,9 @@ export async function __getBalance({ ...params }) {
         const balance = (parseInt(res, 10) / 1000000).toFixed(3);
         return resolve({
           balance,
-          ...params,
+          sk: params.sk,
+          pkh: params.pkh,
+          label: params.label,
           account: params.pkh
         });
       })
@@ -260,7 +263,7 @@ export async function __deployContract({ ...params }, callback) {
       storeType: conseiljs.StoreType.Fundraiser
     };
     const storage = `${params.storageValue}`;
-    const nodeResult = await conseiljs.TezosNodeWriter.sendContractOriginationOperation(
+    conseiljs.TezosNodeWriter.sendContractOriginationOperation(
       tezosNode,
       keystore,
       parseInt(params.contractAmount, 10),
@@ -272,28 +275,35 @@ export async function __deployContract({ ...params }, callback) {
       contract,
       storage,
       conseiljs.TezosParameterFormat.Michelson
-    );
-
-    if (
-      nodeResult.results.contents[0].metadata.operation_result.status ===
-      'applied'
-    ) {
-      const __localStorage__ = JSON.parse(localStorage.getItem('tezsure'));
-      __localStorage__.contracts.push({
-        name: params.contractLabel,
-        originated_contracts:
-          nodeResult.results.contents[0].metadata.operation_result
-            .originated_contracts[0],
-        contract
+    )
+      .then(nodeResult => {
+        if (
+          nodeResult.results.contents[0].metadata.operation_result.status ===
+          'applied'
+        ) {
+          const __localStorage__ = JSON.parse(localStorage.getItem('tezsure'));
+          __localStorage__.contracts.push({
+            name: params.contractLabel,
+            originated_contracts:
+              nodeResult.results.contents[0].metadata.operation_result
+                .originated_contracts[0],
+            contract
+          });
+          localStorage.setItem(
+            'tezsure',
+            JSON.stringify({ ...__localStorage__ })
+          );
+          return callback(
+            null,
+            nodeResult.results.contents[0].metadata.operation_result
+              .originated_contracts[0]
+          );
+        }
+        return callback('Contract not deployed', null);
+      })
+      .catch(exp => {
+        return callback(exp, null);
       });
-      localStorage.setItem('tezsure', JSON.stringify({ ...__localStorage__ }));
-      return callback(
-        null,
-        nodeResult.results.contents[0].metadata.operation_result
-          .originated_contracts[0]
-      );
-    }
-    return callback('Contract not deployed', null);
   } catch (exp) {
     return callback(exp, null);
   }

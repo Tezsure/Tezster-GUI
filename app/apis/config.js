@@ -81,7 +81,7 @@ module.exports = {
   Nodes: ['Localnode', 'Carthagenet'],
   apiEndPoints: {
     Localnode: 'http://localhost:18731',
-    Carthagenet: 'https://testnet.tezster.tech'
+    Carthagenet: 'https://carthagenet.SmartPy.io'
   },
   TzStatsApiEndpoint: {
     Localnode: 'http://localhost:18731',

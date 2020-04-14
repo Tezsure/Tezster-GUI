@@ -50,24 +50,24 @@ class index extends Component {
           </select>
         </div>
         <div className="modal-input">
-          {this.props.selectedContractStorage !== '' ||
-          this.props.selectedContractStorage !== 'Not Found' ? (
-            <div className="input-container">Initial Storage </div>
-          ) : (
+          {this.props.selectedContractStorage === '' ||
+          this.props.selectedContractStorage === 'Not Found' ? (
             ''
+          ) : (
+            <div className="input-container">Initial Storage </div>
           )}
         </div>
         <div className="modal-input">
-          {this.props.selectedContractStorage !== '' ||
-          this.props.selectedContractStorage !== 'Not Found' ? (
+          {this.props.selectedContractStorage === '' ||
+          this.props.selectedContractStorage === 'Not Found' ? (
+            ''
+          ) : (
             <JSONPretty
               id="json-pretty"
               style={{ width: '100%', height: '100%' }}
               data={this.props.selectedContractStorage}
               theme={JSONPrettyMon}
             />
-          ) : (
-            ''
           )}
         </div>
         <br />

@@ -16,16 +16,20 @@ export function handleContractsTabChangeAction(tabName) {
 
 export function deployContractAction({ ...params }) {
   return dispatch => {
+    dispatch({
+      type: 'BUTTON_LOADING_STATE',
+      payload: true
+    });
     __deployContract({ ...params }, (err, response) => {
       if (err) {
         swal('Error!', 'Contract deployment failed', 'error');
-        dispatch({
+        return dispatch({
           type: 'DEPLOY_CONTRACT_ERR',
           payload: response
         });
       }
       swal('Success!', `Contract ${response} deployed successfully`, 'success');
-      dispatch({
+      return dispatch({
         type: 'DEPLOY_CONTRACT_SUCCESS',
         payload: response
       });
@@ -75,16 +79,20 @@ export function getAccountBalanceAction({ ...params }) {
 
 export function handleInvokeContractAction({ ...params }) {
   return dispatch => {
+    dispatch({
+      type: 'BUTTON_LOADING_STATE',
+      payload: true
+    });
     __invokeContract({ ...params }, (err, response) => {
       if (err) {
         swal('Error!', 'Contract invocation failed', 'error');
-        dispatch({
+        return dispatch({
           type: 'INVOKE_CONTRACT_ERR',
           payload: err
         });
       }
       swal('Success!', `${response} originated contract`, 'success');
-      dispatch({
+      return dispatch({
         type: 'INVOKE_CONTRACT',
         payload: response
       });

@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { apiEndPoints } from '../../apis/config';
 
 const { getBlockHeight, getBlockData } = require('../../apis/tzstats.service');

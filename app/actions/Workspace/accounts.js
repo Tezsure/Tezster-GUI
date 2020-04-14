@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-return-await */
 /* eslint-disable promise/catch-or-return */
@@ -23,43 +24,42 @@ export function toggleAccountsModalAction(modalType) {
 
 export function getAccountsAction({ ...params }) {
   return dispatch => {
-    if (
-      localStorage.hasOwnProperty('tezsure') &&
-      params.dashboardHeader.networkId === 'Localnode'
-    ) {
-      dispatch({
-        type: 'GET_ACCOUNTS',
-        payload: JSON.parse(localStorage.getItem('tezsure')).userAccounts
-      });
-    } else {
-      __getAccounts({ ...params }, (err, accounts) => {
-        if (err) {
-          dispatch({
-            type: 'GET_ACCOUNTS_ERR',
-            payload: err
-          });
-        }
-        Promise.all(accounts)
-          .then(response => {
-            if (!localStorage.hasOwnProperty('tezsure')) {
-              localStorage.setItem(
-                'tezsure',
-                JSON.stringify({ userAccounts: response, ...config })
-              );
-            }
-            dispatch({
-              type: 'GET_ACCOUNTS',
-              payload: response
-            });
-          })
-          .catch(accountsErr => {
-            dispatch({
-              type: 'GET_ACCOUNTS_ERR',
-              payload: accountsErr
-            });
-          });
-      });
+    if (params.userAccounts.length === 0) {
+      if (localStorage.hasOwnProperty('tezsure')) {
+        params.userAccounts = JSON.parse(
+          localStorage.getItem('tezsure')
+        ).userAccounts;
+      } else {
+        params.userAccounts = config.identities;
+      }
     }
+    __getAccounts({ ...params }, (err, accounts) => {
+      if (err) {
+        return dispatch({
+          type: 'GET_ACCOUNTS_ERR',
+          payload: err
+        });
+      }
+      Promise.all(accounts)
+        .then(response => {
+          if (!localStorage.hasOwnProperty('tezsure')) {
+            localStorage.setItem(
+              'tezsure',
+              JSON.stringify({ userAccounts: response, ...config })
+            );
+          }
+          return dispatch({
+            type: 'GET_ACCOUNTS',
+            payload: response
+          });
+        })
+        .catch(accountsErr => {
+          return dispatch({
+            type: 'GET_ACCOUNTS_ERR',
+            payload: accountsErr
+          });
+        });
+    });
   };
 }
 
@@ -93,6 +93,10 @@ export function getBalanceAction(payload) {
 export function createAccountsAction(payload) {
   const { userAccounts } = JSON.parse(localStorage.getItem('tezsure'));
   return dispatch => {
+    dispatch({
+      type: 'BUTTON_LOADING_STATE',
+      payload: true
+    });
     __activateAccountOperation(payload, (err, result) => {
       if (err) {
         swal('Error!', err, 'error');
@@ -125,24 +129,37 @@ export function createAccountsAction(payload) {
           payload: ''
         });
       });
+      dispatch({
+        type: 'BUTTON_LOADING_STATE',
+        payload: false
+      });
     });
   };
 }
 
 export function restoreAccountAction(payload) {
-  const { userAccounts } = JSON.parse(localStorage.getItem('tezsure'));
+  const { userAccounts } = payload;
   return dispatch => {
+    dispatch({
+      type: 'BUTTON_LOADING_STATE',
+      payload: true
+    });
     __activateAccount(payload, (err, account) => {
       if (err) {
         dispatch({
           type: 'GET_ACCOUNTS_ERR',
           payload: err
         });
+        dispatch({
+          type: 'BUTTON_LOADING_STATE',
+          payload: false
+        });
       }
       Promise.all([__getBalance({ ...account, ...payload })]).then(response => {
         userAccounts.push(response[0]);
-        localStorage.setItem('tezsure', JSON.stringify({ userAccounts }));
-        swal('Success!', 'Account registered successfully', 'success');
+        payload.userAccounts = userAccounts;
+        localStorage.setItem('tezsure', JSON.stringify({ ...payload }));
+        swal('Success!', 'Account restored successfully', 'success');
         dispatch({
           type: 'GET_ACCOUNTS',
           payload: userAccounts
@@ -152,6 +169,17 @@ export function restoreAccountAction(payload) {
           payload: ''
         });
       });
+      dispatch({
+        type: 'BUTTON_LOADING_STATE',
+        payload: false
+      });
     });
+  };
+}
+
+export function toggleButtonState() {
+  return {
+    type: 'BUTTON_LOADING_STATE',
+    payload: false
   };
 }

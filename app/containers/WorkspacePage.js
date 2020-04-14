@@ -10,6 +10,7 @@ import {
 import getBlockHeadsActions from '../actions/Workspace/blocks';
 
 import {
+  toggleButtonState,
   getAccountsAction,
   createAccountsAction,
   restoreAccountAction,
@@ -57,6 +58,7 @@ class WorkspacePage extends Component {
   }
 }
 const mapDispatchToProps = dispatch => ({
+  toggleButtonState: payload => dispatch(toggleButtonState(payload)),
   restoreAccountAction: payload => dispatch(restoreAccountAction(payload)),
   handleNetworkChangeAction: payload =>
     dispatch(handleNetworkChangeAction(payload)),
@@ -93,6 +95,7 @@ const mapDispatchToProps = dispatch => ({
 const mapStateToProps = state => ({
   blocks: state.blocks,
   currentTab: state.currentTab,
+  buttonState: state.buttonState,
   userAccounts: state.userAccounts,
   showTransactionModal: state.showTransactionModal,
   showAccountsModal: state.showAccountsModal,

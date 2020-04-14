@@ -72,6 +72,10 @@ export function getTransactionsAction({ ...params }) {
 
 export function executeTransactionAction(params) {
   return dispatch => {
+    dispatch({
+      type: 'BUTTON_LOADING_STATE',
+      payload: true
+    });
     if (params.dashboardHeader.networkId === 'Localnode') {
       const __localStorage = JSON.parse(localStorage.getItem('tezsure'));
       if (
@@ -101,19 +105,19 @@ export function executeTransactionAction(params) {
     } else {
       __sendOperation({ ...params }, (err, response) => {
         if (err) {
-          dispatch({
+          return dispatch({
             type: 'EXECUTE_TRANSACTIONS_ERR',
             payload: response
           });
         }
         swal('Success!', 'Transaction executed successfully', 'success');
-        dispatch({
+        return dispatch({
           type: 'EXECUTE_TRANSACTIONS_SUCCESS',
           payload: response
         });
       });
     }
-    // dispatch(toggleTransactionModalAction(false));
+    dispatch(toggleTransactionModalAction(false));
     dispatch(getTransactionsAction({ ...params }));
   };
 }

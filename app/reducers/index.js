@@ -1,3 +1,4 @@
+/* eslint-disable import/named */
 // @flow
 import { combineReducers } from 'redux';
 import { connectRouter } from 'connected-react-router';
@@ -10,6 +11,7 @@ import {
   blockAccordionIndex
 } from './Workspace/sidebar';
 import {
+  buttonState,
   userAccounts,
   userBalances,
   showAccountsModal
@@ -34,6 +36,7 @@ export default function createRootReducer(history: HashHistory) {
     router: connectRouter(history),
     blocks,
     counter,
+    buttonState,
     sidebarToggleState,
     showAccountsModal,
     showTransactionModal,

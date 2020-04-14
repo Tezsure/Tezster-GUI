@@ -87,7 +87,10 @@ class TransactionModal extends Component {
                 className="close"
                 data-dismiss="modal"
                 aria-label="Close"
-                onClick={() => this.props.handleModalToggle()}
+                onClick={() => {
+                  this.props.handleModalToggle();
+                  this.props.toggleButtonState();
+                }}
               >
                 <span aria-hidden="true">×</span>
               </button>
@@ -152,16 +155,20 @@ class TransactionModal extends Component {
                 type="button"
                 className="btn btn-secondary"
                 data-dismiss="modal"
-                onClick={() => this.props.handleModalToggle()}
+                onClick={() => {
+                  this.props.handleModalToggle();
+                  this.props.toggleButtonState();
+                }}
               >
                 Cancel
               </button>
               <button
                 type="button"
                 className="btn btn-success"
+                disabled={this.props.buttonState}
                 onClick={() => this.handleExecuteTransaction()}
               >
-                Pay Amount
+                {this.props.buttonState ? 'loading...' : 'Pay Amount'}
               </button>
             </div>
           </div>

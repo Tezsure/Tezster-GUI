@@ -6,7 +6,7 @@ class RestoreAccounts extends Component {
     this.state = {
       mnemonic: '',
       secretKey: '',
-      accountLabel: '',
+      label: '',
       email: '',
       password: ''
     };
@@ -20,7 +20,7 @@ class RestoreAccounts extends Component {
       ...this.state,
       mnemonicErr: '',
       secretKeyErr: '',
-      accountLabelErr: '',
+      labelErr: '',
       emailErr: '',
       passwordErr: ''
     };
@@ -32,8 +32,8 @@ class RestoreAccounts extends Component {
       stateParams.secretKeyErr = 'Please enter secret key';
       errFlag = true;
     }
-    if (stateParams.accountLabel === '') {
-      stateParams.accountLabelErr = 'Please enter account label';
+    if (stateParams.label === '') {
+      stateParams.labelErr = 'Please enter account label';
       errFlag = true;
     }
     if (stateParams.email === '') {
@@ -68,7 +68,10 @@ class RestoreAccounts extends Component {
             className="close"
             data-dismiss="modal"
             aria-label="Close"
-            onClick={() => this.props.handleModalToggle('')}
+            onClick={() => {
+              this.props.handleModalToggle('');
+              this.props.toggleButtonState();
+            }}
           >
             <span aria-hidden="true">×</span>
           </button>
@@ -145,34 +148,41 @@ class RestoreAccounts extends Component {
             className="form-control"
             placeholder="Enter account label"
             onChange={this.handleInputChange}
-            value={this.state.accountLabel}
-            name="accountLabel"
+            value={this.state.label}
+            name="label"
           />
         </div>
-        <span className="error-msg">{this.state.accountLabelErr}</span>
+        <span className="error-msg">{this.state.labelErr}</span>
         <div className="modal-footer">
           {this.props.dashboardHeader.networkId === 'Localnode' ? (
             <button
               type="button"
               className="btn btn-success"
+              disabled={this.props.buttonState}
               onClick={() => this.handleRestoreAccount()}
             >
-              Restore Wallet Account
+              {this.props.buttonState ? 'loading...' : 'Restore Wallet Account'}
             </button>
           ) : (
             <button
               type="button"
               className="btn btn-success"
+              disabled={this.props.buttonState}
               onClick={() => this.handleRestoreAccount()}
             >
-              Activate Carthagenet Account
+              {this.props.buttonState
+                ? 'loading...'
+                : 'Activate Carthagenet Account'}
             </button>
           )}
           <button
             type="button"
             className="btn btn-secondary"
             data-dismiss="modal"
-            onClick={() => this.props.handleModalToggle('')}
+            onClick={() => {
+              this.props.handleModalToggle('');
+              this.props.toggleButtonState();
+            }}
           >
             Close
           </button>

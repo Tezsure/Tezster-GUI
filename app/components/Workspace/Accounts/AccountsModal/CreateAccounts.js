@@ -97,7 +97,10 @@ class CreateAccounts extends Component {
             className="close"
             data-dismiss="modal"
             aria-label="Close"
-            onClick={() => this.props.handleModalToggle('')}
+            onClick={() => {
+              this.props.handleModalToggle('');
+              this.props.toggleButtonState();
+            }}
           >
             <span aria-hidden="true">×</span>
           </button>
@@ -178,7 +181,10 @@ class CreateAccounts extends Component {
             type="button"
             className="btn btn-secondary"
             data-dismiss="modal"
-            onClick={() => this.props.handleModalToggle('')}
+            onClick={() => {
+              this.props.handleModalToggle('');
+              this.props.toggleButtonState();
+            }}
           >
             Cancel
           </button>
@@ -186,8 +192,9 @@ class CreateAccounts extends Component {
             type="button"
             className="btn btn-success"
             onClick={this.handleCreateWallet.bind(this)}
+            disabled={this.props.buttonState}
           >
-            Create Wallet
+            {this.props.buttonState ? 'loading...' : 'Create Wallet'}
           </button>
         </div>
       </div>

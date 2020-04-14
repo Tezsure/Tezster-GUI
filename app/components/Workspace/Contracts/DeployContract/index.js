@@ -61,6 +61,9 @@ class DeployContract extends Component {
         ...this.props,
         ...this.state
       });
+      setTimeout(() => {
+        this.props.toggleButtonState();
+      }, 1000);
     }
     if (error !== '') {
       this.setState({ error });
@@ -183,9 +186,10 @@ class DeployContract extends Component {
               <button
                 type="button"
                 className="btn btn-success"
+                disabled={this.props.buttonState}
                 onClick={this.handleDeployContract}
               >
-                Deploy Contract
+                {this.props.buttonState ? 'loading...' : 'Deploy Contract'}
               </button>
             </div>
           </div>

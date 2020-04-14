@@ -89,6 +89,9 @@ class InvokeContract extends Component {
             ...this.props,
             ...this.state
           });
+          setTimeout(() => {
+            this.props.toggleButtonState();
+          }, 1000);
         });
         return true;
       }
@@ -237,9 +240,10 @@ class InvokeContract extends Component {
               <button
                 type="button"
                 className="btn btn-success"
+                disabled={this.props.buttonState}
                 onClick={this.handleInvokeContract}
               >
-                Invoke Contract
+                {this.props.buttonState ? 'loading...' : 'Invoke Contract'}
               </button>
             </div>
           </div>
