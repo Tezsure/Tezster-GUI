@@ -1,3 +1,5 @@
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import TransactionModal from './TransactionModal';
 import TransactionTable from './TransactionTable';
@@ -32,6 +34,7 @@ class Transactions extends Component {
       </option>
     ));
     const Transactions =
+      this.props.userAccounts.length > 0 &&
       this.props.userTransactions.length > 0 ? (
         <TransactionTable {...this.props} />
       ) : (
@@ -60,7 +63,11 @@ class Transactions extends Component {
                 className="custom-select"
                 name="accounts"
                 onChange={this.handleInputChange}
-                value={this.props.selectedTransactionWallet}
+                value={
+                  this.props.userAccounts.length > 0
+                    ? this.props.selectedTransactionWallet
+                    : '0'
+                }
               >
                 <option value="0" disabled>
                   Select account to display transactions

@@ -1,6 +1,8 @@
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/prop-types */
 import React from 'react';
 
-function Error() {
+function Error(props) {
   return (
     <div className="main-container">
       <div className="workplace-container">
@@ -9,10 +11,16 @@ function Error() {
         </div>
         <div className="description-container">
           <div className="workplace-header">
-            <b>Sorry</b>
+            <b>
+              {props.isAvailableTezsterCli === 'pending'
+                ? 'Please wait...'
+                : 'Sorry'}
+            </b>
           </div>
           <p className="workplace-description">
-            Please install Tezster-CLI and restart the application
+            {props.isAvailableTezsterCli === 'pending'
+              ? 'While we check whether tezster-cli is running'
+              : 'Please install Tezster-CLI and restart the application'}
           </p>
         </div>
       </div>

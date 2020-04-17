@@ -270,13 +270,16 @@
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-hot-loader": "^4.12.18",
+    "react-json-pretty": "^2.2.0",
     "react-redux": "^7.1.3",
     "react-router": "^5.1.2",
     "react-router-dom": "^5.1.2",
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0",
+    "rotating-file-stream": "^2.0.2",
     "source-map-support": "^0.5.16",
-    "sweetalert": "^2.1.2"
+    "sweetalert": "^2.1.2",
+    "winston": "^3.2.1"
   },
   "devEngines": {
     "node": ">=7.x",

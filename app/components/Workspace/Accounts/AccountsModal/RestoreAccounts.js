@@ -6,7 +6,7 @@ class RestoreAccounts extends Component {
     this.state = {
       mnemonic: '',
       secretKey: '',
-      accountLabel: '',
+      label: '',
       email: '',
       password: ''
     };
@@ -20,7 +20,7 @@ class RestoreAccounts extends Component {
       ...this.state,
       mnemonicErr: '',
       secretKeyErr: '',
-      accountLabelErr: '',
+      labelErr: '',
       emailErr: '',
       passwordErr: ''
     };
@@ -32,8 +32,8 @@ class RestoreAccounts extends Component {
       stateParams.secretKeyErr = 'Please enter secret key';
       errFlag = true;
     }
-    if (stateParams.accountLabel === '') {
-      stateParams.accountLabelErr = 'Please enter account label';
+    if (stateParams.label === '') {
+      stateParams.labelErr = 'Please enter account label';
       errFlag = true;
     }
     if (stateParams.email === '') {
@@ -55,7 +55,18 @@ class RestoreAccounts extends Component {
   }
 
   handleInputChange(event) {
-    this.setState({ [event.target.name]: event.target.value });
+    if (event.target.name === 'mnemonic') {
+      const mnemonic = event.target.value
+        .split('"')
+        .join('')
+        .replace(/\n/g, '')
+        .replace(/\s/g, '')
+        .split(',')
+        .join(' ');
+      this.setState({ mnemonic });
+    } else {
+      this.setState({ [event.target.name]: event.target.value });
+    }
   }
 
   render() {
@@ -68,24 +79,23 @@ class RestoreAccounts extends Component {
             className="close"
             data-dismiss="modal"
             aria-label="Close"
-            onClick={() => this.props.handleModalToggle('')}
+            onClick={() => {
+              this.props.handleModalToggle('');
+              this.props.toggleButtonState();
+            }}
           >
             <span aria-hidden="true">×</span>
           </button>
         </div>
         <div className="modal-body">
-          <p>Node provider is connected : http://localhost:18731</p>
-        </div>
-        <div className="modal-body">
           <p>
-            For babylonnet Account Email+password+Secret Key is required and
-            change node provider to Alphanet
+            Node provider is connected : {this.props.dashboardHeader.rpcServer}
           </p>
         </div>
         <div className="modal-body">
           <p>
-            For LocalNode Account Email+password is required and change node
-            provider to Local Node
+            For Carthagenet Account change node provider to Alphanet, while
+            LocalNode Account change node provider to Local Node
           </p>
         </div>
         <div className="modal-input">
@@ -113,7 +123,7 @@ class RestoreAccounts extends Component {
         </div>
         <span className="error-msg">{this.state.passwordErr}</span>
         <div className="modal-body">
-          <p>Seed Words/Mnenomics(leave a space between each word)</p>
+          <p>Seed Words/Mnenomics</p>
           <textarea
             name="mnemonic"
             rows="4"
@@ -121,7 +131,7 @@ class RestoreAccounts extends Component {
             placeholder="Enter seed words/mnemonic"
             value={this.state.mnemonic}
             onChange={this.handleInputChange}
-            className="textArea"
+            className="textArea form-control"
           />
           <br />
           <span className="error-msg">{this.state.mnemonicErr}</span>
@@ -145,34 +155,41 @@ class RestoreAccounts extends Component {
             className="form-control"
             placeholder="Enter account label"
             onChange={this.handleInputChange}
-            value={this.state.accountLabel}
-            name="accountLabel"
+            value={this.state.label}
+            name="label"
           />
         </div>
-        <span className="error-msg">{this.state.accountLabelErr}</span>
+        <span className="error-msg">{this.state.labelErr}</span>
         <div className="modal-footer">
           {this.props.dashboardHeader.networkId === 'Localnode' ? (
             <button
               type="button"
               className="btn btn-success"
+              disabled={this.props.buttonState}
               onClick={() => this.handleRestoreAccount()}
             >
-              Restore Wallet Account
+              {this.props.buttonState ? 'loading...' : 'Restore Wallet Account'}
             </button>
           ) : (
             <button
               type="button"
               className="btn btn-success"
+              disabled={this.props.buttonState}
               onClick={() => this.handleRestoreAccount()}
             >
-              Activate Babylonnet Account
+              {this.props.buttonState
+                ? 'loading...'
+                : 'Activate Carthagenet Account'}
             </button>
           )}
           <button
             type="button"
             className="btn btn-secondary"
             data-dismiss="modal"
-            onClick={() => this.props.handleModalToggle('')}
+            onClick={() => {
+              this.props.handleModalToggle('');
+              this.props.toggleButtonState();
+            }}
           >
             Close
           </button>

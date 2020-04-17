@@ -15,18 +15,9 @@ function Sidebar(props) {
               ? 'sidebar-content-active'
               : 'sidebar-content'
           }
-          onClick={() => {
-            props.getAccountsAction({ ...props });
-            props.handleTabChangeAction('accounts');
-          }}
+          onClick={() => props.handleTabChangeAction('accounts')}
         >
-          <span
-            className={
-              props.currentTab === 'accounts'
-                ? 'accounts-icon-active'
-                : 'accounts-icon'
-            }
-          />
+          <span className="accounts-icon" />
           <span
             className={
               props.sidebarToggleState
@@ -44,15 +35,12 @@ function Sidebar(props) {
               ? 'sidebar-content-active'
               : 'sidebar-content'
           }
-          onClick={() => props.handleTabChangeAction('blocks')}
+          onClick={() => {
+            props.handleTabChangeAction('blocks');
+            props.getBlockHeadsActions({ ...props });
+          }}
         >
-          <span
-            className={
-              props.currentTab === 'blocks'
-                ? 'blocks-icon-active'
-                : 'blocks-icon'
-            }
-          />
+          <span className="blocks-icon" />
           <span
             className={
               props.sidebarToggleState
@@ -72,13 +60,7 @@ function Sidebar(props) {
           }
           onClick={() => props.handleTabChangeAction('transactions')}
         >
-          <span
-            className={
-              props.currentTab === 'transactions'
-                ? 'wallet-icon-active'
-                : 'wallet-icon'
-            }
-          />
+          <span className="wallet-icon" />
           <span
             className={
               props.sidebarToggleState
@@ -98,13 +80,7 @@ function Sidebar(props) {
           }
           onClick={() => props.handleTabChangeAction('contracts')}
         >
-          <span
-            className={
-              props.currentTab === 'contracts'
-                ? 'card-icon-active'
-                : 'card-icon'
-            }
-          />
+          <span className="card-icon" />
           <span
             className={
               props.sidebarToggleState
@@ -114,6 +90,26 @@ function Sidebar(props) {
           >
             {' '}
             Contracts
+          </span>
+        </li>
+        <li
+          className={
+            props.currentTab === 'help'
+              ? 'sidebar-content-active'
+              : 'sidebar-content'
+          }
+          onClick={() => props.handleTabChangeAction('help')}
+        >
+          <span className="email-icon" />
+          <span
+            className={
+              props.sidebarToggleState
+                ? 'sidebar-text'
+                : 'sidebar-text-collapsed'
+            }
+          >
+            {' '}
+            Help Desk
           </span>
         </li>
       </ul>

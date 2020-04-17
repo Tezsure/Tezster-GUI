@@ -1,3 +1,5 @@
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-prototype-builtins */
 import swal from 'sweetalert';
 
 const {
@@ -23,14 +25,15 @@ export function selectTransactionWalletAction(payload) {
 }
 
 export function getTransactionsAction({ ...params }) {
+  const networkId = params.dashboardHeader.networkId.split('-')[0];
   return dispatch => {
     if (params.hasOwnProperty('accountId')) {
-      if (params.dashboardHeader.networkId === 'Localnode') {
+      if (networkId === 'Localnode') {
         if (localStorage.getItem('tezsure')) {
           const { transactions } = JSON.parse(localStorage.getItem('tezsure'));
           if (
-            transactions.length === 0 &&
-            transactions.hasOwnProperty(params.accountId)
+            transactions[networkId].length === 0 &&
+            transactions[networkId].hasOwnProperty(params.accountId)
           ) {
             dispatch({
               type: 'GET_TRANSACTIONS',
@@ -39,8 +42,8 @@ export function getTransactionsAction({ ...params }) {
           } else {
             dispatch({
               type: 'GET_TRANSACTIONS',
-              payload: transactions.hasOwnProperty(params.accountId)
-                ? transactions[params.accountId]
+              payload: transactions[networkId].hasOwnProperty(params.accountId)
+                ? transactions[networkId][params.accountId]
                 : []
             });
           }
@@ -53,7 +56,12 @@ export function getTransactionsAction({ ...params }) {
       } else {
         __listAccountTransactions({ ...params }, (err, response) => {
           if (err) {
-            dispatch({
+            swal(
+              'Error!',
+              'Couldnot fetch transactions for this account',
+              'error'
+            );
+            return dispatch({
               type: 'GET_TRANSACTIONS_ERR',
               payload: err
             });
@@ -69,17 +77,28 @@ export function getTransactionsAction({ ...params }) {
 }
 
 export function executeTransactionAction(params) {
+  const networkId = params.dashboardHeader.networkId.split('-')[0];
   return dispatch => {
-    if (params.dashboardHeader.networkId === 'Localnode') {
+    dispatch({
+      type: 'BUTTON_LOADING_STATE',
+      payload: true
+    });
+    if (networkId === 'Localnode') {
       const __localStorage = JSON.parse(localStorage.getItem('tezsure'));
       if (
-        !__localStorage.transactions.hasOwnProperty(params.senderAccount) ||
-        __localStorage.transactions[params.senderAccount].length === 0
+        !__localStorage.transactions[networkId].hasOwnProperty(
+          params.senderAccount
+        ) ||
+        __localStorage.transactions[networkId][params.senderAccount].length ===
+          0
       ) {
-        __localStorage.transactions = {};
-        __localStorage.transactions[params.senderAccount] = [];
+        __localStorage.transactions = {
+          [networkId]: {
+            [params.senderAccount]: []
+          }
+        };
       }
-      __localStorage.transactions[params.senderAccount].push({
+      __localStorage.transactions[networkId][params.senderAccount].push({
         op: {
           opHash: 'N/A'
         },
@@ -91,27 +110,34 @@ export function executeTransactionAction(params) {
         }
       });
       localStorage.setItem('tezsure', JSON.stringify({ ...__localStorage }));
+    }
+    __sendOperation({ ...params }, (err, response) => {
+      if (err) {
+        swal(
+          'Error!',
+          'Failed to execute transactions for this account',
+          'error'
+        );
+        dispatch({
+          type: 'BUTTON_LOADING_STATE',
+          payload: false
+        });
+        return dispatch({
+          type: 'EXECUTE_TRANSACTIONS_ERR',
+          payload: err
+        });
+      }
       swal('Success!', 'Transaction executed successfully', 'success');
       dispatch({
+        type: 'BUTTON_LOADING_STATE',
+        payload: false
+      });
+      return dispatch({
         type: 'EXECUTE_TRANSACTIONS_SUCCESS',
-        payload: __localStorage.transactions[params.senderAccount]
+        payload: response
       });
-    } else {
-      __sendOperation({ ...params }, (err, response) => {
-        if (err) {
-          dispatch({
-            type: 'EXECUTE_TRANSACTIONS_ERR',
-            payload: response
-          });
-        }
-        swal('Success!', 'Transaction executed successfully', 'success');
-        dispatch({
-          type: 'EXECUTE_TRANSACTIONS_SUCCESS',
-          payload: response
-        });
-      });
-    }
-    // dispatch(toggleTransactionModalAction(false));
+    });
+    dispatch(toggleTransactionModalAction(false));
     dispatch(getTransactionsAction({ ...params }));
   };
 }

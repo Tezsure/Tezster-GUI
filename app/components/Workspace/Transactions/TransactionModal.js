@@ -19,7 +19,7 @@ class TransactionModal extends Component {
 
   handleExecuteTransaction() {
     let errorFlag = false;
-    let stateParams = {
+    const stateParams = {
       ...this.state,
       senderAccountErr: '',
       recieverAccountErr: '',
@@ -87,7 +87,10 @@ class TransactionModal extends Component {
                 className="close"
                 data-dismiss="modal"
                 aria-label="Close"
-                onClick={() => this.props.handleModalToggle()}
+                onClick={() => {
+                  this.props.handleModalToggle();
+                  this.props.toggleButtonState();
+                }}
               >
                 <span aria-hidden="true">×</span>
               </button>
@@ -116,7 +119,7 @@ class TransactionModal extends Component {
                 onChange={this.handleInputChange}
               >
                 <option value="0" disabled>
-                  Select Sender&rsquo;s Account
+                  Select Reciever&rsquo;s Account
                 </option>
                 {recieverAccounts}
               </select>
@@ -152,16 +155,20 @@ class TransactionModal extends Component {
                 type="button"
                 className="btn btn-secondary"
                 data-dismiss="modal"
-                onClick={() => this.props.handleModalToggle()}
+                onClick={() => {
+                  this.props.handleModalToggle();
+                  this.props.toggleButtonState();
+                }}
               >
                 Cancel
               </button>
               <button
                 type="button"
                 className="btn btn-success"
+                disabled={this.props.buttonState}
                 onClick={() => this.handleExecuteTransaction()}
               >
-                Pay Amount
+                {this.props.buttonState ? 'loading...' : 'Pay Amount'}
               </button>
             </div>
           </div>

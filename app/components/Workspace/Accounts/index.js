@@ -6,7 +6,6 @@ class Accounts extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showModal: false,
       modalType: ''
     };
     this.handleModalToggle = this.handleModalToggle.bind(this);
@@ -22,8 +21,8 @@ class Accounts extends Component {
     this.props.toggleAccountsModalAction(modalType);
   }
 
-  handleCreateAccount({ ...accounts }) {
-    this.props.createAccountsAction({ ...accounts, ...this.props });
+  handleCreateAccount({ ...args }) {
+    this.props.createAccountsAction({ ...args });
   }
 
   render() {
