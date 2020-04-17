@@ -91,8 +91,7 @@ To create build package for other platform run the following command
 To add an account with Tezster-GUI simply go to to accounts tab and then click on the create accounts button on top right corner and using the faucet received from [https://faucet.tzalpha.net](https://faucet.tzalpha.net/). We can create an account on the desired network and the account automatically gets activated and revealed on the network.
 
 Please follow the below visual demo :
-
-![enter image description here](https://tezster.s3.ap-southeast-1.amazonaws.com/TEZSTER_GUI/create_account.gif?response-content-disposition=inline&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEKb//////////wEaCmFwLXNvdXRoLTEiSDBGAiEAoqRlTabAOW9W1Hf6Qd6omdblPYriD9jpk6WzBqQ1sZMCIQCmu531mtmgwyY06rGMlTqFJPG9QQabwoqMWToTwZWtCSrvAQi///////////8BEAEaDDk1MTkzNDU4OTUzOCIMsq07aorhMBLerXIpKsMBYsRkyewUKIv2M69YiTDSSCUD4/Xg%2bpEmGIKZ9Pa2BNeeMtKULWC9w0YlXh0BB5PLQjxcerYX3EX2feKv6AsuWWVXi1D%2bhCRZVWSngFh0WxDUfQRYhSJv49ZFTslTylLwD3ZvzxSdrNbka23U2Nyci%2b/hxGVkbn3zxFqF5/fOBiX/VA6expCTYUmdngoEjGDJfALZciU7/Mt9iVEix/r9Ofgme3LN5CCgp3Tb9u2MBm7PecrwiQdZlN%2bW90HuaE2B7hjFMOP15vQFOu8C8KwKLRm9YRVxRYbHUErH8yQK9m7x4e/ooxl36anKXBjyf3O6nYHqLaJSwOmJ3mhy9MV6AZnFs6xiNz%2bCe9nrnKU/ZASgU5KGE2X8QHxflYhamyab/wvXW2i/k73cfyBdoSIZp8TNpWYDAoVC00dhFPEO07wIxT%2b7kEHseo/ZQ6Kl/nCsGaL%2ba/jc77rkp7YeraaJg3YqeDYUpzldW4leNyjH0TwdCnPSSoZijKUp8OsdW2Hm8rPYU9cvfTcEkjabyOSzkTXH/iNBEBsPKoVXLhHwMREXIj3JnD2xhojKboiggxg6xiDbdAgNBG7GPGrlR0PskKh%2bBVBRMEaELSM9NGU8y75i18iXmXylbi5ykepKhDV26sduaEIxTcm3vsOs2FLzj5BW8KKPS7CVtXWg7vBjLcbLTJuwAnE6dxKUP2z3AA7ehHPH/yuhV%2bLrlCsvLAPQmfiJ3xZcKtEdbX8EJhUvl7r8NLrk23S9%2bSFmyg==&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200417T144403Z&X-Amz-SignedHeaders=host&X-Amz-Expires=300&X-Amz-Credential=ASIA53I5ZDJRAVOXVU2O/20200417/ap-southeast-1/s3/aws4_request&X-Amz-Signature=98251e69894a331159d138543f91a04a48402220b901244b55822917c5a63869)
+![enter image description here](https://tezster.s3-ap-southeast-1.amazonaws.com/TEZSTER_GUI/create_account.gif)
 
 _Note : Its only possible to active the accounts which are provided by the faucet, random accounts cannot be activated / revealed in the process._
 
@@ -106,8 +105,7 @@ Restore accounts is used to add already running account to the given network. To
 - Fill in your existing account/wallet details and your account will get restored asap to the network with the available balance.
 
 Please follow the below visual demo :
-
-![enter image description here](https://tezster.s3.ap-southeast-1.amazonaws.com/TEZSTER_GUI/restore_account.gif?response-content-disposition=inline&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEKb//////////wEaCmFwLXNvdXRoLTEiSDBGAiEAoqRlTabAOW9W1Hf6Qd6omdblPYriD9jpk6WzBqQ1sZMCIQCmu531mtmgwyY06rGMlTqFJPG9QQabwoqMWToTwZWtCSrvAQi///////////8BEAEaDDk1MTkzNDU4OTUzOCIMsq07aorhMBLerXIpKsMBYsRkyewUKIv2M69YiTDSSCUD4/Xg%2bpEmGIKZ9Pa2BNeeMtKULWC9w0YlXh0BB5PLQjxcerYX3EX2feKv6AsuWWVXi1D%2bhCRZVWSngFh0WxDUfQRYhSJv49ZFTslTylLwD3ZvzxSdrNbka23U2Nyci%2b/hxGVkbn3zxFqF5/fOBiX/VA6expCTYUmdngoEjGDJfALZciU7/Mt9iVEix/r9Ofgme3LN5CCgp3Tb9u2MBm7PecrwiQdZlN%2bW90HuaE2B7hjFMOP15vQFOu8C8KwKLRm9YRVxRYbHUErH8yQK9m7x4e/ooxl36anKXBjyf3O6nYHqLaJSwOmJ3mhy9MV6AZnFs6xiNz%2bCe9nrnKU/ZASgU5KGE2X8QHxflYhamyab/wvXW2i/k73cfyBdoSIZp8TNpWYDAoVC00dhFPEO07wIxT%2b7kEHseo/ZQ6Kl/nCsGaL%2ba/jc77rkp7YeraaJg3YqeDYUpzldW4leNyjH0TwdCnPSSoZijKUp8OsdW2Hm8rPYU9cvfTcEkjabyOSzkTXH/iNBEBsPKoVXLhHwMREXIj3JnD2xhojKboiggxg6xiDbdAgNBG7GPGrlR0PskKh%2bBVBRMEaELSM9NGU8y75i18iXmXylbi5ykepKhDV26sduaEIxTcm3vsOs2FLzj5BW8KKPS7CVtXWg7vBjLcbLTJuwAnE6dxKUP2z3AA7ehHPH/yuhV%2bLrlCsvLAPQmfiJ3xZcKtEdbX8EJhUvl7r8NLrk23S9%2bSFmyg==&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200417T144730Z&X-Amz-SignedHeaders=host&X-Amz-Expires=300&X-Amz-Credential=ASIA53I5ZDJRAVOXVU2O/20200417/ap-southeast-1/s3/aws4_request&X-Amz-Signature=e24ba62a883ddcd9c1643107301ecbe34271254dfdd2216aade7166cdbb0629b)
+![enter image description here](https://tezster.s3-ap-southeast-1.amazonaws.com/TEZSTER_GUI/deploy_contract.gif)
 
 ## **BLOCKS**
 
@@ -132,8 +130,7 @@ Blocks are generally used to show the current block on the chain we don't create
 - Click on Transfer Tezos and then _**viola**_ your amount is transferred to the reciever's account.
   ‌
   Please follow the below visual demo :
-
-![enter image description here](https://tezster.s3.ap-southeast-1.amazonaws.com/TEZSTER_GUI/transactions.gif?response-content-disposition=inline&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEKb//////////wEaCmFwLXNvdXRoLTEiSDBGAiEAoqRlTabAOW9W1Hf6Qd6omdblPYriD9jpk6WzBqQ1sZMCIQCmu531mtmgwyY06rGMlTqFJPG9QQabwoqMWToTwZWtCSrvAQi///////////8BEAEaDDk1MTkzNDU4OTUzOCIMsq07aorhMBLerXIpKsMBYsRkyewUKIv2M69YiTDSSCUD4/Xg%2bpEmGIKZ9Pa2BNeeMtKULWC9w0YlXh0BB5PLQjxcerYX3EX2feKv6AsuWWVXi1D%2bhCRZVWSngFh0WxDUfQRYhSJv49ZFTslTylLwD3ZvzxSdrNbka23U2Nyci%2b/hxGVkbn3zxFqF5/fOBiX/VA6expCTYUmdngoEjGDJfALZciU7/Mt9iVEix/r9Ofgme3LN5CCgp3Tb9u2MBm7PecrwiQdZlN%2bW90HuaE2B7hjFMOP15vQFOu8C8KwKLRm9YRVxRYbHUErH8yQK9m7x4e/ooxl36anKXBjyf3O6nYHqLaJSwOmJ3mhy9MV6AZnFs6xiNz%2bCe9nrnKU/ZASgU5KGE2X8QHxflYhamyab/wvXW2i/k73cfyBdoSIZp8TNpWYDAoVC00dhFPEO07wIxT%2b7kEHseo/ZQ6Kl/nCsGaL%2ba/jc77rkp7YeraaJg3YqeDYUpzldW4leNyjH0TwdCnPSSoZijKUp8OsdW2Hm8rPYU9cvfTcEkjabyOSzkTXH/iNBEBsPKoVXLhHwMREXIj3JnD2xhojKboiggxg6xiDbdAgNBG7GPGrlR0PskKh%2bBVBRMEaELSM9NGU8y75i18iXmXylbi5ykepKhDV26sduaEIxTcm3vsOs2FLzj5BW8KKPS7CVtXWg7vBjLcbLTJuwAnE6dxKUP2z3AA7ehHPH/yuhV%2bLrlCsvLAPQmfiJ3xZcKtEdbX8EJhUvl7r8NLrk23S9%2bSFmyg==&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200417T145035Z&X-Amz-SignedHeaders=host&X-Amz-Expires=300&X-Amz-Credential=ASIA53I5ZDJRAVOXVU2O/20200417/ap-southeast-1/s3/aws4_request&X-Amz-Signature=923cb113411a6eeab60ee74a5624101dbe8f2cd72ec45df09bd265714437b87a)
+  ![enter image description here](https://tezster.s3-ap-southeast-1.amazonaws.com/TEZSTER_GUI/transactions.gif)
 
 ## **CONTRACTS**
 
@@ -155,8 +152,7 @@ Go to the following link along with contract address to see the contract details
 [https://carthagenet.tzstats.com/KT1QfQ9g2zHQkbjdrfWGhbx1eLiSFWn5abLn](https://carthagenet.tzstats.com/KT1QfQ9g2zHQkbjdrfWGhbx1eLiSFWn5abLn)
 
 Please follow the below visual demo :
-
-![enter image description here](https://tezster.s3.ap-southeast-1.amazonaws.com/TEZSTER_GUI/deploy_contract.gif?response-content-disposition=inline&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEKb//////////wEaCmFwLXNvdXRoLTEiSDBGAiEAoqRlTabAOW9W1Hf6Qd6omdblPYriD9jpk6WzBqQ1sZMCIQCmu531mtmgwyY06rGMlTqFJPG9QQabwoqMWToTwZWtCSrvAQi///////////8BEAEaDDk1MTkzNDU4OTUzOCIMsq07aorhMBLerXIpKsMBYsRkyewUKIv2M69YiTDSSCUD4/Xg%2bpEmGIKZ9Pa2BNeeMtKULWC9w0YlXh0BB5PLQjxcerYX3EX2feKv6AsuWWVXi1D%2bhCRZVWSngFh0WxDUfQRYhSJv49ZFTslTylLwD3ZvzxSdrNbka23U2Nyci%2b/hxGVkbn3zxFqF5/fOBiX/VA6expCTYUmdngoEjGDJfALZciU7/Mt9iVEix/r9Ofgme3LN5CCgp3Tb9u2MBm7PecrwiQdZlN%2bW90HuaE2B7hjFMOP15vQFOu8C8KwKLRm9YRVxRYbHUErH8yQK9m7x4e/ooxl36anKXBjyf3O6nYHqLaJSwOmJ3mhy9MV6AZnFs6xiNz%2bCe9nrnKU/ZASgU5KGE2X8QHxflYhamyab/wvXW2i/k73cfyBdoSIZp8TNpWYDAoVC00dhFPEO07wIxT%2b7kEHseo/ZQ6Kl/nCsGaL%2ba/jc77rkp7YeraaJg3YqeDYUpzldW4leNyjH0TwdCnPSSoZijKUp8OsdW2Hm8rPYU9cvfTcEkjabyOSzkTXH/iNBEBsPKoVXLhHwMREXIj3JnD2xhojKboiggxg6xiDbdAgNBG7GPGrlR0PskKh%2bBVBRMEaELSM9NGU8y75i18iXmXylbi5ykepKhDV26sduaEIxTcm3vsOs2FLzj5BW8KKPS7CVtXWg7vBjLcbLTJuwAnE6dxKUP2z3AA7ehHPH/yuhV%2bLrlCsvLAPQmfiJ3xZcKtEdbX8EJhUvl7r8NLrk23S9%2bSFmyg==&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200417T145356Z&X-Amz-SignedHeaders=host&X-Amz-Expires=300&X-Amz-Credential=ASIA53I5ZDJRAVOXVU2O/20200417/ap-southeast-1/s3/aws4_request&X-Amz-Signature=835c5eb3b202c14bade496c4db57dfbe70ef27ff1c5158b233a044a7225409c5)
+![enter image description here](https://tezster.s3-ap-southeast-1.amazonaws.com/TEZSTER_GUI/deploy_contract.gif)
 
 ###
 
@@ -174,8 +170,7 @@ In order to Invoke contract go to contracts tab
   [`https://carthagenet.tzstats.com/ooF5y5gjRxZXBzgm8ZurvfhriVNqtrnm51ri5e9BCkmjyjYQuhx`](https://carthagenet.tzstats.com/ooF5y5gjRxZXBzgm8ZurvfhriVNqtrnm51ri5e9BCkmjyjYQuhx)
 
 Please follow the below visual demo :
-
-![enter image description here](https://tezster.s3.ap-southeast-1.amazonaws.com/TEZSTER_GUI/call_contract.gif?response-content-disposition=inline&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEKb//////////wEaCmFwLXNvdXRoLTEiSDBGAiEAoqRlTabAOW9W1Hf6Qd6omdblPYriD9jpk6WzBqQ1sZMCIQCmu531mtmgwyY06rGMlTqFJPG9QQabwoqMWToTwZWtCSrvAQi///////////8BEAEaDDk1MTkzNDU4OTUzOCIMsq07aorhMBLerXIpKsMBYsRkyewUKIv2M69YiTDSSCUD4/Xg%2bpEmGIKZ9Pa2BNeeMtKULWC9w0YlXh0BB5PLQjxcerYX3EX2feKv6AsuWWVXi1D%2bhCRZVWSngFh0WxDUfQRYhSJv49ZFTslTylLwD3ZvzxSdrNbka23U2Nyci%2b/hxGVkbn3zxFqF5/fOBiX/VA6expCTYUmdngoEjGDJfALZciU7/Mt9iVEix/r9Ofgme3LN5CCgp3Tb9u2MBm7PecrwiQdZlN%2bW90HuaE2B7hjFMOP15vQFOu8C8KwKLRm9YRVxRYbHUErH8yQK9m7x4e/ooxl36anKXBjyf3O6nYHqLaJSwOmJ3mhy9MV6AZnFs6xiNz%2bCe9nrnKU/ZASgU5KGE2X8QHxflYhamyab/wvXW2i/k73cfyBdoSIZp8TNpWYDAoVC00dhFPEO07wIxT%2b7kEHseo/ZQ6Kl/nCsGaL%2ba/jc77rkp7YeraaJg3YqeDYUpzldW4leNyjH0TwdCnPSSoZijKUp8OsdW2Hm8rPYU9cvfTcEkjabyOSzkTXH/iNBEBsPKoVXLhHwMREXIj3JnD2xhojKboiggxg6xiDbdAgNBG7GPGrlR0PskKh%2bBVBRMEaELSM9NGU8y75i18iXmXylbi5ykepKhDV26sduaEIxTcm3vsOs2FLzj5BW8KKPS7CVtXWg7vBjLcbLTJuwAnE6dxKUP2z3AA7ehHPH/yuhV%2bLrlCsvLAPQmfiJ3xZcKtEdbX8EJhUvl7r8NLrk23S9%2bSFmyg==&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200417T145530Z&X-Amz-SignedHeaders=host&X-Amz-Expires=300&X-Amz-Credential=ASIA53I5ZDJRAVOXVU2O/20200417/ap-southeast-1/s3/aws4_request&X-Amz-Signature=99f5013e9909552b19fd86b368dbabc802650c46eee61d158295f1c1d9a99092)
+![enter image description here](https://tezster.s3-ap-southeast-1.amazonaws.com/TEZSTER_GUI/call_contract.gif)
 
 ###
 
@@ -188,8 +183,7 @@ In order to get initial storage of the contract go to contracts tab‌
 - `Select Contracts` will show the deployed contract.
 
 Please follow the below visual demo :
-
-![enter image description here](https://tezster.s3.ap-southeast-1.amazonaws.com/TEZSTER_GUI/call-storage.gif?response-content-disposition=inline&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEKb//////////wEaCmFwLXNvdXRoLTEiSDBGAiEAoqRlTabAOW9W1Hf6Qd6omdblPYriD9jpk6WzBqQ1sZMCIQCmu531mtmgwyY06rGMlTqFJPG9QQabwoqMWToTwZWtCSrvAQi///////////8BEAEaDDk1MTkzNDU4OTUzOCIMsq07aorhMBLerXIpKsMBYsRkyewUKIv2M69YiTDSSCUD4/Xg%2bpEmGIKZ9Pa2BNeeMtKULWC9w0YlXh0BB5PLQjxcerYX3EX2feKv6AsuWWVXi1D%2bhCRZVWSngFh0WxDUfQRYhSJv49ZFTslTylLwD3ZvzxSdrNbka23U2Nyci%2b/hxGVkbn3zxFqF5/fOBiX/VA6expCTYUmdngoEjGDJfALZciU7/Mt9iVEix/r9Ofgme3LN5CCgp3Tb9u2MBm7PecrwiQdZlN%2bW90HuaE2B7hjFMOP15vQFOu8C8KwKLRm9YRVxRYbHUErH8yQK9m7x4e/ooxl36anKXBjyf3O6nYHqLaJSwOmJ3mhy9MV6AZnFs6xiNz%2bCe9nrnKU/ZASgU5KGE2X8QHxflYhamyab/wvXW2i/k73cfyBdoSIZp8TNpWYDAoVC00dhFPEO07wIxT%2b7kEHseo/ZQ6Kl/nCsGaL%2ba/jc77rkp7YeraaJg3YqeDYUpzldW4leNyjH0TwdCnPSSoZijKUp8OsdW2Hm8rPYU9cvfTcEkjabyOSzkTXH/iNBEBsPKoVXLhHwMREXIj3JnD2xhojKboiggxg6xiDbdAgNBG7GPGrlR0PskKh%2bBVBRMEaELSM9NGU8y75i18iXmXylbi5ykepKhDV26sduaEIxTcm3vsOs2FLzj5BW8KKPS7CVtXWg7vBjLcbLTJuwAnE6dxKUP2z3AA7ehHPH/yuhV%2bLrlCsvLAPQmfiJ3xZcKtEdbX8EJhUvl7r8NLrk23S9%2bSFmyg==&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200417T145640Z&X-Amz-SignedHeaders=host&X-Amz-Expires=300&X-Amz-Credential=ASIA53I5ZDJRAVOXVU2O/20200417/ap-southeast-1/s3/aws4_request&X-Amz-Signature=69d0390ff5bb6d6822958af5b00c12b75cf0a9fdfb628a724fe0963cc95edd7a)
+![enter image description here](https://tezster.s3-ap-southeast-1.amazonaws.com/TEZSTER_GUI/call-storage.gif)
 
 #
 
