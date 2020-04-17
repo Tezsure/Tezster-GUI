@@ -91,6 +91,7 @@ To create build package for other platform run the following command
 To add an account with Tezster-GUI simply go to to accounts tab and then click on the create accounts button on top right corner and using the faucet received from [https://faucet.tzalpha.net](https://faucet.tzalpha.net/). We can create an account on the desired network and the account automatically gets activated and revealed on the network.
 
 Please follow the below visual demo :
+
 ![enter image description here](https://tezster.s3-ap-southeast-1.amazonaws.com/TEZSTER_GUI/create_account.gif)
 
 _Note : Its only possible to active the accounts which are provided by the faucet, random accounts cannot be activated / revealed in the process._
@@ -105,6 +106,7 @@ Restore accounts is used to add already running account to the given network. To
 - Fill in your existing account/wallet details and your account will get restored asap to the network with the available balance.
 
 Please follow the below visual demo :
+
 ![enter image description here](https://tezster.s3-ap-southeast-1.amazonaws.com/TEZSTER_GUI/deploy_contract.gif)
 
 ## **BLOCKS**
@@ -130,7 +132,8 @@ Blocks are generally used to show the current block on the chain we don't create
 - Click on Transfer Tezos and then _**viola**_ your amount is transferred to the reciever's account.
   ‌
   Please follow the below visual demo :
-  ![enter image description here](https://tezster.s3-ap-southeast-1.amazonaws.com/TEZSTER_GUI/transactions.gif)
+
+![enter image description here](https://tezster.s3-ap-southeast-1.amazonaws.com/TEZSTER_GUI/transactions.gif)
 
 ## **CONTRACTS**
 
@@ -152,6 +155,7 @@ Go to the following link along with contract address to see the contract details
 [https://carthagenet.tzstats.com/KT1QfQ9g2zHQkbjdrfWGhbx1eLiSFWn5abLn](https://carthagenet.tzstats.com/KT1QfQ9g2zHQkbjdrfWGhbx1eLiSFWn5abLn)
 
 Please follow the below visual demo :
+
 ![enter image description here](https://tezster.s3-ap-southeast-1.amazonaws.com/TEZSTER_GUI/deploy_contract.gif)
 
 ###
@@ -170,6 +174,7 @@ In order to Invoke contract go to contracts tab
   [`https://carthagenet.tzstats.com/ooF5y5gjRxZXBzgm8ZurvfhriVNqtrnm51ri5e9BCkmjyjYQuhx`](https://carthagenet.tzstats.com/ooF5y5gjRxZXBzgm8ZurvfhriVNqtrnm51ri5e9BCkmjyjYQuhx)
 
 Please follow the below visual demo :
+
 ![enter image description here](https://tezster.s3-ap-southeast-1.amazonaws.com/TEZSTER_GUI/call_contract.gif)
 
 ###
@@ -183,6 +188,7 @@ In order to get initial storage of the contract go to contracts tab‌
 - `Select Contracts` will show the deployed contract.
 
 Please follow the below visual demo :
+
 ![enter image description here](https://tezster.s3-ap-southeast-1.amazonaws.com/TEZSTER_GUI/call-storage.gif)
 
 #
