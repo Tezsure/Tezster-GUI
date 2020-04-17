@@ -23,6 +23,7 @@ export function toggleAccountsModalAction(modalType) {
 }
 
 export function getAccountsAction({ ...params }) {
+  const { networkId } = params.dashboardHeader;
   return dispatch => {
     if (params.userAccounts.length === 0) {
       if (localStorage.hasOwnProperty('tezsure')) {
@@ -30,8 +31,12 @@ export function getAccountsAction({ ...params }) {
           localStorage.getItem('tezsure')
         ).userAccounts;
       } else {
-        params.userAccounts = config.identities;
+        params.userAccounts[networkId.split('-')[0]] = config.identities;
       }
+    } else {
+      params.userAccounts = JSON.parse(
+        localStorage.getItem('tezsure')
+      ).userAccounts;
     }
     __getAccounts({ ...params }, (err, accounts) => {
       if (err) {
@@ -43,9 +48,14 @@ export function getAccountsAction({ ...params }) {
       Promise.all(accounts)
         .then(response => {
           if (!localStorage.hasOwnProperty('tezsure')) {
+            const userAccounts = {
+              Carthagenet: [],
+              Localnode: [],
+              [networkId.split('-')[0]]: response
+            };
             localStorage.setItem(
               'tezsure',
-              JSON.stringify({ userAccounts: response, ...config })
+              JSON.stringify({ ...config, userAccounts })
             );
           }
           return dispatch({
@@ -64,6 +74,7 @@ export function getAccountsAction({ ...params }) {
 }
 
 export function getBalanceAction(payload) {
+  const { networkId } = payload.dashboardHeader;
   return dispatch => {
     if (
       localStorage.getItem('tezsure') &&
@@ -71,7 +82,9 @@ export function getBalanceAction(payload) {
     ) {
       dispatch({
         type: 'GET_BALANCE',
-        payload: localStorage.getItem('tezsure').userAccounts
+        payload: localStorage.getItem('tezsure').userAccounts[
+          networkId.split('-')[0]
+        ]
       });
     } else {
       __getBalance({ ...payload }, (err, response) => {
@@ -91,6 +104,7 @@ export function getBalanceAction(payload) {
 }
 
 export function createAccountsAction(payload) {
+  const { networkId } = payload.dashboardHeader;
   const { userAccounts } = JSON.parse(localStorage.getItem('tezsure'));
   return dispatch => {
     dispatch({
@@ -100,16 +114,20 @@ export function createAccountsAction(payload) {
     __activateAccountOperation(payload, (err, result) => {
       if (err) {
         swal('Error!', err, 'error');
-        return dispatch({
+        dispatch({
           type: 'GET_ACCOUNTS',
-          payload: userAccounts
+          payload: userAccounts[networkId.split('-')[0]]
+        });
+        return dispatch({
+          type: 'BUTTON_LOADING_STATE',
+          payload: false
         });
       }
       const activatedAccount = {
         sk: result.privateKey,
         pk: result.publicKey,
         pkh: payload.faucet.pkh,
-        label: `bootstrap${userAccounts.length + 1}`,
+        label: `bootstrap${userAccounts[networkId.split('-')[0]].length + 1}`,
         dashboardHeader: payload.dashboardHeader
       };
       payload.userAccounts.push({ ...activatedAccount });
@@ -117,7 +135,7 @@ export function createAccountsAction(payload) {
         payload.userAccounts.map(async elem => await __getBalance({ ...elem }))
       ).then(response => {
         const __localStorage = JSON.parse(localStorage.getItem('tezsure'));
-        __localStorage.userAccounts = response;
+        __localStorage.userAccounts[networkId.split('-')[0]] = response;
         localStorage.setItem('tezsure', JSON.stringify({ ...__localStorage }));
         swal('Success!', 'Account created successfully', 'success');
         dispatch({
@@ -138,7 +156,9 @@ export function createAccountsAction(payload) {
 }
 
 export function restoreAccountAction(payload) {
-  const { userAccounts } = payload;
+  const { networkId } = payload.dashboardHeader;
+  const __localStorage = JSON.parse(localStorage.getItem('tezsure'));
+  const { userAccounts } = JSON.parse(localStorage.getItem('tezsure'));
   return dispatch => {
     dispatch({
       type: 'BUTTON_LOADING_STATE',
@@ -156,13 +176,16 @@ export function restoreAccountAction(payload) {
         });
       }
       Promise.all([__getBalance({ ...account, ...payload })]).then(response => {
-        userAccounts.push(response[0]);
+        userAccounts[networkId.split('-')[0]].push(response[0]);
         payload.userAccounts = userAccounts;
-        localStorage.setItem('tezsure', JSON.stringify({ ...payload }));
+        localStorage.setItem(
+          'tezsure',
+          JSON.stringify({ ...__localStorage, ...payload })
+        );
         swal('Success!', 'Account restored successfully', 'success');
         dispatch({
           type: 'GET_ACCOUNTS',
-          payload: userAccounts
+          payload: userAccounts[networkId.split('-')[0]]
         });
         dispatch({
           type: 'TOGGLE_ACCOUNTS_MODAL',

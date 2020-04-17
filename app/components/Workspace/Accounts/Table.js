@@ -6,6 +6,14 @@ function Table(props) {
       <tr className="table-row" key={elem.account + index}>
         <td className="table-body-cell">
           <div className="cards-header">
+            <h4>LABEL</h4>
+          </div>
+          <div className="cards-contents">
+            <p className="account-address-content">{elem.label}</p>
+          </div>
+        </td>
+        <td className="table-body-cell">
+          <div className="cards-header">
             <h4>ADDRESS</h4>
           </div>
           <div className="cards-contents">

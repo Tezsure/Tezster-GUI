@@ -39,6 +39,10 @@ export function deployContractAction({ ...params }) {
 
 export function getContractStorageAction({ ...params }) {
   return dispatch => {
+    dispatch({
+      type: 'BUTTON_LOADING_STATE',
+      payload: true
+    });
     __getStorage({ ...params }, (err, response) => {
       if (err) {
         swal(
@@ -46,11 +50,19 @@ export function getContractStorageAction({ ...params }) {
           'Contract storage not available on selected network',
           'error'
         );
+        dispatch({
+          type: 'BUTTON_LOADING_STATE',
+          payload: false
+        });
         return dispatch({
           type: 'DEPLOY_CONTRACT_STORAGE_ERR',
           payload: err
         });
       }
+      dispatch({
+        type: 'BUTTON_LOADING_STATE',
+        payload: false
+      });
       return dispatch({
         type: 'DEPLOY_CONTRACT_STORAGE',
         payload: response

@@ -119,7 +119,7 @@ class TransactionModal extends Component {
                 onChange={this.handleInputChange}
               >
                 <option value="0" disabled>
-                  Select Sender&rsquo;s Account
+                  Select Reciever&rsquo;s Account
                 </option>
                 {recieverAccounts}
               </select>

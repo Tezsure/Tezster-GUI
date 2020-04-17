@@ -37,47 +37,58 @@ module.exports = {
       label: 'bootstrap5'
     }
   ],
-  accounts: [
-    {
-      label: 'bootstrap_1',
-      pkh: 'tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx',
-      identity: 'bootstrap1'
-    },
-    {
-      label: 'bootstrap_2',
-      pkh: 'tz1gjaF81ZRRvdzjobyfVNsAeSC6PScjfQwN',
-      identity: 'bootstrap2'
-    },
-    {
-      label: 'bootstrap_3',
-      pkh: 'tz1faswCTDciRzE4oJ9jn2Vm2dvjeyA9fUzU',
-      identity: 'bootstrap3'
-    },
-    {
-      label: 'bootstrap_4',
-      pkh: 'tz1b7tUupMgCNw2cCLpKTkSD1NZzB5TkP2sv',
-      identity: 'bootstrap4'
-    },
-    {
-      label: 'bootstrap_5',
-      pkh: 'tz1ddb9NMYHZi5UzPdzTZMYQQZoMub195zgv',
-      identity: 'bootstrap5'
-    }
-  ],
-  contracts: [],
+  accounts: {
+    Localnode: [
+      {
+        label: 'bootstrap_1',
+        pkh: 'tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx',
+        identity: 'bootstrap1'
+      },
+      {
+        label: 'bootstrap_2',
+        pkh: 'tz1gjaF81ZRRvdzjobyfVNsAeSC6PScjfQwN',
+        identity: 'bootstrap2'
+      },
+      {
+        label: 'bootstrap_3',
+        pkh: 'tz1faswCTDciRzE4oJ9jn2Vm2dvjeyA9fUzU',
+        identity: 'bootstrap3'
+      },
+      {
+        label: 'bootstrap_4',
+        pkh: 'tz1b7tUupMgCNw2cCLpKTkSD1NZzB5TkP2sv',
+        identity: 'bootstrap4'
+      },
+      {
+        label: 'bootstrap_5',
+        pkh: 'tz1ddb9NMYHZi5UzPdzTZMYQQZoMub195zgv',
+        identity: 'bootstrap5'
+      }
+    ],
+    Carthagenet: []
+  },
+  contracts: {
+    Carthagenet: [],
+    Localnode: []
+  },
   programs: [],
-  Nodes: ['Localnode', 'Carthagenet'],
+  Nodes: ['Localnode', 'Carthagenet-Smartpy', 'Carthagenet-Tezster'],
   apiEndPoints: {
     Localnode: 'http://localhost:18731',
-    Carthagenet: 'https://carthagenet.SmartPy.io'
+    'Carthagenet-Smartpy': 'https://carthagenet.SmartPy.io',
+    'Carthagenet-Tezster': 'http://testnet.tezster.tech'
   },
   TzStatsApiEndpoint: {
     Localnode: 'http://localhost:18731',
-    Carthagenet: 'https://api.carthagenet.tzstats.com'
+    'Carthagenet-Smartpy': 'https://api.carthagenet.tzstats.com',
+    'Carthagenet-Tezster': 'https://api.carthagenet.tzstats.com'
   },
   ConceilJS: {
     url: 'https://conseil-dev.cryptonomic-infra.tech',
     apiKey: '04c98bd2-7cc5-49f2-9108-2d48efcbd660'
   },
-  transactions: []
+  transactions: {
+    Carthagenet: [],
+    Localnode: []
+  }
 };

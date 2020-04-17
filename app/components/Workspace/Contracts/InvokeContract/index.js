@@ -51,9 +51,10 @@ class InvokeContract extends Component {
   }
 
   handleEntryPoints() {
-    const contract = JSON.parse(
-      localStorage.getItem('tezsure')
-    ).contracts.filter(
+    const networkId = this.props.dashboardHeader.networkId.split('-')[0];
+    const contract = JSON.parse(localStorage.getItem('tezsure')).contracts[
+      networkId
+    ].filter(
       elem => elem.originated_contracts === this.state.selectedContracts
     );
     const entryPoints = conseiljs.TezosContractIntrospector.generateEntryPointsFromCode(
@@ -154,6 +155,7 @@ class InvokeContract extends Component {
   }
 
   render() {
+    const networkId = this.props.dashboardHeader.networkId.split('-')[0];
     const entryPoints = this.state.entryPoints.map((elem, index) => (
       <option key={elem.name + index} value={elem.name}>
         {elem.name}
@@ -166,7 +168,7 @@ class InvokeContract extends Component {
     ));
     const __localStorage__ = JSON.parse(localStorage.getItem('tezsure'))
       .contracts;
-    const contracts = __localStorage__.map((elem, index) => (
+    const contracts = __localStorage__[networkId].map((elem, index) => (
       <option key={elem.name + index} value={elem.originated_contracts}>
         {`${elem.name} - ${elem.originated_contracts}`}
       </option>

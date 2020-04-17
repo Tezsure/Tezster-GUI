@@ -55,7 +55,18 @@ class RestoreAccounts extends Component {
   }
 
   handleInputChange(event) {
-    this.setState({ [event.target.name]: event.target.value });
+    if (event.target.name === 'mnemonic') {
+      const mnemonic = event.target.value
+        .split('"')
+        .join('')
+        .replace(/\n/g, '')
+        .replace(/\s/g, '')
+        .split(',')
+        .join(' ');
+      this.setState({ mnemonic });
+    } else {
+      this.setState({ [event.target.name]: event.target.value });
+    }
   }
 
   render() {
@@ -77,18 +88,14 @@ class RestoreAccounts extends Component {
           </button>
         </div>
         <div className="modal-body">
-          <p>Node provider is connected : http://localhost:18731</p>
-        </div>
-        <div className="modal-body">
           <p>
-            For babylonnet Account Email+password+Secret Key is required and
-            change node provider to Alphanet
+            Node provider is connected : {this.props.dashboardHeader.rpcServer}
           </p>
         </div>
         <div className="modal-body">
           <p>
-            For LocalNode Account Email+password is required and change node
-            provider to Local Node
+            For Carthagenet Account change node provider to Alphanet, while
+            LocalNode Account change node provider to Local Node
           </p>
         </div>
         <div className="modal-input">
@@ -116,7 +123,7 @@ class RestoreAccounts extends Component {
         </div>
         <span className="error-msg">{this.state.passwordErr}</span>
         <div className="modal-body">
-          <p>Seed Words/Mnenomics(leave a space between each word)</p>
+          <p>Seed Words/Mnenomics</p>
           <textarea
             name="mnemonic"
             rows="4"
@@ -124,7 +131,7 @@ class RestoreAccounts extends Component {
             placeholder="Enter seed words/mnemonic"
             value={this.state.mnemonic}
             onChange={this.handleInputChange}
-            className="textArea"
+            className="textArea form-control"
           />
           <br />
           <span className="error-msg">{this.state.mnemonicErr}</span>

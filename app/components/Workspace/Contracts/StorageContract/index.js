@@ -1,3 +1,5 @@
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/prop-types */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/no-array-index-key */
 import React, { Component } from 'react';
@@ -17,18 +19,14 @@ class index extends Component {
   }
 
   handleInputChange(event) {
-    this.setState({ [event.target.name]: event.target.value }, () => {
-      this.props.getContractStorageAction({
-        ...this.props,
-        ...this.state
-      });
-    });
+    this.setState({ [event.target.name]: event.target.value });
   }
 
   render() {
+    const networkId = this.props.dashboardHeader.networkId.split('-')[0];
     const __localStorage__ = JSON.parse(localStorage.getItem('tezsure'))
       .contracts;
-    const contracts = __localStorage__.map((elem, index) => (
+    const contracts = __localStorage__[networkId].map((elem, index) => (
       <option key={elem.name + index} value={elem.originated_contracts}>
         {`${elem.name} - ${elem.originated_contracts}`}
       </option>
@@ -48,6 +46,25 @@ class index extends Component {
             </option>
             {contracts}
           </select>
+        </div>
+        <div className="cards-container">
+          <div className="cards button-card accounts-button-container">
+            <div className="button-accounts">
+              <button
+                type="button"
+                className="btn btn-success"
+                disabled={this.props.buttonState}
+                onClick={() => {
+                  this.props.getContractStorageAction({
+                    ...this.props,
+                    ...this.state
+                  });
+                }}
+              >
+                {this.props.buttonState ? 'loading...' : 'Show Storage'}
+              </button>
+            </div>
+          </div>
         </div>
         <div className="modal-input">
           {this.props.selectedContractStorage === '' ||

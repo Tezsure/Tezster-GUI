@@ -13,9 +13,9 @@ require('dotenv').config();
 export async function __getAccounts({ ...params }, callback) {
   const __url = apiEndPoints[params.dashboardHeader.networkId];
   eztz.node.setProvider(__url);
-  const totalAccounts = await params.userAccounts.map(async elem =>
-    __getBalance({ ...elem, ...params })
-  );
+  const totalAccounts = await params.userAccounts[
+    params.dashboardHeader.networkId.split('-')[0]
+  ].map(async elem => __getBalance({ ...elem, ...params }));
   return callback(null, totalAccounts);
 }
 export async function __activateAccount({ ...params }, callback) {
@@ -143,7 +143,9 @@ export async function __sendOperation({ ...params }, callback) {
 export async function __listAccountTransactions({ ...params }, callback) {
   try {
     const platform = 'tezos';
-    const network = params.dashboardHeader.networkId.toLowerCase();
+    const network = params.dashboardHeader.networkId
+      .split('-')[0]
+      .toLowerCase();
     const entity = 'operations';
     const conseilServer = {
       url: ConceilJS.url,
@@ -282,7 +284,9 @@ export async function __deployContract({ ...params }, callback) {
           'applied'
         ) {
           const __localStorage__ = JSON.parse(localStorage.getItem('tezsure'));
-          __localStorage__.contracts.push({
+          __localStorage__.contracts[
+            params.dashboardHeader.networkId.split('-')[0]
+          ].push({
             name: params.contractLabel,
             originated_contracts:
               nodeResult.results.contents[0].metadata.operation_result
