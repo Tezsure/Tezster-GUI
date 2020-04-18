@@ -6,9 +6,6 @@ Use the GUI version of Tezster which is ready to use Desktop app, made with Reac
 
 This project was generated with React.Js & Electron. Tezster-GUI comes with pretty much the same functionalities as CLI with great user interface for ease of access. New to Tezos ecosystem and want a developer ready environment? We got your back!
 
-## Create files and folders
-
-The file explorer is accessible using the button in left corner of the navigation bar. You can create a new file by clicking the **New file** button in the file explorer. You can also create folders by clicking the **New folder** button.
 
 ## Prerequisites
 
@@ -35,6 +32,7 @@ Run following commands to install Node.js LTS version
 After installing verify and check the installed version.
 
     node -v
+ *Note: Please make sure you have the latest npm and node.js versions to be 12.x or above.*
 
 # Install Tezster-CLI package
 
@@ -46,172 +44,112 @@ Run Following to ensure the installed version of tezster-CLI.
 
     tezster --version
 
-To start the nodes run:
+To start the tester nodes on your machine run:
 
     tezster start-nodes
-# Downloading Tezster-GUI
     
-You can either download the application package or can run the app setup to run tezster-gui.
-To install linux distribution image of tezster-gui please use the following link.
-	
-	https://tezster.s3-ap-southeast-1.amazonaws.com/TEZSTER_GUI/PACKAGE/Tezster-2.0.0.AppImage
-	
-	https://tezster.s3-ap-southeast-1.amazonaws.com/TEZSTER_GUI/PACKAGE/tezster-2.0.0.x86_64.rpm
-
-To install windows executables download the package from the following link
-	
-	https://tezster.s3-ap-southeast-1.amazonaws.com/TEZSTER_GUI/PACKAGE/Tezster.exe
-
-To install mac image use the following link to download.
-	
-	https://tezster.s3-ap-southeast-1.amazonaws.com/TEZSTER_GUI/PACKAGE/tezster_2.0.0_amd64.deb
 	
 
 # Tezster-GUI App Setup
 
-‌To setup Tezster-GUI clone the project from github run the following command.
+Inorder to start using the app we clone this repo using the following command
 
-    https://github.com/Tezsure/Tezster-GUI.git
+    git clone https://github.com/Tezsure/Tezster-GUI.git
+
+Now the second step is to navigate to the downloaded directory using the command.
+
+    cd /Tezster-GUI
 
 ‌
-Now thee second step is to navigate to the downloaded directory and run the following command
+The third step is to download the required installation packages using the command
 
-    npm i --save
+    sudo npm i --save
 
 ‌
-
 Now to start the app in the `dev` environment run the following command :
 
     npm run dev
 
-‌
+
 
 This starts the renderer process in hot-module-replacement mode and starts a webpack dev server that sends hot updates to the renderer process.
+*You are now ready to use the app or start the code development.*
 
+## Building Packages for All Platforms
+ 
 To create the build package for different OS based environment run :
 
     npm run package
 
 ‌
-This will create a build package in the `release folder` of the root directory depending upon the OS you're working on. On linux systems it requires an additional dependency of wine package installer to create a build package.
+This will create a build package in the `release folder` of the root directory depending upon the OS you're working on. 
 
 To create build package for other platform run the following command
 
     npm run package-all
 
-‌
+On linux systems it requires an additional dependency of wine package installer to create a build package for windows environment.‌
 
-## **ACCOUNTS**
 
-`CREATE ACCOUNTS`
+### Steps to install wine on linux
+The WineHQ repository has a set of standard Wine packages that you can download and install on your system. Please follow these steps to do so:
 
-To add an account with Tezster-GUI simply go to to accounts tab and then click on the create accounts button on top right corner and using the faucet received from [https://faucet.tzalpha.net](https://faucet.tzalpha.net/). We can create an account on the desired network and the account automatically gets activated and revealed on the network.
+Run the following command in the Terminal for adding i386 architecture before installing a 64-bit version of Wine:
 
-Please follow the below visual demo :
+$ sudo dpkg --add-architecture i386
 
-![enter image description here](https://tezster.s3-ap-southeast-1.amazonaws.com/TEZSTER_GUI/create_account.gif)
+![Add i386 architecture](https://vitux.com/wp-content/uploads/2018/09/word-image-46.png)
 
-_Note : Its only possible to active the accounts which are provided by the faucet, random accounts cannot be activated / revealed in the process._
+Run the following in order to add the WineHQ signing key:
 
-###
+    $ wget -qO- https://dl.winehq.org/wine-builds/Release.key | sudo apt-key add -
 
-`RESTORE ACCOUNTS`
+![Download WineHQ key](https://vitux.com/wp-content/uploads/2018/09/word-image-47.png)
 
-Restore accounts is used to add already running account to the given network. To restore an already added account follow the simple steps :
+**Tip:**  You can copy this command from this tutorial instead of typing it in the Terminal. Select and copy this command from here, right-click in the Terminal prompt and then select Paste from the menu.
 
-- Go to to accounts tab and then click on the restore accounts button on top right corner.
-- Fill in your existing account/wallet details and your account will get restored asap to the network with the available balance.
+Now run the following command in order to add the relevant repository from the WineHQ:
 
-Please follow the below visual demo :
+    $ sudo apt-add-repository 'deb http://dl.winehq.org/wine-builds/ubuntu/ artful main'
 
-![enter image description here](https://tezster.s3-ap-southeast-1.amazonaws.com/TEZSTER_GUI/deploy_contract.gif)
+![Add WineHQ package repository](https://vitux.com/wp-content/uploads/2018/09/word-image-48.png)
 
-## **BLOCKS**
+Here you have two options about which release of Wine you want to install; the stable version or the development versions.
 
-‌
+-   **WineHQ Stable:** This is the most recent and stable release of Wine available. Use the following command to install this version:
+	
 
-Blocks are generally used to show the current block on the chain currently api to display blocks on local-node is under development hence it can only be visible on selected testnets and mainnets.
+    $ sudo apt-get install --install-recommends winehq-stable
+    
 
-‌
+![Install Wine from WineHQ](https://vitux.com/wp-content/uploads/2018/09/word-image-49.png)
 
-## **TRANSACTIONS**
+Please enter  _**Y**_  when prompted with a choice of y/n for installation. After that, the stable version of Wine will be installed on your system.
 
-**Steps for processing a transaction :**‌
+-   **WineHQ Development:** This is the most-recent version of Wine but it might not be very stable. As a developer, you might be more interested in installing this version.
 
-- Select the `Transaction` tab in the dashboard.
+sudo apt-get install --install-recommends winehq-devel
 
-- Click on `Transfer tezos` button on the top right corner.
+Please enter Y when prompted with a choice of y/n for installation. After that, the development version of Wine will be installed on your system.
 
-- Select sender's account and receiver's account.
+In order to verify installation and checking which version is installed on your system, run the following command:
 
-- Enter your transfer amount while also entering gas price.
+    $ wine --version 
 
-- Click on Transfer Tezos and then _**viola**_ your amount is transferred to the reciever's account.
-  ‌
-  Please follow the below visual demo :
 
-![enter image description here](https://tezster.s3-ap-southeast-1.amazonaws.com/TEZSTER_GUI/transactions.gif)
+## Contribute
 
-## **CONTRACTS**
-
-###
-
-`Deploy Contract`‌
-
-In order to deploy contract go to contracts tab
-
-- Select deploy contract then select wallet.
-
-- Upload contract or copy paste contract.
-
-- Enter contract label while entering amount and initial storage , this will help you to recognise your contract with simple name.
-
-- Click on deploy contract once the contract gets deployed you'll get a contract address returned like this `KT1QfQ9g2zHQkbjdrfWGhbx1eLiSFWn5abLn`
-
-Go to the following link along with contract address to see the contract details in the explorer
-[https://carthagenet.tzstats.com/KT1QfQ9g2zHQkbjdrfWGhbx1eLiSFWn5abLn](https://carthagenet.tzstats.com/KT1QfQ9g2zHQkbjdrfWGhbx1eLiSFWn5abLn)
-
-Please follow the below visual demo :
-
-![enter image description here](https://tezster.s3-ap-southeast-1.amazonaws.com/TEZSTER_GUI/deploy_contract.gif)
-
-###
-
-`INVOKE CONTRACT`
-
-In order to Invoke contract go to contracts tab
-
-- Select Invoke contract then select wallet,
-
-- Select your Contract and respective entry points.
-
-- Enter values once the contract gets Invoked you'll get a contract address returned like this `ooF5y5gjRxZXBzgm8ZurvfhriVNqtrnm51ri5e9BCkmjyjYQuhx`
-
-- Then go to the following link along with contract address to see the invocation changes
-  [`https://carthagenet.tzstats.com/ooF5y5gjRxZXBzgm8ZurvfhriVNqtrnm51ri5e9BCkmjyjYQuhx`](https://carthagenet.tzstats.com/ooF5y5gjRxZXBzgm8ZurvfhriVNqtrnm51ri5e9BCkmjyjYQuhx)
-
-Please follow the below visual demo :
-
-![enter image description here](https://tezster.s3-ap-southeast-1.amazonaws.com/TEZSTER_GUI/call_contract.gif)
-
-###
-
-`CALL CONTRACT`
-
-In order to get initial storage of the contract go to contracts tab‌
-
-- Select View Contract Storage.
-
-- `Select Contracts` will show the deployed contract.
-
-Please follow the below visual demo :
-
-![enter image description here](https://tezster.s3-ap-southeast-1.amazonaws.com/TEZSTER_GUI/call-storage.gif)
-
-#
+There are many ways to contribute to this project. You can develop applications or dApps with it. You can submit bug reports or feature requests.
 
 `FOR ANY HELP OR TO REPORT ANY ISSUES PLEASE FOLLOW THE LINK`
-
 ‌
 
 [`https://github.com/Tezsure/Tezster-GUI/issues`](https://github.com/Tezsure/Tezster-GUI/issues)
+
+## UI Component Features and references
+For a complete UI Components documentation with visual demo please follow the following link
+
+[https://docs.tezster.tech/](https://docs.tezster.tech/)
+
+
+
