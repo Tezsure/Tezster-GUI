@@ -189,7 +189,7 @@ class DeployContract extends Component {
                 disabled={this.props.buttonState}
                 onClick={this.handleDeployContract}
               >
-                {this.props.buttonState ? 'loading...' : 'Deploy Contract'}
+                {this.props.buttonState ? 'Please wait....' : 'Deploy Contract'}
               </button>
             </div>
           </div>

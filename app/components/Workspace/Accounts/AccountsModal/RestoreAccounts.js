@@ -168,7 +168,9 @@ class RestoreAccounts extends Component {
               disabled={this.props.buttonState}
               onClick={() => this.handleRestoreAccount()}
             >
-              {this.props.buttonState ? 'loading...' : 'Restore Wallet Account'}
+              {this.props.buttonState
+                ? 'Please wait....'
+                : 'Restore Wallet Account'}
             </button>
           ) : (
             <button
@@ -178,7 +180,7 @@ class RestoreAccounts extends Component {
               onClick={() => this.handleRestoreAccount()}
             >
               {this.props.buttonState
-                ? 'loading...'
+                ? 'Please wait....'
                 : 'Activate Carthagenet Account'}
             </button>
           )}

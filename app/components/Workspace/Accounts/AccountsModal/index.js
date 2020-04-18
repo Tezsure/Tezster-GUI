@@ -1,12 +1,13 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
-import CreateAccounts from './CreateAccounts';
+import ActivateAccounts from './ActivateAccounts';
 import RestoreAccounts from './RestoreAccounts';
 
 function AccountsModal(props) {
   const modalBody = () => {
     switch (props.showAccountsModal) {
-      case 'create-accounts':
-        return <CreateAccounts {...props} />;
+      case 'activate-accounts':
+        return <ActivateAccounts {...props} />;
       case 'restore-accounts':
         return <RestoreAccounts {...props} />;
       default:

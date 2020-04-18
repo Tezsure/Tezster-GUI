@@ -66,7 +66,7 @@ const createWindow = async () => {
     },
     icon: path.join(__dirname, '../resources/icons/Artboard – 1@2x (1).png')
   });
-
+  mainWindow.setTitle('Tezster-GUI');
   mainWindow.loadURL(`file://${__dirname}/app.html`);
 
   mainWindow.webContents.on('did-finish-load', () => {

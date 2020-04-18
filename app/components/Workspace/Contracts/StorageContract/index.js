@@ -61,7 +61,7 @@ class index extends Component {
                   });
                 }}
               >
-                {this.props.buttonState ? 'loading...' : 'Show Storage'}
+                {this.props.buttonState ? 'Please wait....' : 'Show Storage'}
               </button>
             </div>
           </div>

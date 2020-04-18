@@ -168,7 +168,7 @@ class TransactionModal extends Component {
                 disabled={this.props.buttonState}
                 onClick={() => this.handleExecuteTransaction()}
               >
-                {this.props.buttonState ? 'loading...' : 'Pay Amount'}
+                {this.props.buttonState ? 'Please wait....' : 'Pay Amount'}
               </button>
             </div>
           </div>
