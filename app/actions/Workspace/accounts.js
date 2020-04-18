@@ -5,6 +5,7 @@
 /* eslint-disable promise/always-return */
 /* eslint-disable no-prototype-builtins */
 import swal from 'sweetalert';
+import { exec } from 'child_process';
 
 const {
   __getBalance,
@@ -15,6 +16,15 @@ const {
 
 const config = require('../../apis/config');
 
+function checkIsLocalNodeRunning() {
+  exec(
+    'tezster get-balance tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx',
+    (err, stdout) => {
+      return err || stdout.split('ECONNREFUSED').length > 1;
+    }
+  );
+}
+
 export function toggleAccountsModalAction(modalType) {
   return {
     type: 'TOGGLE_ACCOUNTS_MODAL',
@@ -23,20 +33,25 @@ export function toggleAccountsModalAction(modalType) {
 }
 
 export function getAccountsAction({ ...params }) {
-  const { networkId } = params.dashboardHeader;
+  let { networkId } = params.dashboardHeader;
+  const IsLocalNodeRunning = checkIsLocalNodeRunning();
+  networkId = IsLocalNodeRunning ? networkId : 'Carthagenet-Smartpy';
   return dispatch => {
     if (params.userAccounts.length === 0) {
       if (localStorage.hasOwnProperty('tezsure')) {
         params.userAccounts = JSON.parse(
           localStorage.getItem('tezsure')
         ).userAccounts;
+        params.dashboardHeader.networkId = networkId;
       } else {
         params.userAccounts[networkId.split('-')[0]] = config.identities;
+        params.dashboardHeader.networkId = networkId;
       }
     } else {
       params.userAccounts = JSON.parse(
         localStorage.getItem('tezsure')
       ).userAccounts;
+      params.dashboardHeader.networkId = networkId;
     }
     __getAccounts({ ...params }, (err, accounts) => {
       if (err) {
