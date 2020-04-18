@@ -41,7 +41,7 @@ _Note: Please make sure you have the latest npm and node.js versions to be 12.x 
 
 _Note: Please make sure you have the latest npm and node.js versions to be 12.x or above._
 
-# Install Tezster-CLI package
+## Install Tezster-CLI package
 
 [Tezster-CLI](https://docs.tezster.tech/tezster-cli) will create a sandboxed nodes in your local machine and you will be able to interact with it flawlessly with this GUI version.
 
@@ -55,7 +55,7 @@ To start the tester nodes on your machine run:
 
     tezster start-nodes
 
-# Tezster-GUI App Setup
+## Tezster-GUI App Setup
 
 Inorder to start using the app we clone this repo using the following command
 
@@ -93,7 +93,7 @@ To create build package for other platform run the following command
 
 On linux systems it requires an additional dependency of wine package installer to create a build package for windows environment.‌
 
-### Steps to install wine on linux
+## Steps to install wine on linux
 
 The WineHQ repository has a set of standard Wine packages that you can download and install on your system. Please follow these steps to do so:
 
