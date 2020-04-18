@@ -3,26 +3,26 @@
 <img src="https://tezster.s3-ap-southeast-1.amazonaws.com/TEZSTER_GUI/1_jDB5enULQVo2UfeiwD32qA.png" alt="tezster GUI banner" align="center" />
 <br />
 <div align="center"><strong>Start interacting with Tezos Chain within seconds</strong></div>
-<div align="center">Use this GUI version of Tezster which is ready to use Desktop app, made with React and Electron. Primarily can be used to interact with <a href="https://github.com/Tezsure/Tezster-CLI">Tezster cli</a>  ( i.e Local Node ) as well as remote Testnets. The below documentation will help you get started with Tezster-GUI although to get complete understanding of components usage and visual demo follow the link <a href="https://docs.tezster.tech/">https://docs.tezster.tech/</a> 
+<div align="center">Use this GUI version of Tezster which is ready to use Desktop app, made with React and Electron. Primarily can be used to interact with <a href="https://docs.tezster.tech/tezster-cli">Tezster cli</a>  ( i.e Local Node ) as well as remote Testnets. The below documentation will help you get started with Tezster-GUI although to get complete understanding of components usage and visual demo follow the link <a href="https://docs.tezster.tech/">https://docs.tezster.tech/</a> 
 </div>
 <br />
 
-# Getting Super Powers
+# Getting Started
 
-This project was generated with React.Js & Electron. Tezster-GUI comes with pretty much the same functionalities as CLI with great user interface for ease of access. New to Tezos ecosystem and want a developer ready environment? We got your back!
+This project was generated with React.Js & Electron, Follow below steps to get started.
 
 ## Prerequisites
 
 Any Operating System will work !
 
 1.  Node v. 12.x+
-2.  [Tezster-CLI](https://github.com/Tezsure/Tezster-CLI)
+2.  [Tezster-CLI](https://docs.tezster.tech/tezster-cli)
 
 ## Installation Process :
 
 - Setup your Node.js environment
 
-- Install and setup [Tezster-CLI](https://github.com/Tezsure/Tezster-CLI)
+- Install and setup [Tezster-CLI](https://docs.tezster.tech/tezster-cli)
 
 ## Node.js Installation Guide
 
@@ -39,13 +39,15 @@ After installing verify and check the installed version.
 
 _Note: Please make sure you have the latest npm and node.js versions to be 12.x or above._
 
+_Note: Please make sure you have the latest npm and node.js versions to be 12.x or above._
+
 # Install Tezster-CLI package
 
-[Tezster-CLI](https://github.com/Tezsure/Tezster-CLI) will create a sandboxed nodes in your local machine and you will be able to interact with it flawlessly with this GUI version.
+[Tezster-CLI](https://docs.tezster.tech/tezster-cli) will create a sandboxed nodes in your local machine and you will be able to interact with it flawlessly with this GUI version.
 
     sudo npm install -g tezster@latest
 
-Run Following to ensure the installed version of [Tezster-CLI](https://github.com/Tezsure/Tezster-CLI).
+Run Following to ensure the installed version of [Tezster-CLI](https://docs.tezster.tech/tezster-cli).
 
     tezster --version
 
