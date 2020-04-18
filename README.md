@@ -49,6 +49,17 @@ Run Following to ensure the installed version of tezster-CLI.
 To start the nodes run:
 
     tezster start-nodes
+# Downloading Tezster-GUI
+    
+ You can either download the application package or can run the app setup to run tezster-gui
+ To download the package use the following link
+    To install linux distribution image of tezster-gui please use the following link
+	    https://tezster.s3-ap-southeast-1.amazonaws.com/TEZSTER_GUI/PACKAGE/Tezster-2.0.0.AppImage
+	    https://tezster.s3-ap-southeast-1.amazonaws.com/TEZSTER_GUI/PACKAGE/tezster-2.0.0.x86_64.rpm
+    To install windows executables download the package from the following link
+	    https://tezster.s3-ap-southeast-1.amazonaws.com/TEZSTER_GUI/PACKAGE/Tezster.exe
+    To install mac image use the following link to download.
+	    https://tezster.s3-ap-southeast-1.amazonaws.com/TEZSTER_GUI/PACKAGE/tezster_2.0.0_amd64.deb
 
 # Tezster-GUI App Setup
 
@@ -113,7 +124,7 @@ Please follow the below visual demo :
 
 ‌
 
-Blocks are generally used to show the current block on the chain we don't create any blocks on local-node hence it can only be visible on selected testnets and mainnets.
+Blocks are generally used to show the current block on the chain currently api to display blocks on local-node is under development hence it can only be visible on selected testnets and mainnets.
 
 ‌
 
