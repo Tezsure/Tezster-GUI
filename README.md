@@ -7,8 +7,6 @@
 </div>
 <br />
 
-Use the GUI version of Tezster which is ready to use Desktop app, made with React and Electron. Primarily can be used to interact with Tezster CLI ( i.e Local Node ) as well as remote Testnets. This repo only contains documentation and
-
 # Getting Super Powers
 
 This project was generated with React.Js & Electron. Tezster-GUI comes with pretty much the same functionalities as CLI with great user interface for ease of access. New to Tezos ecosystem and want a developer ready environment? We got your back!
