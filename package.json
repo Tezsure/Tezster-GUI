@@ -2,7 +2,7 @@
   "name": "tezster-gui",
   "productName": "Tezster-GUI",
   "version": "2.1.0",
-  "description": "Tezster-GUI",
+  "description": "GUI version of Tezster which is ready to use Desktop app, made with React and Electron",
   "scripts": {
     "build": "concurrently \"yarn build-main\" \"yarn build-renderer\"",
     "build-dll": "cross-env NODE_ENV=development webpack --config ./configs/webpack.config.renderer.dev.dll.babel.js --colors",
@@ -109,11 +109,7 @@
     "type": "git",
     "url": "git+https://github.com/Tezsure/Tezster-2.0.git"
   },
-  "author": {
-    "name": "TEZSURE GUI",
-    "email": "aditya@tezsure.com",
-    "url": "https://tezsure.com"
-  },
+  "author": "Tezsure Inc.",
   "contributors": [
     {
       "name": "ADITYA GAUTAM",
@@ -136,7 +132,7 @@
     "hot",
     "reload"
   ],
-  "homepage": "https://github.com/Tezsure/Tezster-GUI",
+  "homepage": "https://docs.tezster.tech/",
   "jest": {
     "testURL": "http://localhost/",
     "moduleNameMapper": {
