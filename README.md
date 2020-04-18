@@ -53,13 +53,13 @@ To start the nodes run:
     
  You can either download the application package or can run the app setup to run tezster-gui
  To download the package use the following link
-    To install linux distribution image of tezster-gui please use the following link
-	    https://tezster.s3-ap-southeast-1.amazonaws.com/TEZSTER_GUI/PACKAGE/Tezster-2.0.0.AppImage
-	    https://tezster.s3-ap-southeast-1.amazonaws.com/TEZSTER_GUI/PACKAGE/tezster-2.0.0.x86_64.rpm
-    To install windows executables download the package from the following link
-	    https://tezster.s3-ap-southeast-1.amazonaws.com/TEZSTER_GUI/PACKAGE/Tezster.exe
-    To install mac image use the following link to download.
-	    https://tezster.s3-ap-southeast-1.amazonaws.com/TEZSTER_GUI/PACKAGE/tezster_2.0.0_amd64.deb
+ 	To install linux distribution image of tezster-gui please use the following link 
+		https://tezster.s3-ap-southeast-1.amazonaws.com/TEZSTER_GUI/PACKAGE/Tezster-2.0.0.AppImage
+		https://tezster.s3-ap-southeast-1.amazonaws.com/TEZSTER_GUI/PACKAGE/tezster-2.0.0.x86_64.rpm
+	To install windows executables download the package from the following link
+		https://tezster.s3-ap-southeast-1.amazonaws.com/TEZSTER_GUI/PACKAGE/Tezster.exe
+	To install mac image use the following link to download.
+		https://tezster.s3-ap-southeast-1.amazonaws.com/TEZSTER_GUI/PACKAGE/tezster_2.0.0_amd64.deb
 
 # Tezster-GUI App Setup
 
