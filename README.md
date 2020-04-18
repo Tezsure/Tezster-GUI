@@ -1,6 +1,13 @@
 # Tezster GUI
 
-Use the GUI version of Tezster which is ready to use Desktop app, made with React and Electron. Primarily can be used to interact with Tezster CLI ( i.e Local Node ) as well as remote Testnets.
+<img src="https://tezster.s3-ap-southeast-1.amazonaws.com/TEZSTER_GUI/1_jDB5enULQVo2UfeiwD32qA.png" alt="tezster GUI banner" align="center" />
+<br />
+<div align="center"><strong>Start interacting with Tezos Chain within seconds</strong></div>
+<div align="center">Use this GUI version of Tezster which is ready to use Desktop app, made with React and Electron. Primarily can be used to interact with Tezster CLI ( i.e Local Node ) as well as remote Testnets. The below documentation will help you get started with Tezster-GUI although to get complete understanding of components usage and visual demo follow the link [https://docs.tezster.tech/](https://docs.tezster.tech/) 
+</div>
+<br />
+
+Use the GUI version of Tezster which is ready to use Desktop app, made with React and Electron. Primarily can be used to interact with Tezster CLI ( i.e Local Node ) as well as remote Testnets. This repo only contains documentation and
 
 # Getting Super Powers
 
@@ -146,10 +153,7 @@ There are many ways to contribute to this project. You can develop applications 
 
 [`https://github.com/Tezsure/Tezster-GUI/issues`](https://github.com/Tezsure/Tezster-GUI/issues)
 
-## UI Component Features and references
-For a complete UI Components documentation with visual demo please follow the following link
 
-[https://docs.tezster.tech/](https://docs.tezster.tech/)
 
 
 
