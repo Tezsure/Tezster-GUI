@@ -2,6 +2,13 @@ import { exec } from 'child_process';
 
 const config = require('../apis/config');
 
+export function handleTezsterCliActionChange() {
+  return {
+    type: 'TEZSTER_CLI_SUCCESS',
+    payload: true
+  };
+}
+
 export function checkTezsterCliAction() {
   return dispatch => {
     dispatch({

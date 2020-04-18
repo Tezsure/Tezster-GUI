@@ -36,6 +36,7 @@ import {
   handleNetworkChangeAction
 } from '../actions/Workspace/dashboardHeader';
 import {
+  handleTezsterCliActionChange,
   checkTezsterCliAction,
   getLocalConfigAction
 } from '../actions/Onboard';
@@ -89,6 +90,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(handleContractsTabChangeAction(payload)),
   getContractStorageAction: payload =>
     dispatch(getContractStorageAction(payload)),
+  handleTezsterCliActionChange: payload =>
+    dispatch(handleTezsterCliActionChange(payload)),
   checkTezsterCliAction: payload => dispatch(checkTezsterCliAction(payload)),
   getLocalConfigAction: payload => dispatch(getLocalConfigAction(payload)),
   handleAccordionAction: payload => dispatch(handleAccordionAction(payload))

@@ -27,7 +27,6 @@ export async function __activateAccount({ ...params }, callback) {
 }
 export async function __activateAccountOperation({ ...params }, callback) {
   try {
-    debugger;
     const tezosNode = apiEndPoints[params.dashboardHeader.networkId];
     const faucet = await conseiljs.TezosWalletUtil.unlockFundraiserIdentity(
       params.faucet.mnemonic.join(' '),
