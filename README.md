@@ -3,7 +3,7 @@
 <img src="https://tezster.s3-ap-southeast-1.amazonaws.com/TEZSTER_GUI/1_jDB5enULQVo2UfeiwD32qA.png" alt="tezster GUI banner" align="center" />
 <br />
 <div align="center"><strong>Start interacting with Tezos Chain within seconds</strong></div>
-<div align="center">Use this GUI version of Tezster which is ready to use Desktop app, made with React and Electron. Primarily can be used to interact with Tezster CLI ( i.e Local Node ) as well as remote Testnets. The below documentation will help you get started with Tezster-GUI although to get complete understanding of components usage and visual demo follow the link [https://docs.tezster.tech/](https://docs.tezster.tech/) 
+<div align="center">Use this GUI version of Tezster which is ready to use Desktop app, made with React and Electron. Primarily can be used to interact with Tezster CLI ( i.e Local Node ) as well as remote Testnets. The below documentation will help you get started with Tezster-GUI although to get complete understanding of components usage and visual demo follow the link <a href="https://docs.tezster.tech/">https://docs.tezster.tech/</a> 
 </div>
 <br />
 
