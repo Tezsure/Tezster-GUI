@@ -9,7 +9,7 @@ class Accounts extends Component {
       modalType: ''
     };
     this.handleModalToggle = this.handleModalToggle.bind(this);
-    this.handleCreateAccount = this.handleCreateAccount.bind(this);
+    this.handleActivateAccount = this.handleActivateAccount.bind(this);
     this.handleValidateModalOpen = this.handleValidateModalOpen.bind(this);
   }
 
@@ -21,7 +21,7 @@ class Accounts extends Component {
     this.props.toggleAccountsModalAction(modalType);
   }
 
-  handleCreateAccount({ ...args }) {
+  handleActivateAccount({ ...args }) {
     this.props.createAccountsAction({ ...args });
   }
 
@@ -44,9 +44,9 @@ class Accounts extends Component {
                 <button
                   type="button"
                   className="btn btn-success"
-                  onClick={() => this.handleModalToggle('create-accounts')}
+                  onClick={() => this.handleModalToggle('activate-accounts')}
                 >
-                  Create Account
+                  Activate Account
                 </button>
               </div>
             </div>
@@ -60,7 +60,7 @@ class Accounts extends Component {
             {...this.props}
             modalType={this.state.modalType}
             handleModalToggle={this.handleModalToggle}
-            handleCreateAccount={this.handleCreateAccount}
+            handleActivateAccount={this.handleActivateAccount}
             handleValidateModalOpen={this.handleValidateModalOpen}
           />
         )}

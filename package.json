@@ -1,7 +1,7 @@
 {
-  "name": "tezster-gui-v2.0",
+  "name": "tezster-gui",
   "productName": "Tezster-GUI",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Tezster-GUI",
   "scripts": {
     "build": "concurrently \"yarn build-main\" \"yarn build-renderer\"",
@@ -100,8 +100,8 @@
     },
     "publish": {
       "provider": "github",
-      "owner": "TEZSURE GUI V2.0",
-      "repo": "TEZSURE GUI V2.0",
+      "owner": "TEZSURE GUI",
+      "repo": "TEZSURE GUI",
       "private": false
     }
   },
@@ -110,7 +110,7 @@
     "url": "git+https://github.com/Tezsure/Tezster-2.0.git"
   },
   "author": {
-    "name": "TEZSURE GUI V2.0",
+    "name": "TEZSURE GUI",
     "email": "aditya@tezsure.com",
     "url": "https://tezsure.com"
   },
@@ -123,7 +123,7 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Tezsure/Tezster-2.0/issues"
+    "url": "https://github.com/Tezsure/Tezster-GUI/issues"
   },
   "keywords": [
     "electron",
@@ -136,7 +136,7 @@
     "hot",
     "reload"
   ],
-  "homepage": "https://github.com/Tezsure/Tezster-2.0",
+  "homepage": "https://github.com/Tezsure/Tezster-GUI",
   "jest": {
     "testURL": "http://localhost/",
     "moduleNameMapper": {

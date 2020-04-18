@@ -6,7 +6,7 @@ import React, { Component } from 'react';
 
 const { shell } = require('electron');
 
-class CreateAccounts extends Component {
+class ActivateAccounts extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -76,7 +76,7 @@ class CreateAccounts extends Component {
     if (errorFlag) {
       this.setState({ error });
     } else {
-      this.props.handleCreateAccount({ ...this.state, ...this.props });
+      this.props.handleActivateAccount({ ...this.state, ...this.props });
     }
   };
 
@@ -194,7 +194,7 @@ class CreateAccounts extends Component {
             onClick={this.handleCreateWallet.bind(this)}
             disabled={this.props.buttonState}
           >
-            {this.props.buttonState ? 'loading...' : 'Create Wallet'}
+            {this.props.buttonState ? 'Please wait....' : 'Activate Wallet'}
           </button>
         </div>
       </div>
@@ -202,4 +202,4 @@ class CreateAccounts extends Component {
   }
 }
 
-export default CreateAccounts;
+export default ActivateAccounts;

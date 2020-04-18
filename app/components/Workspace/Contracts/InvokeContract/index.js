@@ -245,7 +245,7 @@ class InvokeContract extends Component {
                 disabled={this.props.buttonState}
                 onClick={this.handleInvokeContract}
               >
-                {this.props.buttonState ? 'loading...' : 'Invoke Contract'}
+                {this.props.buttonState ? 'Please wait....' : 'Invoke Contract'}
               </button>
             </div>
           </div>
