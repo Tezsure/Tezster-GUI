@@ -1,3 +1,4 @@
+/* eslint-disable no-return-await */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-underscore-dangle */
 import { exec } from 'child_process';
@@ -16,12 +17,14 @@ const localnodeData = {
 };
 
 function checkIsLocalNodeRunning() {
-  exec(
-    'tezster get-balance tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx',
-    (err, stdout) => {
-      return err || stdout.split('ECONNREFUSED').length > 1;
-    }
-  );
+  return new Promise(resolve => {
+    exec(
+      'tezster get-balance tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx',
+      (err, stdout) => {
+        resolve(err || stdout.split('ECONNREFUSED').length > 1);
+      }
+    );
+  });
 }
 
 export function getDashboardHeaderAction(args) {
@@ -67,11 +70,18 @@ export function getDashboardHeaderAction(args) {
 }
 
 export function handleNetworkChangeAction(args) {
-  const IsLocalNodeRunning = checkIsLocalNodeRunning();
+  let { networkId } = args.dashboardHeader;
+  let IsLocalNodeRunning = false;
+  checkIsLocalNodeRunning()
+    .then(response => {
+      IsLocalNodeRunning = response;
+      return IsLocalNodeRunning;
+    })
+    .catch(() => false);
   return dispatch => {
-    if (args.dashboardHeader.networkId === 'Localnode') {
+    if (networkId === 'Localnode') {
       if (!IsLocalNodeRunning) {
-        args.dashboardHeader.networkId = 'Carthagenet-Smartpy';
+        networkId = 'Carthagenet-Smartpy';
         swal(
           'Error!',
           'Tezster cli is not running cannot toggle to Localnode',
@@ -108,8 +118,8 @@ export function handleNetworkChangeAction(args) {
             payload: {
               currentBlock: blockHeightResponse.height,
               chainId: blockHeightResponse.height,
-              networkId: args.dashboardHeader.networkId,
-              rpcServer: apiEndPoints[args.dashboardHeader.networkId],
+              rpcServer: apiEndPoints[networkId],
+              networkId,
               ...blockDataResponse,
               ...blockHeightResponse
             }
