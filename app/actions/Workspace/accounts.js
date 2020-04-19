@@ -17,12 +17,14 @@ const {
 const config = require('../../apis/config');
 
 function checkIsLocalNodeRunning() {
-  exec(
-    'tezster get-balance tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx',
-    (err, stdout) => {
-      return err || stdout.split('ECONNREFUSED').length > 1;
-    }
-  );
+  return new Promise(resolve => {
+    exec(
+      'tezster get-balance tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx',
+      (err, stdout) => {
+        resolve(err || stdout.split('ECONNREFUSED').length > 1);
+      }
+    );
+  });
 }
 
 export function toggleAccountsModalAction(modalType) {
@@ -34,8 +36,17 @@ export function toggleAccountsModalAction(modalType) {
 
 export function getAccountsAction({ ...params }) {
   let { networkId } = params.dashboardHeader;
-  const IsLocalNodeRunning = checkIsLocalNodeRunning();
-  networkId = IsLocalNodeRunning ? networkId : 'Carthagenet-Smartpy';
+  let IsLocalNodeRunning = false;
+  checkIsLocalNodeRunning()
+    .then(response => {
+      IsLocalNodeRunning = response;
+      return IsLocalNodeRunning;
+    })
+    .catch(() => false);
+  networkId =
+    !IsLocalNodeRunning && networkId === 'Localnode'
+      ? 'Carthagenet-Smartpy'
+      : networkId;
   return dispatch => {
     if (params.userAccounts.length === 0) {
       if (localStorage.hasOwnProperty('tezsure')) {
@@ -44,7 +55,10 @@ export function getAccountsAction({ ...params }) {
         ).userAccounts;
         params.dashboardHeader.networkId = networkId;
       } else {
-        params.userAccounts[networkId.split('-')[0]] = config.identities;
+        params.userAccounts[networkId.split('-')[0]] =
+          IsLocalNodeRunning && networkId === 'Localnode'
+            ? config.identities
+            : [];
         params.dashboardHeader.networkId = networkId;
       }
     } else {
@@ -147,7 +161,13 @@ export function createAccountsAction(payload) {
       };
       payload.userAccounts.push({ ...activatedAccount });
       Promise.all(
-        payload.userAccounts.map(async elem => await __getBalance({ ...elem }))
+        payload.userAccounts.map(
+          async elem =>
+            await __getBalance({
+              ...elem,
+              dashboardHeader: payload.dashboardHeader
+            })
+        )
       ).then(response => {
         const __localStorage = JSON.parse(localStorage.getItem('tezsure'));
         __localStorage.userAccounts[networkId.split('-')[0]] = response;

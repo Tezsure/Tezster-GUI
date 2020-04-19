@@ -93,7 +93,8 @@ export async function __getBalance({ ...params }) {
           sk: params.sk,
           pkh: params.pkh,
           label: params.label,
-          account: params.pkh
+          account: params.pkh,
+          publicKey: params.pk
         });
       })
       .catch(exp => {
@@ -129,7 +130,6 @@ export async function __sendOperation({ ...params }, callback) {
     seed: '',
     storeType: conseiljs.StoreType.Fundraiser
   };
-
   const result = await conseiljs.TezosNodeWriter.sendTransactionOperation(
     tezosNode,
     keystore,
@@ -138,6 +138,12 @@ export async function __sendOperation({ ...params }, callback) {
     params.gasPrice,
     ''
   );
+  if (
+    JSON.parse(result.operationGroupID)[0].id &&
+    JSON.parse(result.operationGroupID)[0].id === 'failure'
+  ) {
+    return callback(JSON.parse(result.operationGroupID)[0].msg, null);
+  }
   return callback(null, result.operationGroupID);
 }
 export async function __listAccountTransactions({ ...params }, callback) {
