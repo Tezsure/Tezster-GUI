@@ -124,7 +124,7 @@ Here you have two options about which release of Wine you want to install; the s
 
 - **WineHQ Stable:** This is the most recent and stable release of Wine available. Use the following command to install this version:
 
-  \$ sudo apt-get install --install-recommends winehq-stable
+      	`$ sudo apt-get install --install-recommends winehq-stable`
 
 ![Install Wine from WineHQ](https://vitux.com/wp-content/uploads/2018/09/word-image-49.png)
 
@@ -132,9 +132,9 @@ Please enter _**Y**_ when prompted with a choice of y/n for installation. After 
 
 - **WineHQ Development:** This is the most-recent version of Wine but it might not be very stable. As a developer, you might be more interested in installing this version.
 
-  \$ sudo apt-get install --install-recommends winehq-devel
+      	$ sudo apt-get install --install-recommends winehq-devel
 
-Please enter Y when prompted with a choice of y/n for installation. After that, the development version of Wine will be installed on your system.
+  Please enter Y when prompted with a choice of y/n for installation. After that, the development version of Wine will be installed on your system.
 
 In order to verify installation and checking which version is installed on your system, run the following command:
 
