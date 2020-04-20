@@ -17,10 +17,6 @@ class Transactions extends Component {
 
   handleInputChange(event) {
     this.setState({ accountId: event.target.value });
-    this.props.selectTransactionWalletAction({
-      accountId: event.target.value,
-      ...this.props
-    });
   }
 
   handleModalToggle() {
@@ -74,6 +70,25 @@ class Transactions extends Component {
                 </option>
                 {Accounts}
               </select>
+            </div>
+          </div>
+          <div className="cards-container">
+            <div className="cards button-card accounts-button-container">
+              <div className="button-accounts">
+                <button
+                  type="button"
+                  className="btn btn-success"
+                  disabled={this.state.accountId === '0'}
+                  onClick={() => {
+                    this.props.selectTransactionWalletAction({
+                      accountId: this.state.accountId,
+                      ...this.props
+                    });
+                  }}
+                >
+                  Show transactions
+                </button>
+              </div>
             </div>
           </div>
           <div className="transactions-contents">{Transactions}</div>

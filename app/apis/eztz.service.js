@@ -91,6 +91,7 @@ export async function __getBalance({ ...params }) {
         return resolve({
           balance,
           sk: params.sk,
+          pk: params.pk,
           pkh: params.pkh,
           label: params.label,
           account: params.pkh,
