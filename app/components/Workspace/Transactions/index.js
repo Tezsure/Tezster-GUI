@@ -34,7 +34,7 @@ class Transactions extends Component {
       this.props.userTransactions.length > 0 ? (
         <TransactionTable {...this.props} />
       ) : (
-        <div>No Transactions To Display</div>
+        <div className="empty-transaction">No Transactions To Display</div>
       );
     return (
       <>
