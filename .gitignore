@@ -6,6 +6,7 @@ logs
 pids
 *.pid
 *.seed
+app/dist
 package-lock.json
 .dockerignore
 .editorconfig
