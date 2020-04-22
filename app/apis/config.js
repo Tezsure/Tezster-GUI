@@ -72,7 +72,7 @@ module.exports = {
     Localnode: []
   },
   programs: [],
-  Nodes: ['Localnode', 'Carthagenet-Smartpy', 'Carthagenet-Tezster'],
+  Nodes: ['Localnode', 'Carthagenet-Tezster', 'Carthagenet-Smartpy'],
   apiEndPoints: {
     Localnode: 'http://localhost:18731',
     'Carthagenet-Smartpy': 'https://carthagenet.SmartPy.io',

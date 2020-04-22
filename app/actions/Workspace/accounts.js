@@ -45,7 +45,7 @@ export function getAccountsAction({ ...params }) {
     .catch(() => false);
   networkId =
     !IsLocalNodeRunning && networkId === 'Localnode'
-      ? 'Carthagenet-Smartpy'
+      ? 'Carthagenet-Tezster'
       : networkId;
   return dispatch => {
     if (params.userAccounts.length === 0) {
