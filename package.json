@@ -2,7 +2,7 @@
   "name": "tezster-gui",
   "productName": "Tezster-GUI",
   "version": "2.1.0",
-  "description": "GUI version of Tezster which is ready to use Desktop app, made with React and Electron",
+  "description": "Tezster GUI is a desktop app to interact & develop/deploy smart contracts on Tezos blockchain",
   "scripts": {
     "build": "concurrently \"yarn build-main\" \"yarn build-renderer\"",
     "build-dll": "cross-env NODE_ENV=development webpack --config ./configs/webpack.config.renderer.dev.dll.babel.js --colors",
@@ -99,9 +99,9 @@
       "output": "release"
     },
     "publish": {
-      "provider": "github",
-      "owner": "TEZSURE GUI",
-      "repo": "TEZSURE GUI",
+      "provider": "Tezsure Inc",
+      "owner": "Tezsure Inc",
+      "repo": "https://github.com/Tezsure/Tezster-GUI",
       "private": false
     }
   },
