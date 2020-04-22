@@ -3,6 +3,7 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
+import { NavLink } from 'react-router-dom';
 
 const { shell } = require('electron');
 
@@ -19,9 +20,10 @@ class ActivateAccounts extends Component {
         errorMnemonic: ''
       }
     };
+    this.handleInputChange = this.handleInputChange;
   }
 
-  handleInputChange = event => {
+  handleInputChange(event) {
     const faucet = { ...this.state.faucet };
     const error = {
       errorEmail: '',
@@ -42,7 +44,7 @@ class ActivateAccounts extends Component {
       faucet[event.target.name] = event.target.value;
       this.setState({ faucet, error });
     }
-  };
+  }
 
   handleCreateWallet = () => {
     let errorFlag = false;
@@ -108,12 +110,12 @@ class ActivateAccounts extends Component {
         <div className="modal-body">
           <p>
             Please enter faucet from{' '}
-            <a
-              href="javascript:void(0);"
+            <NavLink
+              to="#"
               onClick={() => shell.openExternal('https://faucet.tzalpha.net/')}
             >
               https://faucet.tzalpha.net/
-            </a>
+            </NavLink>
             <span className="important-symbol">*</span>
           </p>
         </div>
@@ -124,7 +126,7 @@ class ActivateAccounts extends Component {
             name="email"
             value={this.state.faucet.email}
             className="form-control"
-            onChange={this.handleInputChange.bind(this)}
+            onChange={this.handleInputChange}
             placeholder="Enter your email"
           />
         </div>
@@ -136,7 +138,7 @@ class ActivateAccounts extends Component {
             name="password"
             className="form-control"
             value={this.state.faucet.password}
-            onChange={this.handleInputChange.bind(this)}
+            onChange={this.handleInputChange}
             placeholder="Enter your password"
           />
         </div>
@@ -148,7 +150,7 @@ class ActivateAccounts extends Component {
             className="form-control"
             name="pkh"
             value={this.state.faucet.pkh}
-            onChange={this.handleInputChange.bind(this)}
+            onChange={this.handleInputChange}
             placeholder="Enter your public key hash"
           />
         </div>
@@ -160,7 +162,7 @@ class ActivateAccounts extends Component {
             name="secret"
             value={this.state.faucet.secret}
             className="form-control"
-            onChange={this.handleInputChange.bind(this)}
+            onChange={this.handleInputChange}
             placeholder="Enter your secret key"
           />
         </div>
@@ -172,7 +174,7 @@ class ActivateAccounts extends Component {
             style={{ height: '300px' }}
             value={this.state.faucet.mnemonic}
             placeholder="Please enter mnemonic"
-            onChange={this.handleInputChange.bind(this)}
+            onChange={this.handleInputChange}
           />
         </div>
         <span className="error-msg">{errorMnemonic}</span>

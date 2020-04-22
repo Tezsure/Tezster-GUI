@@ -81,7 +81,7 @@ export function handleNetworkChangeAction(args) {
   return dispatch => {
     if (networkId === 'Localnode') {
       if (!IsLocalNodeRunning) {
-        networkId = 'Carthagenet-Smartpy';
+        networkId = 'Carthagenet-Tezster';
         swal(
           'Error!',
           'Tezster cli is not running cannot toggle to Localnode',

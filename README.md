@@ -22,7 +22,7 @@ Any Operating System will work !
 
 1. Node v. 12.x+
 
-2)  [Tezster-CLI](https://docs.tezster.tech/tezster-cli)
+2) [Tezster-CLI](https://docs.tezster.tech/tezster-cli)
 
 ## Installation Process :
 
@@ -64,12 +64,11 @@ To start the tester nodes on your machine run:
 Inorder to start using the app we clone this repo using the following command
 
     git clone https://github.com/Tezsure/Tezster-GUI.git
-
-Download the required installation packages using the command
-
+    cd Tezster-GUI/
     sudo npm install
 
 ‌
+
 Now to start the app in the `dev` environment run the following command :
 
     npm run dev
@@ -120,8 +119,7 @@ Here you have two options about which release of Wine you want to install; the s
 
 - **WineHQ Stable:** This is the most recent and stable release of Wine available. Use the following command to install this version:
 
-
-    `$ sudo apt-get install --install-recommends winehq-stable`
+`$ sudo apt-get install --install-recommends winehq-stable`
 
 ![Install Wine from WineHQ](https://vitux.com/wp-content/uploads/2018/09/word-image-49.png)
 
@@ -129,7 +127,7 @@ Please enter _**Y**_ when prompted with a choice of y/n for installation. After 
 
 - **WineHQ Development:** This is the most-recent version of Wine but it might not be very stable. As a developer, you might be more interested in installing this version.
 
-      	 `$ sudo apt-get install --install-recommends winehq-devel`
+`$ sudo apt-get install --install-recommends winehq-devel`
 
 Please enter Y when prompted with a choice of y/n for installation. After that, the development version of Wine will be installed on your system.
 

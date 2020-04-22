@@ -1,5 +1,6 @@
 /* eslint-disable no-script-url */
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 
 const { shell } = require('electron');
 
@@ -20,12 +21,9 @@ function index() {
         <div className="cards">
           <div className="cards-header">
             <h4>
-              <a
-                href="javascript:void(0);"
-                onClick={() => shell.openExternal(issueLink)}
-              >
+              <NavLink to="#" onClick={() => shell.openExternal(issueLink)}>
                 {issueLink}
-              </a>
+              </NavLink>
             </h4>
           </div>
           <div className="cards-contents" />

@@ -9,7 +9,7 @@ function Error(props) {
     <div className="main-container">
       <div className="workplace-container">
         <div className="logo-container">
-          <span className="logo-icon"> </span>
+          <span className="logo-icon"></span>
         </div>
         <div className="description-container">
           <div className="workplace-header">
@@ -19,13 +19,19 @@ function Error(props) {
                 : 'Sorry'}
             </b>
           </div>
-          <p className="workplace-description">
+          <p className="workplace-description" style={{ marginBottom: '0px' }}>
             {props.isAvailableTezsterCli === 'pending'
               ? 'While we check whether tezster-cli is running'
-              : 'Please install Tezster-CLI to use the localnode \n click on button below to continue with Carthagenet'}
+              : `Tezster-CLI is not running on your PC, please install Tezster-CLI to use the localnode`}
+          </p>
+          <p className="workplace-description">
+            or click on below button to continue with remote carthagenet nodes
           </p>
           <div className="cards-container">
-            <div className="cards button-card accounts-button-container">
+            <div
+              className="cards button-card accounts-button-container"
+              style={{ justifyContent: 'center' }}
+            >
               <div className="button-accounts">
                 {props.isAvailableTezsterCli === 'pending' ? (
                   ''
@@ -34,7 +40,7 @@ function Error(props) {
                     type="button"
                     className="btn btn-success"
                     onClick={() => {
-                      props.dashboardHeader.networkId = 'Carthagenet-Smartpy';
+                      props.dashboardHeader.networkId = 'Carthagenet-Tezster';
                       props.handleNetworkChangeAction(props);
                       props.getAccountsAction(props);
                       props.handleTezsterCliActionChange();
