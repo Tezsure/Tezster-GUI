@@ -57,7 +57,7 @@
   },
   "build": {
     "productName": "Tezster",
-    "appId": "org.develar.ElectronReact",
+    "appId": "com.electron.tezster-gui",
     "files": [
       "dist/",
       "node_modules/",
@@ -99,7 +99,7 @@
       "output": "release"
     },
     "publish": {
-      "provider": "Tezsure Inc",
+      "provider": "github",
       "owner": "Tezsure Inc",
       "repo": "https://github.com/Tezsure/Tezster-GUI",
       "private": false
