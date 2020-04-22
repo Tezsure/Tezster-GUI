@@ -6,7 +6,7 @@
 
 <div align="center"><strong>Start interacting with Tezos Chain within seconds</strong></div>
 
-<div align="center">Use this GUI version of Tezster which is ready to use Desktop app, made with React and Electron. Primarily can be used to interact with <a  href="https://docs.tezster.tech/tezster-cli">Tezster CLI</a> ( i.e Local Node ) as well as remote Nodes. The below documentation will help you get started with Tezster-GUI although to get complete understanding of components usage and visual demo follow the visual demo follow <a  href="https://docs.tezster.tech/">Tezster-GUI Guide</a>
+<div align="center">Use this GUI version of Tezster which is ready to use Desktop app, made with React and Electron. Primarily can be used to interact with <a  href="https://docs.tezster.tech/tezster-cli">Tezster CLI</a> ( i.e Local Node ) as well as remote Nodes. The below documentation will help you get started with Tezster-GUI, although to get complete understanding of components usage and visual demo follow the visual demo follow <a  href="https://docs.tezster.tech/"><b>Tezster-GUI Guide<b></a>
 
 </div>
 
@@ -67,8 +67,6 @@ Inorder to start using the app we clone this repo using the following command
     cd Tezster-GUI/
     sudo npm install
 
-‌
-
 Now to start the app in the `dev` environment run the following command :
 
     npm run dev
@@ -78,6 +76,8 @@ This starts the renderer process in hot-module-replacement mode and starts a web
 _You are now ready to use the app or start the code development._
 
 ## Building Packages for All Platforms
+
+Each platform has an associated `npm run` configuration to help you build on each platform more easily. Because each platform has different (but similar) build processes, they require different configuration.
 
 To create the build package for different OS based environment run :
 
@@ -91,7 +91,38 @@ To create build package for other platform run the following command
 
 On linux systems it requires an additional dependency of wine package installer to create a build package for windows environment.‌
 
-## Steps to install wine on linux
+_Note: It requires mac `OSX` to build mac package i.e `.dmg` file_
+
+#### On Linux:
+
+Bulding on Linux will create a `.AppImage` file, a `.deb` file and a `.rpm` file in the `release folder` of the root directory. Use the following command for linux build.
+
+    $ npm run package-linux
+
+In order to create an rpm file it requires rpm package installed on your linux machine please follow the below instructions to install rpm package.
+
+    $ sudo apt-get update
+    $ sudo apt-get install rpm
+
+#### On Windows:
+
+Building on a windows will create a standard windows `.exe` file.
+Run the following command to build
+
+```
+$ npm run package-win
+```
+
+#### On Mac:
+
+Building on a Mac will create a standard Mac `.dmg` file.
+Run the following command to build
+
+```
+$ npm run package
+```
+
+### Steps to install wine on linux
 
 The WineHQ repository has a set of standard Wine packages that you can download and install on your system. Please follow these steps to do so:
 
