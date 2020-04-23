@@ -7,10 +7,10 @@ export function getBlockHeight(args, callback) {
   const url = TzStatsApiEndpoint[args.dashboardHeader.networkId];
   axios
     .get(`${url}/explorer/block/head`)
-    .then(response => {
+    .then((response) => {
       callback(null, response.data);
     })
-    .catch(exception => {
+    .catch((exception) => {
       callback(exception, null);
     });
 }
@@ -19,10 +19,22 @@ export function getBlockData(args, callback) {
   const url = TzStatsApiEndpoint[args.dashboardHeader.networkId];
   axios
     .get(`${url}/explorer/block/${args.blockId}`)
-    .then(response => {
+    .then((response) => {
       callback(null, response.data);
     })
-    .catch(exception => {
+    .catch((exception) => {
+      callback(exception, null);
+    });
+}
+
+export function getAllBlockData(args, callback) {
+  const url = TzStatsApiEndpoint[args.dashboardHeader.networkId];
+  axios
+    .get(`${url}/explorer/block/head/op`)
+    .then((response) => {
+      callback(null, response.data.ops);
+    })
+    .catch((exception) => {
       callback(exception, null);
     });
 }

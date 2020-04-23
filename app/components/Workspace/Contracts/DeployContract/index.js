@@ -4,6 +4,8 @@
 /* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
 import swal from 'sweetalert';
+const conseiljs = require('conseiljs');
+import JSONPretty from 'react-json-pretty';
 
 const fs = require('fs');
 
@@ -15,12 +17,20 @@ class DeployContract extends Component {
       contractFile: '',
       contractLabel: '',
       storageValue: '',
+      storageFormat: '',
       contractAmount: '',
       error: '',
-      enteredContract: ''
+      enteredContract: '',
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleDeployContract = this.handleDeployContract.bind(this);
+    this.handleGetInitialStorage = this.handleGetInitialStorage.bind(this);
+  }
+  async handleGetInitialStorage(contract) {
+    const storageFormat = await conseiljs.TezosLanguageUtil.preProcessMichelsonScript(
+      contract
+    );
+    return storageFormat[1].slice(8);
   }
 
   handleDeployContract() {
@@ -59,7 +69,7 @@ class DeployContract extends Component {
       this.props.deployContractAction({
         contract,
         ...this.props,
-        ...this.state
+        ...this.state,
       });
       setTimeout(() => {
         this.props.toggleButtonState();
@@ -71,13 +81,35 @@ class DeployContract extends Component {
   }
 
   handleInputChange(event) {
+    const self = this;
     if (event.target.name === 'contractFile') {
-      this.setState({ [event.target.name]: event.target.files });
+      const contract = fs
+        .readFileSync(event.target.files[0].path)
+        .toString('utf-8');
+      const stateParams = {
+        [event.target.name]: event.target.files,
+      };
+      this.handleGetInitialStorage(contract).then((storageFormat) => {
+        self.setState({
+          ...stateParams,
+          storageFormat,
+        });
+      });
+    } else if (event.target.name === 'enteredContract') {
+      const stateParams = {
+        [event.target.name]: event.target.files,
+      };
+      this.handleGetInitialStorage(event.target.value).then((storageFormat) => {
+        self.setState({
+          ...stateParams,
+          storageFormat,
+        });
+      });
     } else if (event.target.name === 'accounts') {
       this.setState({ [event.target.name]: event.target.value }, () => {
         this.props.getAccountBalanceAction({
           ...this.props,
-          pkh: this.state.accounts
+          pkh: this.state.accounts,
         });
       });
     } else {
@@ -114,9 +146,12 @@ class DeployContract extends Component {
         </div>
         {this.state.accounts !== '0' ? (
           <div className="container-msg">
-            <div className="success-msg">
-              {`available balance in the account ${this.props.selectedContractAmountBalance}`}
-            </div>
+            <b>
+              available balance in the account{' '}
+              <span className="tezos-icon">
+                {this.props.selectedContractAmountBalance} ꜩ
+              </span>
+            </b>
           </div>
         ) : (
           ''
@@ -141,7 +176,7 @@ class DeployContract extends Component {
           <div className="custom-file">
             <textarea
               placeholder="Enter your michelson contract"
-              name="contractFile"
+              name="enteredContract"
               className="form-control"
               accept=".tz"
               onChange={this.handleInputChange}
@@ -170,6 +205,16 @@ class DeployContract extends Component {
             onChange={this.handleInputChange}
           />
         </div>
+        {this.state.storageFormat ? (
+          <span>
+            Please enter initial storage in the following format
+            <div className="modal-input" style={{ backgroundColor: '#f1f3f5' }}>
+              <p>{this.state.storageFormat}</p>
+            </div>
+          </span>
+        ) : (
+          ''
+        )}
         <div className="modal-input">
           <div className="input-container">Initial Storage </div>
           <textarea

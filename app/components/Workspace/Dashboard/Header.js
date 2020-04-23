@@ -14,6 +14,7 @@ class Header extends Component {
     payload.dashboardHeader.networkId = event.target.value;
     this.props.handleNetworkChangeAction(payload);
     this.props.getAccountsAction(payload);
+    this.props.getBlockHeadsActions(payload);
   }
 
   render() {
@@ -21,9 +22,9 @@ class Header extends Component {
       gas_limit,
       gas_price,
       chainId,
-      rpcServer
+      rpcServer,
     } = this.props.dashboardHeader;
-    const options = this.props.localConfig.Nodes.map(elem => (
+    const options = this.props.localConfig.Nodes.map((elem) => (
       <option key={elem} value={elem}>
         {elem}
       </option>
@@ -35,15 +36,16 @@ class Header extends Component {
             <select
               className="custom-select"
               value={this.props.dashboardHeader.networkId}
-              onChange={e => this.handleNetworkChange(e)}
+              onChange={(e) => this.handleNetworkChange(e)}
             >
               {options}
             </select>
           </div>
-
           <div className="cards">
             <div className="cards-header">
-              <h4>${gas_price}</h4>
+              <h4>
+                {gas_price} <span className="tezos-icon">ꜩ</span>
+              </h4>
             </div>
             <div className="cards-contents">
               <p>Gas Price</p>
@@ -51,7 +53,9 @@ class Header extends Component {
           </div>
           <div className="cards">
             <div className="cards-header">
-              <h4>${gas_limit}</h4>
+              <h4>
+                {gas_limit} <span className="tezos-icon">ꜩ</span>
+              </h4>
             </div>
             <div className="cards-contents">
               <p>Gas Limit</p>

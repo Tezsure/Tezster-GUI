@@ -9,7 +9,7 @@ class Transactions extends Component {
     super(props);
     this.state = {
       showModal: false,
-      accountId: '0'
+      accountId: '0',
     };
     this.handleModalToggle = this.handleModalToggle.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -30,6 +30,7 @@ class Transactions extends Component {
       </option>
     ));
     const Transactions =
+      this.state.accountId !== '0' &&
       this.props.userAccounts.length > 0 &&
       this.props.userTransactions.length > 0 ? (
         <TransactionTable {...this.props} />
@@ -61,7 +62,7 @@ class Transactions extends Component {
                 onChange={this.handleInputChange}
                 value={
                   this.props.userAccounts.length > 0
-                    ? this.props.selectedTransactionWallet
+                    ? this.state.accountId
                     : '0'
                 }
               >
@@ -82,7 +83,7 @@ class Transactions extends Component {
                   onClick={() => {
                     this.props.selectTransactionWalletAction({
                       accountId: this.state.accountId,
-                      ...this.props
+                      ...this.props,
                     });
                   }}
                 >

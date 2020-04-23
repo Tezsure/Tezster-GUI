@@ -5,7 +5,7 @@ import Workspace from '../components/Workspace';
 import {
   sidebarToggleAction,
   handleAccordionAction,
-  handleTabChangeAction
+  handleTabChangeAction,
 } from '../actions/Workspace/sidebar';
 
 import getBlockHeadsActions from '../actions/Workspace/blocks';
@@ -13,32 +13,32 @@ import getBlockHeadsActions from '../actions/Workspace/blocks';
 import {
   toggleButtonState,
   getAccountsAction,
-  createAccountsAction,
-  restoreAccountAction,
+  createFaucetAccountsAction,
+  restoreFaucetAccountAction,
   toggleAccountsModalAction,
-  getBalanceAction
+  getBalanceAction,
 } from '../actions/Workspace/accounts';
 import {
   toggleTransactionModalAction,
   executeTransactionAction,
   getTransactionsAction,
-  selectTransactionWalletAction
+  selectTransactionWalletAction,
 } from '../actions/Workspace/transactions';
 import {
   handleContractsTabChangeAction,
   handleInvokeContractAction,
   deployContractAction,
   getContractStorageAction,
-  getAccountBalanceAction
+  getAccountBalanceAction,
 } from '../actions/Workspace/contracts';
 import {
   getDashboardHeaderAction,
-  handleNetworkChangeAction
+  handleNetworkChangeAction,
 } from '../actions/Workspace/dashboardHeader';
 import {
   handleTezsterCliActionChange,
   checkTezsterCliAction,
-  getLocalConfigAction
+  getLocalConfigAction,
 } from '../actions/Onboard';
 import Error from '../components/Error';
 
@@ -59,44 +59,46 @@ class WorkspacePage extends Component {
     return <Error {...this.props} />;
   }
 }
-const mapDispatchToProps = dispatch => ({
-  toggleButtonState: payload => dispatch(toggleButtonState(payload)),
-  restoreAccountAction: payload => dispatch(restoreAccountAction(payload)),
-  handleNetworkChangeAction: payload =>
+const mapDispatchToProps = (dispatch) => ({
+  toggleButtonState: (payload) => dispatch(toggleButtonState(payload)),
+  restoreFaucetAccountAction: (payload) =>
+    dispatch(restoreFaucetAccountAction(payload)),
+  handleNetworkChangeAction: (payload) =>
     dispatch(handleNetworkChangeAction(payload)),
-  toggleTransactionModalAction: payload =>
+  toggleTransactionModalAction: (payload) =>
     dispatch(toggleTransactionModalAction(payload)),
-  getBalanceAction: payload => dispatch(getBalanceAction(payload)),
-  getAccountsAction: payload => dispatch(getAccountsAction(payload)),
-  getBlockHeadsActions: payload => dispatch(getBlockHeadsActions(payload)),
-  getTransactionsAction: payload => dispatch(getTransactionsAction(payload)),
-  handleInvokeContractAction: payload =>
+  getBalanceAction: (payload) => dispatch(getBalanceAction(payload)),
+  getAccountsAction: (payload) => dispatch(getAccountsAction(payload)),
+  getBlockHeadsActions: (payload) => dispatch(getBlockHeadsActions(payload)),
+  getTransactionsAction: (payload) => dispatch(getTransactionsAction(payload)),
+  handleInvokeContractAction: (payload) =>
     dispatch(handleInvokeContractAction(payload)),
-  deployContractAction: payload => dispatch(deployContractAction(payload)),
-  getAccountBalanceAction: payload =>
+  deployContractAction: (payload) => dispatch(deployContractAction(payload)),
+  getAccountBalanceAction: (payload) =>
     dispatch(getAccountBalanceAction(payload)),
-  createAccountsAction: payload => dispatch(createAccountsAction(payload)),
-  toggleAccountsModalAction: payload =>
+  createFaucetAccountsAction: (payload) =>
+    dispatch(createFaucetAccountsAction(payload)),
+  toggleAccountsModalAction: (payload) =>
     dispatch(toggleAccountsModalAction(payload)),
-  getDashboardHeaderAction: payload =>
+  getDashboardHeaderAction: (payload) =>
     dispatch(getDashboardHeaderAction(payload)),
-  sidebarToggleAction: payload => dispatch(sidebarToggleAction(payload)),
-  selectTransactionWalletAction: payload =>
+  sidebarToggleAction: (payload) => dispatch(sidebarToggleAction(payload)),
+  selectTransactionWalletAction: (payload) =>
     dispatch(selectTransactionWalletAction(payload)),
-  handleTabChangeAction: payload => dispatch(handleTabChangeAction(payload)),
-  executeTransactionAction: payload =>
+  handleTabChangeAction: (payload) => dispatch(handleTabChangeAction(payload)),
+  executeTransactionAction: (payload) =>
     dispatch(executeTransactionAction(payload)),
-  handleContractsTabChangeAction: payload =>
+  handleContractsTabChangeAction: (payload) =>
     dispatch(handleContractsTabChangeAction(payload)),
-  getContractStorageAction: payload =>
+  getContractStorageAction: (payload) =>
     dispatch(getContractStorageAction(payload)),
-  handleTezsterCliActionChange: payload =>
+  handleTezsterCliActionChange: (payload) =>
     dispatch(handleTezsterCliActionChange(payload)),
-  checkTezsterCliAction: payload => dispatch(checkTezsterCliAction(payload)),
-  getLocalConfigAction: payload => dispatch(getLocalConfigAction(payload)),
-  handleAccordionAction: payload => dispatch(handleAccordionAction(payload))
+  checkTezsterCliAction: (payload) => dispatch(checkTezsterCliAction(payload)),
+  getLocalConfigAction: (payload) => dispatch(getLocalConfigAction(payload)),
+  handleAccordionAction: (payload) => dispatch(handleAccordionAction(payload)),
 });
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   blocks: state.blocks,
   currentTab: state.currentTab,
   buttonState: state.buttonState,
@@ -114,7 +116,7 @@ const mapStateToProps = state => ({
   selectedContractsTab: state.selectedContractsTab,
   selectedContractStorage: state.selectedContractStorage,
   selectedContractAmountBalance: state.selectedContractAmountBalance,
-  isAvailableTezsterCli: state.isAvailableTezsterCli
+  isAvailableTezsterCli: state.isAvailableTezsterCli,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WorkspacePage);

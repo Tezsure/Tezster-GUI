@@ -15,7 +15,7 @@ export async function __getAccounts({ ...params }, callback) {
   eztz.node.setProvider(__url);
   const totalAccounts = await params.userAccounts[
     params.dashboardHeader.networkId.split('-')[0]
-  ].map(async elem => __getBalance({ ...elem, ...params }));
+  ].map(async (elem) => __getBalance({ ...elem, ...params }));
   return callback(null, totalAccounts);
 }
 export async function __activateAccount({ ...params }, callback) {
@@ -29,7 +29,7 @@ export async function __activateAccountOperation({ ...params }, callback) {
   try {
     const tezosNode = apiEndPoints[params.dashboardHeader.networkId];
     const faucet = await conseiljs.TezosWalletUtil.unlockFundraiserIdentity(
-      params.faucet.mnemonic.join(' '),
+      params.faucet.mnemonic,
       params.faucet.email,
       params.faucet.password,
       params.faucet.pkh
@@ -39,7 +39,7 @@ export async function __activateAccountOperation({ ...params }, callback) {
       privateKey: faucet.privateKey,
       publicKeyHash: params.faucet.pkh,
       seed: '',
-      storeType: conseiljs.StoreType.Fundraiser
+      storeType: conseiljs.StoreType.Fundraiser,
     };
     const activationResult = await conseiljs.TezosNodeWriter.sendIdentityActivationOperation(
       tezosNode,
@@ -62,7 +62,7 @@ export async function __activateAccountOperation({ ...params }, callback) {
     return callback(null, {
       ...activationResult,
       ...faucet,
-      operationGroupID: revelationResult.operationGroupID
+      operationGroupID: revelationResult.operationGroupID,
     });
   } catch (exp) {
     return callback(exp, null);
@@ -73,10 +73,10 @@ export async function __getBlockHeads({ ...params }, callback) {
   eztz.node.setProvider(__url);
   eztz.rpc
     .getHead()
-    .then(res => {
+    .then((res) => {
       return callback(null, res);
     })
-    .catch(err => {
+    .catch((err) => {
       return callback(err, null);
     });
 }
@@ -86,7 +86,7 @@ export async function __getBalance({ ...params }) {
     eztz.node.setProvider(__url);
     eztz.rpc
       .getBalance(params.pkh)
-      .then(res => {
+      .then((res) => {
         const balance = (parseInt(res, 10) / 1000000).toFixed(3);
         return resolve({
           balance,
@@ -95,10 +95,10 @@ export async function __getBalance({ ...params }) {
           pkh: params.pkh,
           label: params.label,
           account: params.pkh,
-          publicKey: params.pk
+          publicKey: params.pk,
         });
       })
-      .catch(exp => {
+      .catch((exp) => {
         reject(exp);
       });
   });
@@ -108,10 +108,10 @@ export async function __getStorage({ ...params }, callback) {
   eztz.node.setProvider(__url);
   eztz.contract
     .storage(params.selectedContracts)
-    .then(storage => {
+    .then((storage) => {
       return callback(null, storage);
     })
-    .catch(exp => {
+    .catch((exp) => {
       return callback(exp, null);
     });
 }
@@ -121,7 +121,7 @@ export async function __generateMnemonic() {
 }
 export async function __sendOperation({ ...params }, callback) {
   const keys = params.userAccounts.find(
-    elem => elem.pkh === params.senderAccount
+    (elem) => elem.pkh === params.senderAccount
   );
   const tezosNode = apiEndPoints[params.dashboardHeader.networkId];
   const keystore = {
@@ -129,7 +129,7 @@ export async function __sendOperation({ ...params }, callback) {
     privateKey: keys.sk,
     publicKeyHash: keys.pkh,
     seed: '',
-    storeType: conseiljs.StoreType.Fundraiser
+    storeType: conseiljs.StoreType.Fundraiser,
   };
   const result = await conseiljs.TezosNodeWriter.sendTransactionOperation(
     tezosNode,
@@ -157,7 +157,7 @@ export async function __listAccountTransactions({ ...params }, callback) {
     const conseilServer = {
       url: ConceilJS.url,
       apiKey: ConceilJS.apiKey,
-      network
+      network,
     };
     let sendQuery = conseiljs.ConseilQueryBuilder.blankQuery();
     sendQuery = conseiljs.ConseilQueryBuilder.addFields(
@@ -263,13 +263,15 @@ export async function __deployContract({ ...params }, callback) {
   try {
     const tezosNode = apiEndPoints[params.dashboardHeader.networkId];
     const { contract } = params;
-    const keys = params.userAccounts.find(elem => elem.pkh === params.accounts);
+    const keys = params.userAccounts.find(
+      (elem) => elem.pkh === params.accounts
+    );
     const keystore = {
       publicKey: keys.pk,
       privateKey: keys.sk,
       publicKeyHash: keys.pkh,
       seed: '',
-      storeType: conseiljs.StoreType.Fundraiser
+      storeType: conseiljs.StoreType.Fundraiser,
     };
     const storage = `${params.storageValue}`;
     conseiljs.TezosNodeWriter.sendContractOriginationOperation(
@@ -285,7 +287,7 @@ export async function __deployContract({ ...params }, callback) {
       storage,
       conseiljs.TezosParameterFormat.Michelson
     )
-      .then(nodeResult => {
+      .then((nodeResult) => {
         if (
           nodeResult.results.contents[0].metadata.operation_result.status ===
           'applied'
@@ -298,7 +300,7 @@ export async function __deployContract({ ...params }, callback) {
             originated_contracts:
               nodeResult.results.contents[0].metadata.operation_result
                 .originated_contracts[0],
-            contract
+            contract,
           });
           localStorage.setItem(
             'tezsure',
@@ -312,7 +314,7 @@ export async function __deployContract({ ...params }, callback) {
         }
         return callback('Contract not deployed', null);
       })
-      .catch(exp => {
+      .catch((exp) => {
         return callback(exp, null);
       });
   } catch (exp) {
@@ -322,13 +324,15 @@ export async function __deployContract({ ...params }, callback) {
 export async function __invokeContract({ ...params }, callback) {
   try {
     const tezosNode = apiEndPoints[params.dashboardHeader.networkId];
-    const keys = params.userAccounts.find(elem => elem.pkh === params.accounts);
+    const keys = params.userAccounts.find(
+      (elem) => elem.pkh === params.accounts
+    );
     const keystore = {
       publicKey: keys.pk,
       privateKey: keys.sk,
       publicKeyHash: keys.pkh,
       seed: '',
-      storeType: conseiljs.StoreType.Fundraiser
+      storeType: conseiljs.StoreType.Fundraiser,
     };
     const contractAddress = params.selectedContracts;
     const storage = `${params.storageValue}`;
@@ -336,7 +340,7 @@ export async function __invokeContract({ ...params }, callback) {
       tezosNode,
       keystore,
       contractAddress,
-      10000,
+      parseInt(params.contractAmount, 10),
       100000,
       '',
       1000,
@@ -345,7 +349,7 @@ export async function __invokeContract({ ...params }, callback) {
       storage,
       conseiljs.TezosParameterFormat.Michelson
     )
-      .then(nodeResult => {
+      .then((nodeResult) => {
         if (
           nodeResult.results.contents[0].metadata.operation_result.status ===
           'applied'
@@ -354,7 +358,7 @@ export async function __invokeContract({ ...params }, callback) {
         }
         return callback('Contract invocation failed', null);
       })
-      .catch(exp => {
+      .catch((exp) => {
         return callback(exp, null);
       });
   } catch (exp) {

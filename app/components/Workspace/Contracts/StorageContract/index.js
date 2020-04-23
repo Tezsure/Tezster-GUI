@@ -5,15 +5,13 @@
 import React, { Component } from 'react';
 import JSONPretty from 'react-json-pretty';
 
-const JSONPrettyMon = require('react-json-pretty/dist/monikai');
-
 class index extends Component {
   constructor(props) {
     super(props);
     this.state = {
       contractAmount: '',
       selectedContracts: '0',
-      storageValue: ''
+      storageValue: '',
     };
     this.handleInputChange = this.handleInputChange.bind(this);
   }
@@ -57,7 +55,7 @@ class index extends Component {
                 onClick={() => {
                   this.props.getContractStorageAction({
                     ...this.props,
-                    ...this.state
+                    ...this.state,
                   });
                 }}
               >
@@ -83,7 +81,6 @@ class index extends Component {
               id="json-pretty"
               style={{ width: '100%', height: '100%' }}
               data={this.props.selectedContractStorage}
-              theme={JSONPrettyMon}
             />
           )}
         </div>

@@ -5,10 +5,8 @@ class RestoreAccounts extends Component {
     super(props);
     this.state = {
       mnemonic: '',
-      secretKey: '',
-      label: '',
       email: '',
-      password: ''
+      password: '',
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleRestoreAccount = this.handleRestoreAccount.bind(this);
@@ -19,21 +17,11 @@ class RestoreAccounts extends Component {
     const stateParams = {
       ...this.state,
       mnemonicErr: '',
-      secretKeyErr: '',
-      labelErr: '',
       emailErr: '',
-      passwordErr: ''
+      passwordErr: '',
     };
     if (stateParams.mnemonic === '') {
-      stateParams.mnemonicErr = 'Please enter mnemonic';
-      errFlag = true;
-    }
-    if (stateParams.secretKey === '') {
-      stateParams.secretKeyErr = 'Please enter secret key';
-      errFlag = true;
-    }
-    if (stateParams.label === '') {
-      stateParams.labelErr = 'Please enter account label';
+      credD.mnemonicErr = 'Please enter mnemonic';
       errFlag = true;
     }
     if (stateParams.email === '') {
@@ -45,9 +33,20 @@ class RestoreAccounts extends Component {
       errFlag = true;
     }
     if (errFlag === false) {
-      this.props.restoreAccountAction({
-        ...this.state,
-        ...this.props
+      let cred = stateParams.email + stateParams.password;
+      const keys = eztz.crypto.generateKeys(stateParams.mnenomics, cred);
+      const account = keys.pkh;
+      let userParams = {
+        pk: keys.pk,
+        email: stateParams.email,
+        password: stateParams.password,
+        pkh: keys.pkh,
+        secret: keys.sk,
+        mnemonic: stateParams.mnemonic,
+      };
+      this.props.restoreFaucetAccountAction({
+        ...userParams,
+        ...this.props,
       });
     } else {
       this.setState(stateParams);
@@ -73,7 +72,7 @@ class RestoreAccounts extends Component {
     return (
       <div className="modal-content">
         <div className="modal-header">
-          <h5 className="modal-title">Restore Account</h5>
+          <h5 className="modal-title">Restore Wallet</h5>
           <button
             type="button"
             className="close"
@@ -90,12 +89,6 @@ class RestoreAccounts extends Component {
         <div className="modal-body">
           <p>
             Node provider is connected : {this.props.dashboardHeader.rpcServer}
-          </p>
-        </div>
-        <div className="modal-body">
-          <p>
-            For Carthagenet Account change node provider to Alphanet, while
-            LocalNode Account change node provider to Local Node
           </p>
         </div>
         <div className="modal-input">
@@ -136,54 +129,17 @@ class RestoreAccounts extends Component {
           <br />
           <span className="error-msg">{this.state.mnemonicErr}</span>
         </div>
-        <div className="modal-input">
-          <div className="input-container">Secret Key </div>
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Enter your secret key"
-            onChange={this.handleInputChange}
-            value={this.state.secretKey}
-            name="secretKey"
-          />
-        </div>
-        <span className="error-msg">{this.state.secretKeyErr}</span>
-        <div className="modal-input">
-          <div className="input-container">Account Label </div>
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Enter account label"
-            onChange={this.handleInputChange}
-            value={this.state.label}
-            name="label"
-          />
-        </div>
-        <span className="error-msg">{this.state.labelErr}</span>
         <div className="modal-footer">
-          {this.props.dashboardHeader.networkId === 'Localnode' ? (
-            <button
-              type="button"
-              className="btn btn-success"
-              disabled={this.props.buttonState}
-              onClick={() => this.handleRestoreAccount()}
-            >
-              {this.props.buttonState
-                ? 'Please wait....'
-                : 'Restore Wallet Account'}
-            </button>
-          ) : (
-            <button
-              type="button"
-              className="btn btn-success"
-              disabled={this.props.buttonState}
-              onClick={() => this.handleRestoreAccount()}
-            >
-              {this.props.buttonState
-                ? 'Please wait....'
-                : 'Activate Carthagenet Account'}
-            </button>
-          )}
+          <button
+            type="button"
+            className="btn btn-success"
+            disabled={this.props.buttonState}
+            onClick={() => this.handleRestoreAccount()}
+          >
+            {this.props.buttonState
+              ? 'Please wait....'
+              : 'Restore Wallet Account'}
+          </button>
           <button
             type="button"
             className="btn btn-secondary"

@@ -1,4 +1,7 @@
-const { getBlockHeight, getBlockData } = require('../../apis/tzstats.service');
+const {
+  getBlockHeight,
+  getAllBlockData,
+} = require('../../apis/tzstats.service');
 
 const localnodeData = {
   chainId: '00',
@@ -6,43 +9,43 @@ const localnodeData = {
   gas_limit: '32311',
   gas_price: '0.1228',
   networkId: 'Localnode',
-  rpcServer: 'http://localhost:18731'
+  rpcServer: 'http://localhost:18731',
 };
 
 export default function getBlockHeadsActions(args) {
-  return dispatch => {
+  return (dispatch) => {
     if (args.dashboardHeader.networkId === 'Localnode') {
       dispatch({
         type: 'GET_DASHBOARD_HEADER',
-        payload: localnodeData
+        payload: localnodeData,
       });
       dispatch({
         type: 'GET_BLOCKS',
-        payload: localnodeData
+        payload: localnodeData,
       });
     } else {
       getBlockHeight(args, (blockHeightError, blockHeightResponse) => {
         if (blockHeightError) {
           dispatch({
             type: 'GET_BLOCKS_ERR',
-            payload: blockHeightError
+            payload: blockHeightError,
           });
         }
-        getBlockData(
+        getAllBlockData(
           { blockId: blockHeightResponse.height, ...args },
           (blockDataError, blockDataResponse) => {
             if (blockDataError) {
               dispatch({
                 type: 'GET_BLOCKS_ERR',
-                payload: blockDataError
+                payload: blockDataError,
               });
             }
             dispatch({
               type: 'GET_BLOCKS',
               payload: {
-                ...blockDataResponse,
-                ...blockHeightResponse
-              }
+                blockDataResponse,
+                ...blockHeightResponse,
+              },
             });
           }
         );
