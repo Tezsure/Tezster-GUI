@@ -14,10 +14,11 @@
   display: inline-flex;
   height: 2rem;
   width: 2rem;
+  cursor: pointer;
   background-repeat: no-repeat;
 }
 .accounts-table-container {
-  overflow-y: scroll;
+  overflow: auto;
   max-height: 400px;
 }
 .blocks-cards-container p {
@@ -75,4 +76,12 @@ button:disabled {
   pointer-events: all !important;
   background: #ccc;
   border: 1px solid #ccc;
+}
+#json-pretty {
+  background-color: #f1f3f5 !important;
+  border: 4px solid #f1f3f5 !important;
+  border-radius: 4px !important;
+}
+#json-pretty > pre {
+  background-color: #f1f3f5 !important;
 }

@@ -6,6 +6,7 @@
   font-weight: 700;
   padding: 10px;
   border-top: 0.5px solid #dee2e6;
+  margin-bottom: 5%;
 }
 .contract-deployed {
   background: #39b999;
@@ -25,12 +26,12 @@
   text-align: end;
   margin-right: 1rem;
   font-weight: 500;
-  background-color: #3dcc8e;
-  color: white;
-  border: 1px solid #3dcc8e;
   border-radius: 20px;
   margin-left: 26%;
 }
 .success-msg {
   padding-right: 10px;
+}
+.tezos-icon {
+  color: #3dcc8e;
 }

@@ -11,16 +11,22 @@ class ActivateAccounts extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      faucet: {},
+      faucet: {
+        email: '',
+        password: '',
+        pkh: '',
+        secret: '',
+        mnemonic: [],
+      },
       error: {
         errorEmail: '',
         errorPassword: '',
         errorPkh: '',
         errorSecret: '',
-        errorMnemonic: ''
-      }
+        errorMnemonic: '',
+      },
     };
-    this.handleInputChange = this.handleInputChange;
+    this.handleInputChange = this.handleInputChange.bind(this);
   }
 
   handleInputChange(event) {
@@ -30,7 +36,7 @@ class ActivateAccounts extends Component {
       errorPassword: '',
       errorPkh: '',
       errorSecret: '',
-      errorMnemonic: ''
+      errorMnemonic: '',
     };
     if (event.target.name === 'mnemonic') {
       faucet[event.target.name] = event.target.value
@@ -38,7 +44,8 @@ class ActivateAccounts extends Component {
         .join('')
         .replace(/\n/g, '')
         .replace(/\s/g, '')
-        .split(',');
+        .split(',')
+        .join(' ');
       this.setState({ faucet, error });
     } else {
       faucet[event.target.name] = event.target.value;
@@ -53,7 +60,7 @@ class ActivateAccounts extends Component {
       errorPassword: '',
       errorPkh: '',
       errorSecret: '',
-      errorMnemonic: ''
+      errorMnemonic: '',
     };
     if (this.state.faucet.email === '') {
       error.errorEmail = 'Please enter email';
@@ -71,7 +78,10 @@ class ActivateAccounts extends Component {
       error.errorSecret = 'Please enter secret key';
       errorFlag = true;
     }
-    if (this.state.faucet.mnemonic.length < 2) {
+    if (
+      this.state.faucet.mnemonic === [] ||
+      this.state.faucet.mnemonic.length < 2
+    ) {
       error.errorMnemonic = 'Please enter mnemonics';
       errorFlag = true;
     }
@@ -82,18 +92,57 @@ class ActivateAccounts extends Component {
     }
   };
 
+  handleRestoreWallet = () => {
+    let errorFlag = false;
+    const error = {
+      errorEmail: '',
+      errorPassword: '',
+      errorPkh: '',
+      errorSecret: '',
+      errorMnemonic: '',
+    };
+    if (this.state.faucet.email === '') {
+      error.errorEmail = 'Please enter email';
+      errorFlag = true;
+    }
+    if (this.state.faucet.password === '') {
+      error.errorPassword = 'Please enter password';
+      errorFlag = true;
+    }
+    if (this.state.faucet.pkh === '') {
+      error.errorPkh = 'Please enter public key hash';
+      errorFlag = true;
+    }
+    if (this.state.faucet.secret === '') {
+      error.errorSecret = 'Please enter secret key';
+      errorFlag = true;
+    }
+    if (
+      this.state.faucet.mnemonic === [] ||
+      this.state.faucet.mnemonic.length < 2
+    ) {
+      error.errorMnemonic = 'Please enter mnemonics';
+      errorFlag = true;
+    }
+    if (errorFlag) {
+      this.setState({ error });
+    } else {
+      this.props.restoreFaucetAccountAction({ ...this.state, ...this.props });
+    }
+  };
+
   render() {
     const {
       errorEmail,
       errorPassword,
       errorPkh,
       errorSecret,
-      errorMnemonic
+      errorMnemonic,
     } = this.state.error;
     return (
       <div className="modal-content">
         <div className="modal-header">
-          <h5 className="modal-title">Create Secure Wallet</h5>
+          <h5 className="modal-title">Add Faucet Account</h5>
           <button
             type="button"
             className="close"
@@ -118,6 +167,11 @@ class ActivateAccounts extends Component {
             </NavLink>
             <span className="important-symbol">*</span>
           </p>
+          <p>
+            Please click on restore wallet button to add an already activated
+            account
+          </p>
+          <p>Please click on activate wallet button to activate an account</p>
         </div>
         <div className="modal-input">
           <div className="input-container">Email</div>
@@ -197,6 +251,14 @@ class ActivateAccounts extends Component {
             disabled={this.props.buttonState}
           >
             {this.props.buttonState ? 'Please wait....' : 'Activate Wallet'}
+          </button>
+          <button
+            type="button"
+            className="btn btn-success"
+            onClick={this.handleRestoreWallet.bind(this)}
+            disabled={this.props.buttonState}
+          >
+            {this.props.buttonState ? 'Please wait....' : 'Restore Wallet'}
           </button>
         </div>
       </div>

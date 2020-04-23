@@ -21,7 +21,8 @@ class InvokeContract extends Component {
       storageValue: '',
       selectedEntryPoint: '0',
       error: '',
-      enteredContract: ''
+      enteredContract: '',
+      contractAmount: '',
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleInvokeContract = this.handleInvokeContract.bind(this);
@@ -33,10 +34,10 @@ class InvokeContract extends Component {
   }
 
   handleEntryPointsInputValues(event) {
-    const entryPoints = this.state.entryPoints.map(elem => {
+    const entryPoints = this.state.entryPoints.map((elem) => {
       const temp = { ...elem };
       if (elem.name === this.state.selectedEntryPoint) {
-        const stateValues = elem.stateValues.map(pp => {
+        const stateValues = elem.stateValues.map((pp) => {
           if (event.target.name === Object.keys(pp)[0]) {
             return { [event.target.name]: event.target.value };
           }
@@ -55,28 +56,28 @@ class InvokeContract extends Component {
     const contract = JSON.parse(localStorage.getItem('tezsure')).contracts[
       networkId
     ].filter(
-      elem => elem.originated_contracts === this.state.selectedContracts
+      (elem) => elem.originated_contracts === this.state.selectedContracts
     );
     const entryPoints = conseiljs.TezosContractIntrospector.generateEntryPointsFromCode(
       contract[0].contract
     );
-    const values = entryPoints.map(p => ({
+    const values = entryPoints.map((p) => ({
       name: p.name,
       structure: p.structure,
-      parameter: p.parameters.map(pp => pp.name),
-      parameterTypes: p.parameters.map(pp => pp.type),
-      stateValues: p.parameters.map(pp => ({ [pp.name]: '' }))
+      parameter: p.parameters.map((pp) => pp.name),
+      parameterTypes: p.parameters.map((pp) => pp.type),
+      stateValues: p.parameters.map((pp) => ({ [pp.name]: '' })),
     }));
     this.setState({ entryPoints: values });
   }
 
   handleInvokeContract() {
     let index = 0;
-    this.state.entryPoints.some(elem => {
+    this.state.entryPoints.some((elem) => {
       if (elem.name === this.state.selectedEntryPoint) {
         const storageValue = elem.structure
           .split('$')
-          .map(pp => {
+          .map((pp) => {
             if (pp.indexOf('PARAM') === -1) {
               return pp;
             }
@@ -88,7 +89,7 @@ class InvokeContract extends Component {
         this.setState({ storageValue }, () => {
           this.props.handleInvokeContractAction({
             ...this.props,
-            ...this.state
+            ...this.state,
           });
           setTimeout(() => {
             this.props.toggleButtonState();
@@ -105,7 +106,7 @@ class InvokeContract extends Component {
       this.setState({ [event.target.name]: event.target.value }, () => {
         this.props.getAccountBalanceAction({
           ...this.props,
-          pkh: this.state.accounts
+          pkh: this.state.accounts,
         });
       });
     } else if (event.target.name === 'selectedContracts') {
@@ -119,15 +120,15 @@ class InvokeContract extends Component {
 
   getEntryPointsTable() {
     const selectedEntryPoint = this.state.entryPoints.filter(
-      elem => elem.name === this.state.selectedEntryPoint
+      (elem) => elem.name === this.state.selectedEntryPoint
     );
-    const tableHeaders = selectedEntryPoint[0].parameter.map(elem => (
-      <th scope="col" className="table-column-header" key={elem}>
+    const tableHeaders = selectedEntryPoint[0].parameter.map((elem, index) => (
+      <th scope="col" className="table-column-header" key={elem + index}>
         {elem}
       </th>
     ));
     const tableBody = selectedEntryPoint[0].parameter.map((elem, index) => (
-      <td className="table-body-cell" key={elem}>
+      <td className="table-body-cell" key={elem + index}>
         <input
           type={
             selectedEntryPoint[0].parameterTypes[index] === 'nat'
@@ -196,9 +197,12 @@ class InvokeContract extends Component {
         </div>
         {this.state.accounts !== '0' ? (
           <div className="container-msg">
-            <div className="success-msg">
-              {`available balance in the account ${this.props.selectedContractAmountBalance}`}
-            </div>
+            <b>
+              available balance in the account{' '}
+              <span className="tezos-icon">
+                {this.props.selectedContractAmountBalance} ꜩ
+              </span>
+            </b>
           </div>
         ) : (
           ''
@@ -216,6 +220,17 @@ class InvokeContract extends Component {
             </option>
             {contracts}
           </select>
+        </div>
+        <div className="modal-input">
+          <div className="input-container">Contract Amount </div>
+          <input
+            type="number"
+            name="contractAmount"
+            className="form-control"
+            placeholder="Enter amount to deploy contract"
+            value={this.state.contractAmount}
+            onChange={this.handleInputChange}
+          />
         </div>
         <div className="modal-input">
           <div className="input-container">Entry Points </div>

@@ -6,11 +6,17 @@ class Accounts extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      modalType: ''
+      modalType: '',
+      currentAccount: {
+        publicKey: '',
+        publicKeyHash: '',
+        secretKey: '',
+      },
     };
     this.handleModalToggle = this.handleModalToggle.bind(this);
     this.handleActivateAccount = this.handleActivateAccount.bind(this);
     this.handleValidateModalOpen = this.handleValidateModalOpen.bind(this);
+    this.handleWalletModalShow = this.handleWalletModalShow.bind(this);
   }
 
   handleModalToggle(modalType) {
@@ -22,7 +28,19 @@ class Accounts extends Component {
   }
 
   handleActivateAccount({ ...args }) {
-    this.props.createAccountsAction({ ...args });
+    this.props.createFaucetAccountsAction({ ...args });
+  }
+  handleWalletModalShow({ ...args }) {
+    const userState = { ...this.state };
+    const currentAccount = {
+      publicKey: args.pk,
+      publicKeyHash: args.pkh,
+      secretKey: args.sk,
+    };
+    userState.currentAccount = currentAccount;
+    this.setState({ ...userState }, () => {
+      this.props.toggleAccountsModalAction('show-user-wallet');
+    });
   }
 
   render() {
@@ -37,7 +55,7 @@ class Accounts extends Component {
                   className="btn btn-success"
                   onClick={() => this.handleModalToggle('restore-accounts')}
                 >
-                  Restore Account
+                  Restore Wallet
                 </button>
               </div>
               <div className="button-accounts">
@@ -46,18 +64,22 @@ class Accounts extends Component {
                   className="btn btn-success"
                   onClick={() => this.handleModalToggle('activate-accounts')}
                 >
-                  Activate Account
+                  Add Faucet Account
                 </button>
               </div>
             </div>
           </div>
+          <Table
+            {...this.props}
+            handleWalletModalShow={this.handleWalletModalShow}
+          />
         </div>
-        <Table {...this.props} />
         {this.props.showAccountsModal === '' ? (
           <React.Fragment />
         ) : (
           <AccountsModal
             {...this.props}
+            {...this.state}
             modalType={this.state.modalType}
             handleModalToggle={this.handleModalToggle}
             handleActivateAccount={this.handleActivateAccount}
