@@ -11,7 +11,7 @@ class TransactionModal extends Component {
       amount: '',
       amountErr: '',
       gasPrice: '',
-      gasPriceErr: ''
+      gasPriceErr: '',
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleExecuteTransaction = this.handleExecuteTransaction.bind(this);
@@ -24,7 +24,7 @@ class TransactionModal extends Component {
       senderAccountErr: '',
       recieverAccountErr: '',
       amountErr: '',
-      gasPriceErr: ''
+      gasPriceErr: '',
     };
     if (stateParams.senderAccount === '0') {
       stateParams.senderAccountErr = 'Please select senders account';
@@ -46,7 +46,7 @@ class TransactionModal extends Component {
     if (!errorFlag) {
       this.props.executeTransactionAction({
         ...this.props,
-        ...this.state
+        ...this.state,
       });
     } else {
       this.setState(stateParams);
@@ -60,12 +60,12 @@ class TransactionModal extends Component {
   render() {
     const sendersAccounts = this.props.userAccounts.map((elem, index) => (
       <option key={elem.account + index} value={elem.account}>
-        {elem.account}
+        {elem.label + '-' + elem.account}
       </option>
     ));
     const recieverAccounts = this.props.userAccounts.map((elem, index) => (
       <option key={elem.account + index} value={elem.account}>
-        {elem.account}
+        {elem.label + '-' + elem.account}
       </option>
     ));
     return (
@@ -75,7 +75,7 @@ class TransactionModal extends Component {
         style={{
           display: 'block',
           paddingRight: '15px',
-          opacity: 1
+          opacity: 1,
         }}
       >
         <div className="modal-dialog" role="document">

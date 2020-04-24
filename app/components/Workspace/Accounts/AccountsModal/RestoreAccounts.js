@@ -1,31 +1,43 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
+
+const conseiljs = require('conseiljs');
 
 class RestoreAccounts extends Component {
   constructor(props) {
     super(props);
     this.state = {
       mnemonic: '',
-      email: '',
+      label: '',
       password: '',
+      mnemonicSuggestion: '',
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleRestoreAccount = this.handleRestoreAccount.bind(this);
+    this.handleCreateWallet = this.handleCreateWallet.bind(this);
   }
 
-  handleRestoreAccount() {
+  componentDidMount() {
+    this.setState({
+      mnemonicSuggestion: conseiljs.TezosWalletUtil.generateMnemonic(),
+    });
+  }
+
+  async handleCreateWallet() {
     let errFlag = false;
     const stateParams = {
       ...this.state,
       mnemonicErr: '',
-      emailErr: '',
+      labelErr: '',
       passwordErr: '',
     };
     if (stateParams.mnemonic === '') {
       credD.mnemonicErr = 'Please enter mnemonic';
       errFlag = true;
     }
-    if (stateParams.email === '') {
-      stateParams.emailErr = 'Please enter email';
+    if (stateParams.label === '') {
+      stateParams.labelErr = 'Please enter label for your account';
       errFlag = true;
     }
     if (stateParams.password === '') {
@@ -33,15 +45,62 @@ class RestoreAccounts extends Component {
       errFlag = true;
     }
     if (errFlag === false) {
-      let cred = stateParams.email + stateParams.password;
-      const keys = eztz.crypto.generateKeys(stateParams.mnenomics, cred);
-      const account = keys.pkh;
-      let userParams = {
-        pk: keys.pk,
-        email: stateParams.email,
+      const keystore = await conseiljs.TezosWalletUtil.unlockIdentityWithMnemonic(
+        this.state.mnemonic,
+        this.state.password
+      );
+      const userParams = {
+        ...keystore,
+        sk: keystore.secret,
+        pk: keystore.publicKey,
+        secret: keystore.secret,
+        label: stateParams.label,
+        pkh: keystore.publicKeyHash,
         password: stateParams.password,
-        pkh: keys.pkh,
-        secret: keys.sk,
+        mnemonic: stateParams.mnemonic,
+      };
+      this.props.restoreFaucetAccountAction({
+        ...userParams,
+        ...this.props,
+      });
+    } else {
+      this.setState(stateParams);
+    }
+  }
+
+  async handleRestoreAccount() {
+    let errFlag = false;
+    const stateParams = {
+      ...this.state,
+      mnemonicErr: '',
+      labelErr: '',
+      passwordErr: '',
+    };
+    if (stateParams.mnemonic === '') {
+      credD.mnemonicErr = 'Please enter mnemonic';
+      errFlag = true;
+    }
+    if (stateParams.label === '') {
+      stateParams.labelErr = 'Please enter label for your account';
+      errFlag = true;
+    }
+    if (stateParams.password === '') {
+      stateParams.passwordErr = 'Please enter password';
+      errFlag = true;
+    }
+    if (errFlag === false) {
+      const keystore = await conseiljs.TezosWalletUtil.unlockIdentityWithMnemonic(
+        this.state.mnemonic,
+        this.state.password
+      );
+      const userParams = {
+        ...keystore,
+        sk: keystore.secret,
+        pk: keystore.publicKey,
+        secret: keystore.secret,
+        label: stateParams.label,
+        pkh: keystore.publicKeyHash,
+        password: stateParams.password,
         mnemonic: stateParams.mnemonic,
       };
       this.props.restoreFaucetAccountAction({
@@ -55,13 +114,7 @@ class RestoreAccounts extends Component {
 
   handleInputChange(event) {
     if (event.target.name === 'mnemonic') {
-      const mnemonic = event.target.value
-        .split('"')
-        .join('')
-        .replace(/\n/g, '')
-        .replace(/\s/g, '')
-        .split(',')
-        .join(' ');
+      const mnemonic = event.target.value;
       this.setState({ mnemonic });
     } else {
       this.setState({ [event.target.name]: event.target.value });
@@ -72,7 +125,7 @@ class RestoreAccounts extends Component {
     return (
       <div className="modal-content">
         <div className="modal-header">
-          <h5 className="modal-title">Restore Wallet</h5>
+          <h5 className="modal-title">Create/Restore Wallet</h5>
           <button
             type="button"
             className="close"
@@ -88,21 +141,27 @@ class RestoreAccounts extends Component {
         </div>
         <div className="modal-body">
           <p>
-            Node provider is connected : {this.props.dashboardHeader.rpcServer}
+            Node provider is connected : {this.props.dashboardHeader.rpcServer}{' '}
+            <br />
+            Note: The account created will be a non fundraiser account.
           </p>
         </div>
+        <div className="modal-body">
+          Use the below mnemonic to create wallet
+          <p className="suggestion-msg">{this.state.mnemonicSuggestion}</p>
+        </div>
         <div className="modal-input">
-          <div className="input-container">Email Id </div>
+          <div className="input-container">Label </div>
           <input
-            type="email"
+            type="text"
             className="form-control"
             onChange={this.handleInputChange}
-            name="email"
-            value={this.state.email}
-            placeholder="Enter your Email Id"
+            name="label"
+            value={this.state.label}
+            placeholder="Enter label for your account"
           />
         </div>
-        <span className="error-msg">{this.state.emailErr}</span>
+        <span className="error-msg">{this.state.labelErr}</span>
         <div className="modal-input">
           <div className="input-container">Password </div>
           <input
@@ -136,9 +195,15 @@ class RestoreAccounts extends Component {
             disabled={this.props.buttonState}
             onClick={() => this.handleRestoreAccount()}
           >
-            {this.props.buttonState
-              ? 'Please wait....'
-              : 'Restore Wallet Account'}
+            {this.props.buttonState ? 'Please wait....' : 'Create Wallet'}
+          </button>
+          <button
+            type="button"
+            className="btn btn-success"
+            disabled={this.props.buttonState}
+            onClick={() => this.handleRestoreAccount()}
+          >
+            {this.props.buttonState ? 'Please wait....' : 'Restore Wallet'}
           </button>
           <button
             type="button"

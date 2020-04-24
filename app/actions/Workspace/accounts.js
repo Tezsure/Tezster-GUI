@@ -17,6 +17,12 @@ const {
 
 const config = require('../../apis/config');
 
+function handleFundraiserAccount(payload) {
+  const { networkId } = payload.dashboardHeader;
+  const { userAccounts } = JSON.parse(localStorage.getItem('tezsure'));
+  return (dispatch) => {};
+}
+
 function checkIsLocalNodeRunning() {
   return new Promise((resolve) => {
     exec(
@@ -162,7 +168,7 @@ export function createFaucetAccountsAction(payload) {
         sk: result.privateKey,
         pk: result.publicKey,
         pkh: payload.faucet.pkh,
-        label: `bootstrap${userAccounts[networkId.split('-')[0]].length + 1}`,
+        label: payload.faucet.label,
         dashboardHeader: payload.dashboardHeader,
       };
       payload.userAccounts.push({ ...activatedAccount });
@@ -219,9 +225,7 @@ export function restoreFaucetAccountAction(payload) {
       Promise.all([__getBalance({ ...account, ...payload })]).then(
         (response) => {
           const restoredAccount = { ...response[0] };
-          restoredAccount.label = `bootstrap${
-            userAccounts[networkId.split('-')[0]].length + 1
-          }`;
+          restoredAccount.label = payload.label;
           userAccounts[networkId.split('-')[0]].push(restoredAccount);
           payload.userAccounts = userAccounts;
           localStorage.setItem(
