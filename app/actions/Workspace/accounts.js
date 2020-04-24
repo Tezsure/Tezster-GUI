@@ -17,12 +17,6 @@ const {
 
 const config = require('../../apis/config');
 
-function handleFundraiserAccount(payload) {
-  const { networkId } = payload.dashboardHeader;
-  const { userAccounts } = JSON.parse(localStorage.getItem('tezsure'));
-  return (dispatch) => {};
-}
-
 function checkIsLocalNodeRunning() {
   return new Promise((resolve) => {
     exec(
@@ -117,30 +111,21 @@ export function getAccountsAction({ ...params }) {
 export function getBalanceAction(payload) {
   const { networkId } = payload.dashboardHeader;
   return (dispatch) => {
-    if (
-      localStorage.getItem('tezsure') &&
-      payload.dashboardHeader.networkId === 'Localnode'
-    ) {
-      dispatch({
-        type: 'GET_BALANCE',
-        payload: localStorage.getItem('tezsure').userAccounts[
-          networkId.split('-')[0]
-        ],
-      });
-    } else {
-      __getBalance({ ...payload }, (err, response) => {
-        if (err) {
-          dispatch({
-            type: 'GET_BALANCE_ERR',
-            payload: err,
-          });
-        }
-        dispatch({
-          type: 'GET_BALANCE',
-          payload: response,
-        });
-      });
+    if (!payload.userAccounts.hasOwnProperty(networkId)) {
+      payload.userAccounts[networkId] = payload.userAccounts;
     }
+    __getAccounts({ ...payload }, (err, response) => {
+      if (err) {
+        dispatch({
+          type: 'GET_BALANCE_ERR',
+          payload: err,
+        });
+      }
+      return dispatch({
+        type: 'GET_BALANCE',
+        payload: response,
+      });
+    });
   };
 }
 

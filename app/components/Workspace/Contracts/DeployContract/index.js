@@ -4,8 +4,9 @@
 /* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
 import swal from 'sweetalert';
-const conseiljs = require('conseiljs');
 import JSONPretty from 'react-json-pretty';
+
+const conseiljs = require('conseiljs');
 
 const fs = require('fs');
 
@@ -26,6 +27,7 @@ class DeployContract extends Component {
     this.handleDeployContract = this.handleDeployContract.bind(this);
     this.handleGetInitialStorage = this.handleGetInitialStorage.bind(this);
   }
+
   async handleGetInitialStorage(contract) {
     const storageFormat = await conseiljs.TezosLanguageUtil.preProcessMichelsonScript(
       contract
@@ -120,7 +122,7 @@ class DeployContract extends Component {
   render() {
     const Accounts = this.props.userAccounts.map((elem, index) => (
       <option key={elem.account + index} value={elem.account}>
-        {elem.account}
+        {`${elem.label}-${elem.account}`}
       </option>
     ));
     if (this.state.error !== '') {
