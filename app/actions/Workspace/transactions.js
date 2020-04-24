@@ -4,21 +4,21 @@ import swal from 'sweetalert';
 
 const {
   __sendOperation,
-  __listAccountTransactions
+  __listAccountTransactions,
 } = require('../../apis/eztz.service');
 
 export function toggleTransactionModalAction(modalState) {
   return {
     type: 'TOGGLE_TRANSACTION_MODAL',
-    payload: modalState
+    payload: modalState,
   };
 }
 
 export function selectTransactionWalletAction(payload) {
-  return dispatch => {
+  return (dispatch) => {
     dispatch({
       type: 'SELECT_TRANSACTION_ACCOUNT',
-      payload: payload.accountId
+      payload: payload.accountId,
     });
     dispatch(getTransactionsAction(payload));
   };
@@ -26,7 +26,7 @@ export function selectTransactionWalletAction(payload) {
 
 export function getTransactionsAction({ ...params }) {
   const networkId = params.dashboardHeader.networkId.split('-')[0];
-  return dispatch => {
+  return (dispatch) => {
     if (params.hasOwnProperty('accountId')) {
       if (networkId === 'Localnode') {
         if (localStorage.getItem('tezsure')) {
@@ -37,20 +37,20 @@ export function getTransactionsAction({ ...params }) {
           ) {
             dispatch({
               type: 'GET_TRANSACTIONS',
-              payload: []
+              payload: [],
             });
           } else {
             dispatch({
               type: 'GET_TRANSACTIONS',
               payload: transactions[networkId].hasOwnProperty(params.accountId)
                 ? transactions[networkId][params.accountId]
-                : []
+                : [],
             });
           }
         } else {
           dispatch({
             type: 'GET_TRANSACTIONS',
-            payload: []
+            payload: [],
           });
         }
       } else {
@@ -63,12 +63,12 @@ export function getTransactionsAction({ ...params }) {
             );
             return dispatch({
               type: 'GET_TRANSACTIONS_ERR',
-              payload: err
+              payload: err,
             });
           }
           dispatch({
             type: 'GET_TRANSACTIONS',
-            payload: response
+            payload: response,
           });
         });
       }
@@ -78,10 +78,10 @@ export function getTransactionsAction({ ...params }) {
 
 export function executeTransactionAction(params) {
   const networkId = params.dashboardHeader.networkId.split('-')[0];
-  return dispatch => {
+  return (dispatch) => {
     dispatch({
       type: 'BUTTON_LOADING_STATE',
-      payload: true
+      payload: true,
     });
     if (networkId === 'Localnode') {
       const __localStorage = JSON.parse(localStorage.getItem('tezsure'));
@@ -94,20 +94,20 @@ export function executeTransactionAction(params) {
       ) {
         __localStorage.transactions = {
           [networkId]: {
-            [params.senderAccount]: []
-          }
+            [params.senderAccount]: [],
+          },
         };
       }
       __localStorage.transactions[networkId][params.senderAccount].push({
         op: {
-          opHash: 'N/A'
+          opHash: 'N/A',
         },
         tx: {
           source: params.senderAccount,
           destination: params.recieverAccount,
           amount: params.amount,
-          operationResultStatus: 'applied'
-        }
+          operationResultStatus: 'applied',
+        },
       });
       localStorage.setItem('tezsure', JSON.stringify({ ...__localStorage }));
     }
@@ -120,21 +120,21 @@ export function executeTransactionAction(params) {
         );
         dispatch({
           type: 'BUTTON_LOADING_STATE',
-          payload: false
+          payload: false,
         });
         return dispatch({
           type: 'EXECUTE_TRANSACTIONS_ERR',
-          payload: err
+          payload: err,
         });
       }
       swal('Success!', 'Transaction executed successfully', 'success');
       dispatch({
         type: 'BUTTON_LOADING_STATE',
-        payload: false
+        payload: false,
       });
       return dispatch({
         type: 'EXECUTE_TRANSACTIONS_SUCCESS',
-        payload: response
+        payload: response,
       });
     });
     dispatch(toggleTransactionModalAction(false));

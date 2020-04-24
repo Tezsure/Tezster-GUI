@@ -16,6 +16,7 @@ class ActivateAccounts extends Component {
         password: '',
         pkh: '',
         secret: '',
+        label: '',
         mnemonic: [],
       },
       error: {
@@ -23,6 +24,7 @@ class ActivateAccounts extends Component {
         errorPassword: '',
         errorPkh: '',
         errorSecret: '',
+        errorlabel: '',
         errorMnemonic: '',
       },
     };
@@ -36,6 +38,7 @@ class ActivateAccounts extends Component {
       errorPassword: '',
       errorPkh: '',
       errorSecret: '',
+      errorlabel: '',
       errorMnemonic: '',
     };
     if (event.target.name === 'mnemonic') {
@@ -60,10 +63,15 @@ class ActivateAccounts extends Component {
       errorPassword: '',
       errorPkh: '',
       errorSecret: '',
+      errorlabel: '',
       errorMnemonic: '',
     };
     if (this.state.faucet.email === '') {
       error.errorEmail = 'Please enter email';
+      errorFlag = true;
+    }
+    if (this.state.faucet.label === '') {
+      error.errorlabel = 'Please enter label';
       errorFlag = true;
     }
     if (this.state.faucet.password === '') {
@@ -99,10 +107,15 @@ class ActivateAccounts extends Component {
       errorPassword: '',
       errorPkh: '',
       errorSecret: '',
+      errorlabel: '',
       errorMnemonic: '',
     };
     if (this.state.faucet.email === '') {
       error.errorEmail = 'Please enter email';
+      errorFlag = true;
+    }
+    if (this.state.faucet.label === '') {
+      error.errorlabel = 'Please enter label';
       errorFlag = true;
     }
     if (this.state.faucet.password === '') {
@@ -137,6 +150,7 @@ class ActivateAccounts extends Component {
       errorPassword,
       errorPkh,
       errorSecret,
+      errorlabel,
       errorMnemonic,
     } = this.state.error;
     return (
@@ -185,6 +199,18 @@ class ActivateAccounts extends Component {
           />
         </div>
         <span className="error-msg">{errorEmail}</span>
+        <div className="modal-input">
+          <div className="input-container">Label</div>
+          <input
+            type="text"
+            name="label"
+            value={this.state.faucet.label}
+            className="form-control"
+            onChange={this.handleInputChange}
+            placeholder="Enter label for your account"
+          />
+        </div>
+        <span className="error-msg">{errorlabel}</span>
         <div className="modal-input">
           <div className="input-container">Password</div>
           <input

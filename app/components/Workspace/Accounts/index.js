@@ -1,3 +1,5 @@
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import Table from './Table';
 import AccountsModal from './AccountsModal';
@@ -30,12 +32,15 @@ class Accounts extends Component {
   handleActivateAccount({ ...args }) {
     this.props.createFaucetAccountsAction({ ...args });
   }
+
   handleWalletModalShow({ ...args }) {
     const userState = { ...this.state };
     const currentAccount = {
+      label: args.label,
+      amount: args.balance,
       publicKey: args.pk,
-      publicKeyHash: args.pkh,
       secretKey: args.sk,
+      publicKeyHash: args.pkh,
     };
     userState.currentAccount = currentAccount;
     this.setState({ ...userState }, () => {
@@ -55,7 +60,7 @@ class Accounts extends Component {
                   className="btn btn-success"
                   onClick={() => this.handleModalToggle('restore-accounts')}
                 >
-                  Restore Wallet
+                  Restore/Create Wallet
                 </button>
               </div>
               <div className="button-accounts">
@@ -75,7 +80,7 @@ class Accounts extends Component {
           />
         </div>
         {this.props.showAccountsModal === '' ? (
-          <React.Fragment />
+          <></>
         ) : (
           <AccountsModal
             {...this.props}

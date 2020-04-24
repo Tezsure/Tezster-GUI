@@ -27,6 +27,14 @@ export async function __activateAccount({ ...params }, callback) {
 }
 export async function __activateAccountOperation({ ...params }, callback) {
   try {
+    const network = params.dashboardHeader.networkId
+      .split('-')[0]
+      .toLowerCase();
+    const conseilServer = {
+      url: ConceilJS.url,
+      apiKey: ConceilJS.apiKey,
+      network,
+    };
     const tezosNode = apiEndPoints[params.dashboardHeader.networkId];
     const faucet = await conseiljs.TezosWalletUtil.unlockFundraiserIdentity(
       params.faucet.mnemonic,
@@ -55,6 +63,13 @@ export async function __activateAccountOperation({ ...params }, callback) {
         null
       );
     }
+    await conseiljs.TezosConseilClient.awaitOperationConfirmation(
+      conseilServer,
+      network,
+      JSON.parse(activationResult.operationGroupID),
+      10,
+      30 + 1
+    );
     const revelationResult = await conseiljs.TezosNodeWriter.sendKeyRevealOperation(
       tezosNode,
       keystore
@@ -135,7 +150,7 @@ export async function __sendOperation({ ...params }, callback) {
     tezosNode,
     keystore,
     params.recieverAccount,
-    params.amount,
+    parseInt(params.amount, 10) * 1000000,
     params.gasPrice,
     ''
   );

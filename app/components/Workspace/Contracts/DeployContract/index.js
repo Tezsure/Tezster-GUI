@@ -52,7 +52,7 @@ class DeployContract extends Component {
       error = 'Not enough balance to deploy the contract';
     } else if (
       parseInt(this.state.contractAmount, 10) >
-      parseInt(this.props.selectedContractAmountBalance, 10)
+      parseInt(this.props.selectedContractAmountBalance, 10) * 1000000
     ) {
       error =
         'The entered contract amount should be less than available account balance';

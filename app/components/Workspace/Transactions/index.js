@@ -26,7 +26,7 @@ class Transactions extends Component {
   render() {
     const Accounts = this.props.userAccounts.map((elem, index) => (
       <option key={elem.account + index} value={elem.account}>
-        {elem.account}
+        {elem.label + '-' + elem.account}
       </option>
     ));
     const Transactions =
