@@ -1,3 +1,4 @@
+/* eslint-disable promise/catch-or-return */
 /* eslint-disable no-return-await */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-underscore-dangle */
@@ -17,12 +18,12 @@ const localnodeData = {
 };
 
 function checkIsLocalNodeRunning() {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     exec(
       'tezster get-balance tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx',
       (err, stdout) => {
         if (err || stdout.split('ECONNREFUSED').length > 1) {
-          return reject(false);
+          return resolve(false);
         }
         return resolve(true);
       }
@@ -81,7 +82,7 @@ export function handleNetworkChangeAction(args) {
           networkId = 'Carthagenet-Tezster';
           swal(
             'Error!',
-            'Tezster cli is not running cannot toggle to Localnode',
+            'Tezster cli is not running cannot change network to Localnode',
             'error'
           );
           return dispatch({
