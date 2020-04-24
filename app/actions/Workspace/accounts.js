@@ -1,3 +1,4 @@
+/* eslint-disable prefer-promise-reject-errors */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-return-await */
@@ -17,12 +18,12 @@ const {
 const config = require('../../apis/config');
 
 function checkIsLocalNodeRunning() {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     exec(
       'tezster get-balance tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx',
       (err, stdout) => {
         if (err || stdout.split('ECONNREFUSED').length > 1) {
-          return reject(false);
+          return resolve(false);
         }
         return resolve(true);
       }
@@ -55,9 +56,9 @@ export function getAccountsAction({ ...params }) {
         if (
           IsLocalNodeRunning &&
           networkId === 'Localnode' &&
-          params.userAccounts['Localnode'].length === 0
+          params.userAccounts.Localnode.length === 0
         ) {
-          params.userAccounts['Localnode'] = config.identities;
+          params.userAccounts.Localnode = config.identities;
         }
       } else {
         params.userAccounts[networkId.split('-')[0]] =
@@ -217,7 +218,7 @@ export function restoreFaucetAccountAction(payload) {
       }
       Promise.all([__getBalance({ ...account, ...payload })]).then(
         (response) => {
-          let restoredAccount = { ...response[0] };
+          const restoredAccount = { ...response[0] };
           restoredAccount.label = `bootstrap${
             userAccounts[networkId.split('-')[0]].length + 1
           }`;

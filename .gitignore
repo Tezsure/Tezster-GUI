@@ -62,6 +62,7 @@ app/style.css.map
 dll
 main.js
 main.js.map
+app/main.prod.js.LICENSE.txt
 
 .idea
 npm-debug.log.*
