@@ -117,7 +117,7 @@ function Sidebar(props) {
   );
 }
 Sidebar.protoTypes = {
-  sidebarToggleState: PropTypes.bool
+  sidebarToggleState: PropTypes.bool,
 };
 
 export default Sidebar;

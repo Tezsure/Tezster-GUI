@@ -140,7 +140,10 @@ class ActivateAccounts extends Component {
     if (errorFlag) {
       this.setState({ error });
     } else {
-      this.props.restoreFaucetAccountAction({ ...this.state, ...this.props });
+      this.props.restoreFaucetAccountAction({
+        ...this.state.faucet,
+        ...this.props,
+      });
     }
   };
 
@@ -188,18 +191,6 @@ class ActivateAccounts extends Component {
           <p>Please click on activate wallet button to activate an account</p>
         </div>
         <div className="modal-input">
-          <div className="input-container">Email</div>
-          <input
-            type="text"
-            name="email"
-            value={this.state.faucet.email}
-            className="form-control"
-            onChange={this.handleInputChange}
-            placeholder="Enter your email"
-          />
-        </div>
-        <span className="error-msg">{errorEmail}</span>
-        <div className="modal-input">
           <div className="input-container">Label</div>
           <input
             type="text"
@@ -211,6 +202,18 @@ class ActivateAccounts extends Component {
           />
         </div>
         <span className="error-msg">{errorlabel}</span>
+        <div className="modal-input">
+          <div className="input-container">Email</div>
+          <input
+            type="text"
+            name="email"
+            value={this.state.faucet.email}
+            className="form-control"
+            onChange={this.handleInputChange}
+            placeholder="Enter your email"
+          />
+        </div>
+        <span className="error-msg">{errorEmail}</span>
         <div className="modal-input">
           <div className="input-container">Password</div>
           <input

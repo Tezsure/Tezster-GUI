@@ -53,9 +53,7 @@ class Header extends Component {
           </div>
           <div className="cards">
             <div className="cards-header">
-              <h4>
-                {gas_limit} <span className="tezos-icon">ꜩ</span>
-              </h4>
+              <h4>{gas_limit}</h4>
             </div>
             <div className="cards-contents">
               <p>Gas Limit</p>
