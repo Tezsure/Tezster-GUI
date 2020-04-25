@@ -4,9 +4,11 @@ import { AppContainer as ReactHotAppContainer } from 'react-hot-loader';
 import Root from './containers/Root';
 import { configureStore, history } from './store/configureStore';
 import './styles/app.global.css';
+
 require('jquery');
 require('bootstrap');
 require('popper.js');
+require('./apis/eztz.min');
 
 const store = configureStore();
 
