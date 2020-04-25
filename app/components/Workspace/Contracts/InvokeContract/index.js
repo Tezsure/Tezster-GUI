@@ -61,13 +61,27 @@ class InvokeContract extends Component {
     const entryPoints = conseiljs.TezosContractIntrospector.generateEntryPointsFromCode(
       contract[0].contract
     );
-    const values = entryPoints.map((p) => ({
-      name: p.name,
-      structure: p.structure,
-      parameter: p.parameters.map((pp) => pp.name),
-      parameterTypes: p.parameters.map((pp) => pp.type),
-      stateValues: p.parameters.map((pp) => ({ [pp.name]: '' })),
-    }));
+    const values = entryPoints.map((p) => {
+      const parameter =
+        p.parameters.map((pp) => pp.name)[0] === undefined
+          ? ['X']
+          : p.parameters.map((pp) => pp.name);
+      const stateValues =
+        p.parameters.map((pp) => pp.name)[0] === undefined
+          ? [
+              {
+                X: '',
+              },
+            ]
+          : p.parameters.map((pp) => ({ [pp.name]: '' }));
+      return {
+        name: p.name,
+        structure: p.structure,
+        parameter,
+        stateValues,
+        parameterTypes: p.parameters.map((pp) => pp.type),
+      };
+    });
     this.setState({ entryPoints: values });
   }
 
