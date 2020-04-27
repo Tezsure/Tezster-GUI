@@ -33,9 +33,6 @@
         if (process.env.NODE_ENV === 'development') {
           scripts.push('../dll/renderer.dev.dll.js');
         }
-        scripts.push(
-          process.env.START_HOT ? `./apis/eztz.min.js` : './dist/eztz.min.js'
-        );
         // Dynamically insert the bundled app script in the renderer process
         const port = process.env.PORT || 1212;
         scripts.push(
@@ -46,7 +43,7 @@
 
         document.write(
           scripts
-            .map(script => `<script defer src="${script}"><\/script>`)
+            .map((script) => `<script defer src="${script}"><\/script>`)
             .join('')
         );
       }

@@ -1,3 +1,4 @@
+/* eslint-disable no-prototype-builtins */
 /* eslint-disable promise/always-return */
 import swal from 'sweetalert';
 import {
@@ -22,7 +23,11 @@ export function deployContractAction({ ...params }) {
     });
     __deployContract({ ...params }, (err, response) => {
       if (err) {
-        swal('Error!', 'Contract deployment failed', 'error');
+        const error = err.hasOwnProperty('message')
+          ? err.message.replace(/(?:\r\n|\r|\n|\s\s+)/g, ' ')
+          : '';
+
+        swal('Error!', `Contract deployment failed ${error}`, 'error');
         return dispatch({
           type: 'DEPLOY_CONTRACT_ERR',
           payload: response,
@@ -45,9 +50,12 @@ export function getContractStorageAction({ ...params }) {
     });
     __getStorage({ ...params }, (err, response) => {
       if (err) {
+        const error = err.hasOwnProperty('message')
+          ? err.message.replace(/(?:\r\n|\r|\n|\s\s+)/g, ' ')
+          : '';
         swal(
           'Error!',
-          'Sorry could not fetch storage value for selected contract',
+          `Sorry could not fetch storage value for selected contract ${error}`,
           'error'
         );
         dispatch({
@@ -97,7 +105,10 @@ export function handleInvokeContractAction({ ...params }) {
     });
     __invokeContract({ ...params }, (err, response) => {
       if (err) {
-        swal('Error!', 'Contract invocation failed', 'error');
+        const error = err.hasOwnProperty('message')
+          ? err.message.replace(/(?:\r\n|\r|\n|\s\s+)/g, ' ')
+          : '';
+        swal('Error!', `Contract call failed ${error}`, 'error');
         return dispatch({
           type: 'INVOKE_CONTRACT_ERR',
           payload: err,
