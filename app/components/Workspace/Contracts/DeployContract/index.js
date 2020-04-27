@@ -174,7 +174,15 @@ class DeployContract extends Component {
           <div className="input-container">----- OR -----</div>
         </div>
         <div className="modal-input">
-          <div className="input-container">Enter Contract </div>
+          <div className="input-container">
+            Enter Contract{' '}
+            <span
+              className="info"
+              title="If you enter contract in the text area it will considered for deployment"
+            >
+              &#9432;
+            </span>
+          </div>
           <div className="custom-file">
             <textarea
               placeholder="Enter your michelson contract"
