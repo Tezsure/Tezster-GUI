@@ -1,4 +1,10 @@
+/* eslint-disable no-script-url */
 import React from 'react';
+import { NavLink } from 'react-router-dom';
+
+const { shell } = require('electron');
+
+const issueLink = 'https://github.com/Tezsure/Tezster-GUI/issues';
 
 function index() {
   return (
@@ -6,46 +12,21 @@ function index() {
       <div className="cards-container">
         <div className="cards">
           <div className="cards-header">
-            <h4>FROM</h4>
+            <h4>Please follow the link to create issue on github</h4>
           </div>
-          <div className="cards-contents">
-            <input
-              type="email"
-              className="form-control"
-              placeholder="Please Enter Your Email"
-            />
-          </div>
+          <div className="cards-contents" />
         </div>
       </div>
       <div className="cards-container">
         <div className="cards">
           <div className="cards-header">
-            <h4>SUBJECT</h4>
+            <h4>
+              <NavLink to="#" onClick={() => shell.openExternal(issueLink)}>
+                {issueLink}
+              </NavLink>
+            </h4>
           </div>
-          <div className="cards-contents">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Please Enter Subject"
-            />
-          </div>
-        </div>
-      </div>
-      <div className="cards-container">
-        <div className="cards">
-          <div className="cards-header">
-            <h4>HOW CAN WE HELP</h4>
-          </div>
-          <div className="cards-contents">
-            <textarea className="form-control" rows="5" />
-          </div>
-        </div>
-      </div>
-      <div className="cards-container">
-        <div className="cards">
-          <button type="button" className="send-button btn btn-info">
-            Send Mail
-          </button>
+          <div className="cards-contents" />
         </div>
       </div>
     </div>

@@ -1,43 +1,43 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
+
+const conseiljs = require('conseiljs');
 
 class RestoreAccounts extends Component {
   constructor(props) {
     super(props);
     this.state = {
       mnemonic: '',
-      secretKey: '',
-      accountLabel: '',
-      email: '',
-      password: ''
+      label: '',
+      password: '',
+      mnemonicSuggestion: '',
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleRestoreAccount = this.handleRestoreAccount.bind(this);
+    this.handleCreateWallet = this.handleCreateWallet.bind(this);
   }
 
-  handleRestoreAccount() {
+  componentDidMount() {
+    this.setState({
+      mnemonicSuggestion: conseiljs.TezosWalletUtil.generateMnemonic(),
+    });
+  }
+
+  async handleCreateWallet() {
     let errFlag = false;
     const stateParams = {
       ...this.state,
       mnemonicErr: '',
-      secretKeyErr: '',
-      accountLabelErr: '',
-      emailErr: '',
-      passwordErr: ''
+      labelErr: '',
+      passwordErr: '',
     };
     if (stateParams.mnemonic === '') {
-      stateParams.mnemonicErr = 'Please enter mnemonic';
+      credD.mnemonicErr = 'Please enter mnemonic';
       errFlag = true;
     }
-    if (stateParams.secretKey === '') {
-      stateParams.secretKeyErr = 'Please enter secret key';
-      errFlag = true;
-    }
-    if (stateParams.accountLabel === '') {
-      stateParams.accountLabelErr = 'Please enter account label';
-      errFlag = true;
-    }
-    if (stateParams.email === '') {
-      stateParams.emailErr = 'Please enter email';
+    if (stateParams.label === '') {
+      stateParams.labelErr = 'Please enter label for your account';
       errFlag = true;
     }
     if (stateParams.password === '') {
@@ -45,9 +45,67 @@ class RestoreAccounts extends Component {
       errFlag = true;
     }
     if (errFlag === false) {
-      this.props.restoreAccountAction({
-        ...this.state,
-        ...this.props
+      const keystore = await conseiljs.TezosWalletUtil.unlockIdentityWithMnemonic(
+        this.state.mnemonic,
+        this.state.password
+      );
+      const userParams = {
+        ...keystore,
+        sk: keystore.secret,
+        pk: keystore.publicKey,
+        secret: keystore.secret,
+        label: stateParams.label,
+        pkh: keystore.publicKeyHash,
+        password: stateParams.password,
+        mnemonic: stateParams.mnemonic,
+      };
+      this.props.restoreFaucetAccountAction({
+        ...userParams,
+        ...this.props,
+      });
+    } else {
+      this.setState(stateParams);
+    }
+  }
+
+  async handleRestoreAccount() {
+    let errFlag = false;
+    const stateParams = {
+      ...this.state,
+      mnemonicErr: '',
+      labelErr: '',
+      passwordErr: '',
+    };
+    if (stateParams.mnemonic === '') {
+      credD.mnemonicErr = 'Please enter mnemonic';
+      errFlag = true;
+    }
+    if (stateParams.label === '') {
+      stateParams.labelErr = 'Please enter label for your account';
+      errFlag = true;
+    }
+    if (stateParams.password === '') {
+      stateParams.passwordErr = 'Please enter password';
+      errFlag = true;
+    }
+    if (errFlag === false) {
+      const keystore = await conseiljs.TezosWalletUtil.unlockIdentityWithMnemonic(
+        this.state.mnemonic,
+        this.state.password
+      );
+      const userParams = {
+        ...keystore,
+        sk: keystore.secret,
+        pk: keystore.publicKey,
+        secret: keystore.secret,
+        label: stateParams.label,
+        pkh: keystore.publicKeyHash,
+        password: stateParams.password,
+        mnemonic: stateParams.mnemonic,
+      };
+      this.props.restoreFaucetAccountAction({
+        ...userParams,
+        ...this.props,
       });
     } else {
       this.setState(stateParams);
@@ -55,51 +113,55 @@ class RestoreAccounts extends Component {
   }
 
   handleInputChange(event) {
-    this.setState({ [event.target.name]: event.target.value });
+    if (event.target.name === 'mnemonic') {
+      const mnemonic = event.target.value;
+      this.setState({ mnemonic });
+    } else {
+      this.setState({ [event.target.name]: event.target.value });
+    }
   }
 
   render() {
     return (
       <div className="modal-content">
         <div className="modal-header">
-          <h5 className="modal-title">Restore Account</h5>
+          <h5 className="modal-title">Create/Restore Wallet</h5>
           <button
             type="button"
             className="close"
             data-dismiss="modal"
             aria-label="Close"
-            onClick={() => this.props.handleModalToggle('')}
+            onClick={() => {
+              this.props.handleModalToggle('');
+              this.props.toggleButtonState();
+            }}
           >
             <span aria-hidden="true">×</span>
           </button>
         </div>
         <div className="modal-body">
-          <p>Node provider is connected : http://localhost:18731</p>
-        </div>
-        <div className="modal-body">
           <p>
-            For babylonnet Account Email+password+Secret Key is required and
-            change node provider to Alphanet
+            Node provider is connected : {this.props.dashboardHeader.rpcServer}{' '}
+            <br />
+            Note: The account created will be a non fundraiser account.
           </p>
         </div>
         <div className="modal-body">
-          <p>
-            For LocalNode Account Email+password is required and change node
-            provider to Local Node
-          </p>
+          Use the below mnemonic to create wallet
+          <p className="suggestion-msg">{this.state.mnemonicSuggestion}</p>
         </div>
         <div className="modal-input">
-          <div className="input-container">Email Id </div>
+          <div className="input-container">Label </div>
           <input
-            type="email"
+            type="text"
             className="form-control"
             onChange={this.handleInputChange}
-            name="email"
-            value={this.state.email}
-            placeholder="Enter your Email Id"
+            name="label"
+            value={this.state.label}
+            placeholder="Enter label for your account"
           />
         </div>
-        <span className="error-msg">{this.state.emailErr}</span>
+        <span className="error-msg">{this.state.labelErr}</span>
         <div className="modal-input">
           <div className="input-container">Password </div>
           <input
@@ -113,7 +175,7 @@ class RestoreAccounts extends Component {
         </div>
         <span className="error-msg">{this.state.passwordErr}</span>
         <div className="modal-body">
-          <p>Seed Words/Mnenomics(leave a space between each word)</p>
+          <p>Seed Words/Mnenomics</p>
           <textarea
             name="mnemonic"
             rows="4"
@@ -121,58 +183,36 @@ class RestoreAccounts extends Component {
             placeholder="Enter seed words/mnemonic"
             value={this.state.mnemonic}
             onChange={this.handleInputChange}
-            className="textArea"
+            className="textArea form-control"
           />
           <br />
           <span className="error-msg">{this.state.mnemonicErr}</span>
         </div>
-        <div className="modal-input">
-          <div className="input-container">Secret Key </div>
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Enter your secret key"
-            onChange={this.handleInputChange}
-            value={this.state.secretKey}
-            name="secretKey"
-          />
-        </div>
-        <span className="error-msg">{this.state.secretKeyErr}</span>
-        <div className="modal-input">
-          <div className="input-container">Account Label </div>
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Enter account label"
-            onChange={this.handleInputChange}
-            value={this.state.accountLabel}
-            name="accountLabel"
-          />
-        </div>
-        <span className="error-msg">{this.state.accountLabelErr}</span>
         <div className="modal-footer">
-          {this.props.dashboardHeader.networkId === 'Localnode' ? (
-            <button
-              type="button"
-              className="btn btn-success"
-              onClick={() => this.handleRestoreAccount()}
-            >
-              Restore Wallet Account
-            </button>
-          ) : (
-            <button
-              type="button"
-              className="btn btn-success"
-              onClick={() => this.handleRestoreAccount()}
-            >
-              Activate Babylonnet Account
-            </button>
-          )}
+          <button
+            type="button"
+            className="btn btn-success"
+            disabled={this.props.buttonState}
+            onClick={() => this.handleRestoreAccount()}
+          >
+            {this.props.buttonState ? 'Please wait....' : 'Create Wallet'}
+          </button>
+          <button
+            type="button"
+            className="btn btn-success"
+            disabled={this.props.buttonState}
+            onClick={() => this.handleRestoreAccount()}
+          >
+            {this.props.buttonState ? 'Please wait....' : 'Restore Wallet'}
+          </button>
           <button
             type="button"
             className="btn btn-secondary"
             data-dismiss="modal"
-            onClick={() => this.props.handleModalToggle('')}
+            onClick={() => {
+              this.props.handleModalToggle('');
+              this.props.toggleButtonState();
+            }}
           >
             Close
           </button>

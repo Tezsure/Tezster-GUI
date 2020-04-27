@@ -1,14 +1,17 @@
+/* eslint-disable import/named */
 // @flow
 import { combineReducers } from 'redux';
 import { connectRouter } from 'connected-react-router';
 import type { HashHistory } from 'history';
 import counter from './counter';
+import blocks from './Workspace/blocks';
 import {
   sidebarToggleState,
   currentTab,
   blockAccordionIndex
 } from './Workspace/sidebar';
 import {
+  buttonState,
   userAccounts,
   userBalances,
   showAccountsModal
@@ -21,18 +24,26 @@ import {
   transactionsSuccess
 } from './Workspace/transactions';
 
-import selectedContractsTab from './Workspace/contracts';
-import isAvailableTezsterCli from './onBoard';
+import {
+  selectedContractsTab,
+  selectedContractStorage,
+  selectedContractAmountBalance
+} from './Workspace/contracts';
+import { isAvailableTezsterCli, localConfig } from './onBoard';
 
 export default function createRootReducer(history: HashHistory) {
   return combineReducers<{}, *>({
     router: connectRouter(history),
+    blocks,
     counter,
+    buttonState,
     sidebarToggleState,
     showAccountsModal,
     showTransactionModal,
     blockAccordionIndex,
     selectedContractsTab,
+    selectedContractStorage,
+    selectedContractAmountBalance,
     dashboardHeader,
     userAccounts,
     userBalances,
@@ -40,6 +51,7 @@ export default function createRootReducer(history: HashHistory) {
     transactionsSuccess,
     selectedTransactionWallet,
     isAvailableTezsterCli,
+    localConfig,
     currentTab
   });
 }

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="26.993" height="25" viewBox="0 0 26.993 25">
+  <g id="notifications" transform="translate(0.993)">
+    <path id="bell" d="M9,18a1.807,1.807,0,0,1-1.558-.9h3.115A1.806,1.806,0,0,1,9,18Zm8.9-4.5H.007A2.7,2.7,0,0,0,2.7,10.8V6.3a6.3,6.3,0,0,1,12.6,0v4.5a2.692,2.692,0,0,0,2.6,2.7Z" transform="translate(0 6)" fill="none" stroke="#b1b4ce" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
+    <circle id="Oval" cx="3.5" cy="3.5" r="3.5" transform="translate(19)" fill="#f98e73"/>
+  </g>
+</svg>

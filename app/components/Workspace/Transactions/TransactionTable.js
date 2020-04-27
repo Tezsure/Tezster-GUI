@@ -1,3 +1,7 @@
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/prop-types */
+/* eslint-disable no-prototype-builtins */
 import React, { Component } from 'react';
 
 class TransactionTable extends Component {
@@ -8,15 +12,19 @@ class TransactionTable extends Component {
 
   render() {
     const Transactions = this.props.userTransactions.map((elem, index) => {
-      const balance = (elem.tx.amount / 1000000).toFixed(3) + 'Tz';
+      const transactionData = elem.hasOwnProperty('tx') ? elem.tx : elem;
+      const balance = `${(transactionData.amount / 1000000).toFixed(3)}Tz`;
+      const opHash = elem.hasOwnProperty('op') ? elem.op.opHash : 'N/A';
       return (
-        <tr className="table-row" key={elem.op.opHash + index}>
+        <tr className="table-row" key={`trn-${index}`}>
           <td className="table-body-cell">
             <div className="cards-header">
               <h4>SOURCE</h4>
             </div>
             <div className="cards-contents">
-              <p className="account-address-content">{elem.tx.source}</p>
+              <p className="account-address-content">
+                {transactionData.source}
+              </p>
             </div>
           </td>
           <td className="table-body-cell">
@@ -24,7 +32,9 @@ class TransactionTable extends Component {
               <h4>DESTINATION</h4>
             </div>
             <div className="cards-contents">
-              <p className="account-address-content">{elem.tx.destination}</p>
+              <p className="account-address-content">
+                {transactionData.destination}
+              </p>
             </div>
           </td>
           <td className="table-body-cell">
@@ -40,13 +50,11 @@ class TransactionTable extends Component {
               <h4>OP HASH</h4>
             </div>
             <div className="cards-contents">
-              <p className="account-address-content">{elem.op.opHash}</p>
+              <p className="account-address-content">{opHash}</p>
             </div>
           </td>
           <td className="table-body-cell">
-            <div className="transaction-status">
-              {elem.tx.operationResultStatus}
-            </div>
+            <div className="transaction-status">success</div>
           </td>
         </tr>
       );

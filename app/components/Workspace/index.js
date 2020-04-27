@@ -13,11 +13,10 @@ class Workspace extends Component {
   render() {
     return (
       <div
-        className="grid-container"
-        style={
+        className={
           this.props.sidebarToggleState
-            ? { gridTemplateColumns: '20% 80%' }
-            : { gridTemplateColumns: '10% 90%' }
+            ? 'grid-container'
+            : 'grid-container-collapsed'
         }
       >
         <Header {...this.props} />
@@ -30,7 +29,7 @@ class Workspace extends Component {
 Sidebar.protoTypes = {
   sidebarToggleState: PropTypes.bool,
   getDashboardHeaderAction: PropTypes.func,
-  getAccountsAction: PropTypes.func
+  getAccountsAction: PropTypes.func,
 };
 
 export default Workspace;
