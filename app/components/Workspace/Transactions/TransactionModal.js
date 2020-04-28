@@ -11,7 +11,7 @@ class TransactionModal extends Component {
       amount: '',
       amountErr: '',
       gasPrice: '',
-      gasPriceErr: ''
+      gasPriceErr: '',
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleExecuteTransaction = this.handleExecuteTransaction.bind(this);
@@ -19,12 +19,12 @@ class TransactionModal extends Component {
 
   handleExecuteTransaction() {
     let errorFlag = false;
-    let stateParams = {
+    const stateParams = {
       ...this.state,
       senderAccountErr: '',
       recieverAccountErr: '',
       amountErr: '',
-      gasPriceErr: ''
+      gasPriceErr: '',
     };
     if (stateParams.senderAccount === '0') {
       stateParams.senderAccountErr = 'Please select senders account';
@@ -46,7 +46,7 @@ class TransactionModal extends Component {
     if (!errorFlag) {
       this.props.executeTransactionAction({
         ...this.props,
-        ...this.state
+        ...this.state,
       });
     } else {
       this.setState(stateParams);
@@ -60,12 +60,12 @@ class TransactionModal extends Component {
   render() {
     const sendersAccounts = this.props.userAccounts.map((elem, index) => (
       <option key={elem.account + index} value={elem.account}>
-        {elem.account}
+        {elem.label + '-' + elem.account}
       </option>
     ));
     const recieverAccounts = this.props.userAccounts.map((elem, index) => (
       <option key={elem.account + index} value={elem.account}>
-        {elem.account}
+        {elem.label + '-' + elem.account}
       </option>
     ));
     return (
@@ -75,7 +75,7 @@ class TransactionModal extends Component {
         style={{
           display: 'block',
           paddingRight: '15px',
-          opacity: 1
+          opacity: 1,
         }}
       >
         <div className="modal-dialog" role="document">
@@ -87,7 +87,10 @@ class TransactionModal extends Component {
                 className="close"
                 data-dismiss="modal"
                 aria-label="Close"
-                onClick={() => this.props.handleModalToggle()}
+                onClick={() => {
+                  this.props.handleModalToggle();
+                  this.props.toggleButtonState();
+                }}
               >
                 <span aria-hidden="true">×</span>
               </button>
@@ -116,7 +119,7 @@ class TransactionModal extends Component {
                 onChange={this.handleInputChange}
               >
                 <option value="0" disabled>
-                  Select Sender&rsquo;s Account
+                  Select Reciever&rsquo;s Account
                 </option>
                 {recieverAccounts}
               </select>
@@ -152,16 +155,20 @@ class TransactionModal extends Component {
                 type="button"
                 className="btn btn-secondary"
                 data-dismiss="modal"
-                onClick={() => this.props.handleModalToggle()}
+                onClick={() => {
+                  this.props.handleModalToggle();
+                  this.props.toggleButtonState();
+                }}
               >
                 Cancel
               </button>
               <button
                 type="button"
                 className="btn btn-success"
+                disabled={this.props.buttonState}
                 onClick={() => this.handleExecuteTransaction()}
               >
-                Pay Amount
+                {this.props.buttonState ? 'Please wait....' : 'Pay Amount'}
               </button>
             </div>
           </div>

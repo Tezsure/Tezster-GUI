@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import DeployContract from './DeployContract';
-import CallContract from './CallContract';
-import ViewStorageValue from './ViewStorageValue';
-import ShowContract from './ShowContract';
+import StorageContract from './StorageContract';
+import InvokeContract from './InvokeContract';
 
 class index extends Component {
   constructor(props) {
@@ -30,6 +29,38 @@ class index extends Component {
               Deploy contract
             </span>
           </li>
+          <li className="nav-item">
+            <span
+              className={
+                CurrentTab === 'invokeContract' ? 'nav-link active' : 'nav-link'
+              }
+              id="home-tab"
+              data-toggle="tab"
+              role="tab"
+              onClick={() =>
+                this.props.handleContractsTabChangeAction('invokeContract')
+              }
+            >
+              Invoke contract
+            </span>
+          </li>
+          <li className="nav-item">
+            <span
+              className={
+                CurrentTab === 'storageContract'
+                  ? 'nav-link active'
+                  : 'nav-link'
+              }
+              id="home-tab"
+              data-toggle="tab"
+              role="tab"
+              onClick={() =>
+                this.props.handleContractsTabChangeAction('storageContract')
+              }
+            >
+              View Contract Storage
+            </span>
+          </li>
         </ul>
         <div className="tab-content" id="myTabContent">
           <div
@@ -43,6 +74,30 @@ class index extends Component {
             aria-labelledby="home-tab"
           >
             <DeployContract {...this.props} />
+          </div>
+          <div
+            className={
+              CurrentTab === 'invokeContract'
+                ? 'tab-pane fade show active'
+                : 'tab-pane fade'
+            }
+            id="home"
+            role="tabpanel"
+            aria-labelledby="home-tab"
+          >
+            <InvokeContract {...this.props} />
+          </div>
+          <div
+            className={
+              CurrentTab === 'storageContract'
+                ? 'tab-pane fade show active'
+                : 'tab-pane fade'
+            }
+            id="home"
+            role="tabpanel"
+            aria-labelledby="home-tab"
+          >
+            <StorageContract {...this.props} />
           </div>
         </div>
       </div>

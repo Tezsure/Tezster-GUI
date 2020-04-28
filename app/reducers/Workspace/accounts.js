@@ -28,3 +28,12 @@ export function userBalances(initialState = [], action) {
       return initialState;
   }
 }
+
+export function buttonState(initialState = false, action) {
+  switch (action.type) {
+    case 'BUTTON_LOADING_STATE':
+      return action.payload;
+    default:
+      return initialState;
+  }
+}

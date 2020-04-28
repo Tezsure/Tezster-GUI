@@ -1,4 +1,4 @@
-export default function getBlocks(initialState = [], action) {
+export default function blocks(initialState = [], action) {
   switch (action.type) {
     case 'GET_BLOCKS':
       return action.payload;

@@ -1,76 +1,107 @@
+/* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Workspace from '../components/Workspace';
 import {
   sidebarToggleAction,
   handleAccordionAction,
-  handleTabChangeAction
+  handleTabChangeAction,
 } from '../actions/Workspace/sidebar';
 
+import getBlockHeadsActions from '../actions/Workspace/blocks';
+
 import {
+  toggleButtonState,
   getAccountsAction,
-  createAccountsAction,
-  restoreAccountAction,
+  createFaucetAccountsAction,
+  restoreFaucetAccountAction,
   toggleAccountsModalAction,
-  getBalanceAction
+  getBalanceAction,
 } from '../actions/Workspace/accounts';
 import {
   toggleTransactionModalAction,
   executeTransactionAction,
   getTransactionsAction,
-  selectTransactionWalletAction
+  selectTransactionWalletAction,
 } from '../actions/Workspace/transactions';
 import {
   handleContractsTabChangeAction,
-  deployContractAction
+  handleInvokeContractAction,
+  deployContractAction,
+  getContractStorageAction,
+  getAccountBalanceAction,
 } from '../actions/Workspace/contracts';
 import {
   getDashboardHeaderAction,
-  handleNetworkChangeAction
+  handleNetworkChangeAction,
 } from '../actions/Workspace/dashboardHeader';
-import checkTezsterCliAction from '../actions/Onboard';
+import {
+  handleTezsterCliActionChange,
+  checkTezsterCliAction,
+  getLocalConfigAction,
+} from '../actions/Onboard';
 import Error from '../components/Error';
 
 class WorkspacePage extends Component {
   componentDidMount() {
     this.props.checkTezsterCliAction();
+    this.props.getLocalConfigAction();
+    this.props.getBlockHeadsActions({ ...this.props });
   }
 
   render() {
-    if (this.props.isAvailableTezsterCli) {
+    if (
+      this.props.isAvailableTezsterCli &&
+      this.props.isAvailableTezsterCli !== 'pending'
+    ) {
       return <Workspace {...this.props} />;
     }
     return <Error {...this.props} />;
   }
 }
-const mapDispatchToProps = dispatch => ({
-  restoreAccountAction: payload => dispatch(restoreAccountAction(payload)),
-  handleNetworkChangeAction: payload =>
+const mapDispatchToProps = (dispatch) => ({
+  toggleButtonState: (payload) => dispatch(toggleButtonState(payload)),
+  restoreFaucetAccountAction: (payload) =>
+    dispatch(restoreFaucetAccountAction(payload)),
+  handleNetworkChangeAction: (payload) =>
     dispatch(handleNetworkChangeAction(payload)),
-  toggleTransactionModalAction: payload =>
+  toggleTransactionModalAction: (payload) =>
     dispatch(toggleTransactionModalAction(payload)),
-  getBalanceAction: payload => dispatch(getBalanceAction(payload)),
-  getAccountsAction: payload => dispatch(getAccountsAction(payload)),
-  getTransactionsAction: payload => dispatch(getTransactionsAction(payload)),
-  deployContractAction: payload => dispatch(deployContractAction(payload)),
-  createAccountsAction: payload => dispatch(createAccountsAction(payload)),
-  toggleAccountsModalAction: payload =>
+  getBalanceAction: (payload) => dispatch(getBalanceAction(payload)),
+  getAccountsAction: (payload) => dispatch(getAccountsAction(payload)),
+  getBlockHeadsActions: (payload) => dispatch(getBlockHeadsActions(payload)),
+  getTransactionsAction: (payload) => dispatch(getTransactionsAction(payload)),
+  handleInvokeContractAction: (payload) =>
+    dispatch(handleInvokeContractAction(payload)),
+  deployContractAction: (payload) => dispatch(deployContractAction(payload)),
+  getAccountBalanceAction: (payload) =>
+    dispatch(getAccountBalanceAction(payload)),
+  createFaucetAccountsAction: (payload) =>
+    dispatch(createFaucetAccountsAction(payload)),
+  toggleAccountsModalAction: (payload) =>
     dispatch(toggleAccountsModalAction(payload)),
-  getDashboardHeaderAction: payload =>
+  getDashboardHeaderAction: (payload) =>
     dispatch(getDashboardHeaderAction(payload)),
-  sidebarToggleAction: payload => dispatch(sidebarToggleAction(payload)),
-  selectTransactionWalletAction: payload =>
+  sidebarToggleAction: (payload) => dispatch(sidebarToggleAction(payload)),
+  selectTransactionWalletAction: (payload) =>
     dispatch(selectTransactionWalletAction(payload)),
-  handleTabChangeAction: payload => dispatch(handleTabChangeAction(payload)),
-  executeTransactionAction: payload =>
+  handleTabChangeAction: (payload) => dispatch(handleTabChangeAction(payload)),
+  executeTransactionAction: (payload) =>
     dispatch(executeTransactionAction(payload)),
-  handleContractsTabChangeAction: payload =>
+  handleContractsTabChangeAction: (payload) =>
     dispatch(handleContractsTabChangeAction(payload)),
-  checkTezsterCliAction: payload => dispatch(checkTezsterCliAction(payload)),
-  handleAccordionAction: payload => dispatch(handleAccordionAction(payload))
+  getContractStorageAction: (payload) =>
+    dispatch(getContractStorageAction(payload)),
+  handleTezsterCliActionChange: (payload) =>
+    dispatch(handleTezsterCliActionChange(payload)),
+  checkTezsterCliAction: (payload) => dispatch(checkTezsterCliAction(payload)),
+  getLocalConfigAction: (payload) => dispatch(getLocalConfigAction(payload)),
+  handleAccordionAction: (payload) => dispatch(handleAccordionAction(payload)),
 });
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
+  blocks: state.blocks,
   currentTab: state.currentTab,
+  buttonState: state.buttonState,
   userAccounts: state.userAccounts,
   showTransactionModal: state.showTransactionModal,
   showAccountsModal: state.showAccountsModal,
@@ -81,8 +112,11 @@ const mapStateToProps = state => ({
   userTransactions: state.userTransactions,
   selectedTransactionWallet: state.selectedTransactionWallet,
   transactionsSuccess: state.transactionsSuccess,
+  localConfig: state.localConfig,
   selectedContractsTab: state.selectedContractsTab,
-  isAvailableTezsterCli: state.isAvailableTezsterCli
+  selectedContractStorage: state.selectedContractStorage,
+  selectedContractAmountBalance: state.selectedContractAmountBalance,
+  isAvailableTezsterCli: state.isAvailableTezsterCli,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WorkspacePage);

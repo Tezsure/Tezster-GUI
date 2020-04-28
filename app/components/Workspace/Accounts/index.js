@@ -1,3 +1,5 @@
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import Table from './Table';
 import AccountsModal from './AccountsModal';
@@ -6,12 +8,17 @@ class Accounts extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showModal: false,
-      modalType: ''
+      modalType: '',
+      currentAccount: {
+        publicKey: '',
+        publicKeyHash: '',
+        secretKey: '',
+      },
     };
     this.handleModalToggle = this.handleModalToggle.bind(this);
-    this.handleCreateAccount = this.handleCreateAccount.bind(this);
+    this.handleActivateAccount = this.handleActivateAccount.bind(this);
     this.handleValidateModalOpen = this.handleValidateModalOpen.bind(this);
+    this.handleWalletModalShow = this.handleWalletModalShow.bind(this);
   }
 
   handleModalToggle(modalType) {
@@ -22,8 +29,23 @@ class Accounts extends Component {
     this.props.toggleAccountsModalAction(modalType);
   }
 
-  handleCreateAccount({ ...accounts }) {
-    this.props.createAccountsAction({ ...accounts, ...this.props });
+  handleActivateAccount({ ...args }) {
+    this.props.createFaucetAccountsAction({ ...args });
+  }
+
+  handleWalletModalShow({ ...args }) {
+    const userState = { ...this.state };
+    const currentAccount = {
+      label: args.label,
+      amount: args.balance,
+      publicKey: args.pk,
+      secretKey: args.sk,
+      publicKeyHash: args.pkh,
+    };
+    userState.currentAccount = currentAccount;
+    this.setState({ ...userState }, () => {
+      this.props.toggleAccountsModalAction('show-user-wallet');
+    });
   }
 
   render() {
@@ -38,30 +60,34 @@ class Accounts extends Component {
                   className="btn btn-success"
                   onClick={() => this.handleModalToggle('restore-accounts')}
                 >
-                  Restore Account
+                  Restore/Create Wallet
                 </button>
               </div>
               <div className="button-accounts">
                 <button
                   type="button"
                   className="btn btn-success"
-                  onClick={() => this.handleModalToggle('create-accounts')}
+                  onClick={() => this.handleModalToggle('activate-accounts')}
                 >
-                  Create Account
+                  Add Faucet Account
                 </button>
               </div>
             </div>
           </div>
+          <Table
+            {...this.props}
+            handleWalletModalShow={this.handleWalletModalShow}
+          />
         </div>
-        <Table {...this.props} />
         {this.props.showAccountsModal === '' ? (
-          <React.Fragment />
+          <></>
         ) : (
           <AccountsModal
             {...this.props}
+            {...this.state}
             modalType={this.state.modalType}
             handleModalToggle={this.handleModalToggle}
-            handleCreateAccount={this.handleCreateAccount}
+            handleActivateAccount={this.handleActivateAccount}
             handleValidateModalOpen={this.handleValidateModalOpen}
           />
         )}

@@ -11,6 +11,9 @@ function Header(props) {
             onClick={() => props.sidebarToggleAction(props.sidebarToggleState)}
           />
         </div>
+        <div className="siderbar-logo-container">
+          <span className="logo-icon" />
+        </div>
         <div className="search-bar-container">
           <div className="input-group">
             <input
@@ -26,7 +29,7 @@ function Header(props) {
 }
 Header.protoTypes = {
   sidebarToggleAction: PropTypes.func,
-  sidebarToggleState: PropTypes.bool
+  sidebarToggleState: PropTypes.bool,
 };
 
 export default Header;

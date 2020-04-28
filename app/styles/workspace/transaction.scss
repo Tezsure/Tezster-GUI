@@ -1,4 +1,8 @@
+.empty-transaction {
+  text-align: center;
+}
 .transaction-container {
+  height: -webkit-fill-available;
   padding: 10px;
   background: #fff;
   border-top: 0.5px solid #dee2e6;

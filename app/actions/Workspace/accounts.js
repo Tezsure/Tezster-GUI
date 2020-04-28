@@ -1,121 +1,244 @@
+/* eslint-disable prefer-promise-reject-errors */
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-return-await */
+/* eslint-disable promise/catch-or-return */
+/* eslint-disable promise/always-return */
+/* eslint-disable no-prototype-builtins */
 import swal from 'sweetalert';
+import { exec } from 'child_process';
 
 const {
   __getBalance,
   __getAccounts,
-  __activateAccount
+  __activateAccount,
+  __activateAccountOperation,
 } = require('../../apis/eztz.service');
+
+const config = require('../../apis/config');
+
+function checkIsLocalNodeRunning() {
+  return new Promise((resolve) => {
+    exec(
+      'tezster get-balance tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx',
+      (err, stdout) => {
+        if (err || stdout.split('ECONNREFUSED').length > 1) {
+          return resolve(false);
+        }
+        return resolve(true);
+      }
+    );
+  });
+}
 
 export function toggleAccountsModalAction(modalType) {
   return {
     type: 'TOGGLE_ACCOUNTS_MODAL',
-    payload: modalType
+    payload: modalType,
   };
 }
 
 export function getAccountsAction({ ...params }) {
-  return dispatch => {
-    if (localStorage.hasOwnProperty('tezsure')) {
-      dispatch({
-        type: 'GET_ACCOUNTS',
-        payload: JSON.parse(localStorage.getItem('tezsure')).userAccounts
-      });
-    } else {
-      __getAccounts({ ...params }, (err, accounts) => {
-        if (err) {
-          dispatch({
-            type: 'GET_ACCOUNTS_ERR',
-            payload: err
-          });
+  let { networkId } = params.dashboardHeader;
+  let IsLocalNodeRunning = false;
+  return async (dispatch) => {
+    IsLocalNodeRunning = await checkIsLocalNodeRunning();
+    networkId =
+      !IsLocalNodeRunning && networkId === 'Localnode'
+        ? 'Carthagenet-Tezster'
+        : networkId;
+    if (params.userAccounts.length === 0) {
+      if (localStorage.hasOwnProperty('tezsure')) {
+        params.userAccounts = JSON.parse(
+          localStorage.getItem('tezsure')
+        ).userAccounts;
+        params.dashboardHeader.networkId = networkId;
+        if (
+          IsLocalNodeRunning &&
+          networkId === 'Localnode' &&
+          params.userAccounts.Localnode.length === 0
+        ) {
+          params.userAccounts.Localnode = config.identities;
         }
-        Promise.all(accounts).then(response => {
-          localStorage.setItem(
-            'tezsure',
-            JSON.stringify({ userAccounts: response, transactions: {} })
-          );
-          dispatch({
+      } else {
+        params.userAccounts[networkId.split('-')[0]] =
+          IsLocalNodeRunning && networkId === 'Localnode'
+            ? config.identities
+            : [];
+        params.dashboardHeader.networkId = networkId;
+      }
+    } else {
+      params.userAccounts = JSON.parse(
+        localStorage.getItem('tezsure')
+      ).userAccounts;
+      params.dashboardHeader.networkId = networkId;
+    }
+    __getAccounts({ ...params }, (err, accounts) => {
+      if (err) {
+        return dispatch({
+          type: 'GET_ACCOUNTS_ERR',
+          payload: err,
+        });
+      }
+      Promise.all(accounts)
+        .then((response) => {
+          if (!localStorage.hasOwnProperty('tezsure')) {
+            const userAccounts = {
+              Carthagenet: [],
+              Localnode: [],
+              [networkId.split('-')[0]]: response,
+            };
+            localStorage.setItem(
+              'tezsure',
+              JSON.stringify({ ...config, userAccounts })
+            );
+          }
+          return dispatch({
             type: 'GET_ACCOUNTS',
-            payload: response
+            payload: response,
+          });
+        })
+        .catch((accountsErr) => {
+          return dispatch({
+            type: 'GET_ACCOUNTS_ERR',
+            payload: accountsErr,
           });
         });
-      });
-    }
+    });
   };
 }
 
 export function getBalanceAction(payload) {
-  return dispatch => {
-    if (localStorage.getItem('tezsure')) {
-      dispatch({
-        type: 'GET_BALANCE',
-        payload: localStorage.getItem('tezsure').userAccounts
-      });
-    } else {
-      __getBalance({ ...payload }, (err, response) => {
-        if (err) {
-          dispatch({
-            type: 'GET_BALANCE_ERR',
-            payload: err
-          });
-        }
+  const { networkId } = payload.dashboardHeader;
+  return (dispatch) => {
+    if (!payload.userAccounts.hasOwnProperty(networkId)) {
+      payload.userAccounts[networkId] = payload.userAccounts;
+    }
+    __getAccounts({ ...payload }, (err, response) => {
+      if (err) {
         dispatch({
-          type: 'GET_BALANCE',
-          payload: response
+          type: 'GET_BALANCE_ERR',
+          payload: err,
         });
-      });
-    }
-  };
-}
-
-export function createAccountsAction(payload) {
-  const { userAccounts } = JSON.parse(localStorage.getItem('tezsure'));
-  return dispatch => {
-    if (payload.dashboardHeader.networkId === 'Localnode') {
-      payload.userAccounts.push({ account: payload.optionalKey, balance: 0 });
-      dispatch({
-        type: 'GET_ACCOUNTS',
-        payload: payload.userAccounts
-      });
-    }
-    Promise.all([__getBalance(payload)]).then(response => {
-      userAccounts.push(response[0]);
-      localStorage.setItem('tezsure', JSON.stringify({ userAccounts }));
-      swal('Success!', 'Account created successfully', 'success');
-      dispatch({
-        type: 'GET_ACCOUNTS',
-        payload: userAccounts
-      });
-      dispatch({
-        type: 'TOGGLE_ACCOUNTS_MODAL',
-        payload: ''
+      }
+      return dispatch({
+        type: 'GET_BALANCE',
+        payload: response,
       });
     });
   };
 }
 
-export function restoreAccountAction(payload) {
+export function createFaucetAccountsAction(payload) {
+  const { networkId } = payload.dashboardHeader;
   const { userAccounts } = JSON.parse(localStorage.getItem('tezsure'));
-  return dispatch => {
+  return (dispatch) => {
+    dispatch({
+      type: 'BUTTON_LOADING_STATE',
+      payload: true,
+    });
+    __activateAccountOperation(payload, (err, result) => {
+      if (err) {
+        swal('Error!', err.replace(/(?:\r\n|\r|\n|\s\s+)/g, ' '), 'error');
+        dispatch({
+          type: 'GET_ACCOUNTS',
+          payload: userAccounts[networkId.split('-')[0]],
+        });
+        return dispatch({
+          type: 'BUTTON_LOADING_STATE',
+          payload: false,
+        });
+      }
+      const activatedAccount = {
+        sk: result.privateKey,
+        pk: result.publicKey,
+        pkh: payload.faucet.pkh,
+        label: payload.faucet.label,
+        dashboardHeader: payload.dashboardHeader,
+      };
+      payload.userAccounts.push({ ...activatedAccount });
+      Promise.all(
+        payload.userAccounts.map(
+          async (elem) =>
+            await __getBalance({
+              ...elem,
+              dashboardHeader: payload.dashboardHeader,
+            })
+        )
+      ).then((response) => {
+        const __localStorage = JSON.parse(localStorage.getItem('tezsure'));
+        __localStorage.userAccounts[networkId.split('-')[0]] = response;
+        localStorage.setItem('tezsure', JSON.stringify({ ...__localStorage }));
+        swal('Success!', 'Account created successfully', 'success');
+        dispatch({
+          type: 'GET_ACCOUNTS',
+          payload: response,
+        });
+        dispatch({
+          type: 'TOGGLE_ACCOUNTS_MODAL',
+          payload: '',
+        });
+      });
+      dispatch({
+        type: 'BUTTON_LOADING_STATE',
+        payload: false,
+      });
+    });
+  };
+}
+
+export function restoreFaucetAccountAction(payload) {
+  const { networkId } = payload.dashboardHeader;
+  const __localStorage = JSON.parse(localStorage.getItem('tezsure'));
+  const { userAccounts } = JSON.parse(localStorage.getItem('tezsure'));
+  return (dispatch) => {
+    dispatch({
+      type: 'BUTTON_LOADING_STATE',
+      payload: true,
+    });
     __activateAccount(payload, (err, account) => {
       if (err) {
         dispatch({
           type: 'GET_ACCOUNTS_ERR',
-          payload: err
+          payload: err,
+        });
+        dispatch({
+          type: 'BUTTON_LOADING_STATE',
+          payload: false,
         });
       }
-      Promise.all([__getBalance({ ...account, ...payload })]).then(response => {
-        userAccounts.push(response[0]);
-        localStorage.setItem('tezsure', JSON.stringify({ userAccounts }));
-        swal('Success!', 'Account registered successfully', 'success');
-        dispatch({
-          type: 'GET_ACCOUNTS',
-          payload: userAccounts
-        });
-        dispatch({
-          type: 'TOGGLE_ACCOUNTS_MODAL',
-          payload: ''
-        });
+      Promise.all([__getBalance({ ...account, ...payload })]).then(
+        (response) => {
+          const restoredAccount = { ...response[0] };
+          restoredAccount.label = payload.label;
+          userAccounts[networkId.split('-')[0]].push(restoredAccount);
+          payload.userAccounts = userAccounts;
+          localStorage.setItem(
+            'tezsure',
+            JSON.stringify({ ...__localStorage, ...payload })
+          );
+          swal('Success!', 'Account restored successfully', 'success');
+          dispatch({
+            type: 'GET_ACCOUNTS',
+            payload: userAccounts[networkId.split('-')[0]],
+          });
+          dispatch({
+            type: 'TOGGLE_ACCOUNTS_MODAL',
+            payload: '',
+          });
+        }
+      );
+      dispatch({
+        type: 'BUTTON_LOADING_STATE',
+        payload: false,
       });
     });
+  };
+}
+
+export function toggleButtonState() {
+  return {
+    type: 'BUTTON_LOADING_STATE',
+    payload: false,
   };
 }

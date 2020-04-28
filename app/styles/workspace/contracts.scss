@@ -1,11 +1,12 @@
 .contracts-table-container {
+  height: -webkit-fill-available;
   overflow-y: scroll;
-  max-height: 500px;
   background-color: #ffff !important;
   color: #727d95 !important;
   font-weight: 700;
   padding: 10px;
   border-top: 0.5px solid #dee2e6;
+  margin-bottom: 5%;
 }
 .contract-deployed {
   background: #39b999;
@@ -20,4 +21,20 @@
 }
 .contract-status-container {
   margin-top: 10px;
+}
+.container-msg {
+  text-align: end;
+  margin-right: 1rem;
+  font-weight: 500;
+  border-radius: 20px;
+  margin-left: 26%;
+}
+.success-msg {
+  padding-right: 10px;
+}
+.tezos-icon {
+  color: #3dcc8e;
+}
+.info {
+  cursor: pointer;
 }

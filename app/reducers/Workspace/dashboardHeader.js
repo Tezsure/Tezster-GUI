@@ -3,7 +3,7 @@ const state = {
   currentBlock: '00',
   gasLimit: '00',
   gasPrice: '00',
-  networkId: 'localNode',
+  networkId: 'Localnode',
   rpcServer: 'http://localhost:18731'
 };
 
