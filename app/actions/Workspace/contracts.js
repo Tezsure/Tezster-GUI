@@ -50,14 +50,17 @@ export function getContractStorageAction({ ...params }) {
     });
     __getStorage({ ...params }, (err, response) => {
       if (err) {
-        const error = err.hasOwnProperty('message')
-          ? err.message.replace(/(?:\r\n|\r|\n|\s\s+)/g, ' ')
-          : '';
-        swal(
-          'Error!',
-          `Sorry could not fetch storage value for selected contract ${error}`,
-          'error'
-        );
+        let error = err.hasOwnProperty('message')
+          ? `Sorry could not fetch storage value for selected contract \n ${err.message.replace(
+              /(?:\r\n|\r|\n|\s\s+)/g,
+              ''
+            )}`
+          : 'Sorry could not fetch storage value for selected contract';
+        if (err === 'Not Found') {
+          error =
+            'Please wait it will take some time for contract to get deployed';
+        }
+        swal('Error!', error, 'error');
         dispatch({
           type: 'BUTTON_LOADING_STATE',
           payload: false,
