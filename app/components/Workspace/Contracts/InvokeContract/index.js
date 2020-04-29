@@ -34,12 +34,12 @@ class InvokeContract extends Component {
   }
 
   handleEntryPointsInputValues(event) {
-    const entryPoints = this.state.entryPoints.map((elem) => {
+    const entryPoints = this.state.entryPoints.map((elem, index) => {
       const temp = { ...elem };
       if (elem.name === this.state.selectedEntryPoint) {
         const stateValues = elem.stateValues.map((pp) => {
           if (event.target.name === Object.keys(pp)[0]) {
-            return { [event.target.name]: event.target.value };
+            return { [event.target.name]: `${event.target.value}` };
           }
           return pp;
         });
@@ -75,7 +75,7 @@ class InvokeContract extends Component {
             ]
           : p.parameters.map((pp) => ({ [pp.name]: '' }));
       return {
-        name: p.name,
+        name: p.name === undefined ? 'init' : p.name,
         structure: p.structure,
         parameter,
         stateValues,
@@ -212,7 +212,7 @@ class InvokeContract extends Component {
         {this.state.accounts !== '0' ? (
           <div className="container-msg">
             <b>
-              available balance in the account{' '}
+              &nbsp;&nbsp;Available balance in the account{' '}
               <span className="tezos-icon">
                 {this.props.selectedContractAmountBalance} ꜩ
               </span>
@@ -236,7 +236,9 @@ class InvokeContract extends Component {
           </select>
         </div>
         <div className="modal-input">
-          <div className="input-container">Contract Amount </div>
+          <div className="input-container" style={{ width: '26%' }}>
+            Contract Amount{' '}
+          </div>
           <input
             type="number"
             name="contractAmount"
@@ -244,7 +246,9 @@ class InvokeContract extends Component {
             placeholder="Enter amount to deploy contract"
             value={this.state.contractAmount}
             onChange={this.handleInputChange}
+            style={{ width: '50%', marginRight: '10px' }}
           />
+          <span className="tezos-icon">ꜩ</span>
         </div>
         <div className="modal-input">
           <div className="input-container">Entry Points </div>
@@ -259,6 +263,15 @@ class InvokeContract extends Component {
             </option>
             {entryPoints}
           </select>
+        </div>
+        <div className="modal-input">
+          {this.state.selectedEntryPoint !== '0' ? (
+            <p>
+              Note: please use quotes for string eg: &quot;hello world&quot;
+            </p>
+          ) : (
+            ''
+          )}
         </div>
         <div className="modal-input">
           {this.state.selectedEntryPoint !== '0'
@@ -279,6 +292,7 @@ class InvokeContract extends Component {
             </div>
           </div>
         </div>
+        <br />
         <br />
         <br />
         <br />

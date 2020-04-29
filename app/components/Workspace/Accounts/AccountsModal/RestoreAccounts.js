@@ -33,12 +33,25 @@ class RestoreAccounts extends Component {
       passwordErr: '',
     };
     if (stateParams.mnemonic === '') {
-      credD.mnemonicErr = 'Please enter mnemonic';
+      stateParams.mnemonicErr = 'Please enter mnemonic';
       errFlag = true;
     }
     if (stateParams.label === '') {
       stateParams.labelErr = 'Please enter label for your account';
       errFlag = true;
+    }
+    if (stateParams.label !== '') {
+      const networkId = this.props.dashboardHeader.networkId.split('-')[0];
+      const userAccount = JSON.parse(localStorage.getItem('tezsure'))
+        .userAccounts[networkId];
+      if (
+        userAccount.filter((elem) => elem.label === stateParams.label).length >
+        0
+      ) {
+        stateParams.labelErr =
+          'Label already in use, please choose a different label';
+        errFlag = true;
+      }
     }
     if (stateParams.password === '') {
       stateParams.passwordErr = 'Please enter password';
@@ -62,6 +75,8 @@ class RestoreAccounts extends Component {
       this.props.restoreFaucetAccountAction({
         ...userParams,
         ...this.props,
+        msg:
+          'Account created successfully \n Now transfer some tezos to activate the account',
       });
     } else {
       this.setState(stateParams);
@@ -77,12 +92,25 @@ class RestoreAccounts extends Component {
       passwordErr: '',
     };
     if (stateParams.mnemonic === '') {
-      credD.mnemonicErr = 'Please enter mnemonic';
+      stateParams.mnemonicErr = 'Please enter mnemonic';
       errFlag = true;
     }
     if (stateParams.label === '') {
       stateParams.labelErr = 'Please enter label for your account';
       errFlag = true;
+    }
+    if (stateParams.label !== '') {
+      const networkId = this.props.dashboardHeader.networkId.split('-')[0];
+      const userAccount = JSON.parse(localStorage.getItem('tezsure'))
+        .userAccounts[networkId];
+      if (
+        userAccount.filter((elem) => elem.label === stateParams.label).length >
+        0
+      ) {
+        stateParams.labelErr =
+          'Label already in use, please choose a different label';
+        errFlag = true;
+      }
     }
     if (stateParams.password === '') {
       stateParams.passwordErr = 'Please enter password';
@@ -193,7 +221,7 @@ class RestoreAccounts extends Component {
             type="button"
             className="btn btn-success"
             disabled={this.props.buttonState}
-            onClick={() => this.handleRestoreAccount()}
+            onClick={() => this.handleCreateWallet()}
           >
             {this.props.buttonState ? 'Please wait....' : 'Create Wallet'}
           </button>
