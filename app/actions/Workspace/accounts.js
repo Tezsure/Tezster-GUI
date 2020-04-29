@@ -217,7 +217,10 @@ export function restoreFaucetAccountAction(payload) {
             'tezsure',
             JSON.stringify({ ...__localStorage, ...payload })
           );
-          swal('Success!', 'Account restored successfully', 'success');
+          const msg = payload.hasOwnProperty('msg')
+            ? payload.msg
+            : 'Account restored successfully';
+          swal('Success!', msg, 'success');
           dispatch({
             type: 'GET_ACCOUNTS',
             payload: userAccounts[networkId.split('-')[0]],
