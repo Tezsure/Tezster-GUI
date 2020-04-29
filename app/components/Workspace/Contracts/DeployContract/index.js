@@ -1,10 +1,12 @@
+/* eslint-disable promise/always-return */
+/* eslint-disable class-methods-use-this */
 /* eslint-disable promise/catch-or-return */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
 import swal from 'sweetalert';
-import JSONPretty from 'react-json-pretty';
+// import JSONPretty from 'react-json-pretty';
 
 const conseiljs = require('conseiljs');
 
@@ -46,6 +48,17 @@ class DeployContract extends Component {
       error = 'Please upload a contract or paste a contract code';
     } else if (this.state.contractLabel === '') {
       error = 'Please enter contract label';
+    } else if (this.state.contractLabel !== '') {
+      const networkId = this.props.dashboardHeader.networkId.split('-')[0];
+      const contract = JSON.parse(localStorage.getItem('tezsure')).contracts[
+        networkId
+      ];
+      if (
+        contract.filter((elem) => elem.name === this.state.contractLabel)
+          .length > 0
+      ) {
+        error = 'Label already in use, please choose a different label';
+      }
     } else if (this.state.contractAmount === '') {
       error = 'Please enter contract amount';
     } else if (this.state.storageValue === '') {
@@ -99,7 +112,7 @@ class DeployContract extends Component {
       });
     } else if (event.target.name === 'enteredContract') {
       const stateParams = {
-        [event.target.name]: event.target.files,
+        [event.target.name]: event.target.value,
       };
       this.handleGetInitialStorage(event.target.value).then((storageFormat) => {
         self.setState({
@@ -149,7 +162,7 @@ class DeployContract extends Component {
         {this.state.accounts !== '0' ? (
           <div className="container-msg">
             <b>
-              available balance in the account{' '}
+              &nbsp;&nbsp;Available balance in the account{' '}
               <span className="tezos-icon">
                 {this.props.selectedContractAmountBalance} ꜩ
               </span>
@@ -205,7 +218,9 @@ class DeployContract extends Component {
           />
         </div>
         <div className="modal-input">
-          <div className="input-container">Contract Amount </div>
+          <div className="input-container" style={{ width: '26%' }}>
+            Contract Amount{' '}
+          </div>
           <input
             type="number"
             name="contractAmount"
@@ -213,7 +228,9 @@ class DeployContract extends Component {
             placeholder="Enter amount to deploy contract"
             value={this.state.contractAmount}
             onChange={this.handleInputChange}
+            style={{ width: '50%', marginRight: '10px' }}
           />
+          <span className="tezos-icon">ꜩ</span>
         </div>
         {this.state.storageFormat ? (
           <span>
@@ -221,6 +238,9 @@ class DeployContract extends Component {
             <div className="modal-input" style={{ backgroundColor: '#f1f3f5' }}>
               <p>{this.state.storageFormat}</p>
             </div>
+            <p>
+              Note: please use quotes for string eg: &quot;hello world&quot;
+            </p>
           </span>
         ) : (
           ''

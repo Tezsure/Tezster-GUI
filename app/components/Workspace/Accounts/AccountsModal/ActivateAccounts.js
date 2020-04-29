@@ -74,6 +74,19 @@ class ActivateAccounts extends Component {
       error.errorlabel = 'Please enter label';
       errorFlag = true;
     }
+    if (this.state.faucet.label !== '') {
+      const networkId = this.props.dashboardHeader.networkId.split('-')[0];
+      const userAccount = JSON.parse(localStorage.getItem('tezsure'))
+        .userAccounts[networkId];
+      if (
+        userAccount.filter((elem) => elem.label === this.state.faucet.label)
+          .length > 0
+      ) {
+        error.errorlabel =
+          'Label already in use, please choose a different label';
+        errorFlag = true;
+      }
+    }
     if (this.state.faucet.password === '') {
       error.errorPassword = 'Please enter password';
       errorFlag = true;
@@ -117,6 +130,19 @@ class ActivateAccounts extends Component {
     if (this.state.faucet.label === '') {
       error.errorlabel = 'Please enter label';
       errorFlag = true;
+    }
+    if (this.state.faucet.label !== '') {
+      const networkId = this.props.dashboardHeader.networkId.split('-')[0];
+      const userAccount = JSON.parse(localStorage.getItem('tezsure'))
+        .userAccounts[networkId];
+      if (
+        userAccount.filter((elem) => elem.label === this.state.faucet.label)
+          .length > 0
+      ) {
+        error.errorlabel =
+          'Label already in use, please choose a different label';
+        errorFlag = true;
+      }
     }
     if (this.state.faucet.password === '') {
       error.errorPassword = 'Please enter password';
