@@ -79,7 +79,9 @@ class Transactions extends Component {
                 <button
                   type="button"
                   className="btn btn-success"
-                  disabled={this.state.accountId === '0'}
+                  disabled={
+                    this.state.accountId === '0' || this.props.buttonState
+                  }
                   onClick={() => {
                     this.props.selectTransactionWalletAction({
                       accountId: this.state.accountId,
@@ -87,7 +89,9 @@ class Transactions extends Component {
                     });
                   }}
                 >
-                  Show transactions
+                  {this.props.buttonState
+                    ? 'Please wait....'
+                    : 'Show transactions'}
                 </button>
               </div>
             </div>

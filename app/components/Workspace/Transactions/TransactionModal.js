@@ -143,7 +143,7 @@ class TransactionModal extends Component {
                 type="number"
                 name="gasPrice"
                 className="form-control"
-                placeholder="Enter your gas price"
+                placeholder="Enter your gas price eg 1500"
                 value={this.state.gasPrice}
                 onChange={this.handleInputChange}
               />
