@@ -8,7 +8,10 @@ import {
   handleTabChangeAction,
 } from '../actions/Workspace/sidebar';
 
-import getBlockHeadsActions from '../actions/Workspace/blocks';
+import {
+  getBlockHeadsActions,
+  searchBlockHead,
+} from '../actions/Workspace/blocks';
 
 import {
   toggleButtonState,
@@ -70,6 +73,7 @@ const mapDispatchToProps = (dispatch) => ({
   getBalanceAction: (payload) => dispatch(getBalanceAction(payload)),
   getAccountsAction: (payload) => dispatch(getAccountsAction(payload)),
   getBlockHeadsActions: (payload) => dispatch(getBlockHeadsActions(payload)),
+  searchBlockHead: (payload) => dispatch(searchBlockHead(payload)),
   getTransactionsAction: (payload) => dispatch(getTransactionsAction(payload)),
   handleInvokeContractAction: (payload) =>
     dispatch(handleInvokeContractAction(payload)),
@@ -100,6 +104,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 const mapStateToProps = (state) => ({
   blocks: state.blocks,
+  blockSearch: state.blockSearch,
   currentTab: state.currentTab,
   buttonState: state.buttonState,
   userAccounts: state.userAccounts,

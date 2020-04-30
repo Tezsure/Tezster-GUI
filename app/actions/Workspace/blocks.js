@@ -1,6 +1,7 @@
 const {
   getBlockHeight,
   getAllBlockData,
+  getBlockData,
 } = require('../../apis/tzstats.service');
 
 const localnodeData = {
@@ -12,7 +13,7 @@ const localnodeData = {
   rpcServer: 'http://localhost:18731',
 };
 
-export default function getBlockHeadsActions(args) {
+export function getBlockHeadsActions(args) {
   return (dispatch) => {
     if (args.dashboardHeader.networkId === 'Localnode') {
       dispatch({
@@ -41,6 +42,13 @@ export default function getBlockHeadsActions(args) {
               });
             }
             dispatch({
+              type: 'GET_BLOCKS_SEARCH',
+              payload: {
+                searchBlockResponse: [],
+                gas_used: '',
+              },
+            });
+            dispatch({
               type: 'GET_BLOCKS',
               payload: {
                 blockDataResponse,
@@ -50,6 +58,43 @@ export default function getBlockHeadsActions(args) {
           }
         );
       });
+    }
+  };
+}
+
+export function searchBlockHead(args) {
+  return (dispatch) => {
+    if (args.dashboardHeader.networkId === 'Localnode') {
+      dispatch({
+        type: 'GET_DASHBOARD_HEADER',
+        payload: localnodeData,
+      });
+      dispatch({
+        type: 'GET_BLOCKS',
+        payload: localnodeData,
+      });
+    } else {
+      getBlockData(
+        { blockId: args.searchData, ...args },
+        (blockDataError, blockDataResponse) => {
+          if (blockDataError) {
+            dispatch({
+              type: 'GET_BLOCKS',
+              payload: blockDataError,
+            });
+          }
+          const gas_used = blockDataResponse.hasOwnProperty('gas_used')
+            ? blockDataResponse.gas_used
+            : '';
+          dispatch({
+            type: 'GET_BLOCKS_SEARCH',
+            payload: {
+              searchBlockResponse: [blockDataResponse],
+              gas_used,
+            },
+          });
+        }
+      );
     }
   };
 }
