@@ -215,6 +215,9 @@ class ActivateAccounts extends Component {
             account
           </p>
           <p>Please click on activate wallet button to activate an account</p>
+          <p style={{ fontStyle: 'italic' }}>
+            Note: It may take upto 1 minute for the creation of an account.
+          </p>
         </div>
         <div className="modal-input">
           <div className="input-container">Label</div>
