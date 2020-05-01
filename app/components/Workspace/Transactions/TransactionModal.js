@@ -42,6 +42,10 @@ class TransactionModal extends Component {
       stateParams.gasPriceErr = 'Please enter gas price';
       errorFlag = true;
     }
+    if (parseInt(stateParams.gasPrice, 10) < 1500) {
+      stateParams.gasPriceErr = 'Please enter gas price more than 1500';
+      errorFlag = true;
+    }
 
     if (!errorFlag) {
       this.props.executeTransactionAction({
@@ -126,7 +130,9 @@ class TransactionModal extends Component {
             </div>
             <span className="error-msg">{this.state.recieverAccountErr}</span>
             <div className="modal-input">
-              <div className="input-container">Amount </div>
+              <div className="input-container" style={{ width: '26%' }}>
+                Amount{' '}
+              </div>
               <input
                 type="number"
                 name="amount"
@@ -134,11 +140,23 @@ class TransactionModal extends Component {
                 placeholder="Enter your amount"
                 value={this.state.amount}
                 onChange={this.handleInputChange}
+                style={{ width: '60%' }}
               />
+              <span className="tezos-icon" style={{ marginLeft: '10px' }}>
+                {' '}
+                ꜩ
+              </span>
             </div>
             <span className="error-msg">{this.state.amountErr}</span>
+            <div className="modal-input" style={{ paddingBottom: '0px' }}>
+              <p style={{ paddingBottom: '0px', marginBottom: '0px' }}>
+                Note: Please enter gas price more than 1500
+              </p>
+            </div>
             <div className="modal-input">
-              <div className="input-container">Gas Price </div>
+              <div className="input-container" style={{ width: '26%' }}>
+                Gas Price{' '}
+              </div>
               <input
                 type="number"
                 name="gasPrice"
@@ -146,7 +164,12 @@ class TransactionModal extends Component {
                 placeholder="Enter your gas price eg 1500"
                 value={this.state.gasPrice}
                 onChange={this.handleInputChange}
+                style={{ width: '60%' }}
               />
+              <span className="tezos-icon" style={{ marginLeft: '10px' }}>
+                {' '}
+                ꜩ
+              </span>
             </div>
             <span className="error-msg">{this.state.gasPriceErr}</span>
             <br />

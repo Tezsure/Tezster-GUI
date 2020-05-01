@@ -40,7 +40,7 @@ class Header extends Component {
                 type="text"
                 className="form-control search-bar"
                 onChange={(event) => this.searchTransaction(event)}
-                placeholder="Search for block numbers and tx hashes"
+                placeholder="Search for block numbers or block id's"
               />
             </div>
           </div>

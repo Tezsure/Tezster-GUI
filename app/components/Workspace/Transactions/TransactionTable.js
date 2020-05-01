@@ -13,7 +13,7 @@ class TransactionTable extends Component {
   render() {
     const Transactions = this.props.userTransactions.map((elem, index) => {
       const transactionData = elem.hasOwnProperty('tx') ? elem.tx : elem;
-      const balance = `${(transactionData.amount / 1000000).toFixed(3)}Tz`;
+      const balance = `${(transactionData.amount / 1000000).toFixed(3)}`;
       const opHash = elem.hasOwnProperty('op') ? elem.op.opHash : 'N/A';
       return (
         <tr className="table-row" key={`trn-${index}`}>
@@ -42,7 +42,9 @@ class TransactionTable extends Component {
               <h4>AMOUNT</h4>
             </div>
             <div className="cards-contents">
-              <p className="account-address-content">{balance}</p>
+              <p className="account-address-content">
+                {balance} <span className="tezos-icon">ꜩ</span>
+              </p>
             </div>
           </td>
           <td className="table-body-cell">

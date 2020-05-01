@@ -58,7 +58,7 @@ export function getContractStorageAction({ ...params }) {
           : 'Sorry could not fetch storage value for selected contract';
         if (err === 'Not Found') {
           error =
-            'Please wait it will take some time for contract to get deployed';
+            `Unable to fetch storage from contract \n it might take some time to get contract deployed on the network`;
         }
         swal('Error!', error, 'error');
         dispatch({
