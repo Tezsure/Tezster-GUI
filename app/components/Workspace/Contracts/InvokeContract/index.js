@@ -105,9 +105,10 @@ class InvokeContract extends Component {
             ...this.props,
             ...this.state,
           });
-          setTimeout(() => {
-            this.props.toggleButtonState();
-          }, 1000);
+          this.props.getAccountBalanceAction({
+            ...this.props,
+            pkh: this.state.accounts,
+          });
         });
         return true;
       }
@@ -264,6 +265,18 @@ class InvokeContract extends Component {
             {entryPoints}
           </select>
         </div>
+        {this.props.dashboardHeader.networkId !== 'Localnode' ? (
+          <div className="transactions-contents">
+            <div className="modal-input" style={{ paddingBottom: '0px' }}>
+              <p style={{ marginBottom: '0px' }}>
+                Note: It may take upto 1 minute for the contract to get commited
+                on carthagenet network.
+              </p>
+            </div>
+          </div>
+        ) : (
+          ''
+        )}
         <div className="modal-input">
           {this.state.selectedEntryPoint !== '0' ? (
             <p>

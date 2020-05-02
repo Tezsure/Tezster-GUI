@@ -276,6 +276,14 @@ export async function __listAccountTransactions({ ...params }, callback) {
 }
 export async function __deployContract({ ...params }, callback) {
   try {
+    const network = params.dashboardHeader.networkId
+      .split('-')[0]
+      .toLowerCase();
+    const conseilServer = {
+      url: ConceilJS.url,
+      apiKey: ConceilJS.apiKey,
+      network,
+    };
     const tezosNode = apiEndPoints[params.dashboardHeader.networkId];
     const { contract } = params;
     const keys = params.userAccounts.find(
@@ -302,7 +310,7 @@ export async function __deployContract({ ...params }, callback) {
       storage,
       conseiljs.TezosParameterFormat.Michelson
     )
-      .then((nodeResult) => {
+      .then(async (nodeResult) => {
         if (
           nodeResult.results.contents[0].metadata.operation_result.status ===
           'applied'
@@ -321,6 +329,15 @@ export async function __deployContract({ ...params }, callback) {
             'tezsure',
             JSON.stringify({ ...__localStorage__ })
           );
+          if (network !== 'localnode') {
+            await conseiljs.TezosConseilClient.awaitOperationConfirmation(
+              conseilServer,
+              network,
+              JSON.parse(nodeResult.operationGroupID),
+              10,
+              30 + 1
+            );
+          }
           return callback(
             null,
             nodeResult.results.contents[0].metadata.operation_result
@@ -338,6 +355,14 @@ export async function __deployContract({ ...params }, callback) {
 }
 export async function __invokeContract({ ...params }, callback) {
   try {
+    const network = params.dashboardHeader.networkId
+      .split('-')[0]
+      .toLowerCase();
+    const conseilServer = {
+      url: ConceilJS.url,
+      apiKey: ConceilJS.apiKey,
+      network,
+    };
     const tezosNode = apiEndPoints[params.dashboardHeader.networkId];
     const keys = params.userAccounts.find(
       (elem) => elem.pkh === params.accounts
@@ -364,11 +389,20 @@ export async function __invokeContract({ ...params }, callback) {
       storage,
       conseiljs.TezosParameterFormat.Michelson
     )
-      .then((nodeResult) => {
+      .then(async (nodeResult) => {
         if (
           nodeResult.results.contents[0].metadata.operation_result.status ===
           'applied'
         ) {
+          if (network !== 'localnode') {
+            await conseiljs.TezosConseilClient.awaitOperationConfirmation(
+              conseilServer,
+              network,
+              JSON.parse(nodeResult.operationGroupID),
+              10,
+              30 + 1
+            );
+          }
           return callback(null, nodeResult.operationGroupID.replace(/\"/g, ''));
         }
         return callback('Contract invocation failed', null);

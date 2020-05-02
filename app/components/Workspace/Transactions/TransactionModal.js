@@ -150,7 +150,8 @@ class TransactionModal extends Component {
             <span className="error-msg">{this.state.amountErr}</span>
             <div className="modal-input" style={{ paddingBottom: '0px' }}>
               <p style={{ paddingBottom: '0px', marginBottom: '0px' }}>
-                Note: Please enter gas price more than 1500
+                Note: Please enter gas price more than or equals to 1500 <br />{' '}
+                for carthagenet
               </p>
             </div>
             <div className="modal-input">
@@ -168,7 +169,7 @@ class TransactionModal extends Component {
               />
               <span className="tezos-icon" style={{ marginLeft: '10px' }}>
                 {' '}
-                ꜩ
+                <b>mu</b>ꜩ
               </span>
             </div>
             <span className="error-msg">{this.state.gasPriceErr}</span>

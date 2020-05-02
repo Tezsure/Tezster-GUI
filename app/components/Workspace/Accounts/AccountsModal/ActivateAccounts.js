@@ -201,7 +201,7 @@ class ActivateAccounts extends Component {
         </div>
         <div className="modal-body">
           <p>
-            Please enter faucet from{' '}
+            Please enter the account parameters received from faucet{' '}
             <NavLink
               to="#"
               onClick={() => shell.openExternal('https://faucet.tzalpha.net/')}
@@ -283,7 +283,7 @@ class ActivateAccounts extends Component {
           <textarea
             className="form-control"
             name="mnemonic"
-            style={{ height: '300px' }}
+            style={{ height: '200px' }}
             value={this.state.faucet.mnemonic}
             placeholder="Please enter mnemonic"
             onChange={this.handleInputChange}

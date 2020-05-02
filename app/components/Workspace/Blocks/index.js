@@ -105,7 +105,11 @@ function index(props) {
           </div>
         </>
       ) : (
-        <div>No blocks available for the Selected network type </div>
+        <div>
+          {props.dashboardHeader.networkId === 'Localnode'
+            ? 'No blocks available for the Selected network type.'
+            : 'No blocks found.'}
+        </div>
       )}
     </div>
   );
