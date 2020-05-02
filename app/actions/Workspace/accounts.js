@@ -71,6 +71,12 @@ export function getAccountsAction({ ...params }) {
       params.userAccounts = JSON.parse(
         localStorage.getItem('tezsure')
       ).userAccounts;
+      if (
+        params.userAccounts[networkId.split('-')[0]].length === 0 &&
+        networkId === 'Localnode'
+      ) {
+        params.userAccounts[networkId.split('-')[0]] = config.identities;
+      }
       params.dashboardHeader.networkId = networkId;
     }
     __getAccounts({ ...params }, (err, accounts) => {
@@ -139,7 +145,11 @@ export function createFaucetAccountsAction(payload) {
     });
     __activateAccountOperation(payload, (err, result) => {
       if (err) {
-        swal('Error!', err.replace(/(?:\r\n|\r|\n|\s\s+)/g, ' '), 'error');
+        const error =
+          networkId.split('-')[0] === 'Localnode'
+            ? "Faucet account can't be activated on localnode"
+            : 'Faucet account already activated \n go for restoring the account';
+        swal('Error!', error, 'error');
         dispatch({
           type: 'GET_ACCOUNTS',
           payload: userAccounts[networkId.split('-')[0]],

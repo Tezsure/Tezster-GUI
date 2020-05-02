@@ -86,9 +86,10 @@ class DeployContract extends Component {
         ...this.props,
         ...this.state,
       });
-      setTimeout(() => {
-        this.props.toggleButtonState();
-      }, 1000);
+      this.props.getAccountBalanceAction({
+        ...this.props,
+        pkh: this.state.accounts,
+      });
     }
     if (error !== '') {
       this.setState({ error });
@@ -232,6 +233,18 @@ class DeployContract extends Component {
           />
           <span className="tezos-icon">ꜩ</span>
         </div>
+        {this.props.dashboardHeader.networkId !== 'Localnode' ? (
+          <div className="transactions-contents">
+            <div className="modal-input" style={{ paddingBottom: '0px' }}>
+              <p style={{ marginBottom: '0px' }}>
+                Note: It may take upto 1 minute for the contract to get commited
+                on carthagenet network.
+              </p>
+            </div>
+          </div>
+        ) : (
+          ''
+        )}
         {this.state.storageFormat ? (
           <span>
             Please enter initial storage in the following format

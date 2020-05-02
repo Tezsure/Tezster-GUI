@@ -53,14 +53,18 @@ class Transactions extends Component {
               </div>
             </div>
           </div>
-          <div className="transactions-contents">
-            <div className="modal-input">
-              <p>
-                Note: It may take upto 1 minute for the transactions to get
-                commited on network.
-              </p>
+          {this.props.dashboardHeader.networkId !== 'Localnode' ? (
+            <div className="transactions-contents">
+              <div className="modal-input">
+                <p>
+                  Note: It may take upto 1 minute for the transactions to get
+                  commited on network.
+                </p>
+              </div>
             </div>
-          </div>
+          ) : (
+            ''
+          )}
           <div className="transactions-contents">
             <div className="modal-input">
               <div className="input-container">Select Wallet </div>

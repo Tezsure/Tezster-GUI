@@ -21,7 +21,7 @@
   color: #727d95 !important;
   font-weight: 700;
   overflow: auto;
-  max-height: 450px;
+  max-height: -webkit-fill-available;
 }
 .blocks-container tbody {
   line-height: 0 !important;
