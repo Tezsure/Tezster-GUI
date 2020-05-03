@@ -43,7 +43,8 @@ class TransactionModal extends Component {
       errorFlag = true;
     }
     if (parseInt(stateParams.gasPrice, 10) < 1500) {
-      stateParams.gasPriceErr = 'Please enter gas price more than 1500';
+      stateParams.gasPriceErr =
+        'Please enter gas price more than or equals to 1500';
       errorFlag = true;
     }
 
@@ -151,7 +152,6 @@ class TransactionModal extends Component {
             <div className="modal-input" style={{ paddingBottom: '0px' }}>
               <p style={{ paddingBottom: '0px', marginBottom: '0px' }}>
                 Note: Please enter gas price more than or equals to 1500 <br />{' '}
-                for carthagenet
               </p>
             </div>
             <div className="modal-input">

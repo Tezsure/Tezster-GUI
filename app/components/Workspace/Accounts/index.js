@@ -58,6 +58,18 @@ class Accounts extends Component {
                 <button
                   type="button"
                   className="btn btn-success"
+                  onClick={() => {
+                    this.props.handleTabChangeAction('accounts');
+                    this.props.getBalanceAction({ ...this.props });
+                  }}
+                >
+                  Refresh Accounts Balance
+                </button>
+              </div>
+              <div className="button-accounts">
+                <button
+                  type="button"
+                  className="btn btn-success"
                   onClick={() => this.handleModalToggle('restore-accounts')}
                 >
                   Restore/Create Wallet
