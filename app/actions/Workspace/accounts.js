@@ -127,9 +127,11 @@ export function getBalanceAction(payload) {
           payload: err,
         });
       }
-      return dispatch({
-        type: 'GET_BALANCE',
-        payload: response,
+      Promise.all(response).then((accounts) => {
+        return dispatch({
+          type: 'GET_ACCOUNTS',
+          payload: accounts,
+        });
       });
     });
   };
