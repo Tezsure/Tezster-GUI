@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
@@ -52,7 +53,7 @@ class Accounts extends Component {
 
   handleSpinnerloading() {
     const { spinnerLoading } = this.state;
-    this.props.getBalanceAction({ ...this.props });
+    this.props.getBalanceAction(this.props);
     this.setState({ spinnerLoading: !spinnerLoading }, () => {
       setTimeout(() => {
         this.setState({ spinnerLoading });

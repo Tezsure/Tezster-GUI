@@ -116,11 +116,14 @@ export function getAccountsAction({ ...params }) {
 
 export function getBalanceAction(payload) {
   const { networkId } = payload.dashboardHeader;
+  const params = { ...payload };
+  params.userAccounts = [];
   return (dispatch) => {
     if (!payload.userAccounts.hasOwnProperty(networkId)) {
-      payload.userAccounts[networkId] = payload.userAccounts;
+      const { userAccounts } = payload;
+      params.userAccounts[networkId.split('-')[0]] = userAccounts;
     }
-    __getAccounts({ ...payload }, (err, response) => {
+    __getAccounts({ ...params }, (err, response) => {
       if (err) {
         dispatch({
           type: 'GET_BALANCE_ERR',
