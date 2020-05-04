@@ -1,3 +1,7 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
@@ -7,6 +11,7 @@ class Header extends Component {
     this.state = {};
     this.searchTransaction = this.searchTransaction.bind(this);
   }
+
   searchTransaction(event) {
     if (event.target.value !== '') {
       if (this.props.currentTab !== 'blocks') {

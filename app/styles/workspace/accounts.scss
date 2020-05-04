@@ -1,8 +1,8 @@
 .accounts-container {
-  height: -webkit-fill-available;
+  height: 100%;
   padding: 10px;
-  background: #fff;
   border-top: 0.5px solid #dee2e6;
+  overflow: hidden;
 }
 .accounts-table-container {
   background-color: #ffff !important;
@@ -19,7 +19,7 @@
 }
 .accounts-table-container {
   overflow: auto;
-  max-height: 400px;
+  max-height: 88%;
 }
 .blocks-cards-container p {
   word-break: break-all;
@@ -101,4 +101,10 @@ button:disabled {
   100% {
     transform: rotate(360deg);
   }
+}
+.inline-container {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  height: 100%;
 }
