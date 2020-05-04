@@ -90,3 +90,15 @@ button:disabled {
   border: 4px solid #f1f3f5 !important;
   border-radius: 4px !important;
 }
+.refresh-icon {
+  animation: spin 1s infinite ease-in;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
