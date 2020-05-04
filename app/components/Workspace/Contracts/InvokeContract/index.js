@@ -277,20 +277,17 @@ class InvokeContract extends Component {
         ) : (
           ''
         )}
-        <div className="modal-input">
-          {this.state.selectedEntryPoint !== '0' ? (
+        {this.state.selectedEntryPoint !== '0' && (
+          <div className="modal-input">
             <p>
               Note: please use quotes for string eg: &quot;hello world&quot;
             </p>
-          ) : (
-            ''
-          )}
-        </div>
-        <div className="modal-input">
-          {this.state.selectedEntryPoint !== '0'
-            ? this.getEntryPointsTable()
-            : ''}
-        </div>
+            }
+          </div>
+        )}
+        {this.state.selectedEntryPoint !== '0' && (
+          <div className="modal-input">{this.getEntryPointsTable()}</div>
+        )}
         <div className="cards-container">
           <div className="cards button-card accounts-button-container">
             <div className="button-accounts">

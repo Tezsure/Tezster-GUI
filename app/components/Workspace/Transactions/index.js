@@ -41,8 +41,11 @@ class Transactions extends Component {
       <>
         <div className="transaction-container">
           <div className="cards-container">
-            <div className="cards button-card accounts-button-container">
-              <div className="button-accounts">
+            <div
+              style={{ justifyContent: 'flex-start' }}
+              className="cards button-card accounts-button-container"
+            >
+              <div style={{ marginLeft: '0px' }} className="button-accounts">
                 <button
                   type="button"
                   onClick={this.handleModalToggle}
