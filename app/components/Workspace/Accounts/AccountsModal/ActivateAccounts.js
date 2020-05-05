@@ -283,7 +283,7 @@ class ActivateAccounts extends Component {
           <textarea
             className="form-control"
             name="mnemonic"
-            style={{ height: '200px' }}
+            style={{ height: '150px' }}
             value={this.state.faucet.mnemonic}
             placeholder="Please enter mnemonic"
             onChange={this.handleInputChange}
