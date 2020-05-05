@@ -1,7 +1,8 @@
 .accounts-container {
+  height: 100%;
   padding: 10px;
-  background: #fff;
   border-top: 0.5px solid #dee2e6;
+  overflow: hidden;
 }
 .accounts-table-container {
   background-color: #ffff !important;
@@ -13,11 +14,12 @@
   display: inline-flex;
   height: 2rem;
   width: 2rem;
+  cursor: pointer;
   background-repeat: no-repeat;
 }
 .accounts-table-container {
-  overflow-y: scroll;
-  max-height: 400px;
+  overflow: auto;
+  max-height: 88%;
 }
 .blocks-cards-container p {
   word-break: break-all;
@@ -74,4 +76,35 @@ button:disabled {
   pointer-events: all !important;
   background: #ccc;
   border: 1px solid #ccc;
+}
+#json-pretty {
+  background-color: #f1f3f5 !important;
+  border: 4px solid #f1f3f5 !important;
+  border-radius: 4px !important;
+}
+#json-pretty > pre {
+  background-color: #f1f3f5 !important;
+}
+.suggestion-msg {
+  background-color: #f1f3f5 !important;
+  border: 4px solid #f1f3f5 !important;
+  border-radius: 4px !important;
+}
+.refresh-icon {
+  animation: spin 1s infinite ease-in;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.inline-container {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  height: 100%;
 }

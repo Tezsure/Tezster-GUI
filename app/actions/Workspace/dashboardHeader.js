@@ -1,92 +1,131 @@
-const { __getBlockHeads } = require('../../apis/eztz.service');
+/* eslint-disable promise/catch-or-return */
+/* eslint-disable no-return-await */
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-underscore-dangle */
+import { exec } from 'child_process';
+import swal from 'sweetalert';
+import { apiEndPoints } from '../../apis/config';
 
-let LocalNodeHeaderData = {
-  chainId: '',
+const { getBlockHeight, getBlockData } = require('../../apis/tzstats.service');
+
+const localnodeData = {
+  chainId: '00',
   currentBlock: '00',
-  gasLimit: '32311',
-  gasPrice: '0.1228',
+  gas_limit: '32311',
+  gas_price: '0.1228',
   networkId: 'Localnode',
-  rpcServer: 'http://localhost:18731'
+  rpcServer: 'http://localhost:18731',
 };
 
-let BabylonnetHeaderData = {
-  chainId: '',
-  currentBlock: '00',
-  gasLimit: '32311',
-  gasPrice: '0.1228',
-  networkId: 'Babylonnet',
-  rpcServer: 'https://tezos-dev.cryptonomic-infra.tech'
-};
-
-let headerData = {
-  chainId: '',
-  currentBlock: '00',
-  gasLimit: '32311',
-  gasPrice: '0.1228',
-  networkId: 'Localnode',
-  rpcServer: 'http://localhost:18731'
-};
-
-export function getDashboardHeaderAction(payload) {
-  return dispatch => {
-    __getBlockHeads({ ...payload }, (err, response) => {
-      if (err) {
-        dispatch({
-          type: 'GET_DASHBOARD_HEADER_ERR',
-          payload: err
-        });
+function checkIsLocalNodeRunning() {
+  return new Promise((resolve) => {
+    exec(
+      'tezster get-balance tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx',
+      (err, stdout) => {
+        if (err || stdout.split('ECONNREFUSED').length > 1) {
+          return resolve(false);
+        }
+        return resolve(true);
       }
-      headerData = {
-        ...headerData,
-        protocol: response.protocol,
-        chainId: response.chain_id,
-        currentBlock: '00',
-        gasLimit: '32311',
-        gasPrice: '0.1228'
-      };
+    );
+  });
+}
+
+export function getDashboardHeaderAction(args) {
+  return (dispatch) => {
+    if (args.dashboardHeader.networkId === 'Localnode') {
       dispatch({
         type: 'GET_DASHBOARD_HEADER',
-        payload: headerData
+        payload: localnodeData,
       });
-    });
+    } else {
+      getBlockHeight(args, (blockHeightError, blockHeightResponse) => {
+        if (blockHeightError) {
+          dispatch({
+            type: 'GET_DASHBOARD_HEADER_ERR',
+            payload: blockHeightError,
+          });
+        }
+        getBlockData(
+          { blockId: blockHeightResponse.height, ...args },
+          (blockDataError, blockDataResponse) => {
+            if (blockDataError) {
+              dispatch({
+                type: 'GET_DASHBOARD_HEADER_ERR',
+                payload: blockDataError,
+              });
+            }
+            dispatch({
+              type: 'GET_DASHBOARD_HEADER',
+              payload: {
+                currentBlock: blockHeightResponse.height,
+                chainId: blockHeightResponse.height,
+                networkId: args.dashboardHeader.networkId,
+                rpcServer: apiEndPoints[args.dashboardHeader.networkId],
+                ...blockDataResponse,
+                ...blockHeightResponse,
+              },
+            });
+          }
+        );
+      });
+    }
   };
 }
-export function handleNetworkChangeAction(params) {
-  return dispatch => {
-    __getBlockHeads(params, (err, response) => {
-      if (err) {
-        dispatch({
-          type: 'GET_DASHBOARD_HEADER_ERR',
-          payload: err
-        });
-      }
-      if (params.env === 'Localnode') {
-        LocalNodeHeaderData = {
-          ...LocalNodeHeaderData,
-          protocol: response.protocol,
-          chainId: response.chain_id,
-          currentBlock: '00',
-          gasLimit: '32311',
-          gasPrice: '0.1228'
-        };
-        dispatch({
+
+export function handleNetworkChangeAction(args) {
+  let { networkId } = args.dashboardHeader;
+  return (dispatch) => {
+    if (networkId === 'Localnode') {
+      checkIsLocalNodeRunning().then((IsLocalNodeRunning) => {
+        if (!IsLocalNodeRunning) {
+          networkId = 'Carthagenet-Tezster';
+          swal(
+            'Error!',
+            'Tezster cli is not running cannot change network to Localnode',
+            'error'
+          );
+          return dispatch({
+            type: 'GET_DASHBOARD_HEADER',
+            payload: args.dashboardHeader,
+          });
+        }
+        return dispatch({
           type: 'GET_DASHBOARD_HEADER',
-          payload: LocalNodeHeaderData
+          payload: localnodeData,
         });
-      } else {
-        BabylonnetHeaderData = {
-          ...BabylonnetHeaderData,
-          protocol: response.protocol,
-          chainId: response.chain_id,
-          currentBlock: '00',
-          gasLimit: '32311',
-          gasPrice: '0.1228'
-        };
-        dispatch({
-          type: 'GET_DASHBOARD_HEADER',
-          payload: BabylonnetHeaderData
-        });
-      }
-    });
+      });
+    } else {
+      getBlockHeight(args, (blockHeightError, blockHeightResponse) => {
+        if (blockHeightError) {
+          dispatch({
+            type: 'GET_DASHBOARD_HEADER_ERR',
+            payload: blockHeightError,
+          });
+        }
+        getBlockData(
+          { blockId: blockHeightResponse.height, ...args },
+          (blockDataError, blockDataResponse) => {
+            if (blockDataError) {
+              dispatch({
+                type: 'GET_DASHBOARD_HEADER_ERR',
+                payload: blockDataError,
+              });
+            }
+            dispatch({
+              type: 'GET_DASHBOARD_HEADER',
+              payload: {
+                currentBlock: blockHeightResponse.height,
+                chainId: blockHeightResponse.height,
+                rpcServer: apiEndPoints[networkId],
+                networkId,
+                ...blockDataResponse,
+                ...blockHeightResponse,
+              },
+            });
+          }
+        );
+      });
+    }
   };
 }

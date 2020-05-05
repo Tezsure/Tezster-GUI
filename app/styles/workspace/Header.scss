@@ -34,7 +34,7 @@ body {
   height: 100%;
   display: grid;
   grid-template-rows: 15% 85%;
-  grid-template-columns: 20% 80%;
+  grid-template-columns: 15% 85%;
   grid-template-areas:
     'header header'
     'menu main';
@@ -44,6 +44,31 @@ body {
   text-align: center;
   padding: 20px 0;
   font-size: 30px;
+}
+.grid-container-collapsed {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-rows: 15% 85%;
+  grid-template-columns: 8% 92%;
+  grid-template-areas:
+    'header header'
+    'menu main';
+}
+.grid-container-collapsed > div {
+  background-color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  padding: 20px 0;
+  font-size: 30px;
+}
+@media only screen and (max-width: 1050px) {
+  .grid-container {
+    grid-template-columns: 20% 80% !important;
+  }
+  .grid-container-collapsed {
+    grid-template-columns: 10% 90% !important;
+  }
 }
 .top-bar {
   width: 100%;
@@ -114,11 +139,16 @@ body {
 .top-bar {
   display: grid;
   grid-template-rows: 100%;
-  grid-template-columns: 20% 80%;
-  grid-template-areas: 'siderbarIcon searchBar';
+  grid-template-columns: 5% 15% 80%;
+  grid-template-areas: 'siderbarIcon siderbarLogo searchBar';
 }
 .siderbar-icon-container {
   grid-area: siderbarIcon;
+  margin-top: 5px !important;
+  cursor: pointer;
+}
+.siderbar-logo-container {
+  grid-area: siderbarLogo;
   margin-top: 5px !important;
   cursor: pointer;
 }

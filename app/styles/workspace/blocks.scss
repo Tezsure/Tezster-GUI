@@ -1,11 +1,9 @@
 .blocks-container {
   padding: 10px;
+  height: 85%;
   background: #fff;
   border-top: 0.5px solid #dee2e6;
   height: 500px;
-}
-.blocks-container .cards {
-  width: -webkit-fill-available;
 }
 .blocks-container .blocks-accordion-container {
   display: flex;
@@ -19,7 +17,11 @@
   margin-right: 50px;
 }
 .blocks-table-container {
-  width: -webkit-fill-available;
+  background-color: #ffff !important;
+  color: #727d95 !important;
+  font-weight: 700;
+  overflow: auto;
+  max-height: -webkit-fill-available;
 }
 .blocks-container tbody {
   line-height: 0 !important;
@@ -48,6 +50,7 @@
   flex-direction: row;
   justify-content: space-between;
   background-color: rgb(248, 249, 250);
+  padding: 10px;
 }
 .blocks-cards-container .cards {
   background-color: #f8f9fa;

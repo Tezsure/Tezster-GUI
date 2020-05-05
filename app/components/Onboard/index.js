@@ -1,5 +1,6 @@
+/* eslint-disable no-script-url */
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 function Onboard() {
   return (
@@ -30,9 +31,9 @@ function Onboard() {
           <div className="footer-text">
             learn more about products &amp; upcomming updates
           </div>
-          <a href="javascript:void(0);" className="update-link">
+          <NavLink to="#" className="update-link">
             check for updates
-          </a>
+          </NavLink>
         </div>
       </div>
       <div className="workplace-footer">

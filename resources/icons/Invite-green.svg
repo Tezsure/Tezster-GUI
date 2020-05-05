@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="18" viewBox="0 0 22 18">
+  <g id="Invite" transform="translate(1.307 -3.246)" style="isolation: isolate">
+    <g id="_24px_email" data-name="24px_email" transform="translate(0 3.753)" opacity="0.8">
+      <path id="Path" d="M12.512,0,6.256,6.256,0,0" transform="translate(3.753 3.753)" fill="none" stroke="#3dcc8e" stroke-linecap="square" stroke-miterlimit="10" stroke-width="2"/>
+      <rect id="Rectangle" width="20" height="16" rx="2" opacity="0.8" transform="translate(-0.307 0.493)" stroke="#3dcc8e" stroke-linecap="square" stroke-miterlimit="10" stroke-width="2" fill="none"/>
+      <path id="Path-2" data-name="Path" d="M1.251,0,0,1.251" transform="translate(3.753 11.26)" fill="none" stroke="#3dcc8e" stroke-linecap="square" stroke-miterlimit="10" stroke-width="2"/>
+      <path id="Path-3" data-name="Path" d="M0,0,1.251,1.251" transform="translate(15.014 11.26)" fill="none" stroke="#3dcc8e" stroke-linecap="square" stroke-miterlimit="10" stroke-width="2"/>
+    </g>
+  </g>
+</svg>

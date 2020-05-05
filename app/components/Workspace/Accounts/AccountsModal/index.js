@@ -1,31 +1,32 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
-import CreateAccounts from './CreateAccounts';
-import RestoreAccounts from './RestoreAccounts';
-import ValidateWallet from './ValidateWallet';
+import ActivateAccounts from './ActivateAccounts';
+import NonFundraiserAccount from './NonFundraiserAccount';
+import WalletAccounts from './WalletAccounts';
 
 function AccountsModal(props) {
   const modalBody = () => {
     switch (props.showAccountsModal) {
-      case 'create-accounts':
-        return <CreateAccounts {...props} />;
+      case 'activate-accounts':
+        return <ActivateAccounts {...props} />;
       case 'restore-accounts':
-        return <RestoreAccounts {...props} />;
-      case 'validate-wallets':
-        return <ValidateWallet {...props} />;
+        return <NonFundraiserAccount {...props} />;
+      case 'show-user-wallet':
+        return <WalletAccounts {...props} />;
       default:
         return <div />;
     }
   };
+  let style = {
+    display: 'block',
+    paddingRight: '15px',
+    opacity: 1,
+  };
+  if (props.showAccountsModal === 'show-user-wallet') {
+    style.paddingTop = '15%';
+  }
   return (
-    <div
-      className="modal fade show"
-      role="dialog"
-      style={{
-        display: 'block',
-        paddingRight: '15px',
-        opacity: 1
-      }}
-    >
+    <div className="modal fade show" role="dialog" style={style}>
       <div className="modal-dialog" role="document">
         {modalBody()}
       </div>

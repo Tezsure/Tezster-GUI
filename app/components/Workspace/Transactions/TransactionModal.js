@@ -11,7 +11,7 @@ class TransactionModal extends Component {
       amount: '',
       amountErr: '',
       gasPrice: '',
-      gasPriceErr: ''
+      gasPriceErr: '',
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleExecuteTransaction = this.handleExecuteTransaction.bind(this);
@@ -19,12 +19,12 @@ class TransactionModal extends Component {
 
   handleExecuteTransaction() {
     let errorFlag = false;
-    let stateParams = {
+    const stateParams = {
       ...this.state,
       senderAccountErr: '',
       recieverAccountErr: '',
       amountErr: '',
-      gasPriceErr: ''
+      gasPriceErr: '',
     };
     if (stateParams.senderAccount === '0') {
       stateParams.senderAccountErr = 'Please select senders account';
@@ -42,11 +42,16 @@ class TransactionModal extends Component {
       stateParams.gasPriceErr = 'Please enter gas price';
       errorFlag = true;
     }
+    if (parseInt(stateParams.gasPrice, 10) < 1500) {
+      stateParams.gasPriceErr =
+        'Please enter gas price more than or equals to 1500';
+      errorFlag = true;
+    }
 
     if (!errorFlag) {
       this.props.executeTransactionAction({
         ...this.props,
-        ...this.state
+        ...this.state,
       });
     } else {
       this.setState(stateParams);
@@ -60,12 +65,12 @@ class TransactionModal extends Component {
   render() {
     const sendersAccounts = this.props.userAccounts.map((elem, index) => (
       <option key={elem.account + index} value={elem.account}>
-        {elem.account}
+        {elem.label + '-' + elem.account}
       </option>
     ));
     const recieverAccounts = this.props.userAccounts.map((elem, index) => (
       <option key={elem.account + index} value={elem.account}>
-        {elem.account}
+        {elem.label + '-' + elem.account}
       </option>
     ));
     return (
@@ -75,7 +80,7 @@ class TransactionModal extends Component {
         style={{
           display: 'block',
           paddingRight: '15px',
-          opacity: 1
+          opacity: 1,
         }}
       >
         <div className="modal-dialog" role="document">
@@ -87,7 +92,10 @@ class TransactionModal extends Component {
                 className="close"
                 data-dismiss="modal"
                 aria-label="Close"
-                onClick={() => this.props.handleModalToggle()}
+                onClick={() => {
+                  this.props.handleModalToggle();
+                  this.props.toggleButtonState();
+                }}
               >
                 <span aria-hidden="true">×</span>
               </button>
@@ -116,14 +124,16 @@ class TransactionModal extends Component {
                 onChange={this.handleInputChange}
               >
                 <option value="0" disabled>
-                  Select Sender&rsquo;s Account
+                  Select Reciever&rsquo;s Account
                 </option>
                 {recieverAccounts}
               </select>
             </div>
             <span className="error-msg">{this.state.recieverAccountErr}</span>
             <div className="modal-input">
-              <div className="input-container">Amount </div>
+              <div className="input-container" style={{ width: '26%' }}>
+                Amount{' '}
+              </div>
               <input
                 type="number"
                 name="amount"
@@ -131,19 +141,36 @@ class TransactionModal extends Component {
                 placeholder="Enter your amount"
                 value={this.state.amount}
                 onChange={this.handleInputChange}
+                style={{ width: '60%' }}
               />
+              <span className="tezos-icon" style={{ marginLeft: '10px' }}>
+                {' '}
+                ꜩ
+              </span>
             </div>
             <span className="error-msg">{this.state.amountErr}</span>
+            <div className="modal-input" style={{ paddingBottom: '0px' }}>
+              <p style={{ paddingBottom: '0px', marginBottom: '0px' }}>
+                Note: Please enter gas price more than or equals to 1500 <br />{' '}
+              </p>
+            </div>
             <div className="modal-input">
-              <div className="input-container">Gas Price </div>
+              <div className="input-container" style={{ width: '26%' }}>
+                Gas Price{' '}
+              </div>
               <input
                 type="number"
                 name="gasPrice"
                 className="form-control"
-                placeholder="Enter your gas price"
+                placeholder="Enter your gas price eg 1500"
                 value={this.state.gasPrice}
                 onChange={this.handleInputChange}
+                style={{ width: '60%' }}
               />
+              <span className="tezos-icon" style={{ marginLeft: '10px' }}>
+                {' '}
+                <b>mu</b>ꜩ
+              </span>
             </div>
             <span className="error-msg">{this.state.gasPriceErr}</span>
             <br />
@@ -152,16 +179,20 @@ class TransactionModal extends Component {
                 type="button"
                 className="btn btn-secondary"
                 data-dismiss="modal"
-                onClick={() => this.props.handleModalToggle()}
+                onClick={() => {
+                  this.props.handleModalToggle();
+                  this.props.toggleButtonState();
+                }}
               >
                 Cancel
               </button>
               <button
                 type="button"
                 className="btn btn-success"
+                disabled={this.props.buttonState}
                 onClick={() => this.handleExecuteTransaction()}
               >
-                Pay Amount
+                {this.props.buttonState ? 'Please wait....' : 'Pay Amount'}
               </button>
             </div>
           </div>

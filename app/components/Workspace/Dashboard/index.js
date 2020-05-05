@@ -31,8 +31,10 @@ function Dashboard(props) {
   }
   return (
     <main className="container-dashboard">
-      <Header {...props} />
-      {DashboardContent}
+      <div className="inline-container">
+        <Header {...props} />
+        {DashboardContent}
+      </div>
     </main>
   );
 }

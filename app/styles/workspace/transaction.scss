@@ -1,8 +1,12 @@
+.empty-transaction {
+  text-align: center;
+}
 .transaction-container {
+  height: -webkit-fill-available;
   padding: 10px;
   background: #fff;
   border-top: 0.5px solid #dee2e6;
-  max-height: 500px;
+  max-height: -webkit-fill-available;
   overflow: auto;
 }
 .transaction-status-button {
@@ -12,7 +16,7 @@
   color: #fff;
 }
 .transaction-container .cards {
-  justify-content: flex-end !important;
+  justify-content: flex-end;
 }
 .transaction-container p {
   word-break: break-all;
@@ -22,7 +26,4 @@
   padding: 4px 18px 4px 18px;
   border-radius: 18px;
   color: #fff;
-}
-.transaction-container .cards {
-  justify-content: flex-end !important;
 }
