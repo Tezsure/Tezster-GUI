@@ -105,9 +105,10 @@ class InvokeContract extends Component {
             ...this.props,
             ...this.state,
           });
-          setTimeout(() => {
-            this.props.toggleButtonState();
-          }, 1000);
+          this.props.getAccountBalanceAction({
+            ...this.props,
+            pkh: this.state.accounts,
+          });
         });
         return true;
       }
@@ -264,20 +265,29 @@ class InvokeContract extends Component {
             {entryPoints}
           </select>
         </div>
-        <div className="modal-input">
-          {this.state.selectedEntryPoint !== '0' ? (
+        {this.props.dashboardHeader.networkId !== 'Localnode' ? (
+          <div className="transactions-contents">
+            <div className="modal-input" style={{ paddingBottom: '0px' }}>
+              <p style={{ marginBottom: '0px' }}>
+                Note: It may take upto 1 minute for the contract to get commited
+                on carthagenet network.
+              </p>
+            </div>
+          </div>
+        ) : (
+          ''
+        )}
+        {this.state.selectedEntryPoint !== '0' && (
+          <div className="modal-input">
             <p>
               Note: please use quotes for string eg: &quot;hello world&quot;
             </p>
-          ) : (
-            ''
-          )}
-        </div>
-        <div className="modal-input">
-          {this.state.selectedEntryPoint !== '0'
-            ? this.getEntryPointsTable()
-            : ''}
-        </div>
+            }
+          </div>
+        )}
+        {this.state.selectedEntryPoint !== '0' && (
+          <div className="modal-input">{this.getEntryPointsTable()}</div>
+        )}
         <div className="cards-container">
           <div className="cards button-card accounts-button-container">
             <div className="button-accounts">

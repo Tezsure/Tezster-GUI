@@ -23,7 +23,7 @@
   margin-bottom: 0;
 }
 .cards-container {
-  display: inline-flex;
+  display: flex;
   width: 100%;
   flex-direction: row;
   justify-content: space-between;
@@ -60,12 +60,8 @@
 
 .dashboard-header {
   overflow: hidden;
+  position: relative;
   background-color: #fff;
-}
-@media only screen and (max-width: 1050px) {
-  .dashboard-header {
-    overflow-x: scroll;
-  }
 }
 h4 {
   color: #727d95 !important;

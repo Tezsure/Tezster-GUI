@@ -26,7 +26,7 @@ class Transactions extends Component {
   render() {
     const Accounts = this.props.userAccounts.map((elem, index) => (
       <option key={elem.account + index} value={elem.account}>
-        {elem.label + '-' + elem.account}
+        {`${elem.label}-${elem.account}`}
       </option>
     ));
     const Transactions =
@@ -41,8 +41,11 @@ class Transactions extends Component {
       <>
         <div className="transaction-container">
           <div className="cards-container">
-            <div className="cards button-card accounts-button-container">
-              <div className="button-accounts">
+            <div
+              style={{ justifyContent: 'flex-start' }}
+              className="cards button-card accounts-button-container"
+            >
+              <div style={{ marginLeft: '0px' }} className="button-accounts">
                 <button
                   type="button"
                   onClick={this.handleModalToggle}
@@ -53,6 +56,18 @@ class Transactions extends Component {
               </div>
             </div>
           </div>
+          {this.props.dashboardHeader.networkId !== 'Localnode' ? (
+            <div className="transactions-contents">
+              <div className="modal-input">
+                <p>
+                  Note: It may take upto 1 minute for the transactions to get
+                  commited on network.
+                </p>
+              </div>
+            </div>
+          ) : (
+            ''
+          )}
           <div className="transactions-contents">
             <div className="modal-input">
               <div className="input-container">Select Wallet </div>
@@ -74,12 +89,17 @@ class Transactions extends Component {
             </div>
           </div>
           <div className="cards-container">
-            <div className="cards button-card accounts-button-container">
-              <div className="button-accounts">
+            <div
+              style={{ justifyContent: 'flex-start' }}
+              className="cards button-card accounts-button-container"
+            >
+              <div className="button-accounts" style={{ marginLeft: '26%' }}>
                 <button
                   type="button"
                   className="btn btn-success"
-                  disabled={this.state.accountId === '0'}
+                  disabled={
+                    this.state.accountId === '0' || this.props.buttonState
+                  }
                   onClick={() => {
                     this.props.selectTransactionWalletAction({
                       accountId: this.state.accountId,
@@ -87,7 +107,9 @@ class Transactions extends Component {
                     });
                   }}
                 >
-                  Show transactions
+                  {this.props.buttonState
+                    ? 'Please wait....'
+                    : 'Show transactions'}
                 </button>
               </div>
             </div>
