@@ -26,7 +26,7 @@ class Transactions extends Component {
   render() {
     const Accounts = this.props.userAccounts.map((elem, index) => (
       <option key={elem.account + index} value={elem.account}>
-        {elem.label + '-' + elem.account}
+        {`${elem.label}-${elem.account}`}
       </option>
     ));
     const Transactions =
@@ -89,8 +89,11 @@ class Transactions extends Component {
             </div>
           </div>
           <div className="cards-container">
-            <div className="cards button-card accounts-button-container">
-              <div className="button-accounts">
+            <div
+              style={{ justifyContent: 'flex-start' }}
+              className="cards button-card accounts-button-container"
+            >
+              <div className="button-accounts" style={{ marginLeft: '26%' }}>
                 <button
                   type="button"
                   className="btn btn-success"
