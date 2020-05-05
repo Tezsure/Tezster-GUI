@@ -27,6 +27,10 @@ export function selectTransactionWalletAction(payload) {
 export function getTransactionsAction({ ...params }) {
   const networkId = params.dashboardHeader.networkId.split('-')[0];
   return (dispatch) => {
+    dispatch({
+      type: 'BUTTON_LOADING_STATE',
+      payload: true,
+    });
     if (params.hasOwnProperty('accountId')) {
       if (networkId === 'Localnode') {
         if (localStorage.getItem('tezsure')) {
@@ -36,10 +40,18 @@ export function getTransactionsAction({ ...params }) {
             transactions[networkId].hasOwnProperty(params.accountId)
           ) {
             dispatch({
+              type: 'BUTTON_LOADING_STATE',
+              payload: false,
+            });
+            dispatch({
               type: 'GET_TRANSACTIONS',
               payload: [],
             });
           } else {
+            dispatch({
+              type: 'BUTTON_LOADING_STATE',
+              payload: false,
+            });
             dispatch({
               type: 'GET_TRANSACTIONS',
               payload: transactions[networkId].hasOwnProperty(params.accountId)
@@ -48,6 +60,10 @@ export function getTransactionsAction({ ...params }) {
             });
           }
         } else {
+          dispatch({
+            type: 'BUTTON_LOADING_STATE',
+            payload: false,
+          });
           dispatch({
             type: 'GET_TRANSACTIONS',
             payload: [],
@@ -61,11 +77,19 @@ export function getTransactionsAction({ ...params }) {
               'Couldnot fetch transactions for this account',
               'error'
             );
+            dispatch({
+              type: 'BUTTON_LOADING_STATE',
+              payload: false,
+            });
             return dispatch({
               type: 'GET_TRANSACTIONS_ERR',
               payload: err,
             });
           }
+          dispatch({
+            type: 'BUTTON_LOADING_STATE',
+            payload: false,
+          });
           dispatch({
             type: 'GET_TRANSACTIONS',
             payload: response,

@@ -201,7 +201,7 @@ class ActivateAccounts extends Component {
         </div>
         <div className="modal-body">
           <p>
-            Please enter faucet from{' '}
+            Please enter the account parameters received from faucet{' '}
             <NavLink
               to="#"
               onClick={() => shell.openExternal('https://faucet.tzalpha.net/')}
@@ -215,6 +215,9 @@ class ActivateAccounts extends Component {
             account
           </p>
           <p>Please click on activate wallet button to activate an account</p>
+          <p style={{ fontStyle: 'italic' }}>
+            Note: It may take upto 1 minute for the creation of an account.
+          </p>
         </div>
         <div className="modal-input">
           <div className="input-container">Label</div>
@@ -280,7 +283,7 @@ class ActivateAccounts extends Component {
           <textarea
             className="form-control"
             name="mnemonic"
-            style={{ height: '300px' }}
+            style={{ height: '150px' }}
             value={this.state.faucet.mnemonic}
             placeholder="Please enter mnemonic"
             onChange={this.handleInputChange}

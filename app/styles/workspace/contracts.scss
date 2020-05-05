@@ -1,12 +1,11 @@
 .contracts-table-container {
-  height: -webkit-fill-available;
+  height: 100%;
   overflow-y: scroll;
   background-color: #ffff !important;
   color: #727d95 !important;
   font-weight: 700;
   padding: 10px;
   border-top: 0.5px solid #dee2e6;
-  margin-bottom: 5%;
 }
 .contract-deployed {
   background: #39b999;

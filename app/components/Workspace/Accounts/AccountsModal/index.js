@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import ActivateAccounts from './ActivateAccounts';
-import RestoreAccounts from './RestoreAccounts';
+import NonFundraiserAccount from './NonFundraiserAccount';
 import WalletAccounts from './WalletAccounts';
 
 function AccountsModal(props) {
@@ -10,7 +10,7 @@ function AccountsModal(props) {
       case 'activate-accounts':
         return <ActivateAccounts {...props} />;
       case 'restore-accounts':
-        return <RestoreAccounts {...props} />;
+        return <NonFundraiserAccount {...props} />;
       case 'show-user-wallet':
         return <WalletAccounts {...props} />;
       default:
