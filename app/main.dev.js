@@ -93,8 +93,6 @@ const createWindow = async () => {
         mainWindow.focus();
       }
     });
-
-    // Create mainWindow, load the rest of the app, etc...
   }
   mainWindow.on('closed', () => {
     mainWindow = null;
