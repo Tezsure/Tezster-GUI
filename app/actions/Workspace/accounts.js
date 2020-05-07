@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable prefer-promise-reject-errors */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-underscore-dangle */
@@ -6,7 +7,7 @@
 /* eslint-disable promise/always-return */
 /* eslint-disable no-prototype-builtins */
 import swal from 'sweetalert';
-import { exec } from 'child_process';
+import { exec, spawn } from 'child_process';
 
 const {
   __getBalance,
@@ -19,15 +20,32 @@ const config = require('../../apis/config');
 
 function checkIsLocalNodeRunning() {
   return new Promise((resolve) => {
-    exec(
-      'tezster get-balance tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx',
-      (err, stdout) => {
+    if (process.platform.split('win').length > 1) {
+      const ls = spawn(
+        'cmd.exe',
+        [
+          '/c',
+          `powershell.exe tezster get-balance ${config.identities[0].pkh}`,
+        ],
+        { detached: false }
+      );
+      ls.stdout.on('data', (data) => {
+        resolve(true);
+      });
+      ls.stderr.on('data', (data) => {
+        resolve(false);
+      });
+      ls.on('close', (code) => {
+        console.log(`child process exited with code ${code}`);
+      });
+    } else {
+      exec(`tezster get-balance ${config.identities[0].pkh}`, (err, stdout) => {
         if (err || stdout.split('ECONNREFUSED').length > 1) {
           return resolve(false);
         }
         return resolve(true);
-      }
-    );
+      });
+    }
   });
 }
 
