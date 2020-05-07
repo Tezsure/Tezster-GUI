@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable prefer-promise-reject-errors */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-underscore-dangle */
@@ -24,7 +25,7 @@ function checkIsLocalNodeRunning() {
         'cmd.exe',
         [
           '/c',
-          'powershell.exe tezster get-balance tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx',
+          `powershell.exe tezster get-balance ${config.identities[0].pkh}`,
         ],
         { detached: false }
       );
@@ -38,15 +39,12 @@ function checkIsLocalNodeRunning() {
         console.log(`child process exited with code ${code}`);
       });
     } else {
-      exec(
-        'tezster get-balance tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx',
-        (err, stdout) => {
-          if (err || stdout.split('ECONNREFUSED').length > 1) {
-            return resolve(false);
-          }
-          return resolve(true);
+      exec(`tezster get-balance ${config.identities[0].pkh}`, (err, stdout) => {
+        if (err || stdout.split('ECONNREFUSED').length > 1) {
+          return resolve(false);
         }
-      );
+        return resolve(true);
+      });
     }
   });
 }

@@ -1,10 +1,11 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable promise/catch-or-return */
 /* eslint-disable no-return-await */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-underscore-dangle */
 import { exec, spawn } from 'child_process';
 import swal from 'sweetalert';
-import { apiEndPoints } from '../../apis/config';
+import { apiEndPoints, identities } from '../../apis/config';
 
 const { getBlockHeight, getBlockData } = require('../../apis/tzstats.service');
 
@@ -22,10 +23,7 @@ function checkIsLocalNodeRunning() {
     if (process.platform.split('win').length > 1) {
       const ls = spawn(
         'cmd.exe',
-        [
-          '/c',
-          'powershell.exe tezster get-balance tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx',
-        ],
+        ['/c', `powershell.exe tezster get-balance ${identities[0].pkh}`],
         { detached: false }
       );
       ls.stdout.on('data', (data) => {
@@ -38,15 +36,12 @@ function checkIsLocalNodeRunning() {
         console.log(`child process exited with code ${code}`);
       });
     } else {
-      exec(
-        'tezster get-balance tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx',
-        (err, stdout) => {
-          if (err || stdout.split('ECONNREFUSED').length > 1) {
-            return resolve(false);
-          }
-          return resolve(true);
+      exec(`tezster get-balance ${identities[0].pkh}`, (err, stdout) => {
+        if (err || stdout.split('ECONNREFUSED').length > 1) {
+          return resolve(false);
         }
-      );
+        return resolve(true);
+      });
     }
   });
 }

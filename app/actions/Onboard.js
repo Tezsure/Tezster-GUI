@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { exec, spawn } from 'child_process';
 
 const config = require('../apis/config');
@@ -21,7 +22,7 @@ export function checkTezsterCliAction() {
           'cmd.exe',
           [
             '/c',
-            'powershell.exe tezster get-balance tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx',
+            `powershell.exe tezster get-balance ${config.identities[0].pkh}`,
           ],
           { detached: false }
         );
@@ -42,19 +43,18 @@ export function checkTezsterCliAction() {
         });
       } else {
         exec(
-          'tezster get-balance tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx',
+          `tezster get-balance ${config.identities[0].pkh}`,
           (err, stdout) => {
             if (err || stdout.split('ECONNREFUSED').length > 1) {
               return dispatch({
                 type: 'TEZSTER_CLI_ERR',
                 payload: false,
               });
-            } else {
-              return dispatch({
-                type: 'TEZSTER_CLI_SUCCESS',
-                payload: true,
-              });
             }
+            return dispatch({
+              type: 'TEZSTER_CLI_SUCCESS',
+              payload: true,
+            });
           }
         );
       }
