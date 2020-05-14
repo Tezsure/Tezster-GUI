@@ -1,0 +1,9 @@
+.editor-container {
+  display: flex;
+  flex-direction: row;
+  background: aliceblue;
+  height: 100%;
+}
+.react-monaco-editor-container {
+  position: fixed;
+}
