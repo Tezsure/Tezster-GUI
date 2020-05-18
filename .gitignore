@@ -66,3 +66,4 @@ app/main.prod.js.LICENSE.txt
 
 .idea
 npm-debug.log.*
+yarn.lock
