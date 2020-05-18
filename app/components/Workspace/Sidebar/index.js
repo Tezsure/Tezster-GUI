@@ -98,7 +98,10 @@ function Sidebar(props) {
               ? 'sidebar-content-active'
               : 'sidebar-content'
           }
-          onClick={() => props.handleTabChangeAction('contracts')}
+          onClick={() => {
+            props.handleContractsTabChangeAction('deployContract');
+            props.handleTabChangeAction('contracts');
+          }}
         >
           <span className="card-icon" />
           <span
