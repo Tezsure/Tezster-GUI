@@ -80,7 +80,7 @@ function Sidebar(props) {
           }
           onClick={() => props.handleTabChangeAction('editor')}
         >
-          <span className="wallet-icon" />
+          <span className="fill-icon" />
           <span
             className={
               props.sidebarToggleState

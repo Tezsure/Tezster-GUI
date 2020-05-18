@@ -5,6 +5,7 @@
 // import axios from 'axios';
 
 import { apiEndPoints, ConceilJS } from './config';
+import { RpcRequest } from './getAccountBalance';
 
 const conseiljs = require('conseiljs');
 
@@ -83,24 +84,10 @@ export async function __activateAccountOperation({ ...params }, callback) {
     return callback(exp, null);
   }
 }
-export async function __getBlockHeads({ ...params }, callback) {
-  const __url = apiEndPoints[params.dashboardHeader.networkId];
-  eztz.node.setProvider(__url);
-  eztz.rpc
-    .getHead()
-    .then((res) => {
-      return callback(null, res);
-    })
-    .catch((err) => {
-      return callback(err, null);
-    });
-}
 export async function __getBalance({ ...params }) {
   const __url = apiEndPoints[params.dashboardHeader.networkId];
   return new Promise((resolve, reject) => {
-    eztz.node.setProvider(__url);
-    eztz.rpc
-      .getBalance(params.pkh)
+    RpcRequest.fetchBalance(__url, params.pkh)
       .then((res) => {
         const balance = (parseInt(res, 10) / 1000000).toFixed(3);
         return resolve({
@@ -335,7 +322,7 @@ export async function __deployContract({ ...params }, callback) {
               network,
               JSON.parse(nodeResult.operationGroupID),
               10,
-              30 + 1
+              10
             );
           }
           return callback(

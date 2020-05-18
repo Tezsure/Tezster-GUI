@@ -34,7 +34,7 @@ class InvokeContract extends Component {
   }
 
   handleEntryPointsInputValues(event) {
-    const entryPoints = this.state.entryPoints.map((elem, index) => {
+    const entryPoints = this.state.entryPoints.map((elem) => {
       const temp = { ...elem };
       if (elem.name === this.state.selectedEntryPoint) {
         const stateValues = elem.stateValues.map((pp) => {
@@ -75,7 +75,7 @@ class InvokeContract extends Component {
             ]
           : p.parameters.map((pp) => ({ [pp.name]: '' }));
       return {
-        name: p.name === undefined ? 'init' : p.name,
+        name: p.name === undefined ? 'default' : p.name,
         structure: p.structure,
         parameter,
         stateValues,
@@ -282,7 +282,6 @@ class InvokeContract extends Component {
             <p>
               Note: please use quotes for string eg: &quot;hello world&quot;
             </p>
-            }
           </div>
         )}
         {this.state.selectedEntryPoint !== '0' && (
