@@ -45,7 +45,7 @@ const installExtensions = async () => {
   const extensions = ['REACT_DEVELOPER_TOOLS', 'REDUX_DEVTOOLS'];
 
   return Promise.all(
-    extensions.map(name => installer.default(installer[name], forceDownload))
+    extensions.map((name) => installer.default(installer[name], forceDownload))
   ).catch(console.log);
 };
 
@@ -62,9 +62,9 @@ const createWindow = async () => {
     width: 1024,
     height: 728,
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
     },
-    icon: path.join(__dirname, '../resources/icons/Artboard – 1@2x (1).png')
+    icon: path.join(__dirname, '../resources/icons/Artboard – 1@2x (1).png'),
   });
   mainWindow.setTitle('Tezster-GUI');
   mainWindow.loadURL(`file://${__dirname}/app.html`);
@@ -81,6 +81,19 @@ const createWindow = async () => {
     }
   });
 
+  const gotTheLock = app.requestSingleInstanceLock();
+
+  if (!gotTheLock) {
+    app.quit();
+  } else {
+    app.on('second-instance', (event, commandLine, workingDirectory) => {
+      // Someone tried to run a second instance, we should focus our window.
+      if (mainWindow) {
+        if (mainWindow.isMinimized()) mainWindow.restore();
+        mainWindow.focus();
+      }
+    });
+  }
   mainWindow.on('closed', () => {
     mainWindow = null;
   });
