@@ -8,10 +8,6 @@ import React, { Component } from 'react';
 import swal from 'sweetalert';
 // import JSONPretty from 'react-json-pretty';
 
-const conseiljs = require('conseiljs');
-
-const fs = require('fs');
-
 class DeployContract extends Component {
   constructor(props) {
     super(props);
@@ -20,32 +16,25 @@ class DeployContract extends Component {
       contractFile: '',
       contractLabel: '',
       storageValue: '',
-      storageFormat: '',
       contractAmount: '',
       error: '',
       enteredContract: '',
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleDeployContract = this.handleDeployContract.bind(this);
-    this.handleGetInitialStorage = this.handleGetInitialStorage.bind(this);
-  }
-
-  async handleGetInitialStorage(contract) {
-    const storageFormat = await conseiljs.TezosLanguageUtil.preProcessMichelsonScript(
-      contract
-    );
-    return storageFormat[1].slice(8);
   }
 
   handleDeployContract() {
     let error = '';
-    if (this.state.accounts === '0') {
+    const { sucessMsg, parseError } = this.props;
+    if (this.props.michelsonCode === '') {
+      error = 'Please upload a contract or write a michelson contract';
+    } else if (sucessMsg === '') {
+      error = 'Please compile contract before deployment';
+    } else if (parseError !== '') {
+      error = 'Please resolve compilation error before deployment';
+    } else if (this.state.accounts === '0') {
       error = 'Please select an account';
-    } else if (
-      this.state.contractFile === '' &&
-      this.state.enteredContract === ''
-    ) {
-      error = 'Please upload a contract or paste a contract code';
     } else if (this.state.contractLabel === '') {
       error = 'Please enter contract label';
     } else if (this.state.contractLabel !== '') {
@@ -72,14 +61,10 @@ class DeployContract extends Component {
       error =
         'The entered contract amount should be less than available account balance';
     }
-    if (error === '') {
+    if (error === '' && sucessMsg !== '' && parseError === '') {
       let contract = '';
-      if (this.state.contractFile !== '') {
-        contract = fs
-          .readFileSync(this.state.contractFile[0].path)
-          .toString('utf-8');
-      } else if (this.state.enteredContract !== '') {
-        contract = this.state.enteredContract;
+      if (this.props.michelsonCode !== '') {
+        contract = this.props.michelsonCode;
       }
       this.props.deployContractAction({
         contract,
@@ -97,31 +82,7 @@ class DeployContract extends Component {
   }
 
   handleInputChange(event) {
-    const self = this;
-    if (event.target.name === 'contractFile') {
-      const contract = fs
-        .readFileSync(event.target.files[0].path)
-        .toString('utf-8');
-      const stateParams = {
-        [event.target.name]: event.target.files,
-      };
-      this.handleGetInitialStorage(contract).then((storageFormat) => {
-        self.setState({
-          ...stateParams,
-          storageFormat,
-        });
-      });
-    } else if (event.target.name === 'enteredContract') {
-      const stateParams = {
-        [event.target.name]: event.target.value,
-      };
-      this.handleGetInitialStorage(event.target.value).then((storageFormat) => {
-        self.setState({
-          ...stateParams,
-          storageFormat,
-        });
-      });
-    } else if (event.target.name === 'accounts') {
+    if (event.target.name === 'accounts') {
       this.setState({ [event.target.name]: event.target.value }, () => {
         this.props.getAccountBalanceAction({
           ...this.props,
@@ -145,7 +106,7 @@ class DeployContract extends Component {
       });
     }
     return (
-      <div className="transactions-contents">
+      <div className="deploy-contents">
         <div className="modal-input">
           <div className="input-container">Select Wallet </div>
           <select
@@ -173,18 +134,6 @@ class DeployContract extends Component {
           ''
         )}
         <div className="modal-input">
-          <div className="input-container">Upload Contract </div>
-          <div className="custom-file">
-            <input
-              type="file"
-              placeholder="Select smart contract"
-              name="contractFile"
-              accept=".tz"
-              onChange={this.handleInputChange}
-            />
-          </div>
-        </div>
-        <div className="modal-input">
           <div className="input-container">Contract label </div>
           <input
             type="text"
@@ -196,19 +145,22 @@ class DeployContract extends Component {
           />
         </div>
         <div className="modal-input">
-          <div className="input-container" style={{ width: '26%' }}>
-            Contract Amount{' '}
-          </div>
-          <input
-            type="number"
-            name="contractAmount"
-            className="form-control"
-            placeholder="Enter amount to deploy contract"
-            value={this.state.contractAmount}
-            onChange={this.handleInputChange}
-            style={{ width: '50%', marginRight: '10px' }}
-          />
-          <span className="tezos-icon">ꜩ</span>
+          <div className="input-container">Contract Amount </div>
+          <span
+            className="contract-amount-input"
+            style={{ display: 'flex', flexDirection: 'row' }}
+          >
+            <input
+              type="number"
+              name="contractAmount"
+              className="form-control"
+              placeholder="Enter amount to deploy contract"
+              value={this.state.contractAmount}
+              style={{ marginRight: '10px' }}
+              onChange={this.handleInputChange}
+            />
+            <span className="tezos-icon">ꜩ</span>
+          </span>
         </div>
         {this.props.dashboardHeader.networkId !== 'Localnode' ? (
           <div className="transactions-contents">
@@ -222,11 +174,11 @@ class DeployContract extends Component {
         ) : (
           ''
         )}
-        {this.state.storageFormat ? (
+        {this.props.storageFormat ? (
           <span>
             Please enter initial storage in the following format
             <div className="modal-input" style={{ backgroundColor: '#f1f3f5' }}>
-              <p>{this.state.storageFormat}</p>
+              <p>{this.props.storageFormat}</p>
             </div>
             <p>
               Note: please use quotes for string eg: &quot;hello world&quot;
@@ -254,7 +206,9 @@ class DeployContract extends Component {
                 disabled={this.props.buttonState}
                 onClick={this.handleDeployContract}
               >
-                {this.props.buttonState ? 'Please wait....' : 'Deploy Contract'}
+                {this.props.buttonState
+                  ? 'Please wait....'
+                  : 'Save and Deploy Contract'}
               </button>
             </div>
           </div>
