@@ -74,34 +74,11 @@ function Sidebar(props) {
         </li>
         <li
           className={
-            props.currentTab === 'editor'
-              ? 'sidebar-content-active'
-              : 'sidebar-content'
-          }
-          onClick={() => props.handleTabChangeAction('editor')}
-        >
-          <span className="fill-icon" />
-          <span
-            className={
-              props.sidebarToggleState
-                ? 'sidebar-text'
-                : 'sidebar-text-collapsed'
-            }
-          >
-            {' '}
-            Editor
-          </span>
-        </li>
-        <li
-          className={
             props.currentTab === 'contracts'
               ? 'sidebar-content-active'
               : 'sidebar-content'
           }
-          onClick={() => {
-            props.handleContractsTabChangeAction('deployContract');
-            props.handleTabChangeAction('contracts');
-          }}
+          onClick={() => props.handleTabChangeAction('contracts')}
         >
           <span className="card-icon" />
           <span
