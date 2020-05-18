@@ -45,7 +45,11 @@ export function checkTezsterCliAction() {
         exec(
           `tezster get-balance ${config.identities[0].pkh}`,
           (err, stdout) => {
-            if (err || stdout.split('ECONNREFUSED').length > 1) {
+            if (
+              err ||
+              stdout.includes('ECONNREFUSED') ||
+              stdout.includes('Error')
+            ) {
               return dispatch({
                 type: 'TEZSTER_CLI_ERR',
                 payload: false,
