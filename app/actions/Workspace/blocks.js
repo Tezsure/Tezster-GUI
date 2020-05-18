@@ -1,3 +1,5 @@
+/* eslint-disable no-prototype-builtins */
+/* eslint-disable camelcase */
 const {
   getBlockHeight,
   getAllBlockData,
