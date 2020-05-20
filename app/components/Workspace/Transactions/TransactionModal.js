@@ -1,3 +1,8 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable react/prop-types */
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
 
 class TransactionModal extends Component {
@@ -6,15 +11,24 @@ class TransactionModal extends Component {
     this.state = {
       senderAccount: '0',
       senderAccountErr: '',
-      recieverAccount: '0',
+      recieverAccount: '',
       recieverAccountErr: '',
       amount: '',
+      showOptions: false,
       amountErr: '',
       gasPrice: '',
       gasPriceErr: '',
     };
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleAutoComplete = this.handleAutoComplete.bind(this);
+    this.handleSelectRecieverAccount = this.handleSelectRecieverAccount.bind(
+      this
+    );
     this.handleExecuteTransaction = this.handleExecuteTransaction.bind(this);
+  }
+
+  handleSelectRecieverAccount(event, recieverAccount) {
+    this.setState({ recieverAccount, showOptions: false });
   }
 
   handleExecuteTransaction() {
@@ -59,20 +73,50 @@ class TransactionModal extends Component {
   }
 
   handleInputChange(event) {
-    this.setState({ [event.target.name]: event.target.value });
+    if (event.target.name === 'recieverAccount') {
+      this.setState({
+        [event.target.name]: event.target.value,
+        showOptions: false,
+      });
+    } else {
+      this.setState({
+        [event.target.name]: event.target.value,
+        showOptions: false,
+      });
+    }
+  }
+
+  handleAutoComplete(event) {
+    this.setState({
+      [event.target.name]: event.target.value,
+      showOptions: true,
+    });
   }
 
   render() {
+    const recieverAccountsOptions = [];
+    const { recieverAccount, showOptions } = this.state;
     const sendersAccounts = this.props.userAccounts.map((elem, index) => (
       <option key={elem.account + index} value={elem.account}>
-        {elem.label + '-' + elem.account}
+        {`${elem.label}-${elem.account}`}
       </option>
     ));
-    const recieverAccounts = this.props.userAccounts.map((elem, index) => (
-      <option key={elem.account + index} value={elem.account}>
-        {elem.label + '-' + elem.account}
-      </option>
-    ));
+    this.props.userAccounts.forEach((elem, index) => {
+      if (elem.account.indexOf(recieverAccount) !== -1) {
+        recieverAccountsOptions.push(
+          <div
+            key={elem.account + index}
+            className="autocomplete-list"
+            onClick={(event) =>
+              this.handleSelectRecieverAccount(event, elem.account)
+            }
+          >
+            {elem.account}
+            <input type="hidden" value={elem.account} />
+          </div>
+        );
+      }
+    });
     return (
       <div
         className="modal fade show"
@@ -117,17 +161,26 @@ class TransactionModal extends Component {
             <span className="error-msg">{this.state.senderAccountErr}</span>
             <div className="modal-input">
               <div className="input-container">To </div>
-              <select
-                className="custom-select"
+              <input
+                id="myInput"
+                type="text"
                 name="recieverAccount"
-                value={this.state.recieverAccount}
+                className="custom-select"
                 onChange={this.handleInputChange}
-              >
-                <option value="0" disabled>
-                  Select Reciever&rsquo;s Account
-                </option>
-                {recieverAccounts}
-              </select>
+                onFocus={this.handleAutoComplete}
+                value={this.state.recieverAccount}
+                placeholder="Enter Reciever&rsquo;s Account"
+              />
+              {recieverAccountsOptions.length > 0 && showOptions ? (
+                <div
+                  id="myInputautocomplete-list"
+                  className="autocomplete-items"
+                >
+                  {recieverAccountsOptions}
+                </div>
+              ) : (
+                ''
+              )}
             </div>
             <span className="error-msg">{this.state.recieverAccountErr}</span>
             <div className="modal-input">

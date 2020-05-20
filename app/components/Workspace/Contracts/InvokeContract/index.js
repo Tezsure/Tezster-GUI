@@ -205,7 +205,7 @@ class InvokeContract extends Component {
             onChange={this.handleInputChange}
           >
             <option value="0" disabled>
-              Select account to deploy contract
+              Select account to invoke contract
             </option>
             {Accounts}
           </select>
@@ -244,7 +244,7 @@ class InvokeContract extends Component {
             type="number"
             name="contractAmount"
             className="form-control"
-            placeholder="Enter amount to deploy contract"
+            placeholder="Enter amount to invoke contract"
             value={this.state.contractAmount}
             onChange={this.handleInputChange}
             style={{ width: '50%', marginRight: '10px' }}
