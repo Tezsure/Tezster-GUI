@@ -4,6 +4,7 @@
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
+import Autosuggest from 'react-autosuggest';
 
 class TransactionModal extends Component {
   constructor(props) {
@@ -14,21 +15,54 @@ class TransactionModal extends Component {
       recieverAccount: '',
       recieverAccountErr: '',
       amount: '',
-      showOptions: false,
+      suggestions: [],
       amountErr: '',
       gasPrice: '',
       gasPriceErr: '',
     };
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleAutoComplete = this.handleAutoComplete.bind(this);
-    this.handleSelectRecieverAccount = this.handleSelectRecieverAccount.bind(
+    this.handleExecuteTransaction = this.handleExecuteTransaction.bind(this);
+    this.handleAutosuggestOnChange = this.handleAutosuggestOnChange.bind(this);
+    this.onSuggestionsFetchRequested = this.onSuggestionsFetchRequested.bind(
       this
     );
-    this.handleExecuteTransaction = this.handleExecuteTransaction.bind(this);
+    this.onSuggestionsClearRequested = this.onSuggestionsClearRequested.bind(
+      this
+    );
   }
 
-  handleSelectRecieverAccount(event, recieverAccount) {
-    this.setState({ recieverAccount, showOptions: false });
+  handleAutosuggestOnChange(event) {
+    this.setState({
+      recieverAccount: event.target.value
+        ? event.target.value
+        : event.target.innerText,
+    });
+  }
+
+  // Autosuggest will call this function every time you need to update suggestions.
+  // You already implemented this logic above, so just use it.
+  onSuggestionsFetchRequested({ value }) {
+    const { userAccounts } = this.props;
+
+    const inputValue = value;
+    const inputLength = inputValue.length;
+
+    const suggestions =
+      inputLength === 0
+        ? []
+        : userAccounts.filter(
+            (elem) => elem.account.slice(0, inputLength) === inputValue
+          );
+    this.setState({
+      suggestions,
+    });
+  }
+
+  // Autosuggest will call this function every time you need to clear suggestions.
+  onSuggestionsClearRequested() {
+    this.setState({
+      suggestions: [],
+    });
   }
 
   handleExecuteTransaction() {
@@ -73,50 +107,34 @@ class TransactionModal extends Component {
   }
 
   handleInputChange(event) {
-    if (event.target.name === 'recieverAccount') {
-      this.setState({
-        [event.target.name]: event.target.value,
-        showOptions: false,
-      });
-    } else {
-      this.setState({
-        [event.target.name]: event.target.value,
-        showOptions: false,
-      });
-    }
-  }
-
-  handleAutoComplete(event) {
     this.setState({
       [event.target.name]: event.target.value,
-      showOptions: true,
     });
   }
 
   render() {
-    const recieverAccountsOptions = [];
-    const { recieverAccount, showOptions } = this.state;
+    const { recieverAccount, suggestions } = this.state;
     const sendersAccounts = this.props.userAccounts.map((elem, index) => (
       <option key={elem.account + index} value={elem.account}>
         {`${elem.label}-${elem.account}`}
       </option>
     ));
-    this.props.userAccounts.forEach((elem, index) => {
-      if (elem.account.indexOf(recieverAccount) !== -1) {
-        recieverAccountsOptions.push(
-          <div
-            key={elem.account + index}
-            className="autocomplete-list"
-            onClick={(event) =>
-              this.handleSelectRecieverAccount(event, elem.account)
-            }
-          >
-            {elem.account}
-            <input type="hidden" value={elem.account} />
-          </div>
-        );
-      }
-    });
+
+    const getSuggestionValue = (suggestion) => {
+      return suggestion.account;
+    };
+
+    // Use your imagination to render suggestions.
+    const renderSuggestion = (suggestion) => {
+      return <div value={suggestion.account}>{suggestion.account}</div>;
+    };
+
+    // Autosuggest will pass through all these props to the input.
+    const inputProps = {
+      placeholder: "Enter reciever's account",
+      value: recieverAccount,
+      onChange: this.handleAutosuggestOnChange,
+    };
     return (
       <div
         className="modal fade show"
@@ -161,26 +179,15 @@ class TransactionModal extends Component {
             <span className="error-msg">{this.state.senderAccountErr}</span>
             <div className="modal-input">
               <div className="input-container">To </div>
-              <input
-                id="myInput"
-                type="text"
-                name="recieverAccount"
-                className="custom-select"
-                onChange={this.handleInputChange}
-                onFocus={this.handleAutoComplete}
-                value={this.state.recieverAccount}
-                placeholder="Enter Reciever&rsquo;s Account"
+              <Autosuggest
+                suggestions={suggestions}
+                className="form-control"
+                onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+                onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                getSuggestionValue={getSuggestionValue}
+                renderSuggestion={renderSuggestion}
+                inputProps={inputProps}
               />
-              {recieverAccountsOptions.length > 0 && showOptions ? (
-                <div
-                  id="myInputautocomplete-list"
-                  className="autocomplete-items"
-                >
-                  {recieverAccountsOptions}
-                </div>
-              ) : (
-                ''
-              )}
             </div>
             <span className="error-msg">{this.state.recieverAccountErr}</span>
             <div className="modal-input">

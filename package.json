@@ -230,6 +230,7 @@
     "opencollective-postinstall": "^2.0.2",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
     "prettier": "^2.0.5",
+    "react-autosuggest": "^10.0.2",
     "react-test-renderer": "^16.13.1",
     "redux-logger": "^3.0.6",
     "rimraf": "^3.0.2",
