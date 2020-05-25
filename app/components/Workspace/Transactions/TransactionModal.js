@@ -86,6 +86,15 @@ class TransactionModal extends Component {
       stateParams.amountErr = 'Please enter amount';
       errorFlag = true;
     }
+    if (
+      stateParams.senderAccount !== '0' &&
+      stateParams.amount !== '' &&
+      parseInt(stateParams.senderAccount, 10) <
+        parseInt(stateParams.amount, 10) * 1000000
+    ) {
+      stateParams.amountErr = `Transaction amount should be less than the sender's account balance`;
+      errorFlag = true;
+    }
     if (stateParams.gasPrice === '') {
       stateParams.gasPriceErr = 'Please enter gas price';
       errorFlag = true;
@@ -107,9 +116,20 @@ class TransactionModal extends Component {
   }
 
   handleInputChange(event) {
-    this.setState({
-      [event.target.name]: event.target.value,
-    });
+    const argsName = event.target.name;
+    this.setState(
+      {
+        [argsName]: event.target.value,
+      },
+      () => {
+        if (argsName === 'senderAccount') {
+          this.props.getAccountBalanceAction({
+            ...this.props,
+            pkh: this.state.senderAccount,
+          });
+        }
+      }
+    );
   }
 
   render() {
@@ -163,7 +183,7 @@ class TransactionModal extends Component {
               </button>
             </div>
             <div className="modal-input">
-              <div className="input-container">From </div>
+              <div className="input-container">From* </div>
               <select
                 className="custom-select"
                 name="senderAccount"
@@ -176,9 +196,21 @@ class TransactionModal extends Component {
                 {sendersAccounts}
               </select>
             </div>
+            {this.state.senderAccount !== '0' ? (
+              <div className="container-msg">
+                <b>
+                  &nbsp;Available balance in the account{' '}
+                  <span className="tezos-icon">
+                    {this.props.selectedContractAmountBalance} ꜩ
+                  </span>
+                </b>
+              </div>
+            ) : (
+              ''
+            )}
             <span className="error-msg">{this.state.senderAccountErr}</span>
             <div className="modal-input">
-              <div className="input-container">To </div>
+              <div className="input-container">To* </div>
               <Autosuggest
                 suggestions={suggestions}
                 className="form-control"
@@ -191,8 +223,8 @@ class TransactionModal extends Component {
             </div>
             <span className="error-msg">{this.state.recieverAccountErr}</span>
             <div className="modal-input">
-              <div className="input-container" style={{ width: '26%' }}>
-                Amount{' '}
+              <div className="input-container" style={{ width: '28%' }}>
+                Amount{'* '}
               </div>
               <input
                 type="number"
@@ -215,8 +247,8 @@ class TransactionModal extends Component {
               </p>
             </div>
             <div className="modal-input">
-              <div className="input-container" style={{ width: '26%' }}>
-                Gas Price{' '}
+              <div className="input-container" style={{ width: '28%' }}>
+                Gas Price{'* '}
               </div>
               <input
                 type="number"

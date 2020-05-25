@@ -36,12 +36,24 @@ class App extends Component {
     };
     this.compileContract = this.compileContract.bind(this);
     this.handleUploadContract = this.handleUploadContract.bind(this);
+    this.fetchSelectedContract = this.fetchSelectedContract.bind(this);
     this.handleGetInitialStorage = this.handleGetInitialStorage.bind(this);
     this.handleEditorCodeOnChange = this.handleEditorCodeOnChange.bind(this);
   }
 
   componentDidMount() {
     this.props.handleContractsTabChangeAction('Output');
+  }
+
+  fetchSelectedContract(event) {
+    const contractLabel = event.target.value;
+    const { contracts } = JSON.parse(localStorage.getItem('tezsure'));
+    const { dashboardHeader } = this.props;
+    const selectedContract = contracts[dashboardHeader.networkId].filter(
+      (elem) => contractLabel === elem.originated_contracts
+    )[0];
+    const michelsonCode = selectedContract.contract;
+    this.setState({ michelsonCode });
   }
 
   async compileContract() {
@@ -158,7 +170,10 @@ class App extends Component {
         <div className="code-editor">
           <div className="code-editor-navbar">
             <div className="select-contract-container">
-              <select className="custom-select">
+              <select
+                className="custom-select"
+                onChange={this.fetchSelectedContract}
+              >
                 <option value="0"> Select contract </option>
                 {contracts}
               </select>

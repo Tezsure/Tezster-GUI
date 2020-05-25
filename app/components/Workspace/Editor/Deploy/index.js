@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 /* eslint-disable promise/always-return */
 /* eslint-disable class-methods-use-this */
 /* eslint-disable promise/catch-or-return */
@@ -13,12 +14,10 @@ class DeployContract extends Component {
     super(props);
     this.state = {
       accounts: '0',
-      contractFile: '',
       contractLabel: '',
       storageValue: '',
       contractAmount: '',
       error: '',
-      enteredContract: '',
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleDeployContract = this.handleDeployContract.bind(this);
@@ -26,50 +25,59 @@ class DeployContract extends Component {
 
   handleDeployContract() {
     let error = '';
-    const { sucessMsg, parseError } = this.props;
-    if (this.props.michelsonCode === '') {
+    const {
+      sucessMsg,
+      parseError,
+      michelsonCode,
+      dashboardHeader,
+      selectedContractAmountBalance,
+    } = this.props;
+    let { accounts, contractLabel, storageValue, contractAmount } = this.state;
+
+    contractAmount = contractAmount === '' ? 0 : contractAmount;
+
+    if (michelsonCode === '') {
       error = 'Please upload a contract or write a michelson contract';
-    } else if (sucessMsg === '') {
-      error = 'Please compile contract before deployment';
     } else if (parseError !== '') {
       error = 'Please resolve compilation error before deployment';
-    } else if (this.state.accounts === '0') {
+    } else if (sucessMsg === '') {
+      error = 'Please compile contract before deployment';
+    } else if (accounts === '0') {
       error = 'Please select an account';
-    } else if (this.state.contractLabel === '') {
+    } else if (contractLabel === '') {
       error = 'Please enter contract label';
-    } else if (this.state.contractLabel !== '') {
-      const networkId = this.props.dashboardHeader.networkId.split('-')[0];
+    } else if (contractLabel !== '') {
+      const networkId = dashboardHeader.networkId.split('-')[0];
       const contract = JSON.parse(localStorage.getItem('tezsure')).contracts[
         networkId
       ];
-      if (
-        contract.filter((elem) => elem.name === this.state.contractLabel)
-          .length > 0
-      ) {
+      if (contract.filter((elem) => elem.name === contractLabel).length > 0) {
         error = 'Label already in use, please choose a different label';
       }
-    } else if (this.state.contractAmount === '') {
-      error = 'Please enter contract amount';
-    } else if (this.state.storageValue === '') {
+    }
+    if (storageValue === '') {
       error = 'Please enter storage value';
-    } else if (this.props.selectedContractAmountBalance === '0.000') {
+    } else if (selectedContractAmountBalance === '0.000') {
       error = 'Not enough balance to deploy the contract';
     } else if (
-      parseInt(this.state.contractAmount, 10) >
-      parseInt(this.props.selectedContractAmountBalance, 10) * 1000000
+      parseInt(contractAmount, 10) >
+      parseInt(selectedContractAmountBalance, 10) * 1000000
     ) {
       error =
         'The entered contract amount should be less than available account balance';
     }
     if (error === '' && sucessMsg !== '' && parseError === '') {
       let contract = '';
-      if (this.props.michelsonCode !== '') {
-        contract = this.props.michelsonCode;
+      if (michelsonCode !== '') {
+        contract = michelsonCode;
       }
       this.props.deployContractAction({
         contract,
+        accounts,
+        contractLabel,
+        storageValue,
+        contractAmount,
         ...this.props,
-        ...this.state,
       });
       this.props.getAccountBalanceAction({
         ...this.props,
@@ -108,7 +116,7 @@ class DeployContract extends Component {
     return (
       <div className="deploy-contents">
         <div className="modal-input">
-          <div className="input-container">Select Wallet </div>
+          <div className="input-container">Select Wallet* </div>
           <select
             className="custom-select"
             name="accounts"
@@ -124,7 +132,7 @@ class DeployContract extends Component {
         {this.state.accounts !== '0' ? (
           <div className="container-msg">
             <b>
-              &nbsp;&nbsp;Available balance in the account{' '}
+              Available balance in the account{' '}
               <span className="tezos-icon">
                 {this.props.selectedContractAmountBalance} ꜩ
               </span>
@@ -134,7 +142,7 @@ class DeployContract extends Component {
           ''
         )}
         <div className="modal-input">
-          <div className="input-container">Contract label </div>
+          <div className="input-container">Contract label* </div>
           <input
             type="text"
             name="contractLabel"
@@ -188,7 +196,7 @@ class DeployContract extends Component {
           ''
         )}
         <div className="modal-input">
-          <div className="input-container">Initial Storage </div>
+          <div className="input-container">Initial Storage* </div>
           <textarea
             name="storageValue"
             className="form-control"

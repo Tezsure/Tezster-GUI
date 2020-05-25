@@ -30,9 +30,9 @@ class index extends Component {
       </option>
     ));
     return (
-      <div className="transactions-contents">
+      <div className="transactions-contents contract-container">
         <div className="modal-input">
-          <div className="input-container">Select Contract </div>
+          <div className="input-container">Select Contract* </div>
           <select
             className="custom-select"
             name="selectedContracts"
@@ -69,7 +69,7 @@ class index extends Component {
           this.props.selectedContractStorage === 'Not Found' ? (
             ''
           ) : (
-            <div className="input-container">Initial Storage </div>
+            <div className="input-container">Initial Storage* </div>
           )}
         </div>
         <div className="modal-input">

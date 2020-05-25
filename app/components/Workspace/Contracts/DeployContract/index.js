@@ -39,16 +39,24 @@ class DeployContract extends Component {
 
   handleDeployContract() {
     let error = '';
-    if (this.state.accounts === '0') {
+    let {
+      accounts,
+      contractFile,
+      enteredContract,
+      contractLabel,
+      storageValue,
+      contractAmount,
+    } = this.state;
+
+    contractAmount = contractAmount === '' ? 0 : contractAmount;
+
+    if (accounts === '0') {
       error = 'Please select an account';
-    } else if (
-      this.state.contractFile === '' &&
-      this.state.enteredContract === ''
-    ) {
-      error = 'Please upload a contract or paste a contract code';
-    } else if (this.state.contractLabel === '') {
+    } else if (contractFile === '') {
+      error = 'Please upload a contract';
+    } else if (contractLabel === '') {
       error = 'Please enter contract label';
-    } else if (this.state.contractLabel !== '') {
+    } else if (contractLabel !== '') {
       const networkId = this.props.dashboardHeader.networkId.split('-')[0];
       const contract = JSON.parse(localStorage.getItem('tezsure')).contracts[
         networkId
@@ -59,14 +67,14 @@ class DeployContract extends Component {
       ) {
         error = 'Label already in use, please choose a different label';
       }
-    } else if (this.state.contractAmount === '') {
+    } else if (contractAmount === '') {
       error = 'Please enter contract amount';
-    } else if (this.state.storageValue === '') {
+    } else if (storageValue === '') {
       error = 'Please enter storage value';
     } else if (this.props.selectedContractAmountBalance === '0.000') {
       error = 'Not enough balance to deploy the contract';
     } else if (
-      parseInt(this.state.contractAmount, 10) >
+      parseInt(contractAmount, 10) >
       parseInt(this.props.selectedContractAmountBalance, 10) * 1000000
     ) {
       error =
@@ -74,17 +82,17 @@ class DeployContract extends Component {
     }
     if (error === '') {
       let contract = '';
-      if (this.state.contractFile !== '') {
-        contract = fs
-          .readFileSync(this.state.contractFile[0].path)
-          .toString('utf-8');
-      } else if (this.state.enteredContract !== '') {
-        contract = this.state.enteredContract;
+      if (contractFile !== '') {
+        contract = fs.readFileSync(contractFile[0].path).toString('utf-8');
       }
       this.props.deployContractAction({
-        contract,
         ...this.props,
-        ...this.state,
+        accounts,
+        contract,
+        enteredContract,
+        contractLabel,
+        storageValue,
+        contractAmount,
       });
       this.props.getAccountBalanceAction({
         ...this.props,
@@ -145,9 +153,9 @@ class DeployContract extends Component {
       });
     }
     return (
-      <div className="transactions-contents">
+      <div className="transactions-contents contract-container">
         <div className="modal-input">
-          <div className="input-container">Select Wallet </div>
+          <div className="input-container">Select Wallet* </div>
           <select
             className="custom-select"
             name="accounts"
@@ -161,9 +169,9 @@ class DeployContract extends Component {
           </select>
         </div>
         {this.state.accounts !== '0' ? (
-          <div className="container-msg">
+          <div className="container-msg" style={{ marginLeft: '28%' }}>
             <b>
-              &nbsp;&nbsp;Available balance in the account{' '}
+              &nbsp;Available balance in the account{' '}
               <span className="tezos-icon">
                 {this.props.selectedContractAmountBalance} ꜩ
               </span>
@@ -173,7 +181,7 @@ class DeployContract extends Component {
           ''
         )}
         <div className="modal-input">
-          <div className="input-container">Upload Contract </div>
+          <div className="input-container">Upload Contract* </div>
           <div className="custom-file">
             <input
               type="file"
@@ -185,7 +193,7 @@ class DeployContract extends Component {
           </div>
         </div>
         <div className="modal-input">
-          <div className="input-container">Contract label </div>
+          <div className="input-container">Contract label* </div>
           <input
             type="text"
             name="contractLabel"
@@ -196,7 +204,7 @@ class DeployContract extends Component {
           />
         </div>
         <div className="modal-input">
-          <div className="input-container" style={{ width: '26%' }}>
+          <div className="input-container" style={{ width: '28%' }}>
             Contract Amount{' '}
           </div>
           <input
@@ -236,7 +244,7 @@ class DeployContract extends Component {
           ''
         )}
         <div className="modal-input">
-          <div className="input-container">Initial Storage </div>
+          <div className="input-container">Initial Storage* </div>
           <textarea
             name="storageValue"
             className="form-control"

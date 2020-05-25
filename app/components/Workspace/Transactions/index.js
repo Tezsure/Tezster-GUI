@@ -70,7 +70,9 @@ class Transactions extends Component {
           )}
           <div className="transactions-contents">
             <div className="modal-input">
-              <div className="input-container">Select Wallet </div>
+              <div className="input-container" style={{ width: '35%' }}>
+                Select Wallet{' '}
+              </div>
               <select
                 className="custom-select"
                 name="accounts"

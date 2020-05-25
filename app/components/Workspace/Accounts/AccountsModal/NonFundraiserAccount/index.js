@@ -49,14 +49,10 @@ class index extends Component {
         errFlag = true;
       }
     }
-    if (stateParams.password === '') {
-      stateParams.passwordErr = 'Please enter password';
-      errFlag = true;
-    }
     if (errFlag === false) {
       const keystore = await conseiljs.TezosWalletUtil.unlockIdentityWithMnemonic(
         this.state.mnemonicSuggestion,
-        this.state.password
+        this.state.password || ''
       );
       const userParams = {
         ...keystore,

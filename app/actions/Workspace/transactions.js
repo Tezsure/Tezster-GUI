@@ -146,6 +146,8 @@ export function executeTransactionAction(params) {
           type: 'BUTTON_LOADING_STATE',
           payload: false,
         });
+        dispatch(toggleTransactionModalAction(false));
+        dispatch(getTransactionsAction({ ...params }));
         return dispatch({
           type: 'EXECUTE_TRANSACTIONS_ERR',
           payload: err,
@@ -156,12 +158,12 @@ export function executeTransactionAction(params) {
         type: 'BUTTON_LOADING_STATE',
         payload: false,
       });
+      dispatch(toggleTransactionModalAction(false));
+      dispatch(getTransactionsAction({ ...params }));
       return dispatch({
         type: 'EXECUTE_TRANSACTIONS_SUCCESS',
         payload: response,
       });
     });
-    dispatch(toggleTransactionModalAction(false));
-    dispatch(getTransactionsAction({ ...params }));
   };
 }

@@ -111,3 +111,17 @@ a:hover {
   height: 70vh;
   overflow: auto;
 }
+.custom-file-input {
+  cursor: pointer;
+}
+.nav-link {
+  cursor: pointer;
+  background: #f1f3f5;
+}
+.nav-link active {
+  background: #fff;
+}
+.editor-container .container-msg {
+  padding-left: 1rem;
+  margin-left: 0;
+}

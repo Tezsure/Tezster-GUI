@@ -87,6 +87,9 @@ class InvokeContract extends Component {
 
   handleInvokeContract() {
     let index = 0;
+    let { contractAmount } = this.state;
+    contractAmount = contractAmount === '' ? 0 : contractAmount;
+
     this.state.entryPoints.some((elem) => {
       if (elem.name === this.state.selectedEntryPoint) {
         const storageValue = elem.structure
@@ -104,6 +107,7 @@ class InvokeContract extends Component {
           this.props.handleInvokeContractAction({
             ...this.props,
             ...this.state,
+            contractAmount,
           });
           this.props.getAccountBalanceAction({
             ...this.props,
@@ -195,9 +199,9 @@ class InvokeContract extends Component {
       });
     }
     return (
-      <div className="transactions-contents">
+      <div className="transactions-contents contract-container">
         <div className="modal-input">
-          <div className="input-container">Select Wallet </div>
+          <div className="input-container">Select Wallet* </div>
           <select
             className="custom-select"
             name="accounts"
@@ -211,9 +215,9 @@ class InvokeContract extends Component {
           </select>
         </div>
         {this.state.accounts !== '0' ? (
-          <div className="container-msg">
+          <div className="container-msg" style={{ marginLeft: '28%' }}>
             <b>
-              &nbsp;&nbsp;Available balance in the account{' '}
+              &nbsp;Available balance in the account{' '}
               <span className="tezos-icon">
                 {this.props.selectedContractAmountBalance} ꜩ
               </span>
@@ -223,7 +227,7 @@ class InvokeContract extends Component {
           ''
         )}
         <div className="modal-input">
-          <div className="input-container">Select Contract </div>
+          <div className="input-container">Select Contract* </div>
           <select
             className="custom-select"
             name="selectedContracts"
@@ -237,7 +241,7 @@ class InvokeContract extends Component {
           </select>
         </div>
         <div className="modal-input">
-          <div className="input-container" style={{ width: '26%' }}>
+          <div className="input-container" style={{ width: '28%' }}>
             Contract Amount{' '}
           </div>
           <input
@@ -252,7 +256,7 @@ class InvokeContract extends Component {
           <span className="tezos-icon">ꜩ</span>
         </div>
         <div className="modal-input">
-          <div className="input-container">Entry Points </div>
+          <div className="input-container">Entry Points* </div>
           <select
             className="custom-select"
             name="selectedEntryPoint"
