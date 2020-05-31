@@ -103,7 +103,7 @@ class Header extends Component {
         );
       } else {
         message = (
-          <div className="cards-container success-msg">
+          <div className="cards-container success-message">
             <p>{tezsterStartNodes.msg}</p>
           </div>
         );
@@ -111,7 +111,7 @@ class Header extends Component {
     }
     if (loaderStatus && tezsterError !== '' && tezsterError) {
       message = (
-        <div className="cards-container error-msg">
+        <div className="cards-container error-message">
           <p>{`Error: ${tezsterError}`}</p>
         </div>
       );

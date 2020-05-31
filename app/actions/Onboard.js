@@ -1,7 +1,10 @@
 /* eslint-disable no-unused-vars */
-import { exec, spawn } from 'child_process';
+import { RpcRequest } from '../apis/getAccountBalance';
 
 const config = require('../apis/config');
+
+const url = config.provider;
+const testPkh = config.identities[0].pkh;
 
 export function handleTezsterCliActionChange() {
   return {
@@ -16,61 +19,32 @@ export function checkTezsterCliAction() {
       type: 'TEZSTER_CLI_PENDING',
       payload: false,
     });
-    setTimeout(() => {
-      if (process.platform.split('win').length > 1) {
-        const ls = spawn(
-          'cmd.exe',
-          [
-            '/c',
-            `powershell.exe tezster get-balance ${config.identities[0].pkh}`,
-          ],
-          { detached: false }
-        );
-        ls.stdout.on('data', (data) => {
+    RpcRequest.fetchBalance(url, testPkh)
+      .then((res) => {
+        const balance = (parseInt(res, 10) / 1000000).toFixed(3);
+        return setTimeout(() => {
           dispatch({
-            type: 'TEZSTER_CLI_ERR',
+            type: 'TEZSTER_SHOW_STOP_NODES',
             payload: true,
           });
-        });
-        ls.stderr.on('data', (data) => {
+          return dispatch({
+            type: 'TEZSTER_CLI_SUCCESS',
+            payload: true,
+          });
+        }, 1000);
+      })
+      .catch((exp) => {
+        setTimeout(() => {
           dispatch({
+            type: 'TEZSTER_SHOW_STOP_NODES',
+            payload: false,
+          });
+          return dispatch({
             type: 'TEZSTER_CLI_ERR',
             payload: false,
           });
-        });
-        ls.on('close', (code) => {
-          console.log(`child process exited with code ${code}`);
-        });
-      } else {
-        exec(
-          `tezster get-balance ${config.identities[0].pkh}`,
-          (err, stdout) => {
-            if (
-              err ||
-              stdout.includes('ECONNREFUSED') ||
-              stdout.includes('Error')
-            ) {
-              dispatch({
-                type: 'TEZSTER_SHOW_STOP_NODES',
-                payload: false,
-              });
-              return dispatch({
-                type: 'TEZSTER_CLI_ERR',
-                payload: false,
-              });
-            }
-            dispatch({
-              type: 'TEZSTER_SHOW_STOP_NODES',
-              payload: true,
-            });
-            return dispatch({
-              type: 'TEZSTER_CLI_SUCCESS',
-              payload: true,
-            });
-          }
-        );
-      }
-    }, 1000);
+        }, 1000);
+      });
   };
 }
 
@@ -82,60 +56,31 @@ export function getLocalConfigAction() {
 }
 export function setTezsterConfigAction() {
   return (dispatch) => {
-    setTimeout(() => {
-      if (process.platform.split('win').length > 1) {
-        const ls = spawn(
-          'cmd.exe',
-          [
-            '/c',
-            `powershell.exe tezster get-balance ${config.identities[0].pkh}`,
-          ],
-          { detached: false }
-        );
-        ls.stdout.on('data', (data) => {
+    RpcRequest.fetchBalance(url, testPkh)
+      .then((res) => {
+        const balance = (parseInt(res, 10) / 1000000).toFixed(3);
+        return setTimeout(() => {
           dispatch({
-            type: 'TEZSTER_CLI_ERR',
+            type: 'TEZSTER_SHOW_STOP_NODES',
             payload: true,
           });
-        });
-        ls.stderr.on('data', (data) => {
+          return dispatch({
+            type: 'TEZSTER_CLI_SUCCESS',
+            payload: true,
+          });
+        }, 1000);
+      })
+      .catch((exp) => {
+        setTimeout(() => {
           dispatch({
+            type: 'TEZSTER_SHOW_STOP_NODES',
+            payload: false,
+          });
+          return dispatch({
             type: 'TEZSTER_CLI_ERR',
             payload: false,
           });
-        });
-        ls.on('close', (code) => {
-          console.log(`child process exited with code ${code}`);
-        });
-      } else {
-        exec(
-          `tezster get-balance ${config.identities[0].pkh}`,
-          (err, stdout) => {
-            if (
-              err ||
-              stdout.includes('ECONNREFUSED') ||
-              stdout.includes('Error')
-            ) {
-              dispatch({
-                type: 'TEZSTER_SHOW_STOP_NODES',
-                payload: false,
-              });
-              return dispatch({
-                type: 'TEZSTER_CLI_ERR',
-                payload: false,
-              });
-            }
-            dispatch({
-              type: 'TEZSTER_SHOW_STOP_NODES',
-              payload: true,
-            });
-            return dispatch({
-              type: 'TEZSTER_CLI_SUCCESS',
-              payload: true,
-            });
-          }
-        );
-      }
-    }, 1000);
+        }, 1000);
+      });
   };
 }
