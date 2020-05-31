@@ -1,3 +1,9 @@
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable no-useless-constructor */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 
 class Table extends Component {
@@ -6,6 +12,12 @@ class Table extends Component {
   }
 
   render() {
+    const { networkId } = this.props.dashboardHeader;
+    const isLocalNodeRunning =
+      this.props.userAccounts.length === 0 &&
+      !process.platform.includes('linux') &&
+      networkId === 'Localnose' &&
+      this.props.isAvailableTezsterCli;
     const Accounts = this.props.userAccounts.map((elem, index) => {
       return (
         <tr className="table-row" key={elem.account + index}>
@@ -60,16 +72,13 @@ class Table extends Component {
         </tr>
       );
     });
-    if (
-      this.props.userAccounts === [] ||
-      this.props.userAccounts.length === 0
-    ) {
+    if (this.props.userAccounts.length === 0) {
+      const msg = isLocalNodeRunning
+        ? 'No account available for the selected network type please add an account'
+        : 'LocalNodes are not running please start the nodes';
       return (
         <div className="accounts-table-container">
-          <p>
-            No account available for the selected network type please add an
-            account
-          </p>
+          <p>{msg}</p>
         </div>
       );
     }

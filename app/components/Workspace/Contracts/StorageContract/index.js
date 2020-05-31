@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-underscore-dangle */

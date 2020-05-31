@@ -130,8 +130,10 @@ function Error(props) {
                     type="button"
                     className="btn btn-success"
                     onClick={() => {
-                      props.dashboardHeader.networkId = 'Carthagenet-Tezster';
-                      props.handleNetworkChangeAction(props);
+                      if (!process.platform.includes('linux')) {
+                        props.dashboardHeader.networkId = 'Carthagenet-Tezster';
+                        props.handleNetworkChangeAction(props);
+                      }
                       props.getAccountsAction(props);
                       props.handleTezsterCliActionChange();
                     }}

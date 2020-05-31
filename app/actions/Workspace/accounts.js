@@ -65,6 +65,16 @@ export function getAccountsAction({ ...params }) {
   let IsLocalNodeRunning = false;
   return async (dispatch) => {
     IsLocalNodeRunning = await checkIsLocalNodeRunning();
+    if (
+      !IsLocalNodeRunning &&
+      process.platform.includes('linux') &&
+      networkId === 'Localnode'
+    ) {
+      return dispatch({
+        type: 'GET_ACCOUNTS',
+        payload: [],
+      });
+    }
     networkId =
       !IsLocalNodeRunning && networkId === 'Localnode'
         ? 'Carthagenet-Tezster'

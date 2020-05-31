@@ -97,6 +97,16 @@ export function handleNetworkChangeAction(args) {
   return (dispatch) => {
     if (networkId === 'Localnode') {
       checkIsLocalNodeRunning().then((IsLocalNodeRunning) => {
+        if (
+          !IsLocalNodeRunning &&
+          process.platform.includes('linux') &&
+          networkId === 'Localnode'
+        ) {
+          return dispatch({
+            type: 'GET_DASHBOARD_HEADER',
+            payload: localnodeData,
+          });
+        }
         if (!IsLocalNodeRunning) {
           networkId = 'Carthagenet-Tezster';
           swal(
