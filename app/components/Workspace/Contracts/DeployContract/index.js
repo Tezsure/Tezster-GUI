@@ -9,6 +9,8 @@ import swal from 'sweetalert';
 // import JSONPretty from 'react-json-pretty';
 
 const conseiljs = require('conseiljs');
+const { storageName } = require('../../../../apis/config');
+const LOCAL_STORAGE_NAME = storageName;
 
 const fs = require('fs');
 
@@ -58,9 +60,8 @@ class DeployContract extends Component {
       error = 'Please enter contract label';
     } else if (contractLabel !== '') {
       const networkId = this.props.dashboardHeader.networkId.split('-')[0];
-      const contract = JSON.parse(localStorage.getItem('tezsure')).contracts[
-        networkId
-      ];
+      const contract = JSON.parse(localStorage.getItem(LOCAL_STORAGE_NAME))
+        .contracts[networkId];
       if (
         contract.filter((elem) => elem.name === this.state.contractLabel)
           .length > 0

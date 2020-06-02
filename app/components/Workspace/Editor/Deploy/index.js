@@ -7,7 +7,8 @@
 /* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
 import swal from 'sweetalert';
-// import JSONPretty from 'react-json-pretty';
+const { storageName } = require('../../../../apis/config');
+const LOCAL_STORAGE_NAME = storageName;
 
 class DeployContract extends Component {
   constructor(props) {
@@ -48,9 +49,8 @@ class DeployContract extends Component {
       error = 'Please enter contract label';
     } else if (contractLabel !== '') {
       const networkId = dashboardHeader.networkId.split('-')[0];
-      const contract = JSON.parse(localStorage.getItem('tezsure')).contracts[
-        networkId
-      ];
+      const contract = JSON.parse(localStorage.getItem(LOCAL_STORAGE_NAME))
+        .contracts[networkId];
       if (contract.filter((elem) => elem.name === contractLabel).length > 0) {
         error = 'Label already in use, please choose a different label';
       }

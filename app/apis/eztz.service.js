@@ -3,10 +3,12 @@
 /* eslint-disable no-underscore-dangle */
 // import axios from 'axios';
 
-import { apiEndPoints, ConceilJS } from './config';
+import { apiEndPoints, ConceilJS, storageName } from './config';
 import { RpcRequest } from './getAccountBalance';
 
 const conseiljs = require('conseiljs');
+
+const LOCAL_STORAGE_NAME = storageName;
 
 require('dotenv').config();
 
@@ -328,7 +330,9 @@ export async function __deployContract({ ...params }, callback) {
           nodeResult.results.contents[0].metadata.operation_result.status ===
           'applied'
         ) {
-          const __localStorage__ = JSON.parse(localStorage.getItem('tezsure'));
+          const __localStorage__ = JSON.parse(
+            localStorage.getItem(LOCAL_STORAGE_NAME)
+          );
           __localStorage__.contracts[
             params.dashboardHeader.networkId.split('-')[0]
           ].push({
@@ -339,7 +343,7 @@ export async function __deployContract({ ...params }, callback) {
             contract,
           });
           localStorage.setItem(
-            'tezsure',
+            LOCAL_STORAGE_NAME,
             JSON.stringify({ ...__localStorage__ })
           );
           if (network !== 'localnode') {

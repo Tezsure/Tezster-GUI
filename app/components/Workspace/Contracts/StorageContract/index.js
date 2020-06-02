@@ -5,6 +5,8 @@
 /* eslint-disable react/no-array-index-key */
 import React, { Component } from 'react';
 import JSONPretty from 'react-json-pretty';
+const { storageName } = require('../../../../apis/config');
+const LOCAL_STORAGE_NAME = storageName;
 
 class index extends Component {
   constructor(props) {
@@ -23,8 +25,9 @@ class index extends Component {
 
   render() {
     const networkId = this.props.dashboardHeader.networkId.split('-')[0];
-    const __localStorage__ = JSON.parse(localStorage.getItem('tezsure'))
-      .contracts;
+    const __localStorage__ = JSON.parse(
+      localStorage.getItem(LOCAL_STORAGE_NAME)
+    ).contracts;
     const contracts = __localStorage__[networkId].map((elem, index) => (
       <option key={elem.name + index} value={elem.originated_contracts}>
         {`${elem.name} - ${elem.originated_contracts}`}

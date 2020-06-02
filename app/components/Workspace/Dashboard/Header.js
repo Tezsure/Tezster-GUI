@@ -92,7 +92,7 @@ class Header extends Component {
     ) {
       if (tezsterStartNodes.msg === 'Downloading') {
         message = (
-          <div className="cards-container success-msg">
+          <div className="cards-container success-message">
             <p>
               Downloading tezster-cli version 1.0.2, size of the image is 937
               MB.

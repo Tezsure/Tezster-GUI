@@ -9,6 +9,8 @@ import React, { Component } from 'react';
 import swal from 'sweetalert';
 
 const conseiljs = require('conseiljs');
+const { storageName } = require('../../../../apis/config');
+const LOCAL_STORAGE_NAME = storageName;
 
 class InvokeContract extends Component {
   constructor(props) {
@@ -53,9 +55,9 @@ class InvokeContract extends Component {
 
   handleEntryPoints() {
     const networkId = this.props.dashboardHeader.networkId.split('-')[0];
-    const contract = JSON.parse(localStorage.getItem('tezsure')).contracts[
-      networkId
-    ].filter(
+    const contract = JSON.parse(
+      localStorage.getItem(LOCAL_STORAGE_NAME)
+    ).contracts[networkId].filter(
       (elem) => elem.originated_contracts === this.state.selectedContracts
     );
     const entryPoints = conseiljs.TezosContractIntrospector.generateEntryPointsFromCode(
@@ -186,8 +188,9 @@ class InvokeContract extends Component {
         {`${elem.label}-${elem.account}`}
       </option>
     ));
-    const __localStorage__ = JSON.parse(localStorage.getItem('tezsure'))
-      .contracts;
+    const __localStorage__ = JSON.parse(
+      localStorage.getItem(LOCAL_STORAGE_NAME)
+    ).contracts;
     const contracts = __localStorage__[networkId].map((elem, index) => (
       <option key={elem.name + index} value={elem.originated_contracts}>
         {`${elem.name} - ${elem.originated_contracts}`}

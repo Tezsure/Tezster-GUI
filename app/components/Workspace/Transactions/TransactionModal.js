@@ -146,7 +146,11 @@ class TransactionModal extends Component {
 
     // Use your imagination to render suggestions.
     const renderSuggestion = (suggestion) => {
-      return <div value={suggestion.account}>{suggestion.account}</div>;
+      return (
+        <div
+          value={suggestion.account}
+        >{`${suggestion.label}-${suggestion.account}`}</div>
+      );
     };
 
     // Autosuggest will pass through all these props to the input.
@@ -166,7 +170,7 @@ class TransactionModal extends Component {
         }}
       >
         <div className="modal-dialog" role="document">
-          <div className="modal-content">
+          <div className="modal-content" style={{ width: '600px' }}>
             <div className="modal-header">
               <h5 className="modal-title">Transfer/Send Tezos</h5>
               <button

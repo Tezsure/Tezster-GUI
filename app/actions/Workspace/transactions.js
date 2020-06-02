@@ -7,6 +7,9 @@ const {
   __listAccountTransactions,
 } = require('../../apis/eztz.service');
 
+const config = require('../../apis/config');
+const LOCAL_STORAGE_NAME = config.storageName;
+
 export function toggleTransactionModalAction(modalState) {
   return {
     type: 'TOGGLE_TRANSACTION_MODAL',
@@ -33,8 +36,10 @@ export function getTransactionsAction({ ...params }) {
     });
     if (params.hasOwnProperty('accountId')) {
       if (networkId === 'Localnode') {
-        if (localStorage.getItem('tezsure')) {
-          const { transactions } = JSON.parse(localStorage.getItem('tezsure'));
+        if (localStorage.getItem(LOCAL_STORAGE_NAME)) {
+          const { transactions } = JSON.parse(
+            localStorage.getItem(LOCAL_STORAGE_NAME)
+          );
           if (
             transactions[networkId].length === 0 &&
             transactions[networkId].hasOwnProperty(params.accountId)
@@ -108,7 +113,9 @@ export function executeTransactionAction(params) {
       payload: true,
     });
     if (networkId === 'Localnode') {
-      const __localStorage = JSON.parse(localStorage.getItem('tezsure'));
+      const __localStorage = JSON.parse(
+        localStorage.getItem(LOCAL_STORAGE_NAME)
+      );
       if (
         !__localStorage.transactions[networkId].hasOwnProperty(
           params.senderAccount
@@ -133,7 +140,10 @@ export function executeTransactionAction(params) {
           operationResultStatus: 'applied',
         },
       });
-      localStorage.setItem('tezsure', JSON.stringify({ ...__localStorage }));
+      localStorage.setItem(
+        LOCAL_STORAGE_NAME,
+        JSON.stringify({ ...__localStorage })
+      );
     }
     __sendOperation({ ...params }, (err, response) => {
       if (err) {

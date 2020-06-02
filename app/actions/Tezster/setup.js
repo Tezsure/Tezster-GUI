@@ -209,6 +209,16 @@ export function stopTezsterNodesAction() {
             clearInterval(totalProgressPercentage);
           });
         } else {
+          setTimeout(
+            () =>
+              dispatch({
+                type: 'STARTING_NODES',
+                payload: {
+                  loader: false,
+                },
+              }),
+            4000
+          );
           dispatch({
             type: 'TEZSTER_SHOW_STOP_NODES',
             payload: false,
@@ -221,6 +231,16 @@ export function stopTezsterNodesAction() {
       });
     }
     if (!isTezsterContainerRunning) {
+      setTimeout(
+        () =>
+          dispatch({
+            type: 'STARTING_NODES',
+            payload: {
+              loader: false,
+            },
+          }),
+        4000
+      );
       dispatch({
         type: 'TEZSTER_SHOW_STOP_NODES',
         payload: false,

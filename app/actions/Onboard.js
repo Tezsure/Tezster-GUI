@@ -31,7 +31,7 @@ export function checkTezsterCliAction() {
             type: 'TEZSTER_CLI_SUCCESS',
             payload: true,
           });
-        }, 1000);
+        }, 4000);
       })
       .catch((exp) => {
         setTimeout(() => {
@@ -83,4 +83,16 @@ export function setTezsterConfigAction() {
         }, 1000);
       });
   };
+}
+export function getTezsterCliRunningState() {
+  return new Promise((resolve, reject) => {
+    RpcRequest.fetchBalance(url, testPkh)
+      .then((res) => {
+        const balance = (parseInt(res, 10) / 1000000).toFixed(3);
+        return resolve(true);
+      })
+      .catch((exp) => {
+        return resolve(false);
+      });
+  });
 }

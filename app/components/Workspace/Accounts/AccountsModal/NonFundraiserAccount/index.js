@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import CreateAccount from './CreateAccount';
 import RestoreAccount from './RestoreAccount';
 const conseiljs = require('conseiljs');
+const { storageName } = require('../../../../../apis/config');
+const LOCAL_STORAGE_NAME = storageName;
 
 class index extends Component {
   constructor(props) {
@@ -38,7 +40,7 @@ class index extends Component {
     }
     if (stateParams.label !== '') {
       const networkId = this.props.dashboardHeader.networkId.split('-')[0];
-      const userAccount = JSON.parse(localStorage.getItem('tezsure'))
+      const userAccount = JSON.parse(localStorage.getItem(LOCAL_STORAGE_NAME))
         .userAccounts[networkId];
       if (
         userAccount.filter((elem) => elem.label === stateParams.label).length >
@@ -93,7 +95,7 @@ class index extends Component {
     }
     if (stateParams.label !== '') {
       const networkId = this.props.dashboardHeader.networkId.split('-')[0];
-      const userAccount = JSON.parse(localStorage.getItem('tezsure'))
+      const userAccount = JSON.parse(localStorage.getItem(LOCAL_STORAGE_NAME))
         .userAccounts[networkId];
       if (
         userAccount.filter((elem) => elem.label === stateParams.label).length >

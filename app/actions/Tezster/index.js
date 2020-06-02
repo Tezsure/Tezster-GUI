@@ -57,7 +57,7 @@ export default function installTezsterCliAction(args) {
       );
       return dispatch({
         type: 'TEZSTER_ERROR',
-        payload: 'Internet unavailable',
+        payload: 'Internet unavailable.',
       });
     }
     if (!isDockerInstalled) {
@@ -73,7 +73,7 @@ export default function installTezsterCliAction(args) {
       );
       return dispatch({
         type: 'TEZSTER_ERROR',
-        payload: 'Docker is not install on your system',
+        payload: 'Docker is not install on your system.',
       });
     }
     return dispatch(
@@ -97,6 +97,19 @@ function installTezsterImage(args) {
   const { isTezsterImagePresent } = args;
   return (dispatch) => {
     if (!isTezsterImagePresent) {
+      dispatch({
+        type: 'STARTING_NODES',
+        payload: {
+          loader: true,
+        },
+      });
+      dispatch({
+        type: 'TEZSTER_START_NODES',
+        payload: {
+          msg: `Download Starting...`,
+          totalProgressPercentage: 0,
+        },
+      });
       docker.pull(TEZSTER_IMAGE, (err, stream) => {
         docker.modem.followProgress(stream, onFinished, onProgress);
         function onFinished(error, output) {
@@ -113,19 +126,21 @@ function installTezsterImage(args) {
             );
             return dispatch({
               type: 'TEZSTER_ERROR',
-              payload: 'Error in installing tezster',
+              payload: 'Error in installing tezster.',
             });
           }
           dispatch({
             type: 'TEZSTER_START_NODES',
             payload: {
-              msg: `Download Complete`,
+              msg: `Download completed successfully.`,
               enum: 'DOWNLOAD_COMPLETE',
               totalProgressPercentage: 100,
               output,
             },
           });
-          return dispatch(installTezsterContainer(args));
+          return setTimeout(() => {
+            return dispatch(installTezsterContainer(args));
+          }, 2000);
         }
         function onProgress(event) {
           const msg = 'Downloading';
@@ -133,6 +148,7 @@ function installTezsterImage(args) {
             case 'Pulling from tezsureinc/tezster':
               payload = {
                 msg,
+                totalProgressPercentage: 0,
                 enum: 'STARTING_DOWNLOAD',
               };
               return dispatch({
@@ -200,7 +216,7 @@ function installTezsterContainer(args) {
       dispatch({
         type: 'TEZSTER_START_NODES',
         payload: {
-          msg: `Starting localnodes please wait`,
+          msg: `Starting localnodes please wait.`,
           enum: 'STARTING_STREAM',
           totalProgressPercentage: 0,
         },
@@ -253,7 +269,7 @@ function installTezsterContainer(args) {
             );
             return dispatch({
               type: 'TEZSTER_ERROR',
-              payload: 'Error in starting nodes',
+              payload: 'Error in starting nodes.',
             });
           }
           return dispatch(runExec({ container, args }));
@@ -263,7 +279,7 @@ function installTezsterContainer(args) {
       dispatch({
         type: 'TEZSTER_START_NODES',
         payload: {
-          msg: `Starting localnodes please wait`,
+          msg: `Starting localnodes please wait.`,
           enum: 'STARTING_STREAM',
           totalProgressPercentage: 0,
         },
@@ -282,7 +298,7 @@ function installTezsterContainer(args) {
           );
           return dispatch({
             type: 'TEZSTER_ERROR',
-            payload: 'Unable to fetch containers',
+            payload: 'Unable to fetch containers.',
           });
         }
         const containerId = containers.filter((elem) =>
@@ -293,7 +309,6 @@ function installTezsterContainer(args) {
       });
     } else {
       setTimeout(() => {
-        dispatch(changeNodesStatus());
         return dispatch({
           type: 'STARTING_NODES',
           payload: {
@@ -305,23 +320,13 @@ function installTezsterContainer(args) {
         type: 'TEZSTER_SHOW_STOP_NODES',
         payload: true,
       });
+      dispatch(setTezsterConfigAction());
+      dispatch(getAccountsAction(args));
       return dispatch({
         type: 'TEZSTER_START_NODES',
-        payload: { msg: 'Nodes are already running' },
+        payload: { msg: 'Nodes are already running.' },
       });
     }
-  };
-}
-function changeNodesStatus() {
-  return (dispatch) => {
-    dispatch({
-      type: 'TEZSTER_CLI_ERR',
-      payload: false,
-    });
-    dispatch({
-      type: 'TEZSTER_CLI_SUCCESS',
-      payload: true,
-    });
   };
 }
 function runExec({ container, args }) {
@@ -347,7 +352,7 @@ function runExec({ container, args }) {
         );
         return dispatch({
           type: 'TEZSTER_ERROR',
-          payload: 'Error in starting nodes',
+          payload: 'Error in starting nodes.',
         });
       }
       dispatch({
@@ -365,7 +370,7 @@ function runExec({ container, args }) {
           return dispatch({
             type: 'TEZSTER_START_NODES',
             payload: {
-              msg: `Starting localnodes please wait`,
+              msg: `Starting localnodes please wait.`,
               enum: 'STARTING_STREAM',
               totalProgressPercentage,
             },
@@ -385,7 +390,7 @@ function runExec({ container, args }) {
           dispatch({
             type: 'TEZSTER_START_NODES',
             payload: {
-              msg: 'Nodes started successfully',
+              msg: 'Nodes started successfully.',
               totalProgressPercentage: 100,
               data,
             },
