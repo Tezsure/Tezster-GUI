@@ -26,10 +26,13 @@ export default async function checkConnectionStatus(args) {
       case 'INTERNET':
         return resolve(navigator.onLine);
       case 'TEZSTER_RUNNING':
-        RpcRequest.fetchBalance(url, testPkh)
+        RpcRequest.checkNodeStatus(url)
           .then((res) => {
-            const balance = (parseInt(res, 10) / 1000000).toFixed(3);
-            return resolve(true);
+            if (res.protocol.startsWith('PsCARTHAG')) {
+              return resolve(true);
+            } else {
+              return resolve(false);
+            }
           })
           .catch((exp) => {
             return resolve(false);
