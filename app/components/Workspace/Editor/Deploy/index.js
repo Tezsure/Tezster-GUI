@@ -55,9 +55,9 @@ class DeployContract extends Component {
         error = 'Label already in use, please choose a different label';
       }
     }
-    if (storageValue === '') {
+    if (error === '' && storageValue === '') {
       error = 'Please enter storage value';
-    } else if (selectedContractAmountBalance === '0.000') {
+    } else if (error === '' && selectedContractAmountBalance === '0.000') {
       error = 'Not enough balance to deploy the contract';
     } else if (
       parseInt(contractAmount, 10) >
