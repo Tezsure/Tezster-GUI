@@ -203,7 +203,7 @@ class TransactionModal extends Component {
             {this.state.senderAccount !== '0' ? (
               <div className="container-msg">
                 <b>
-                  &nbsp;Available balance in the account{' '}
+                  &emsp;&ensp;Available balance in the account{' '}
                   <span className="tezos-icon">
                     {this.props.selectedContractAmountBalance} ꜩ
                   </span>
