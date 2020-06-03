@@ -6,6 +6,8 @@ import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 
 const { shell } = require('electron');
+const { storageName } = require('../../../../apis/config');
+const LOCAL_STORAGE_NAME = storageName;
 
 class ActivateAccounts extends Component {
   constructor(props) {
@@ -76,7 +78,7 @@ class ActivateAccounts extends Component {
     }
     if (this.state.faucet.label !== '') {
       const networkId = this.props.dashboardHeader.networkId.split('-')[0];
-      const userAccount = JSON.parse(localStorage.getItem('tezsure'))
+      const userAccount = JSON.parse(localStorage.getItem(LOCAL_STORAGE_NAME))
         .userAccounts[networkId];
       if (
         userAccount.filter((elem) => elem.label === this.state.faucet.label)
@@ -133,7 +135,7 @@ class ActivateAccounts extends Component {
     }
     if (this.state.faucet.label !== '') {
       const networkId = this.props.dashboardHeader.networkId.split('-')[0];
-      const userAccount = JSON.parse(localStorage.getItem('tezsure'))
+      const userAccount = JSON.parse(localStorage.getItem(LOCAL_STORAGE_NAME))
         .userAccounts[networkId];
       if (
         userAccount.filter((elem) => elem.label === this.state.faucet.label)
@@ -220,7 +222,7 @@ class ActivateAccounts extends Component {
           </p>
         </div>
         <div className="modal-input">
-          <div className="input-container">Label</div>
+          <div className="input-container">Label*</div>
           <input
             type="text"
             name="label"
@@ -232,7 +234,7 @@ class ActivateAccounts extends Component {
         </div>
         <span className="error-msg">{errorlabel}</span>
         <div className="modal-input">
-          <div className="input-container">Email</div>
+          <div className="input-container">Email*</div>
           <input
             type="text"
             name="email"
@@ -244,7 +246,7 @@ class ActivateAccounts extends Component {
         </div>
         <span className="error-msg">{errorEmail}</span>
         <div className="modal-input">
-          <div className="input-container">Password</div>
+          <div className="input-container">Password*</div>
           <input
             type="text"
             name="password"
@@ -256,7 +258,7 @@ class ActivateAccounts extends Component {
         </div>
         <span className="error-msg">{errorPassword}</span>
         <div className="modal-input">
-          <div className="input-container">Public key hash</div>
+          <div className="input-container">Public key hash*</div>
           <input
             type="text"
             className="form-control"
@@ -268,7 +270,7 @@ class ActivateAccounts extends Component {
         </div>
         <span className="error-msg">{errorPkh}</span>
         <div className="modal-input">
-          <div className="input-container">Secret</div>
+          <div className="input-container">Secret*</div>
           <input
             type="text"
             name="secret"
@@ -285,7 +287,7 @@ class ActivateAccounts extends Component {
             name="mnemonic"
             style={{ height: '150px' }}
             value={this.state.faucet.mnemonic}
-            placeholder="Please enter mnemonic"
+            placeholder="Please enter mnemonic*"
             onChange={this.handleInputChange}
           />
         </div>

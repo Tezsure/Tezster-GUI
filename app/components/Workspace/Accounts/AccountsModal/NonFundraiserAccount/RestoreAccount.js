@@ -10,7 +10,7 @@ function RestoreAccount(props) {
         </p>
       </div>
       <div className="modal-input">
-        <div className="input-container">Label </div>
+        <div className="input-container">Label* </div>
         <input
           type="text"
           className="form-control"
@@ -24,7 +24,7 @@ function RestoreAccount(props) {
         <span className="error-msg">{props.stateParams.labelErr}</span>
       )}
       <div className="modal-input">
-        <div className="input-container">Password </div>
+        <div className="input-container">Password* </div>
         <input
           type="password"
           onChange={props.handleInputChange}
@@ -38,7 +38,7 @@ function RestoreAccount(props) {
         <span className="error-msg">{props.stateParams.passwordErr}</span>
       )}
       <div className="modal-body">
-        <p>Seed Words/Mnenomics</p>
+        <p>Seed Words/Mnenomics*</p>
         <textarea
           name="mnemonic"
           rows="4"

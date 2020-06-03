@@ -22,6 +22,8 @@ import DeployContract from './Deploy';
 const conseiljs = require('conseiljs');
 
 const fs = require('fs');
+const { storageName } = require('../../../apis/config');
+const LOCAL_STORAGE_NAME = storageName;
 
 class App extends Component {
   constructor(props) {
@@ -33,15 +35,31 @@ class App extends Component {
       storageFormat: '',
       uploadedContract: '',
       uploadedContractName: '',
+      selectedContractFromDropdown: '0',
     };
     this.compileContract = this.compileContract.bind(this);
     this.handleUploadContract = this.handleUploadContract.bind(this);
+    this.fetchSelectedContract = this.fetchSelectedContract.bind(this);
     this.handleGetInitialStorage = this.handleGetInitialStorage.bind(this);
     this.handleEditorCodeOnChange = this.handleEditorCodeOnChange.bind(this);
   }
 
   componentDidMount() {
     this.props.handleContractsTabChangeAction('Output');
+  }
+
+  fetchSelectedContract(event) {
+    const contractLabel = event.target.value;
+    const { contracts } = JSON.parse(localStorage.getItem(LOCAL_STORAGE_NAME));
+    const { dashboardHeader } = this.props;
+    const selectedContract = contracts[dashboardHeader.networkId].filter(
+      (elem) => contractLabel === elem.originated_contracts
+    )[0];
+    const michelsonCode = selectedContract.contract;
+    this.setState({
+      michelsonCode,
+      selectedContractFromDropdown: contractLabel,
+    });
   }
 
   async compileContract() {
@@ -146,8 +164,9 @@ class App extends Component {
     const CurrentTab = this.props.selectedContractsTab;
     const { parseError, sucessMsg } = this.state;
     const compilerOutput = parseError === '' ? sucessMsg : parseError;
-    const __localStorage__ = JSON.parse(localStorage.getItem('tezsure'))
-      .contracts;
+    const __localStorage__ = JSON.parse(
+      localStorage.getItem(LOCAL_STORAGE_NAME)
+    ).contracts;
     const contracts = __localStorage__[networkId].map((elem, index) => (
       <option key={elem.name + index} value={elem.originated_contracts}>
         {`${elem.name} - ${elem.originated_contracts}`}
@@ -158,8 +177,15 @@ class App extends Component {
         <div className="code-editor">
           <div className="code-editor-navbar">
             <div className="select-contract-container">
-              <select className="custom-select">
-                <option value="0"> Select contract </option>
+              <select
+                className="custom-select"
+                onChange={this.fetchSelectedContract}
+                value={this.state.selectedContractFromDropdown}
+              >
+                <option value="0" disabled>
+                  {' '}
+                  Select contract{' '}
+                </option>
                 {contracts}
               </select>
             </div>

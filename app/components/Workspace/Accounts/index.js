@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/prop-types */
@@ -63,6 +64,7 @@ class Accounts extends Component {
 
   render() {
     const { spinnerLoading } = this.state;
+    const { tezsterShowStopNodes } = this.props;
     return (
       <>
         <div className="accounts-container">
@@ -101,6 +103,7 @@ class Accounts extends Component {
                   type="button"
                   className="btn btn-success"
                   onClick={() => this.handleModalToggle('restore-accounts')}
+                  disabled={!tezsterShowStopNodes}
                 >
                   Restore/Create Wallet
                 </button>
@@ -110,6 +113,7 @@ class Accounts extends Component {
                   type="button"
                   className="btn btn-success"
                   onClick={() => this.handleModalToggle('activate-accounts')}
+                  disabled={!tezsterShowStopNodes}
                 >
                   Add Faucet Account
                 </button>

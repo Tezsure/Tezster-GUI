@@ -7,6 +7,7 @@
 /* eslint-disable promise/always-return */
 /* eslint-disable no-prototype-builtins */
 import swal from 'sweetalert';
+import checkConnectionStatus from '../Tezster/Helper/index';
 import { exec, spawn } from 'child_process';
 
 const {
@@ -17,6 +18,8 @@ const {
 } = require('../../apis/eztz.service');
 
 const config = require('../../apis/config');
+const TEZSTER_CONTAINER_NAME = 'tezster';
+const LOCAL_STORAGE_NAME = config.storageName;
 
 function checkIsLocalNodeRunning() {
   return new Promise((resolve) => {
@@ -61,18 +64,34 @@ export function toggleAccountsModalAction(modalType) {
 }
 
 export function getAccountsAction({ ...params }) {
-  let { networkId } = params.dashboardHeader;
+  const { networkId } = params.dashboardHeader;
   let IsLocalNodeRunning = false;
   return async (dispatch) => {
     IsLocalNodeRunning = await checkIsLocalNodeRunning();
-    networkId =
-      !IsLocalNodeRunning && networkId === 'Localnode'
-        ? 'Carthagenet-Tezster'
-        : networkId;
+    if (
+      !IsLocalNodeRunning &&
+      process.platform.includes('linux') &&
+      networkId === 'Localnode'
+    ) {
+      return dispatch({
+        type: 'GET_ACCOUNTS',
+        payload: [],
+      });
+    }
+    if (
+      !IsLocalNodeRunning &&
+      networkId === 'Localnode' &&
+      process.platform.includes('linux')
+    ) {
+      return dispatch({
+        type: 'GET_ACCOUNTS',
+        payload: [],
+      });
+    }
     if (params.userAccounts.length === 0) {
-      if (localStorage.hasOwnProperty('tezsure')) {
+      if (localStorage.hasOwnProperty(LOCAL_STORAGE_NAME)) {
         params.userAccounts = JSON.parse(
-          localStorage.getItem('tezsure')
+          localStorage.getItem(LOCAL_STORAGE_NAME)
         ).userAccounts;
         params.dashboardHeader.networkId = networkId;
         if (
@@ -91,7 +110,7 @@ export function getAccountsAction({ ...params }) {
       }
     } else {
       params.userAccounts = JSON.parse(
-        localStorage.getItem('tezsure')
+        localStorage.getItem(LOCAL_STORAGE_NAME)
       ).userAccounts;
       if (
         params.userAccounts[networkId.split('-')[0]].length === 0 &&
@@ -110,14 +129,14 @@ export function getAccountsAction({ ...params }) {
       }
       Promise.all(accounts)
         .then((response) => {
-          if (!localStorage.hasOwnProperty('tezsure')) {
+          if (!localStorage.hasOwnProperty(LOCAL_STORAGE_NAME)) {
             const userAccounts = {
               Carthagenet: [],
               Localnode: [],
               [networkId.split('-')[0]]: response,
             };
             localStorage.setItem(
-              'tezsure',
+              LOCAL_STORAGE_NAME,
               JSON.stringify({ ...config, userAccounts })
             );
           }
@@ -140,31 +159,35 @@ export function getBalanceAction(payload) {
   const { networkId } = payload.dashboardHeader;
   const params = { ...payload };
   params.userAccounts = [];
-  return (dispatch) => {
-    if (!payload.userAccounts.hasOwnProperty(networkId)) {
-      const { userAccounts } = payload;
-      params.userAccounts[networkId.split('-')[0]] = userAccounts;
-    }
-    __getAccounts({ ...params }, (err, response) => {
-      if (err) {
+  return async (dispatch) => {
+    if (process.platform.includes('linux')) {
+      const checkInternetConnectionStatus = {
+        connectionType: '',
+      };
+      checkInternetConnectionStatus.connectionType = 'CHECK_CONTAINER_RUNNING';
+      checkInternetConnectionStatus.command = TEZSTER_CONTAINER_NAME;
+      const isTezsterContainerRunning = await checkConnectionStatus(
+        checkInternetConnectionStatus
+      );
+      if (isTezsterContainerRunning) {
         dispatch({
-          type: 'GET_BALANCE_ERR',
-          payload: err,
+          type: 'TEZSTER_SHOW_STOP_NODES',
+          payload: true,
+        });
+      } else {
+        dispatch({
+          type: 'TEZSTER_SHOW_STOP_NODES',
+          payload: false,
         });
       }
-      Promise.all(response).then((accounts) => {
-        return dispatch({
-          type: 'GET_ACCOUNTS',
-          payload: accounts,
-        });
-      });
-    });
+    }
+    return dispatch(getAccountsAction(payload));
   };
 }
 
 export function createFaucetAccountsAction(payload) {
   const { networkId } = payload.dashboardHeader;
-  const { userAccounts } = JSON.parse(localStorage.getItem('tezsure'));
+  const { userAccounts } = JSON.parse(localStorage.getItem(LOCAL_STORAGE_NAME));
   return (dispatch) => {
     dispatch({
       type: 'BUTTON_LOADING_STATE',
@@ -203,9 +226,14 @@ export function createFaucetAccountsAction(payload) {
             })
         )
       ).then((response) => {
-        const __localStorage = JSON.parse(localStorage.getItem('tezsure'));
+        const __localStorage = JSON.parse(
+          localStorage.getItem(LOCAL_STORAGE_NAME)
+        );
         __localStorage.userAccounts[networkId.split('-')[0]] = response;
-        localStorage.setItem('tezsure', JSON.stringify({ ...__localStorage }));
+        localStorage.setItem(
+          LOCAL_STORAGE_NAME,
+          JSON.stringify({ ...__localStorage })
+        );
         swal('Success!', 'Account created successfully', 'success');
         dispatch({
           type: 'GET_ACCOUNTS',
@@ -226,8 +254,8 @@ export function createFaucetAccountsAction(payload) {
 
 export function restoreFaucetAccountAction(payload) {
   const { networkId } = payload.dashboardHeader;
-  const __localStorage = JSON.parse(localStorage.getItem('tezsure'));
-  const { userAccounts } = JSON.parse(localStorage.getItem('tezsure'));
+  const __localStorage = JSON.parse(localStorage.getItem(LOCAL_STORAGE_NAME));
+  const { userAccounts } = JSON.parse(localStorage.getItem(LOCAL_STORAGE_NAME));
   return (dispatch) => {
     dispatch({
       type: 'BUTTON_LOADING_STATE',
@@ -251,7 +279,7 @@ export function restoreFaucetAccountAction(payload) {
           userAccounts[networkId.split('-')[0]].push(restoredAccount);
           payload.userAccounts = userAccounts;
           localStorage.setItem(
-            'tezsure',
+            LOCAL_STORAGE_NAME,
             JSON.stringify({ ...__localStorage, ...payload })
           );
           const msg = payload.hasOwnProperty('msg')

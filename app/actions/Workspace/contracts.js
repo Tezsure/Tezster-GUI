@@ -65,7 +65,7 @@ export function getContractStorageAction({ ...params }) {
             )}`
           : 'Sorry could not fetch storage value for selected contract';
         if (err === 'Not Found') {
-          error = `Unable to fetch storage from contract \n it might take some time to get contract deployed on the network`;
+          error = `Unable to fetch storage from contract 404 Not Found`;
         }
         swal('Error!', error, 'error');
         dispatch({
@@ -108,17 +108,27 @@ export function getAccountBalanceAction({ ...params }) {
 }
 
 export function handleInvokeContractAction({ ...params }) {
+  const checkContractUrl = `http://localhost:18731/chains/main/blocks/head/context/contracts/${params.selectedContracts}`;
+  const { networkId } = params.dashboardHeader;
   return (dispatch) => {
     dispatch({
       type: 'BUTTON_LOADING_STATE',
       payload: true,
     });
+    let errorFlag = '';
+    if (networkId === 'Localnode') {
+      fetch(checkContractUrl).then((resp) => {
+        if (resp.status === 404) {
+          errorFlag = `\n404 Contract not found on the Localnode`;
+        }
+      });
+    }
     __invokeContract({ ...params }, (err, response) => {
       if (err) {
         const error = err.hasOwnProperty('message')
           ? err.message.replace(/(?:\r\n|\r|\n|\s\s+)/g, ' ')
           : '';
-        swal('Error!', `Contract call failed ${error}`, 'error');
+        swal('Error!', `Contract call failed ${error || errorFlag}`, 'error');
         dispatch({
           type: 'BUTTON_LOADING_STATE',
           payload: false,

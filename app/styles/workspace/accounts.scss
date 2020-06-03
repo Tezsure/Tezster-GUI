@@ -57,7 +57,7 @@
   align-items: baseline;
 }
 .input-container {
-  width: 35%;
+  width: 40%;
 }
 .modal-dialog > .modal-content {
   max-height: 600px;
@@ -107,4 +107,10 @@ button:disabled {
   flex-direction: column;
   background: #fff;
   height: 100%;
+}
+#json-pretty > pre {
+  font-family: Gilroy-light;
+}
+input {
+  border-radius: 0rem !important;
 }

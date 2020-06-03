@@ -1,3 +1,9 @@
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable no-useless-constructor */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 
 class Table extends Component {
@@ -6,7 +12,9 @@ class Table extends Component {
   }
 
   render() {
-    const Accounts = this.props.userAccounts.map((elem, index) => {
+    const { networkId } = this.props.dashboardHeader;
+    const { tezsterShowStopNodes, userAccounts } = this.props;
+    const Accounts = userAccounts.map((elem, index) => {
       return (
         <tr className="table-row" key={elem.account + index}>
           <td className="table-body-cell">
@@ -60,16 +68,33 @@ class Table extends Component {
         </tr>
       );
     });
-    if (
-      this.props.userAccounts === [] ||
-      this.props.userAccounts.length === 0
-    ) {
+    if (this.props.userAccounts.length === 0) {
+      let msg;
+      if (
+        process.platform.includes('linux') &&
+        !tezsterShowStopNodes &&
+        networkId === 'Localnode'
+      ) {
+        msg = 'LocalNodes are not running please start the nodes.';
+      } else if (
+        !process.platform.includes('linux') &&
+        networkId === 'Localnode'
+      ) {
+        msg = (
+          <>
+            We currently donot support running LocalNodes on your Operating
+            System.
+            <br />
+            Please change network type to Carthagenet.
+          </>
+        );
+      } else if (networkId !== 'Localnode' && userAccounts.length === 0) {
+        msg =
+          'No accounts available on the selected network please add an account.';
+      }
       return (
         <div className="accounts-table-container">
-          <p>
-            No account available for the selected network type please add an
-            account
-          </p>
+          <p>{msg}</p>
         </div>
       );
     }

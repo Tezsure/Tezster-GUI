@@ -1,13 +1,14 @@
 /* eslint-disable promise/always-return */
 /* eslint-disable no-useless-escape */
-/* eslint-disable no-undef */
 /* eslint-disable no-underscore-dangle */
 // import axios from 'axios';
 
-import { apiEndPoints, ConceilJS } from './config';
+import { apiEndPoints, ConceilJS, storageName } from './config';
 import { RpcRequest } from './getAccountBalance';
 
 const conseiljs = require('conseiljs');
+
+const LOCAL_STORAGE_NAME = storageName;
 
 require('dotenv').config();
 
@@ -69,7 +70,7 @@ export async function __activateAccountOperation({ ...params }, callback) {
       network,
       JSON.parse(activationResult.operationGroupID),
       10,
-      30 + 1
+      10
     );
     const revelationResult = await conseiljs.TezosNodeWriter.sendKeyRevealOperation(
       tezosNode,
@@ -125,6 +126,12 @@ export async function __sendOperation({ ...params }, callback) {
   const keys = params.userAccounts.find(
     (elem) => elem.pkh === params.senderAccount
   );
+  const network = params.dashboardHeader.networkId.split('-')[0].toLowerCase();
+  const conseilServer = {
+    url: ConceilJS.url,
+    apiKey: ConceilJS.apiKey,
+    network,
+  };
   const tezosNode = apiEndPoints[params.dashboardHeader.networkId];
   const keystore = {
     publicKey: keys.pk,
@@ -133,7 +140,7 @@ export async function __sendOperation({ ...params }, callback) {
     seed: '',
     storeType: conseiljs.StoreType.Fundraiser,
   };
-  const result = await conseiljs.TezosNodeWriter.sendTransactionOperation(
+  const transactionResult = await conseiljs.TezosNodeWriter.sendTransactionOperation(
     tezosNode,
     keystore,
     params.recieverAccount,
@@ -142,12 +149,33 @@ export async function __sendOperation({ ...params }, callback) {
     ''
   );
   if (
-    JSON.parse(result.operationGroupID)[0].id &&
-    JSON.parse(result.operationGroupID)[0].id === 'failure'
+    JSON.parse(transactionResult.operationGroupID)[0].id &&
+    JSON.parse(transactionResult.operationGroupID)[0].id === 'failure'
   ) {
-    return callback(JSON.parse(result.operationGroupID)[0].msg, null);
+    return callback(
+      JSON.parse(transactionResult.operationGroupID)[0].msg,
+      null
+    );
   }
-  return callback(null, result.operationGroupID);
+  if (params.dashboardHeader.networkId === 'Localnode') {
+    return callback(null, {
+      operationGroupID: transactionResult.operationGroupID,
+    });
+  }
+  await conseiljs.TezosConseilClient.awaitOperationConfirmation(
+    conseilServer,
+    network,
+    JSON.parse(transactionResult.operationGroupID),
+    10,
+    10
+  );
+  const revelationResult = await conseiljs.TezosNodeWriter.sendKeyRevealOperation(
+    tezosNode,
+    keystore
+  );
+  return callback(null, {
+    operationGroupID: revelationResult.operationGroupID,
+  });
 }
 export async function __listAccountTransactions({ ...params }, callback) {
   try {
@@ -302,7 +330,9 @@ export async function __deployContract({ ...params }, callback) {
           nodeResult.results.contents[0].metadata.operation_result.status ===
           'applied'
         ) {
-          const __localStorage__ = JSON.parse(localStorage.getItem('tezsure'));
+          const __localStorage__ = JSON.parse(
+            localStorage.getItem(LOCAL_STORAGE_NAME)
+          );
           __localStorage__.contracts[
             params.dashboardHeader.networkId.split('-')[0]
           ].push({
@@ -313,7 +343,7 @@ export async function __deployContract({ ...params }, callback) {
             contract,
           });
           localStorage.setItem(
-            'tezsure',
+            LOCAL_STORAGE_NAME,
             JSON.stringify({ ...__localStorage__ })
           );
           if (network !== 'localnode') {

@@ -1,7 +1,9 @@
 /* eslint-disable no-unused-vars */
-import { exec, spawn } from 'child_process';
+import { RpcRequest } from '../apis/getAccountBalance';
 
 const config = require('../apis/config');
+
+const url = config.provider;
 
 export function handleTezsterCliActionChange() {
   return {
@@ -16,53 +18,42 @@ export function checkTezsterCliAction() {
       type: 'TEZSTER_CLI_PENDING',
       payload: false,
     });
-    setTimeout(() => {
-      if (process.platform.split('win').length > 1) {
-        const ls = spawn(
-          'cmd.exe',
-          [
-            '/c',
-            `powershell.exe tezster get-balance ${config.identities[0].pkh}`,
-          ],
-          { detached: false }
-        );
-        ls.stdout.on('data', (data) => {
-          dispatch({
-            type: 'TEZSTER_CLI_ERR',
-            payload: true,
-          });
-        });
-        ls.stderr.on('data', (data) => {
-          dispatch({
-            type: 'TEZSTER_CLI_ERR',
-            payload: false,
-          });
-        });
-        ls.on('close', (code) => {
-          console.log(`child process exited with code ${code}`);
-        });
-      } else {
-        exec(
-          `tezster get-balance ${config.identities[0].pkh}`,
-          (err, stdout) => {
-            if (
-              err ||
-              stdout.includes('ECONNREFUSED') ||
-              stdout.includes('Error')
-            ) {
-              return dispatch({
-                type: 'TEZSTER_CLI_ERR',
-                payload: false,
-              });
-            }
+    RpcRequest.checkNodeStatus(url)
+      .then((res) => {
+        if (res.protocol.startsWith('PsCARTHAG')) {
+          return setTimeout(() => {
+            dispatch({
+              type: 'TEZSTER_SHOW_STOP_NODES',
+              payload: true,
+            });
             return dispatch({
               type: 'TEZSTER_CLI_SUCCESS',
               payload: true,
             });
-          }
-        );
-      }
-    }, 1000);
+          }, 4000);
+        } else {
+          dispatch({
+            type: 'TEZSTER_SHOW_STOP_NODES',
+            payload: false,
+          });
+          return dispatch({
+            type: 'TEZSTER_CLI_ERR',
+            payload: false,
+          });
+        }
+      })
+      .catch((exp) => {
+        setTimeout(() => {
+          dispatch({
+            type: 'TEZSTER_SHOW_STOP_NODES',
+            payload: false,
+          });
+          return dispatch({
+            type: 'TEZSTER_CLI_ERR',
+            payload: false,
+          });
+        }, 1000);
+      });
   };
 }
 
@@ -71,4 +62,56 @@ export function getLocalConfigAction() {
     type: 'TEZSTER_LOCAL_CONFIG',
     payload: config,
   };
+}
+export function setTezsterConfigAction() {
+  return (dispatch) => {
+    RpcRequest.checkNodeStatus(url)
+      .then((res) => {
+        if (res.protocol.startsWith('PsCARTHAG')) {
+          return setTimeout(() => {
+            dispatch({
+              type: 'TEZSTER_SHOW_STOP_NODES',
+              payload: true,
+            });
+            return dispatch({
+              type: 'TEZSTER_CLI_SUCCESS',
+              payload: true,
+            });
+          }, 1000);
+        } else {
+          dispatch({
+            type: 'TEZSTER_SHOW_STOP_NODES',
+            payload: false,
+          });
+          return dispatch({
+            type: 'TEZSTER_CLI_ERR',
+            payload: false,
+          });
+        }
+      })
+      .catch((exp) => {
+        setTimeout(() => {
+          dispatch({
+            type: 'TEZSTER_SHOW_STOP_NODES',
+            payload: false,
+          });
+          return dispatch({
+            type: 'TEZSTER_CLI_ERR',
+            payload: false,
+          });
+        }, 1000);
+      });
+  };
+}
+export function getTezsterCliRunningState() {
+  return new Promise((resolve, reject) => {
+    RpcRequest.fetchBalance(url, testPkh)
+      .then((res) => {
+        const balance = (parseInt(res, 10) / 1000000).toFixed(3);
+        return resolve(true);
+      })
+      .catch((exp) => {
+        return resolve(false);
+      });
+  });
 }

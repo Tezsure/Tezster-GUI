@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -7,6 +9,12 @@ import {
   handleAccordionAction,
   handleTabChangeAction,
 } from '../actions/Workspace/sidebar';
+
+import installTezsterCliAction from '../actions/Tezster';
+import {
+  startTezsterNodesAction,
+  stopTezsterNodesAction,
+} from '../actions/Tezster/setup';
 
 import {
   getBlockHeadsActions,
@@ -101,6 +109,12 @@ const mapDispatchToProps = (dispatch) => ({
   checkTezsterCliAction: (payload) => dispatch(checkTezsterCliAction(payload)),
   getLocalConfigAction: (payload) => dispatch(getLocalConfigAction(payload)),
   handleAccordionAction: (payload) => dispatch(handleAccordionAction(payload)),
+  installTezsterCliAction: (payload) =>
+    dispatch(installTezsterCliAction(payload)),
+  startTezsterNodesAction: (payload) =>
+    dispatch(startTezsterNodesAction(payload)),
+  stopTezsterNodesAction: (payload) =>
+    dispatch(stopTezsterNodesAction(payload)),
 });
 const mapStateToProps = (state) => ({
   blocks: state.blocks,
@@ -122,6 +136,12 @@ const mapStateToProps = (state) => ({
   selectedContractStorage: state.selectedContractStorage,
   selectedContractAmountBalance: state.selectedContractAmountBalance,
   isAvailableTezsterCli: state.isAvailableTezsterCli,
+  tezsterError: state.tezsterError,
+  tezsterSetup: state.tezsterSetup,
+  tezsterShowStopNodes: state.tezsterShowStopNodes,
+  tezsterStartNodes: state.tezsterStartNodes,
+  tezsterImageDownload: state.tezsterImageDownload,
+  tezsterLoaderStatus: state.tezsterLoaderStatus,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WorkspacePage);

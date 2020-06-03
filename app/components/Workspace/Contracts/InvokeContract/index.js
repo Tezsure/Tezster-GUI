@@ -9,6 +9,8 @@ import React, { Component } from 'react';
 import swal from 'sweetalert';
 
 const conseiljs = require('conseiljs');
+const { storageName } = require('../../../../apis/config');
+const LOCAL_STORAGE_NAME = storageName;
 
 class InvokeContract extends Component {
   constructor(props) {
@@ -53,9 +55,9 @@ class InvokeContract extends Component {
 
   handleEntryPoints() {
     const networkId = this.props.dashboardHeader.networkId.split('-')[0];
-    const contract = JSON.parse(localStorage.getItem('tezsure')).contracts[
-      networkId
-    ].filter(
+    const contract = JSON.parse(
+      localStorage.getItem(LOCAL_STORAGE_NAME)
+    ).contracts[networkId].filter(
       (elem) => elem.originated_contracts === this.state.selectedContracts
     );
     const entryPoints = conseiljs.TezosContractIntrospector.generateEntryPointsFromCode(
@@ -87,6 +89,9 @@ class InvokeContract extends Component {
 
   handleInvokeContract() {
     let index = 0;
+    let { contractAmount } = this.state;
+    contractAmount = contractAmount === '' ? 0 : contractAmount;
+
     this.state.entryPoints.some((elem) => {
       if (elem.name === this.state.selectedEntryPoint) {
         const storageValue = elem.structure
@@ -104,6 +109,7 @@ class InvokeContract extends Component {
           this.props.handleInvokeContractAction({
             ...this.props,
             ...this.state,
+            contractAmount,
           });
           this.props.getAccountBalanceAction({
             ...this.props,
@@ -182,8 +188,9 @@ class InvokeContract extends Component {
         {`${elem.label}-${elem.account}`}
       </option>
     ));
-    const __localStorage__ = JSON.parse(localStorage.getItem('tezsure'))
-      .contracts;
+    const __localStorage__ = JSON.parse(
+      localStorage.getItem(LOCAL_STORAGE_NAME)
+    ).contracts;
     const contracts = __localStorage__[networkId].map((elem, index) => (
       <option key={elem.name + index} value={elem.originated_contracts}>
         {`${elem.name} - ${elem.originated_contracts}`}
@@ -195,9 +202,9 @@ class InvokeContract extends Component {
       });
     }
     return (
-      <div className="transactions-contents">
+      <div className="transactions-contents contract-container">
         <div className="modal-input">
-          <div className="input-container">Select Wallet </div>
+          <div className="input-container">Select Wallet* </div>
           <select
             className="custom-select"
             name="accounts"
@@ -205,15 +212,15 @@ class InvokeContract extends Component {
             onChange={this.handleInputChange}
           >
             <option value="0" disabled>
-              Select account to deploy contract
+              Select account to invoke contract
             </option>
             {Accounts}
           </select>
         </div>
         {this.state.accounts !== '0' ? (
-          <div className="container-msg">
+          <div className="container-msg" style={{ marginLeft: '28%' }}>
             <b>
-              &nbsp;&nbsp;Available balance in the account{' '}
+              &nbsp;Available balance in the account{' '}
               <span className="tezos-icon">
                 {this.props.selectedContractAmountBalance} ꜩ
               </span>
@@ -223,7 +230,7 @@ class InvokeContract extends Component {
           ''
         )}
         <div className="modal-input">
-          <div className="input-container">Select Contract </div>
+          <div className="input-container">Select Contract* </div>
           <select
             className="custom-select"
             name="selectedContracts"
@@ -237,14 +244,14 @@ class InvokeContract extends Component {
           </select>
         </div>
         <div className="modal-input">
-          <div className="input-container" style={{ width: '26%' }}>
+          <div className="input-container" style={{ width: '28%' }}>
             Contract Amount{' '}
           </div>
           <input
             type="number"
             name="contractAmount"
             className="form-control"
-            placeholder="Enter amount to deploy contract"
+            placeholder="Enter amount to invoke contract"
             value={this.state.contractAmount}
             onChange={this.handleInputChange}
             style={{ width: '50%', marginRight: '10px' }}
@@ -252,7 +259,7 @@ class InvokeContract extends Component {
           <span className="tezos-icon">ꜩ</span>
         </div>
         <div className="modal-input">
-          <div className="input-container">Entry Points </div>
+          <div className="input-container">Entry Points* </div>
           <select
             className="custom-select"
             name="selectedEntryPoint"

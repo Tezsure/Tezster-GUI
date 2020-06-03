@@ -1,4 +1,5 @@
 module.exports = {
+  storageName: 'Tezster2.1.0',
   provider: 'http://localhost:18731',
   identities: [
     {

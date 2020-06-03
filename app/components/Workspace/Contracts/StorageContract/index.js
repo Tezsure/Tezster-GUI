@@ -1,9 +1,12 @@
+/* eslint-disable no-shadow */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/no-array-index-key */
 import React, { Component } from 'react';
 import JSONPretty from 'react-json-pretty';
+const { storageName } = require('../../../../apis/config');
+const LOCAL_STORAGE_NAME = storageName;
 
 class index extends Component {
   constructor(props) {
@@ -22,17 +25,18 @@ class index extends Component {
 
   render() {
     const networkId = this.props.dashboardHeader.networkId.split('-')[0];
-    const __localStorage__ = JSON.parse(localStorage.getItem('tezsure'))
-      .contracts;
+    const __localStorage__ = JSON.parse(
+      localStorage.getItem(LOCAL_STORAGE_NAME)
+    ).contracts;
     const contracts = __localStorage__[networkId].map((elem, index) => (
       <option key={elem.name + index} value={elem.originated_contracts}>
         {`${elem.name} - ${elem.originated_contracts}`}
       </option>
     ));
     return (
-      <div className="transactions-contents">
+      <div className="transactions-contents contract-container">
         <div className="modal-input">
-          <div className="input-container">Select Contract </div>
+          <div className="input-container">Select Contract* </div>
           <select
             className="custom-select"
             name="selectedContracts"
@@ -69,7 +73,7 @@ class index extends Component {
           this.props.selectedContractStorage === 'Not Found' ? (
             ''
           ) : (
-            <div className="input-container">Initial Storage </div>
+            <div className="input-container">Initial Storage* </div>
           )}
         </div>
         <div className="modal-input">

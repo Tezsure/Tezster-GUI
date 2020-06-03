@@ -1,4 +1,5 @@
 import React from 'react';
+import JSONPretty from 'react-json-pretty';
 
 function CreateAccount(props) {
   return (
@@ -6,11 +7,23 @@ function CreateAccount(props) {
       <div className="modal-body">
         <p>
           Node provider is connected : {props.dashboardHeader.rpcServer} <br />
-          Note: The account created will be a non fundraiser account.
+          Note: The account created will be a non fundraiser account. <br />
+          Note: Password is not a mandatory field, yet password and mnemonic are
+          required to restore wallet please save it.
         </p>
       </div>
+      <div className="modal-input" style={{ paddingBottom: '0rem' }}>
+        <p>Mnemonic</p>
+      </div>
+      <div className="modal-input" style={{ paddingTop: '0rem' }}>
+        <JSONPretty
+          id="json-pretty"
+          style={{ width: '100%', height: '100%' }}
+          data={props.stateParams.mnemonicSuggestion}
+        />
+      </div>
       <div className="modal-input">
-        <div className="input-container">Label </div>
+        <div className="input-container">Label* </div>
         <input
           type="text"
           className="form-control"
