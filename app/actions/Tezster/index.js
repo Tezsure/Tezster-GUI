@@ -3,40 +3,40 @@ import Docker from 'dockerode';
 import { getAccountsAction } from '../Workspace/accounts';
 import { setTezsterConfigAction } from '../Onboard';
 
-import checkConnectionStatus from './Helper/index';
+import CheckConnectionStatus from './Helper/index';
 
 const TEZSTER_IMAGE = 'tezsureinc/tezster:1.0.2';
 const TEZSTER_CONTAINER_NAME = 'tezster';
 const CHECK_DOCKER_VERSION = 'docker -v';
 
 export default function installTezsterCliAction(args) {
-  const checkInternetConnectionStatus = {
+  const checkConnectionStatus = {
     connectionType: '',
   };
   return async (dispatch) => {
-    checkInternetConnectionStatus.connectionType = 'INTERNET';
-    const isInternetAvailable = await checkConnectionStatus(
-      checkInternetConnectionStatus
+    checkConnectionStatus.connectionType = 'INTERNET';
+    const isInternetAvailable = await CheckConnectionStatus(
+      checkConnectionStatus
     );
-    checkInternetConnectionStatus.connectionType = 'DOCKER_INSTALL_STATUS';
-    checkInternetConnectionStatus.command = CHECK_DOCKER_VERSION;
-    const isDockerInstalled = await checkConnectionStatus(
-      checkInternetConnectionStatus
+    checkConnectionStatus.connectionType = 'DOCKER_INSTALL_STATUS';
+    checkConnectionStatus.command = CHECK_DOCKER_VERSION;
+    const isDockerInstalled = await CheckConnectionStatus(
+      checkConnectionStatus
     );
-    checkInternetConnectionStatus.connectionType = 'CHECK_DOCKER_IMAGE';
-    checkInternetConnectionStatus.command = TEZSTER_IMAGE;
-    const isTezsterImagePresent = await checkConnectionStatus(
-      checkInternetConnectionStatus
+    checkConnectionStatus.connectionType = 'CHECK_DOCKER_IMAGE';
+    checkConnectionStatus.command = TEZSTER_IMAGE;
+    const isTezsterImagePresent = await CheckConnectionStatus(
+      checkConnectionStatus
     );
-    checkInternetConnectionStatus.connectionType = 'CHECK_CONTAINER_PRESENT';
-    checkInternetConnectionStatus.command = TEZSTER_CONTAINER_NAME;
-    const isTezsterContainerPresent = await checkConnectionStatus(
-      checkInternetConnectionStatus
+    checkConnectionStatus.connectionType = 'CHECK_CONTAINER_PRESENT';
+    checkConnectionStatus.command = TEZSTER_CONTAINER_NAME;
+    const isTezsterContainerPresent = await CheckConnectionStatus(
+      checkConnectionStatus
     );
-    checkInternetConnectionStatus.connectionType = 'CHECK_CONTAINER_RUNNING';
-    checkInternetConnectionStatus.command = TEZSTER_CONTAINER_NAME;
-    const isTezsterContainerRunning = await checkConnectionStatus(
-      checkInternetConnectionStatus
+    checkConnectionStatus.connectionType = 'CHECK_CONTAINER_RUNNING';
+    checkConnectionStatus.command = TEZSTER_CONTAINER_NAME;
+    const isTezsterContainerRunning = await CheckConnectionStatus(
+      checkConnectionStatus
     );
     dispatch({
       type: 'STARTING_NODES',
@@ -330,11 +330,11 @@ function installTezsterContainer(args) {
   };
 }
 function runExec({ container, args }) {
-  const checkInternetConnectionStatus = {
+  const checkConnectionStatus = {
     connectionType: '',
   };
-  checkInternetConnectionStatus.connectionType = 'TEZSTER_RUNNING';
-  checkInternetConnectionStatus.command = TEZSTER_CONTAINER_NAME;
+  checkConnectionStatus.connectionType = 'TEZSTER_RUNNING';
+  checkConnectionStatus.command = TEZSTER_CONTAINER_NAME;
   let totalProgressPercentage = 0;
   let progressInterval;
   return (dispatch) => {
@@ -363,8 +363,8 @@ function runExec({ container, args }) {
       });
       progressInterval = setInterval(async () => {
         totalProgressPercentage += 2.5;
-        const isTezsterRunning = await checkConnectionStatus(
-          checkInternetConnectionStatus
+        const isTezsterRunning = await CheckConnectionStatus(
+          checkConnectionStatus
         );
         if (!isTezsterRunning && totalProgressPercentage < 100) {
           return dispatch({
