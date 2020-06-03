@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import Docker from 'dockerode';
-import checkConnectionStatus from './Helper/index';
+import CheckConnectionStatus from './Helper/index';
 import { setTezsterConfigAction } from '../Onboard';
 
 const TEZSTER_IMAGE = 'tezsureinc/tezster:1.0.2';
@@ -8,19 +8,19 @@ const TEZSTER_CONTAINER_NAME = 'tezster';
 
 export function startTezsterNodesAction() {
   const docker = new Docker();
-  const checkInternetConnectionStatus = {
+  const checkConnectionStatus = {
     connectionType: '',
   };
   return async (dispatch) => {
-    checkInternetConnectionStatus.connectionType = 'CHECK_CONTAINER_PRESENT';
-    checkInternetConnectionStatus.command = TEZSTER_CONTAINER_NAME;
-    const isTezsterContainerPresent = await checkConnectionStatus(
-      checkInternetConnectionStatus
+    checkConnectionStatus.connectionType = 'CHECK_CONTAINER_PRESENT';
+    checkConnectionStatus.command = TEZSTER_CONTAINER_NAME;
+    const isTezsterContainerPresent = await CheckConnectionStatus(
+      checkConnectionStatus
     );
-    checkInternetConnectionStatus.connectionType = 'CHECK_CONTAINER_RUNNING';
-    checkInternetConnectionStatus.command = TEZSTER_CONTAINER_NAME;
-    const isTezsterContainerRunning = await checkConnectionStatus(
-      checkInternetConnectionStatus
+    checkConnectionStatus.connectionType = 'CHECK_CONTAINER_RUNNING';
+    checkConnectionStatus.command = TEZSTER_CONTAINER_NAME;
+    const isTezsterContainerRunning = await CheckConnectionStatus(
+      checkConnectionStatus
     );
     if (!isTezsterContainerPresent && !isTezsterContainerRunning) {
       docker.createContainer(
@@ -107,22 +107,22 @@ export function startTezsterNodesAction() {
 
 export function stopTezsterNodesAction() {
   const docker = new Docker();
-  const checkInternetConnectionStatus = {
+  const checkConnectionStatus = {
     connectionType: '',
   };
   let progressInterval;
   let totalProgressPercentage = 0;
   return async (dispatch) => {
     dispatch(stopNodesProgress(totalProgressPercentage));
-    checkInternetConnectionStatus.connectionType = 'CHECK_CONTAINER_PRESENT';
-    checkInternetConnectionStatus.command = TEZSTER_CONTAINER_NAME;
-    const isTezsterContainerPresent = await checkConnectionStatus(
-      checkInternetConnectionStatus
+    checkConnectionStatus.connectionType = 'CHECK_CONTAINER_PRESENT';
+    checkConnectionStatus.command = TEZSTER_CONTAINER_NAME;
+    const isTezsterContainerPresent = await CheckConnectionStatus(
+      checkConnectionStatus
     );
-    checkInternetConnectionStatus.connectionType = 'CHECK_CONTAINER_RUNNING';
-    checkInternetConnectionStatus.command = TEZSTER_CONTAINER_NAME;
-    const isTezsterContainerRunning = await checkConnectionStatus(
-      checkInternetConnectionStatus
+    checkConnectionStatus.connectionType = 'CHECK_CONTAINER_RUNNING';
+    checkConnectionStatus.command = TEZSTER_CONTAINER_NAME;
+    const isTezsterContainerRunning = await CheckConnectionStatus(
+      checkConnectionStatus
     );
     if (isTezsterContainerPresent && isTezsterContainerRunning) {
       totalProgressPercentage += 10;
@@ -144,8 +144,8 @@ export function stopTezsterNodesAction() {
         if (containerId) {
           progressInterval = setInterval(async () => {
             totalProgressPercentage += 10;
-            const isTezsterRunning = await checkConnectionStatus(
-              checkInternetConnectionStatus
+            const isTezsterRunning = await CheckConnectionStatus(
+              checkConnectionStatus
             );
             if (isTezsterRunning && totalProgressPercentage < 100) {
               dispatch(stopNodesProgress(totalProgressPercentage));
@@ -165,14 +165,14 @@ export function stopTezsterNodesAction() {
                 payload: 'Unable to stop container.',
               });
             }
-            checkInternetConnectionStatus.connectionType = 'TEZSTER_RUNNING';
-            checkInternetConnectionStatus.command = TEZSTER_CONTAINER_NAME;
+            checkConnectionStatus.connectionType = 'TEZSTER_RUNNING';
+            checkConnectionStatus.command = TEZSTER_CONTAINER_NAME;
             totalProgressPercentage += 10;
             dispatch(stopNodesProgress(totalProgressPercentage));
             progressInterval = setInterval(async () => {
               totalProgressPercentage += 10;
-              const isTezsterRunning = await checkConnectionStatus(
-                checkInternetConnectionStatus
+              const isTezsterRunning = await CheckConnectionStatus(
+                checkConnectionStatus
               );
               if (isTezsterRunning && totalProgressPercentage < 100) {
                 dispatch(stopNodesProgress(totalProgressPercentage));

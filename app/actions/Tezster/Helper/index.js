@@ -19,7 +19,7 @@ function executeCommandHelper(args, callback) {
   });
 }
 
-export default async function checkConnectionStatus(args) {
+export default async function CheckConnectionStatus(args) {
   const docker = new Docker();
   return new Promise((resolve, reject) => {
     switch (args.connectionType) {
@@ -30,9 +30,8 @@ export default async function checkConnectionStatus(args) {
           .then((res) => {
             if (res.protocol.startsWith('PsCARTHAG')) {
               return resolve(true);
-            } else {
-              return resolve(false);
             }
+            return resolve(false);
           })
           .catch((exp) => {
             return resolve(false);
