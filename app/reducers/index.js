@@ -39,7 +39,7 @@ import {
   tezsterLoaderStatus,
 } from './Tezster';
 
-import { isAvailableTezsterCli, localConfig } from './onBoard';
+import { isAvailableLocalnodes, localConfig } from './onBoard';
 
 export default function createRootReducer(history: HashHistory) {
   return combineReducers<{}, *>({
@@ -61,7 +61,7 @@ export default function createRootReducer(history: HashHistory) {
     userTransactions,
     transactionsSuccess,
     selectedTransactionWallet,
-    isAvailableTezsterCli,
+    isAvailableLocalnodes,
     localConfig,
     currentTab,
     tezsterError,

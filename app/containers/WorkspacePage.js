@@ -10,7 +10,7 @@ import {
   handleTabChangeAction,
 } from '../actions/Workspace/sidebar';
 
-import installTezsterCliAction from '../actions/Tezster';
+import installLocalnodesAction from '../actions/Tezster';
 import {
   startTezsterNodesAction,
   stopTezsterNodesAction,
@@ -62,8 +62,8 @@ class WorkspacePage extends Component {
 
   render() {
     if (
-      this.props.isAvailableTezsterCli &&
-      this.props.isAvailableTezsterCli !== 'pending'
+      this.props.isAvailableLocalnodes &&
+      this.props.isAvailableLocalnodes !== 'pending'
     ) {
       return <Workspace {...this.props} />;
     }
@@ -109,8 +109,8 @@ const mapDispatchToProps = (dispatch) => ({
   checkTezsterCliAction: (payload) => dispatch(checkTezsterCliAction(payload)),
   getLocalConfigAction: (payload) => dispatch(getLocalConfigAction(payload)),
   handleAccordionAction: (payload) => dispatch(handleAccordionAction(payload)),
-  installTezsterCliAction: (payload) =>
-    dispatch(installTezsterCliAction(payload)),
+  installLocalnodesAction: (payload) =>
+    dispatch(installLocalnodesAction(payload)),
   startTezsterNodesAction: (payload) =>
     dispatch(startTezsterNodesAction(payload)),
   stopTezsterNodesAction: (payload) =>
@@ -135,7 +135,7 @@ const mapStateToProps = (state) => ({
   selectedContractsTab: state.selectedContractsTab,
   selectedContractStorage: state.selectedContractStorage,
   selectedContractAmountBalance: state.selectedContractAmountBalance,
-  isAvailableTezsterCli: state.isAvailableTezsterCli,
+  isAvailableLocalnodes: state.isAvailableLocalnodes,
   tezsterError: state.tezsterError,
   tezsterSetup: state.tezsterSetup,
   tezsterShowStopNodes: state.tezsterShowStopNodes,

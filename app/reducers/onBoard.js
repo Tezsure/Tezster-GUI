@@ -1,4 +1,4 @@
-export function isAvailableTezsterCli(initialState = false, action) {
+export function isAvailableLocalnodes(initialState = false, action) {
   switch (action.type) {
     case 'TEZSTER_NODES_ERR':
       return action.payload;

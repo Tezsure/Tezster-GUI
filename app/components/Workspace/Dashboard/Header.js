@@ -30,14 +30,14 @@ class Header extends Component {
     const {
       tezsterStartNodes,
       tezsterError,
-      isAvailableTezsterCli,
+      isAvailableLocalnodes,
       localConfig,
       tezsterLoaderStatus,
       tezsterShowStopNodes,
     } = this.props;
     const loaderStatus =
       networkId === 'Localnode' &&
-      isAvailableTezsterCli &&
+      isAvailableLocalnodes &&
       tezsterLoaderStatus.loader;
     let activeStatus = true;
     let message = [];
@@ -53,7 +53,7 @@ class Header extends Component {
         <button
           type="button"
           className="save-button"
-          onClick={() => this.props.installTezsterCliAction(this.props)}
+          onClick={() => this.props.installLocalnodesAction(this.props)}
         >
           Start nodes
         </button>
