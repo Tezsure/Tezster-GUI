@@ -5,14 +5,14 @@ const config = require('../apis/config');
 
 const url = config.provider;
 
-export function handleTezsterCliActionChange() {
+export function handleLocalnodesActionChange() {
   return {
     type: 'TEZSTER_NODES_SUCCESS',
     payload: true,
   };
 }
 
-export function checkTezsterCliAction() {
+export function checkLocalnodesAction() {
   return (dispatch) => {
     dispatch({
       type: 'TEZSTER_NODES_PENDING_STATUS',

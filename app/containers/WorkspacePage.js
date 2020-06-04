@@ -47,15 +47,15 @@ import {
   handleNetworkChangeAction,
 } from '../actions/Workspace/dashboardHeader';
 import {
-  handleTezsterCliActionChange,
-  checkTezsterCliAction,
+  handleLocalnodesActionChange,
+  checkLocalnodesAction,
   getLocalConfigAction,
 } from '../actions/Onboard';
 import Error from '../components/Error';
 
 class WorkspacePage extends Component {
   componentDidMount() {
-    this.props.checkTezsterCliAction();
+    this.props.checkLocalnodesAction();
     this.props.getLocalConfigAction();
     this.props.getBlockHeadsActions({ ...this.props });
   }
@@ -104,9 +104,9 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(handleContractsTabChangeAction(payload)),
   getContractStorageAction: (payload) =>
     dispatch(getContractStorageAction(payload)),
-  handleTezsterCliActionChange: (payload) =>
-    dispatch(handleTezsterCliActionChange(payload)),
-  checkTezsterCliAction: (payload) => dispatch(checkTezsterCliAction(payload)),
+  handleLocalnodesActionChange: (payload) =>
+    dispatch(handleLocalnodesActionChange(payload)),
+  checkLocalnodesAction: (payload) => dispatch(checkLocalnodesAction(payload)),
   getLocalConfigAction: (payload) => dispatch(getLocalConfigAction(payload)),
   handleAccordionAction: (payload) => dispatch(handleAccordionAction(payload)),
   installLocalnodesAction: (payload) =>

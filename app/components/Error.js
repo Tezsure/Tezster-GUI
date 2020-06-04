@@ -123,7 +123,7 @@ function Error(props) {
       props.handleNetworkChangeAction(props);
     }
     props.getAccountsAction(props);
-    props.handleTezsterCliActionChange();
+    props.handleLocalnodesActionChange();
     return <></>;
   }
 }
