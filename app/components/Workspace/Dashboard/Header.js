@@ -94,10 +94,9 @@ class Header extends Component {
         message = (
           <div className="cards-container success-message">
             <p>
-              Downloading tezster-cli version 1.0.2, size of the image is 937
-              MB.
+              Setting up localnodes.
               <br />
-              On slow connections, it may take upto 20-30 mins for docker pull.
+              On slow connections, it may take upto 20-30 mins for first time.
             </p>
           </div>
         );
@@ -125,6 +124,7 @@ class Header extends Component {
               className="custom-select"
               value={this.props.dashboardHeader.networkId}
               onChange={(e) => this.handleNetworkChange(e)}
+              disabled={loaderStatus && networkId === 'Localnode'}
             >
               {options}
             </select>
