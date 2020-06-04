@@ -5,7 +5,8 @@
 /* eslint-disable no-underscore-dangle */
 import { exec, spawn } from 'child_process';
 import swal from 'sweetalert';
-import { apiEndPoints, identities } from '../../apis/config';
+import { RpcRequest } from '../../apis/getAccountBalance';
+import { apiEndPoints, identities, provider } from '../../apis/config';
 
 const { getBlockHeight, getBlockData } = require('../../apis/tzstats.service');
 
@@ -17,36 +18,20 @@ const localnodeData = {
   networkId: 'Localnode',
   rpcServer: 'http://localhost:18731',
 };
+const url = provider;
 
 function checkIsLocalNodeRunning() {
   return new Promise((resolve) => {
-    if (process.platform.split('win').length > 1) {
-      const ls = spawn(
-        'cmd.exe',
-        ['/c', `powershell.exe tezster get-balance ${identities[0].pkh}`],
-        { detached: false }
-      );
-      ls.stdout.on('data', (data) => {
-        resolve(true);
-      });
-      ls.stderr.on('data', (data) => {
-        resolve(false);
-      });
-      ls.on('close', (code) => {
-        console.log(`child process exited with code ${code}`);
-      });
-    } else {
-      exec(`tezster get-balance ${identities[0].pkh}`, (err, stdout) => {
-        if (
-          err ||
-          stdout.includes('ECONNREFUSED') ||
-          stdout.includes('Error')
-        ) {
-          return resolve(false);
+    RpcRequest.checkNodeStatus(url)
+      .then((res) => {
+        if (res.protocol.startsWith('PsCARTHAG')) {
+          return resolve(true);
         }
-        return resolve(true);
+        return resolve(false);
+      })
+      .catch((exp) => {
+        return resolve(false);
       });
-    }
   });
 }
 

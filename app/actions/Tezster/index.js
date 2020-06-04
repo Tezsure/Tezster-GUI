@@ -1,6 +1,6 @@
 /* eslint-disable func-names */
 import Docker from 'dockerode';
-import { getAccountsAction } from '../Workspace/accounts';
+import { getBalanceAction } from '../Workspace/accounts';
 import { setTezsterConfigAction } from '../Onboard';
 
 import CheckConnectionStatus from './Helper/index';
@@ -106,7 +106,7 @@ function installTezsterImage(args) {
       dispatch({
         type: 'TEZSTER_START_NODES',
         payload: {
-          msg: `Download Starting...`,
+          msg: `Starting localnodes setup.`,
           totalProgressPercentage: 0,
         },
       });
@@ -126,13 +126,13 @@ function installTezsterImage(args) {
             );
             return dispatch({
               type: 'TEZSTER_ERROR',
-              payload: 'Error in installing tezster.',
+              payload: 'Error in setting up nodes.',
             });
           }
           dispatch({
             type: 'TEZSTER_START_NODES',
             payload: {
-              msg: `Download completed successfully.`,
+              msg: `Setup completed successfully.`,
               enum: 'DOWNLOAD_COMPLETE',
               totalProgressPercentage: 100,
               output,
@@ -298,7 +298,7 @@ function installTezsterContainer(args) {
           );
           return dispatch({
             type: 'TEZSTER_ERROR',
-            payload: 'Unable to fetch containers.',
+            payload: 'Unable to fetch container running localnodes.',
           });
         }
         const containerId = containers.filter((elem) =>
@@ -321,7 +321,7 @@ function installTezsterContainer(args) {
         payload: true,
       });
       dispatch(setTezsterConfigAction());
-      dispatch(getAccountsAction(args));
+      dispatch(getBalanceAction(args));
       return dispatch({
         type: 'TEZSTER_START_NODES',
         payload: { msg: 'Nodes are already running.' },
@@ -376,7 +376,7 @@ function runExec({ container, args }) {
             },
           });
         }
-        if (isTezsterRunning || totalProgressPercentage >= 100) {
+        if (isTezsterRunning && totalProgressPercentage === 100) {
           setTimeout(
             () =>
               dispatch({
@@ -400,7 +400,9 @@ function runExec({ container, args }) {
             payload: true,
           });
           dispatch(setTezsterConfigAction());
-          dispatch(getAccountsAction(args));
+          dispatch(getBalanceAction(args));
+        }
+        if (isTezsterRunning && totalProgressPercentage > 100) {
           return clearInterval(progressInterval);
         }
       }, 1000);

@@ -1,10 +1,10 @@
 export function isAvailableTezsterCli(initialState = false, action) {
   switch (action.type) {
-    case 'TEZSTER_CLI_ERR':
+    case 'TEZSTER_NODES_ERR':
       return action.payload;
-    case 'TEZSTER_CLI_SUCCESS':
+    case 'TEZSTER_NODES_SUCCESS':
       return action.payload;
-    case 'TEZSTER_CLI_PENDING':
+    case 'TEZSTER_NODES_PENDING_STATUS':
       return 'pending';
     default:
       return initialState;

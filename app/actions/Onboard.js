@@ -7,7 +7,7 @@ const url = config.provider;
 
 export function handleTezsterCliActionChange() {
   return {
-    type: 'TEZSTER_CLI_SUCCESS',
+    type: 'TEZSTER_NODES_SUCCESS',
     payload: true,
   };
 }
@@ -15,7 +15,7 @@ export function handleTezsterCliActionChange() {
 export function checkTezsterCliAction() {
   return (dispatch) => {
     dispatch({
-      type: 'TEZSTER_CLI_PENDING',
+      type: 'TEZSTER_NODES_PENDING_STATUS',
       payload: false,
     });
     RpcRequest.checkNodeStatus(url)
@@ -27,20 +27,19 @@ export function checkTezsterCliAction() {
               payload: true,
             });
             return dispatch({
-              type: 'TEZSTER_CLI_SUCCESS',
+              type: 'TEZSTER_NODES_SUCCESS',
               payload: true,
             });
           }, 4000);
-        } else {
-          dispatch({
-            type: 'TEZSTER_SHOW_STOP_NODES',
-            payload: false,
-          });
-          return dispatch({
-            type: 'TEZSTER_CLI_ERR',
-            payload: false,
-          });
         }
+        dispatch({
+          type: 'TEZSTER_SHOW_STOP_NODES',
+          payload: false,
+        });
+        return dispatch({
+          type: 'TEZSTER_NODES_ERR',
+          payload: false,
+        });
       })
       .catch((exp) => {
         setTimeout(() => {
@@ -49,7 +48,7 @@ export function checkTezsterCliAction() {
             payload: false,
           });
           return dispatch({
-            type: 'TEZSTER_CLI_ERR',
+            type: 'TEZSTER_NODES_ERR',
             payload: false,
           });
         }, 1000);
@@ -74,20 +73,19 @@ export function setTezsterConfigAction() {
               payload: true,
             });
             return dispatch({
-              type: 'TEZSTER_CLI_SUCCESS',
+              type: 'TEZSTER_NODES_SUCCESS',
               payload: true,
             });
           }, 1000);
-        } else {
-          dispatch({
-            type: 'TEZSTER_SHOW_STOP_NODES',
-            payload: false,
-          });
-          return dispatch({
-            type: 'TEZSTER_CLI_ERR',
-            payload: false,
-          });
         }
+        dispatch({
+          type: 'TEZSTER_SHOW_STOP_NODES',
+          payload: false,
+        });
+        return dispatch({
+          type: 'TEZSTER_NODES_ERR',
+          payload: false,
+        });
       })
       .catch((exp) => {
         setTimeout(() => {
@@ -96,7 +94,7 @@ export function setTezsterConfigAction() {
             payload: false,
           });
           return dispatch({
-            type: 'TEZSTER_CLI_ERR',
+            type: 'TEZSTER_NODES_ERR',
             payload: false,
           });
         }, 1000);
@@ -105,10 +103,12 @@ export function setTezsterConfigAction() {
 }
 export function getTezsterCliRunningState() {
   return new Promise((resolve, reject) => {
-    RpcRequest.fetchBalance(url, testPkh)
+    RpcRequest.checkNodeStatus(url)
       .then((res) => {
-        const balance = (parseInt(res, 10) / 1000000).toFixed(3);
-        return resolve(true);
+        if (res.protocol.startsWith('PsCARTHAG')) {
+          return resolve(true);
+        }
+        return resolve(false);
       })
       .catch((exp) => {
         return resolve(false);
