@@ -177,7 +177,7 @@ export function stopTezsterNodesAction() {
               if (isTezsterRunning && totalProgressPercentage < 100) {
                 dispatch(stopNodesProgress(totalProgressPercentage));
               }
-              if (!isTezsterRunning || totalProgressPercentage >= 100) {
+              if (!isTezsterRunning && totalProgressPercentage === 100) {
                 setTimeout(
                   () =>
                     dispatch({
@@ -191,7 +191,7 @@ export function stopTezsterNodesAction() {
                 dispatch({
                   type: 'TEZSTER_STOP_NODES',
                   payload: {
-                    msg: 'Nodes stopped successfully',
+                    msg: 'Nodes stopped successfully.',
                     totalProgressPercentage: 100,
                   },
                 });
@@ -203,6 +203,8 @@ export function stopTezsterNodesAction() {
                   type: 'GET_ACCOUNTS',
                   payload: [],
                 });
+              }
+              if (!isTezsterRunning && totalProgressPercentage > 100) {
                 return clearInterval(progressInterval);
               }
             }, 1000);
@@ -225,7 +227,7 @@ export function stopTezsterNodesAction() {
           });
           return dispatch({
             type: 'TEZSTER_STOP_NODES',
-            payload: { msg: 'Nodes already stopped' },
+            payload: { msg: 'Nodes already stopped.' },
           });
         }
       });
@@ -247,7 +249,7 @@ export function stopTezsterNodesAction() {
       });
       return dispatch({
         type: 'TEZSTER_STOP_NODES',
-        payload: { msg: 'Nodes already stopped' },
+        payload: { msg: 'Nodes already stopped.' },
       });
     }
   };
@@ -264,7 +266,7 @@ function stopNodesProgress(totalProgressPercentage) {
     dispatch({
       type: 'TEZSTER_STOP_NODES',
       payload: {
-        msg: `Stoping localnodes please wait.`,
+        msg: `Stoping localnodes please wait...`,
         enum: 'STARTING_STREAM',
         totalProgressPercentage,
       },
