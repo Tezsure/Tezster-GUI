@@ -12,7 +12,7 @@ function Checkmark(props) {
       style={{ display: 'flex', flexDirection: 'row' }}
     >
       <CircularProgressbar
-        value={props.totalImageProgress.toFixed()}
+        value={Math.floor(props.totalImageProgress)}
         strokeWidth={50}
         styles={buildStyles({
           textColor: 'black',

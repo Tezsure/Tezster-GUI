@@ -106,7 +106,7 @@ function installTezsterImage(args) {
       dispatch({
         type: 'TEZSTER_START_NODES',
         payload: {
-          msg: `Starting localnodes setup.`,
+          msg: `Starting localnodes setup...`,
           totalProgressPercentage: 0,
         },
       });
@@ -216,7 +216,7 @@ function installTezsterContainer(args) {
       dispatch({
         type: 'TEZSTER_START_NODES',
         payload: {
-          msg: `Starting localnodes please wait.`,
+          msg: `Starting localnodes please wait...`,
           enum: 'STARTING_STREAM',
           totalProgressPercentage: 0,
         },
@@ -279,7 +279,7 @@ function installTezsterContainer(args) {
       dispatch({
         type: 'TEZSTER_START_NODES',
         payload: {
-          msg: `Starting localnodes please wait.`,
+          msg: `Starting localnodes please wait...`,
           enum: 'STARTING_STREAM',
           totalProgressPercentage: 0,
         },
@@ -370,7 +370,7 @@ function runExec({ container, args }) {
           return dispatch({
             type: 'TEZSTER_START_NODES',
             payload: {
-              msg: `Starting localnodes please wait.`,
+              msg: `Starting localnodes please wait...`,
               enum: 'STARTING_STREAM',
               totalProgressPercentage,
             },

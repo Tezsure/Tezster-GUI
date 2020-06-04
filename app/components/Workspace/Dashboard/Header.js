@@ -94,7 +94,7 @@ class Header extends Component {
         message = (
           <div className="cards-container success-message">
             <p>
-              Setting up localnodes.
+              Setting up localnodes please wait...
               <br />
               On slow connections, it may take upto 20-30 mins for first time.
             </p>
