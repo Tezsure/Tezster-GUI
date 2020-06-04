@@ -9,7 +9,7 @@ const TEZSTER_IMAGE = 'tezsureinc/tezster:1.0.2';
 const TEZSTER_CONTAINER_NAME = 'tezster';
 const CHECK_DOCKER_VERSION = 'docker -v';
 
-export default function installTezsterCliAction(args) {
+export default function installLocalnodesAction(args) {
   const checkConnectionStatus = {
     connectionType: '',
   };

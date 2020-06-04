@@ -101,7 +101,7 @@ export function setTezsterConfigAction() {
       });
   };
 }
-export function getTezsterCliRunningState() {
+export function getLocalnodesRunningState() {
   return new Promise((resolve, reject) => {
     RpcRequest.checkNodeStatus(url)
       .then((res) => {

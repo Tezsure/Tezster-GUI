@@ -6,7 +6,7 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 
 function Error(props) {
-  if (props.isAvailableTezsterCli === 'pending') {
+  if (props.isAvailableLocalnodes === 'pending') {
     return (
       <div className="main-container">
         <div className="workplace-container">
