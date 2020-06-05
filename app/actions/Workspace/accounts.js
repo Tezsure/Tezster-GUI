@@ -48,22 +48,25 @@ export function toggleAccountsModalAction(modalType) {
 export function getAccountsAction({ ...params }) {
   const { networkId } = params.dashboardHeader;
   let IsLocalNodeRunning = false;
+  const reducedLocalNodesAccounts = () => {
+    const userAccounts = {};
+    userAccounts.Localnode = config.identities;
+    params.userAccounts.Localnode.forEach((account) => {
+      if (
+        config.identities.filter((elem) => account.label === elem.label)
+          .length === 0
+      ) {
+        userAccounts.Localnode.push(account);
+      }
+    });
+    return userAccounts.Localnode;
+  };
   return async (dispatch) => {
     IsLocalNodeRunning = await checkIsLocalNodeRunning();
     if (
       !IsLocalNodeRunning &&
       process.platform.includes('linux') &&
       networkId === 'Localnode'
-    ) {
-      return dispatch({
-        type: 'GET_ACCOUNTS',
-        payload: [],
-      });
-    }
-    if (
-      !IsLocalNodeRunning &&
-      networkId === 'Localnode' &&
-      process.platform.includes('linux')
     ) {
       return dispatch({
         type: 'GET_ACCOUNTS',
@@ -83,6 +86,11 @@ export function getAccountsAction({ ...params }) {
         ) {
           params.userAccounts.Localnode = config.identities;
         }
+        if (IsLocalNodeRunning && networkId === 'Localnode') {
+          const userAccounts = {};
+          userAccounts.Localnode = reducedLocalNodesAccounts();
+          params.userAccounts.Localnode = userAccounts.Localnode;
+        }
       } else {
         params.userAccounts[networkId.split('-')[0]] =
           IsLocalNodeRunning && networkId === 'Localnode'
@@ -100,6 +108,9 @@ export function getAccountsAction({ ...params }) {
       ) {
         params.userAccounts[networkId.split('-')[0]] = config.identities;
       }
+      const userAccounts = {};
+      userAccounts.Localnode = reducedLocalNodesAccounts();
+      params.userAccounts.Localnode = userAccounts.Localnode;
       params.dashboardHeader.networkId = networkId;
     }
     __getAccounts({ ...params }, (err, accounts) => {
@@ -156,12 +167,14 @@ export function getBalanceAction(payload) {
           type: 'TEZSTER_SHOW_STOP_NODES',
           payload: true,
         });
-      } else {
-        dispatch({
-          type: 'TEZSTER_SHOW_STOP_NODES',
-          payload: false,
-        });
+        return setTimeout(() => {
+          return dispatch(getAccountsAction(payload));
+        }, 1000);
       }
+      return dispatch({
+        type: 'TEZSTER_SHOW_STOP_NODES',
+        payload: false,
+      });
     }
     return dispatch(getAccountsAction(payload));
   };

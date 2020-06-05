@@ -65,6 +65,7 @@ class Accounts extends Component {
   render() {
     const { spinnerLoading } = this.state;
     const { tezsterShowStopNodes } = this.props;
+    const { networkId } = this.props.dashboardHeader;
     return (
       <>
         <div className="accounts-container">
@@ -113,7 +114,7 @@ class Accounts extends Component {
                   type="button"
                   className="btn btn-success"
                   onClick={() => this.handleModalToggle('activate-accounts')}
-                  disabled={!tezsterShowStopNodes}
+                  disabled={!tezsterShowStopNodes || networkId === 'Localnode'}
                 >
                   Add Faucet Account
                 </button>

@@ -23,6 +23,7 @@ const conseiljs = require('conseiljs');
 
 const fs = require('fs');
 const { storageName } = require('../../../apis/config');
+
 const LOCAL_STORAGE_NAME = storageName;
 
 class App extends Component {
@@ -51,8 +52,9 @@ class App extends Component {
   fetchSelectedContract(event) {
     const contractLabel = event.target.value;
     const { contracts } = JSON.parse(localStorage.getItem(LOCAL_STORAGE_NAME));
-    const { dashboardHeader } = this.props;
-    const selectedContract = contracts[dashboardHeader.networkId].filter(
+    const { networkId } = this.props.dashboardHeader;
+    const networkName = networkId.split('-')[0];
+    const selectedContract = contracts[networkName].filter(
       (elem) => contractLabel === elem.originated_contracts
     )[0];
     const michelsonCode = selectedContract.contract;

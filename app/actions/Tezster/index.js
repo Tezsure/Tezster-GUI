@@ -1,6 +1,6 @@
 /* eslint-disable func-names */
 import Docker from 'dockerode';
-import { getBalanceAction } from '../Workspace/accounts';
+import { getAccountsAction } from '../Workspace/accounts';
 import { setTezsterConfigAction } from '../Onboard';
 
 import CheckConnectionStatus from './Helper/index';
@@ -321,7 +321,7 @@ function installTezsterContainer(args) {
         payload: true,
       });
       dispatch(setTezsterConfigAction());
-      dispatch(getBalanceAction(args));
+      dispatch(getAccountsAction(args));
       return dispatch({
         type: 'TEZSTER_START_NODES',
         payload: { msg: 'Nodes are already running.' },
@@ -400,7 +400,7 @@ function runExec({ container, args }) {
             payload: true,
           });
           dispatch(setTezsterConfigAction());
-          dispatch(getBalanceAction(args));
+          dispatch(getAccountsAction(args));
         }
         if (isTezsterRunning && totalProgressPercentage > 100) {
           return clearInterval(progressInterval);
