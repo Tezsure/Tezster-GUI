@@ -41,18 +41,32 @@ class TransactionModal extends Component {
 
   // Autosuggest will call this function every time you need to update suggestions.
   // You already implemented this logic above, so just use it.
-  onSuggestionsFetchRequested({ value }) {
+  onSuggestionsFetchRequested({ value, reason }) {
     const { userAccounts } = this.props;
+    const { recieverAccount } = this.state;
 
     const inputValue = value;
     const inputLength = inputValue.length;
 
-    const suggestions =
-      inputLength === 0
-        ? []
-        : userAccounts.filter(
-            (elem) => elem.account.slice(0, inputLength) === inputValue
-          );
+    let suggestions = [];
+    if (inputLength !== 0) {
+      // eslint-disable-next-line array-callback-return
+      suggestions = userAccounts.filter((elem) => {
+        const currentAccount = `${elem.label}-${elem.account}`;
+        if (currentAccount.includes(inputValue)) {
+          return elem.account;
+        }
+      });
+    }
+    if (reason === 'input-focused' && recieverAccount === '') {
+      suggestions = userAccounts;
+    }
+    if (reason === 'input-changed' && inputLength === 0) {
+      suggestions = userAccounts;
+    }
+    if (reason === 'suggestion-selected') {
+      suggestions = [];
+    }
     this.setState({
       suggestions,
     });
@@ -106,9 +120,18 @@ class TransactionModal extends Component {
     }
 
     if (!errorFlag) {
+      const recieverAccountAddressLocation =
+        this.state.recieverAccount.split('-').length - 1;
+      const recieverAccount =
+        recieverAccountAddressLocation > 0
+          ? this.state.recieverAccount.split('-')[
+              recieverAccountAddressLocation
+            ]
+          : this.state.recieverAccount.split('-')[0];
       this.props.executeTransactionAction({
         ...this.props,
         ...this.state,
+        recieverAccount,
       });
     } else {
       this.setState(stateParams);
@@ -144,7 +167,7 @@ class TransactionModal extends Component {
       return suggestion.account;
     };
 
-    // Use your imagination to render suggestions.
+    // function to render suggestions.
     const renderSuggestion = (suggestion) => {
       return (
         <div
@@ -223,6 +246,7 @@ class TransactionModal extends Component {
                 getSuggestionValue={getSuggestionValue}
                 renderSuggestion={renderSuggestion}
                 inputProps={inputProps}
+                alwaysRenderSuggestions
               />
             </div>
             <span className="error-msg">{this.state.recieverAccountErr}</span>

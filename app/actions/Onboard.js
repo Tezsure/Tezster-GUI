@@ -101,17 +101,3 @@ export function setTezsterConfigAction() {
       });
   };
 }
-export function getLocalnodesRunningState() {
-  return new Promise((resolve, reject) => {
-    RpcRequest.checkNodeStatus(url)
-      .then((res) => {
-        if (res.protocol.startsWith('PsCARTHAG')) {
-          return resolve(true);
-        }
-        return resolve(false);
-      })
-      .catch((exp) => {
-        return resolve(false);
-      });
-  });
-}
