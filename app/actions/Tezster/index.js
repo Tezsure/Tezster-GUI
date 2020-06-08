@@ -44,6 +44,22 @@ export default function installLocalnodesAction(args) {
         loader: true,
       },
     });
+    if (!isDockerInstalled) {
+      setTimeout(
+        () =>
+          dispatch({
+            type: 'STARTING_NODES',
+            payload: {
+              loader: false,
+            },
+          }),
+        4000
+      );
+      return dispatch({
+        type: 'TEZSTER_ERROR',
+        payload: 'Docker is not install on your system.',
+      });
+    }
     if (!isInternetAvailable && !isTezsterImagePresent) {
       setTimeout(
         () =>
@@ -60,7 +76,8 @@ export default function installLocalnodesAction(args) {
         payload: 'Internet unavailable.',
       });
     }
-    if (!isDockerInstalled) {
+    // eslint-disable-next-line no-prototype-builtins
+    if (isTezsterImagePresent.hasOwnProperty('msg')) {
       setTimeout(
         () =>
           dispatch({
@@ -69,11 +86,11 @@ export default function installLocalnodesAction(args) {
               loader: false,
             },
           }),
-        4000
+        6000
       );
       return dispatch({
         type: 'TEZSTER_ERROR',
-        payload: 'Docker is not install on your system.',
+        payload: isTezsterImagePresent.msg,
       });
     }
     return dispatch(

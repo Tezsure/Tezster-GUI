@@ -109,11 +109,24 @@ class Header extends Component {
       }
     }
     if (loaderStatus && tezsterError !== '' && tezsterError) {
-      message = (
-        <div className="cards-container error-message">
-          <p>{`Error: ${tezsterError}`}</p>
-        </div>
-      );
+      if (tezsterError === 'docker-permission') {
+        message = (
+          <div className="cards-container error-message">
+            <p>
+              {`Error: Docker doesnot have sufficient permission to run without root user access. `}
+              <br />
+              Please follow the link
+              https://docs.docker.com/engine/install/linux-postinstall/#manage-docker-as-a-non-root-user
+            </p>
+          </div>
+        );
+      } else {
+        message = (
+          <div className="cards-container error-message">
+            <p>{`Error: ${tezsterError}`}</p>
+          </div>
+        );
+      }
     }
 
     return (
