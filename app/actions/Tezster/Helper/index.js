@@ -84,10 +84,9 @@ export default async function CheckConnectionStatus(args) {
           if (
             containers.filter((elem) => elem.Names[0].includes('tezster'))
               .length > 0 ||
-            containers.filter(
-              (elem) =>
-                elem.Image.includes('tezsureinc/tezster:1.0.2').length > 0
-            )
+            containers.filter((elem) =>
+              elem.Image.includes('tezsureinc/tezster:1.0.2')
+            ).length > 0
           ) {
             return resolve(true);
           }
@@ -105,10 +104,9 @@ export default async function CheckConnectionStatus(args) {
           if (
             containers.filter((elem) => elem.Names[0].includes('tezster'))
               .length > 0 ||
-            containers.filter(
-              (elem) =>
-                elem.Image.includes('tezsureinc/tezster:1.0.2').length > 0
-            )
+            containers.filter((elem) =>
+              elem.Image.includes('tezsureinc/tezster:1.0.2')
+            ).length > 0
           ) {
             return resolve(true);
           }
