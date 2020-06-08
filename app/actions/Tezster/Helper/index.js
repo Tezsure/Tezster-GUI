@@ -13,7 +13,8 @@ function executeCommandHelper(args, callback) {
   const { command } = args;
   exec(command, (err, stdout, stderr) => {
     if (err || stderr || stdout.toString().toLowerCase().includes('error')) {
-      return callback(err, null);
+      const dockerError = 'Error: docker not installed';
+      return callback(dockerError, null);
     }
     return callback(null, stdout);
   });
@@ -21,7 +22,7 @@ function executeCommandHelper(args, callback) {
 
 export default async function CheckConnectionStatus(args) {
   const docker = new Docker();
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     switch (args.connectionType) {
       case 'INTERNET':
         return resolve(navigator.onLine);
@@ -40,7 +41,7 @@ export default async function CheckConnectionStatus(args) {
       case 'DOCKER_INSTALL_STATUS':
         executeCommandHelper(args, (err, result) => {
           if (err) {
-            return reject(err);
+            return resolve(false);
           }
           return resolve(true);
         });
@@ -48,7 +49,16 @@ export default async function CheckConnectionStatus(args) {
       case 'CHECK_DOCKER_IMAGE':
         docker.listImages({ all: true }, (err, images) => {
           if (err) {
-            return reject(err);
+            if (
+              err
+                .toString()
+                .includes('Error: connect EACCES /var/run/docker.sock')
+            ) {
+              return resolve({
+                msg: 'docker-permission',
+              });
+            }
+            return resolve({ msg: err });
           }
           if (images.length === 0) {
             return resolve(false);
@@ -66,7 +76,7 @@ export default async function CheckConnectionStatus(args) {
       case 'CHECK_CONTAINER_PRESENT':
         docker.listContainers({ all: true }, (err, containers) => {
           if (err) {
-            return reject(err);
+            return resolve(false);
           }
           if (containers.length === 0) {
             return resolve(false);
@@ -87,7 +97,7 @@ export default async function CheckConnectionStatus(args) {
       case 'CHECK_CONTAINER_RUNNING':
         docker.listContainers({ all: false }, (err, containers) => {
           if (err) {
-            return reject(err);
+            return resolve(false);
           }
           if (containers.length === 0) {
             return resolve(false);

@@ -3,7 +3,6 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/prop-types */
 import React from 'react';
-import { Redirect } from 'react-router-dom';
 
 function Error(props) {
   if (props.isAvailableLocalnodes === 'pending') {
@@ -117,15 +116,14 @@ function Error(props) {
         </div>
       </div>
     );
-  } else {
-    if (!process.platform.includes('linux')) {
-      props.dashboardHeader.networkId = 'Carthagenet-Tezster';
-      props.handleNetworkChangeAction(props);
-    }
-    props.getAccountsAction(props);
-    props.handleLocalnodesActionChange();
-    return <></>;
   }
+  if (!process.platform.includes('linux')) {
+    props.dashboardHeader.networkId = 'Carthagenet-Tezster';
+    props.handleNetworkChangeAction(props);
+  }
+  props.getAccountsAction(props);
+  props.handleLocalnodesActionChange();
+  return <div />;
 }
 
 export default Error;
