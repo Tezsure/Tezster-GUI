@@ -47,7 +47,11 @@ class Header extends Component {
       </option>
     ));
     let nodesButton = [];
-    if (networkId === 'Localnode' && !tezsterShowStopNodes) {
+    if (
+      networkId === 'Localnode' &&
+      !tezsterShowStopNodes &&
+      process.platform.includes('linux')
+    ) {
       activeStatus = false;
       nodesButton = (
         <button
@@ -59,7 +63,11 @@ class Header extends Component {
         </button>
       );
     }
-    if (networkId === 'Localnode' && tezsterShowStopNodes) {
+    if (
+      networkId === 'Localnode' &&
+      tezsterShowStopNodes &&
+      process.platform.includes('linux')
+    ) {
       activeStatus = true;
       nodesButton = (
         <button
@@ -108,7 +116,12 @@ class Header extends Component {
         );
       }
     }
-    if (loaderStatus && tezsterError !== '' && tezsterError) {
+    if (
+      process.platform.includes('linux') &&
+      loaderStatus &&
+      tezsterError !== '' &&
+      tezsterError
+    ) {
       if (tezsterError === 'docker-permission') {
         message = (
           <div className="cards-container error-message">
@@ -198,7 +211,7 @@ class Header extends Component {
               <p>Status</p>
             </div>
           </div>
-          {networkId === 'Localnode' && (
+          {process.platform.includes('linux') && networkId === 'Localnode' && (
             <div className="cards" style={{ width: '150%' }}>
               <div className="cards-header">
                 <div className="cards-header"> Nodes Action</div>
