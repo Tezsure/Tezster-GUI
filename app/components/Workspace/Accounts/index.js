@@ -104,7 +104,7 @@ class Accounts extends Component {
                   type="button"
                   className="btn btn-success"
                   onClick={() => this.handleModalToggle('restore-accounts')}
-                  disabled={!tezsterShowStopNodes}
+                  disabled={networkId === 'Localnode' && !tezsterShowStopNodes}
                 >
                   Restore/Create Wallet
                 </button>
@@ -114,7 +114,7 @@ class Accounts extends Component {
                   type="button"
                   className="btn btn-success"
                   onClick={() => this.handleModalToggle('activate-accounts')}
-                  disabled={!tezsterShowStopNodes || networkId === 'Localnode'}
+                  disabled={networkId === 'Localnode' && !tezsterShowStopNodes}
                 >
                   Add Faucet Account
                 </button>
