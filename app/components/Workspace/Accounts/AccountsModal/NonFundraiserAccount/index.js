@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import CreateAccount from './CreateAccount';
 import RestoreAccount from './RestoreAccount';
 const conseiljs = require('conseiljs');
-const { storageName } = require('../../../../../apis/config');
+const { storageName } = require('../../../../../config/tezster.config');
 const LOCAL_STORAGE_NAME = storageName;
 
 class index extends Component {

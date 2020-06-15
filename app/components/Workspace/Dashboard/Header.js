@@ -15,8 +15,8 @@ class Header extends Component {
     const payload = JSON.parse(JSON.stringify({ ...this.props }));
     payload.dashboardHeader.networkId = event.target.value;
     this.props.handleNetworkChangeAction(payload);
-    this.props.getAccountsAction(payload);
     this.props.getBlockHeadsActions(payload);
+    this.props.getAccountsAction(payload);
   }
 
   render() {
@@ -30,15 +30,12 @@ class Header extends Component {
     const {
       tezsterStartNodes,
       tezsterError,
-      isAvailableLocalnodes,
       localConfig,
       tezsterLoaderStatus,
       tezsterShowStopNodes,
     } = this.props;
     const loaderStatus =
-      networkId === 'Localnode' &&
-      isAvailableLocalnodes &&
-      tezsterLoaderStatus.loader;
+      networkId === 'Localnode' && tezsterLoaderStatus.loader;
     let activeStatus = true;
     let message = [];
     const options = localConfig.Nodes.map((elem) => (
@@ -79,6 +76,7 @@ class Header extends Component {
         </button>
       );
     }
+
     if (
       loaderStatus &&
       tezsterStartNodes.hasOwnProperty('totalProgressPercentage')

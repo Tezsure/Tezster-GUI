@@ -5,7 +5,7 @@
 import React from 'react';
 
 function Error(props) {
-  if (props.isAvailableLocalnodes === 'pending') {
+  if (props.showMainDashboard === 'pending') {
     return (
       <div className="main-container">
         <div className="workplace-container">

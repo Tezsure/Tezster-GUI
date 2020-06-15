@@ -1,3 +1,5 @@
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/prop-types */
 import React from 'react';
 import ActivateAccounts from './ActivateAccounts';
@@ -17,13 +19,13 @@ function AccountsModal(props) {
         return <div />;
     }
   };
-  let style = {
+  const style = {
     display: 'block',
     paddingRight: '15px',
     opacity: 1,
   };
   if (props.showAccountsModal === 'show-user-wallet') {
-    style.paddingTop = '15%';
+    style.paddingTop = '10%';
   }
   return (
     <div className="modal fade show" role="dialog" style={style}>

@@ -22,7 +22,7 @@ import DeployContract from './Deploy';
 const conseiljs = require('conseiljs');
 
 const fs = require('fs');
-const { storageName } = require('../../../apis/config');
+const { storageName } = require('../../../config/tezster.config');
 
 const LOCAL_STORAGE_NAME = storageName;
 
@@ -281,11 +281,9 @@ class App extends Component {
               }
               aria-labelledby="nav-michelson-tab"
             >
-              <JSONPretty
-                id="json-pretty"
-                data={compilerOutput}
-                className="parseError"
-              />
+              <p className="parseError mnemonics-container">
+                <code className="mnemonics">{compilerOutput}</code>
+              </p>
             </div>
             <div
               className={

@@ -8,18 +8,17 @@ import {
   sidebarToggleAction,
   handleAccordionAction,
   handleTabChangeAction,
-} from '../actions/Workspace/sidebar';
-
-import installLocalnodesAction from '../actions/Tezster';
+} from '../actions/Workspace/Sidebar';
+import installLocalnodesAction from '../actions/Tezster-nodes';
 import {
   startTezsterNodesAction,
   stopTezsterNodesAction,
-} from '../actions/Tezster/setup';
+} from '../actions/Tezster-nodes/stop-nodes-setup';
 
 import {
   getBlockHeadsActions,
   searchBlockHead,
-} from '../actions/Workspace/blocks';
+} from '../actions/Workspace/Blocks';
 
 import {
   toggleButtonState,
@@ -28,24 +27,24 @@ import {
   restoreFaucetAccountAction,
   toggleAccountsModalAction,
   getBalanceAction,
-} from '../actions/Workspace/accounts';
+} from '../actions/Workspace/Accounts';
 import {
   toggleTransactionModalAction,
   executeTransactionAction,
   getTransactionsAction,
   selectTransactionWalletAction,
-} from '../actions/Workspace/transactions';
+} from '../actions/Workspace/Transactions';
 import {
   handleContractsTabChangeAction,
   handleInvokeContractAction,
   deployContractAction,
   getContractStorageAction,
   getAccountBalanceAction,
-} from '../actions/Workspace/contracts';
+} from '../actions/Workspace/Contracts';
 import {
   getDashboardHeaderAction,
   handleNetworkChangeAction,
-} from '../actions/Workspace/dashboardHeader';
+} from '../actions/Workspace/DashboardHeader';
 import {
   handleLocalnodesActionChange,
   checkLocalnodesAction,
@@ -61,10 +60,8 @@ class WorkspacePage extends Component {
   }
 
   render() {
-    if (
-      this.props.isAvailableLocalnodes &&
-      this.props.isAvailableLocalnodes !== 'pending'
-    ) {
+    const { showMainDashboard } = this.props;
+    if (showMainDashboard && showMainDashboard !== 'pending') {
       return <Workspace {...this.props} />;
     }
     return <Error {...this.props} />;
@@ -136,6 +133,7 @@ const mapStateToProps = (state) => ({
   selectedContractStorage: state.selectedContractStorage,
   selectedContractAmountBalance: state.selectedContractAmountBalance,
   isAvailableLocalnodes: state.isAvailableLocalnodes,
+  showMainDashboard: state.showMainDashboard,
   tezsterError: state.tezsterError,
   tezsterSetup: state.tezsterSetup,
   tezsterShowStopNodes: state.tezsterShowStopNodes,

@@ -1,32 +1,44 @@
-/* eslint-disable no-prototype-builtins */
-/* eslint-disable promise/always-return */
-import swal from 'sweetalert';
 import {
-  __deployContract,
-  __getBalance,
-  __getStorage,
-  __invokeContract,
-} from '../../apis/eztz.service';
+  HandleContractErrorsHelper,
+  ContractDeployedStatusHelper,
+} from './helper.contract';
 
-export function handleContractsTabChangeAction(tabName) {
-  return {
-    type: 'CONTRACTS_TAB_TOGGLE',
-    payload: tabName,
+const {
+  DeployContractAPI,
+  InvokeContractAPI,
+  GetStorageAPI,
+} = require('./api.contract');
+const { GetBalanceAPI } = require('../Accounts/api.accounts');
+
+export function getAccountBalanceAction(args) {
+  return (dispatch) => {
+    GetBalanceAPI(args)
+      .then((response) => {
+        dispatch({
+          type: 'GET_CONTRACT_AMOUNT',
+          payload: response.balance,
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: 'GET_CONTRACT_AMOUNT_ERR',
+          payload: err,
+        });
+      });
   };
 }
 
-export function deployContractAction({ ...params }) {
+export function deployContractAction(args) {
   return (dispatch) => {
     dispatch({
       type: 'BUTTON_LOADING_STATE',
       payload: true,
     });
-    __deployContract({ ...params }, (err, response) => {
+    DeployContractAPI(args, (err, response) => {
       if (err) {
-        const error = err.hasOwnProperty('message')
-          ? err.message.replace(/(?:\r\n|\r|\n|\s\s+)/g, ' ')
-          : '';
-
+        const error = HandleContractErrorsHelper(
+          error.message || 'error in deploying contract'
+        );
         swal('Error!', `Contract deployment failed ${error}`, 'error');
         dispatch({
           type: 'BUTTON_LOADING_STATE',
@@ -50,23 +62,17 @@ export function deployContractAction({ ...params }) {
   };
 }
 
-export function getContractStorageAction({ ...params }) {
+export function getContractStorageAction(args) {
   return (dispatch) => {
     dispatch({
       type: 'BUTTON_LOADING_STATE',
       payload: true,
     });
-    __getStorage({ ...params }, (err, response) => {
+    GetStorageAPI(args, (err, response) => {
       if (err) {
-        let error = err.hasOwnProperty('message')
-          ? `Sorry could not fetch storage value for selected contract \n ${err.message.replace(
-              /(?:\r\n|\r|\n|\s\s+)/g,
-              ''
-            )}`
-          : 'Sorry could not fetch storage value for selected contract';
-        if (err === 'Not Found') {
-          error = `Unable to fetch storage from contract 404 Not Found`;
-        }
+        const error = HandleContractErrorsHelper(
+          err.message || 'Unable to fetch storage for selected contract'
+        );
         swal('Error!', error, 'error');
         dispatch({
           type: 'BUTTON_LOADING_STATE',
@@ -89,41 +95,26 @@ export function getContractStorageAction({ ...params }) {
   };
 }
 
-export function getAccountBalanceAction({ ...params }) {
-  return (dispatch) => {
-    __getBalance({ ...params })
-      .then((response) => {
-        dispatch({
-          type: 'GET_CONTRACT_AMOUNT',
-          payload: response.balance,
-        });
-      })
-      .catch((err) => {
-        dispatch({
-          type: 'GET_CONTRACT_AMOUNT_ERR',
-          payload: err,
-        });
-      });
-  };
-}
-
-export function handleInvokeContractAction({ ...params }) {
-  const checkContractUrl = `http://localhost:18731/chains/main/blocks/head/context/contracts/${params.selectedContracts}`;
-  const { networkId } = params.dashboardHeader;
+export function handleInvokeContractAction(args) {
   return (dispatch) => {
     dispatch({
       type: 'BUTTON_LOADING_STATE',
       payload: true,
     });
-    let errorFlag = '';
-    if (networkId === 'Localnode') {
-      fetch(checkContractUrl).then((resp) => {
-        if (resp.status === 404) {
-          errorFlag = `\n404 Contract not found on the Localnode`;
-        }
-      });
-    }
-    __invokeContract({ ...params }, (err, response) => {
+    ContractDeployedStatusHelper(args, (contractError, contractResponse) => {
+      if (contractError) {
+        dispatch({
+          type: 'BUTTON_LOADING_STATE',
+          payload: false,
+        });
+        swal(
+          'Error!',
+          `\n404 Contract not found on the selected network`,
+          'error'
+        );
+      }
+    });
+    InvokeContractAPI(args, (err, response) => {
       if (err) {
         const error = err.hasOwnProperty('message')
           ? err.message.replace(/(?:\r\n|\r|\n|\s\s+)/g, ' ')
@@ -148,5 +139,12 @@ export function handleInvokeContractAction({ ...params }) {
         payload: response,
       });
     });
+  };
+}
+
+export function handleContractsTabChangeAction(TAB_NAME) {
+  return {
+    type: 'CONTRACTS_TAB_TOGGLE',
+    payload: TAB_NAME,
   };
 }

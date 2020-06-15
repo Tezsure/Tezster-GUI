@@ -16,11 +16,11 @@ function CreateAccount(props) {
         <p>Mnemonic</p>
       </div>
       <div className="modal-input" style={{ paddingTop: '0rem' }}>
-        <JSONPretty
-          id="json-pretty"
-          style={{ width: '100%', height: '100%' }}
-          data={props.stateParams.mnemonicSuggestion}
-        />
+        <p className="mnemonics-container">
+          <code className="mnemonics">
+            {props.stateParams.mnemonicSuggestion}
+          </code>
+        </p>
       </div>
       <div className="modal-input">
         <div className="input-container">Label* </div>
