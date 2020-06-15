@@ -1,21 +1,23 @@
 /* eslint-disable no-unused-vars */
-import { RpcRequest } from '../apis/getAccountBalance';
+import { RpcRequest } from './Workspace/Accounts/helper.accounts';
 
-const config = require('../apis/config');
+const config = require('../config/tezster.config');
 
 const url = config.provider;
 
 export function handleLocalnodesActionChange() {
-  return {
-    type: 'TEZSTER_NODES_SUCCESS',
-    payload: true,
+  return (dispatch) => {
+    dispatch({
+      type: 'TEZSTER_SHOW_DASHBOARD',
+      payload: true,
+    });
   };
 }
 
 export function checkLocalnodesAction() {
   return (dispatch) => {
     dispatch({
-      type: 'TEZSTER_NODES_PENDING_STATUS',
+      type: 'TEZSTER_SHOW_DASHBOARD_PENDING',
       payload: false,
     });
     RpcRequest.checkNodeStatus(url)
@@ -23,15 +25,23 @@ export function checkLocalnodesAction() {
         if (res.protocol.startsWith('PsCARTHAG')) {
           return setTimeout(() => {
             dispatch({
+              type: 'LOCAL_NODE_RUNNING_STATUS',
+              payload: true,
+            });
+            dispatch({
               type: 'TEZSTER_SHOW_STOP_NODES',
               payload: true,
             });
             return dispatch({
-              type: 'TEZSTER_NODES_SUCCESS',
+              type: 'TEZSTER_SHOW_DASHBOARD',
               payload: true,
             });
           }, 4000);
         }
+        dispatch({
+          type: 'LOCAL_NODE_RUNNING_STATUS',
+          payload: false,
+        });
         dispatch({
           type: 'TEZSTER_SHOW_STOP_NODES',
           payload: false,
@@ -42,16 +52,22 @@ export function checkLocalnodesAction() {
         });
       })
       .catch((exp) => {
-        setTimeout(() => {
-          dispatch({
-            type: 'TEZSTER_SHOW_STOP_NODES',
-            payload: false,
-          });
-          return dispatch({
-            type: 'TEZSTER_NODES_ERR',
-            payload: false,
-          });
-        }, 1000);
+        dispatch({
+          type: 'TEZSTER_SHOW_STOP_NODES',
+          payload: false,
+        });
+        dispatch({
+          type: 'LOCAL_NODE_RUNNING_STATUS',
+          payload: false,
+        });
+        dispatch({
+          type: 'TEZSTER_SHOW_DASHBOARD',
+          payload: false,
+        });
+        return dispatch({
+          type: 'TEZSTER_NODES_ERR',
+          payload: false,
+        });
       });
   };
 }
@@ -69,15 +85,23 @@ export function setTezsterConfigAction() {
         if (res.protocol.startsWith('PsCARTHAG')) {
           return setTimeout(() => {
             dispatch({
+              type: 'LOCAL_NODE_RUNNING_STATUS',
+              payload: true,
+            });
+            dispatch({
               type: 'TEZSTER_SHOW_STOP_NODES',
               payload: true,
             });
             return dispatch({
-              type: 'TEZSTER_NODES_SUCCESS',
+              type: 'TEZSTER_SHOW_DASHBOARD',
               payload: true,
             });
           }, 1000);
         }
+        dispatch({
+          type: 'LOCAL_NODE_RUNNING_STATUS',
+          payload: false,
+        });
         dispatch({
           type: 'TEZSTER_SHOW_STOP_NODES',
           payload: false,
@@ -91,6 +115,10 @@ export function setTezsterConfigAction() {
         setTimeout(() => {
           dispatch({
             type: 'TEZSTER_SHOW_STOP_NODES',
+            payload: false,
+          });
+          dispatch({
+            type: 'LOCAL_NODE_RUNNING_STATUS',
             payload: false,
           });
           return dispatch({

@@ -2,12 +2,17 @@
   padding: 10px;
   border: 0;
   border-bottom: 10px;
-  background-color: #d6d6d6;
+  background-color: #dee2e6;
   width: 100%;
   overflow: auto;
-  height: 100vh;
+  height: 100%;
 }
+div#nav-tabContent {
+  height: 90%;
+}
+
 div#nav-michelson {
+  height: 100%;
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -91,10 +96,6 @@ a:hover {
 }
 .tab-pane {
   padding: 5px;
-}
-#json-pretty > pre {
-  word-wrap: break-word;
-  white-space: pre-wrap;
 }
 
 .deploy-contents .modal-input {

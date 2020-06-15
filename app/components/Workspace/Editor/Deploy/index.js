@@ -7,7 +7,7 @@
 /* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
 import swal from 'sweetalert';
-const { storageName } = require('../../../../apis/config');
+const { storageName } = require('../../../../config/tezster.config');
 const LOCAL_STORAGE_NAME = storageName;
 
 class DeployContract extends Component {

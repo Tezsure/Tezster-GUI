@@ -9,7 +9,7 @@ import swal from 'sweetalert';
 // import JSONPretty from 'react-json-pretty';
 
 const conseiljs = require('conseiljs');
-const { storageName } = require('../../../../apis/config');
+const { storageName } = require('../../../../config/tezster.config');
 const LOCAL_STORAGE_NAME = storageName;
 
 const fs = require('fs');

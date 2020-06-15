@@ -3,7 +3,6 @@
 import { combineReducers } from 'redux';
 import { connectRouter } from 'connected-react-router';
 import type { HashHistory } from 'history';
-import counter from './counter';
 import { blocks, blockSearch } from './Workspace/blocks';
 import {
   sidebarToggleState,
@@ -39,14 +38,17 @@ import {
   tezsterLoaderStatus,
 } from './Tezster';
 
-import { isAvailableLocalnodes, localConfig } from './onBoard';
+import {
+  isAvailableLocalnodes,
+  showMainDashboard,
+  localConfig,
+} from './onBoard';
 
 export default function createRootReducer(history: HashHistory) {
   return combineReducers<{}, *>({
     router: connectRouter(history),
     blocks,
     blockSearch,
-    counter,
     buttonState,
     sidebarToggleState,
     showAccountsModal,
@@ -61,6 +63,7 @@ export default function createRootReducer(history: HashHistory) {
     userTransactions,
     transactionsSuccess,
     selectedTransactionWallet,
+    showMainDashboard,
     isAvailableLocalnodes,
     localConfig,
     currentTab,

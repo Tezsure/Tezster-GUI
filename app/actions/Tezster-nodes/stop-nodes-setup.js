@@ -203,6 +203,7 @@ export function stopTezsterNodesAction() {
                   type: 'GET_ACCOUNTS',
                   payload: [],
                 });
+                dispatch(setTezsterConfigAction());
               }
               if (!isTezsterRunning && totalProgressPercentage > 100) {
                 return clearInterval(progressInterval);
@@ -225,6 +226,11 @@ export function stopTezsterNodesAction() {
             type: 'TEZSTER_SHOW_STOP_NODES',
             payload: false,
           });
+          dispatch({
+            type: 'GET_ACCOUNTS',
+            payload: [],
+          });
+          dispatch(setTezsterConfigAction());
           return dispatch({
             type: 'TEZSTER_STOP_NODES',
             payload: { msg: 'Nodes already stopped.' },
@@ -244,9 +250,14 @@ export function stopTezsterNodesAction() {
         4000
       );
       dispatch({
+        type: 'GET_ACCOUNTS',
+        payload: [],
+      });
+      dispatch({
         type: 'TEZSTER_SHOW_STOP_NODES',
         payload: false,
       });
+      dispatch(setTezsterConfigAction());
       return dispatch({
         type: 'TEZSTER_STOP_NODES',
         payload: { msg: 'Nodes already stopped.' },

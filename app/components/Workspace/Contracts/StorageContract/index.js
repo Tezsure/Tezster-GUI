@@ -5,7 +5,9 @@
 /* eslint-disable react/no-array-index-key */
 import React, { Component } from 'react';
 import JSONPretty from 'react-json-pretty';
-const { storageName } = require('../../../../apis/config');
+
+const { storageName } = require('../../../../config/tezster.config');
+
 const LOCAL_STORAGE_NAME = storageName;
 
 class index extends Component {

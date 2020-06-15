@@ -1,10 +1,12 @@
 /* eslint-disable no-unused-vars */
 import { exec } from 'child_process';
 import Docker from 'dockerode';
-import { RpcRequest } from '../../../apis/getAccountBalance';
+import { RpcRequest } from '../../Workspace/Accounts/helper.accounts';
 
-const config = require('../../../apis/config');
-const { __getBalance } = require('../../../apis/eztz.service');
+const config = require('../../../config/tezster.config');
+const { GetBalanceAPI } = require('../../Workspace/Accounts/api.accounts');
+
+const { TEZSTER_IMAGE } = require('../../../config/tezster.config');
 
 const url = config.provider;
 const testPkh = config.identities[0].pkh;
@@ -65,7 +67,7 @@ export default async function CheckConnectionStatus(args) {
           }
           if (
             images.filter((elem) =>
-              elem.RepoTags[0].includes('tezsureinc/tezster:1.0.2')
+              elem.RepoTags[0].includes(`${TEZSTER_IMAGE}`)
             ).length > 0
           ) {
             return resolve(true);
@@ -84,9 +86,8 @@ export default async function CheckConnectionStatus(args) {
           if (
             containers.filter((elem) => elem.Names[0].includes('tezster'))
               .length > 0 ||
-            containers.filter((elem) =>
-              elem.Image.includes('tezsureinc/tezster:1.0.2')
-            ).length > 0
+            containers.filter((elem) => elem.Image.includes(`${TEZSTER_IMAGE}`))
+              .length > 0
           ) {
             return resolve(true);
           }
@@ -104,9 +105,8 @@ export default async function CheckConnectionStatus(args) {
           if (
             containers.filter((elem) => elem.Names[0].includes('tezster'))
               .length > 0 ||
-            containers.filter((elem) =>
-              elem.Image.includes('tezsureinc/tezster:1.0.2')
-            ).length > 0
+            containers.filter((elem) => elem.Image.includes(`${TEZSTER_IMAGE}`))
+              .length > 0
           ) {
             return resolve(true);
           }

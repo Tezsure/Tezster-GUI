@@ -1,9 +1,9 @@
 /* eslint-disable promise/always-return */
 import axios from 'axios';
 
-import { TzStatsApiEndpoint } from './config';
+import { TzStatsApiEndpoint } from '../../../config/tezster.config';
 
-export function getBlockHeight(args, callback) {
+export function GetBlockHeightAPI(args, callback) {
   const url = TzStatsApiEndpoint[args.dashboardHeader.networkId];
   axios
     .get(`${url}/explorer/block/head`)
@@ -15,7 +15,7 @@ export function getBlockHeight(args, callback) {
     });
 }
 
-export function getBlockData(args, callback) {
+export function GetBlockDataAPI(args, callback) {
   const url = TzStatsApiEndpoint[args.dashboardHeader.networkId];
   axios
     .get(`${url}/explorer/block/${args.blockId}`)
@@ -27,7 +27,7 @@ export function getBlockData(args, callback) {
     });
 }
 
-export function getAllBlockData(args, callback) {
+export function GetAllBlockDataAPI(args, callback) {
   const url = TzStatsApiEndpoint[args.dashboardHeader.networkId];
   axios
     .get(`${url}/explorer/block/head/op`)
