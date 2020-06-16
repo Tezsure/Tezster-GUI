@@ -13,7 +13,7 @@ class Table extends Component {
 
   render() {
     const { networkId } = this.props.dashboardHeader;
-    const { tezsterShowStopNodes, userAccounts } = this.props;
+    const { userAccounts } = this.props;
     const Accounts = userAccounts.map((elem, index) => {
       return (
         <tr className="table-row" key={elem.account + index}>
@@ -70,17 +70,8 @@ class Table extends Component {
     });
     if (this.props.userAccounts.length === 0) {
       let msg;
-      if (!tezsterShowStopNodes && networkId === 'Localnode') {
+      if (networkId === 'Localnode') {
         msg = 'LocalNodes are not running please start the nodes.';
-      } else if (networkId === 'Localnode') {
-        msg = (
-          <>
-            We currently donot support running LocalNodes on your Operating
-            System.
-            <br />
-            Please change network type to Carthagenet.
-          </>
-        );
       } else if (networkId !== 'Localnode' && userAccounts.length === 0) {
         msg =
           'No accounts available on the selected network please add an account.';
