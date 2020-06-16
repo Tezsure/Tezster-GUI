@@ -62,7 +62,7 @@ export function checkLocalnodesAction() {
         });
         dispatch({
           type: 'TEZSTER_SHOW_DASHBOARD',
-          payload: false,
+          payload: true,
         });
         return dispatch({
           type: 'TEZSTER_NODES_ERR',

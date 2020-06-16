@@ -167,12 +167,12 @@ function runExec({ container, args }) {
         },
       });
       progressInterval = setInterval(async () => {
-        totalProgressPercentage += 2.5;
         const isTezsterRunning = await CheckConnectionStatus(
           checkConnectionStatus
         );
         if (!isTezsterRunning && totalProgressPercentage < 100) {
-          return dispatch({
+          totalProgressPercentage += 2.5;
+          dispatch({
             type: 'TEZSTER_START_NODES',
             payload: {
               msg: `Starting localnodes please wait...`,
@@ -181,7 +181,8 @@ function runExec({ container, args }) {
             },
           });
         }
-        if (isTezsterRunning && totalProgressPercentage === 100) {
+        if (isTezsterRunning && totalProgressPercentage <= 100) {
+          totalProgressPercentage += 2.5;
           setTimeout(
             () =>
               dispatch({
