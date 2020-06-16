@@ -1,8 +1,12 @@
+const ip = require('docker-ip');
+
 module.exports = {
   TEZSTER_IMAGE: 'tezsureinc/tezster:1.0.3-beta',
   TEZSTER_CONTAINER_NAME: 'tezster',
   storageName: 'tezsure',
-  provider: 'http://localhost:18731',
+  provider: !process.platform.includes('win')
+    ? `http://${ip()}:18731`
+    : 'http://localhost:18731',
   identities: [
     {
       sk:
@@ -77,12 +81,16 @@ module.exports = {
   programs: [],
   Nodes: ['Localnode', 'Carthagenet-Tezster', 'Carthagenet-Smartpy'],
   apiEndPoints: {
-    Localnode: 'http://localhost:18731',
+    Localnode: !process.platform.includes('win')
+      ? `http://${ip()}:18731`
+      : 'http://localhost:18731',
     'Carthagenet-Smartpy': 'https://carthagenet.SmartPy.io',
     'Carthagenet-Tezster': 'https://testnet.tezster.tech',
   },
   TzStatsApiEndpoint: {
-    Localnode: 'http://localhost:18731',
+    Localnode: !process.platform.includes('win')
+      ? `http://${ip()}:18731`
+      : 'http://localhost:18731',
     'Carthagenet-Smartpy': 'https://api.carthagenet.tzstats.com',
     'Carthagenet-Tezster': 'https://api.carthagenet.tzstats.com',
   },
