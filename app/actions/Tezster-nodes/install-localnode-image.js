@@ -15,6 +15,10 @@ export default function installTezsterImage(args) {
   return (dispatch) => {
     if (!isTezsterImagePresent) {
       dispatch({
+        type: 'TEZSTER_ERROR',
+        payload: '',
+      });
+      dispatch({
         type: 'STARTING_NODES',
         payload: {
           loader: true,
