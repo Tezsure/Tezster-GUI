@@ -70,16 +70,9 @@ class Table extends Component {
     });
     if (this.props.userAccounts.length === 0) {
       let msg;
-      if (
-        process.platform.includes('linux') &&
-        !tezsterShowStopNodes &&
-        networkId === 'Localnode'
-      ) {
+      if (!tezsterShowStopNodes && networkId === 'Localnode') {
         msg = 'LocalNodes are not running please start the nodes.';
-      } else if (
-        !process.platform.includes('linux') &&
-        networkId === 'Localnode'
-      ) {
+      } else if (networkId === 'Localnode') {
         msg = (
           <>
             We currently donot support running LocalNodes on your Operating
