@@ -4,7 +4,7 @@ module.exports = {
   TEZSTER_IMAGE: 'tezsureinc/tezster:1.0.3-beta',
   TEZSTER_CONTAINER_NAME: 'tezster',
   storageName: 'tezsure',
-  provider: !process.platform.includes('win')
+  provider: process.platform.includes('win')
     ? `http://${ip()}:18731`
     : 'http://localhost:18731',
   identities: [
@@ -81,14 +81,14 @@ module.exports = {
   programs: [],
   Nodes: ['Localnode', 'Carthagenet-Tezster', 'Carthagenet-Smartpy'],
   apiEndPoints: {
-    Localnode: !process.platform.includes('win')
+    Localnode: process.platform.includes('win')
       ? `http://${ip()}:18731`
       : 'http://localhost:18731',
     'Carthagenet-Smartpy': 'https://carthagenet.SmartPy.io',
     'Carthagenet-Tezster': 'https://testnet.tezster.tech',
   },
   TzStatsApiEndpoint: {
-    Localnode: !process.platform.includes('win')
+    Localnode: process.platform.includes('win')
       ? `http://${ip()}:18731`
       : 'http://localhost:18731',
     'Carthagenet-Smartpy': 'https://api.carthagenet.tzstats.com',
