@@ -141,6 +141,7 @@ function runExec({ container, args }) {
   checkConnectionStatus.connectionType = 'TEZSTER_RUNNING';
   checkConnectionStatus.command = TEZSTER_CONTAINER_NAME;
   let totalProgressPercentage = 0;
+  // eslint-disable-next-line no-unused-vars
   let progressInterval;
   return (dispatch) => {
     container.start((error, data) => {
@@ -183,16 +184,15 @@ function runExec({ container, args }) {
         }
         if (isTezsterRunning && totalProgressPercentage <= 100) {
           totalProgressPercentage += 2.5;
-          setTimeout(
-            () =>
-              dispatch({
-                type: 'STARTING_NODES',
-                payload: {
-                  loader: false,
-                },
-              }),
-            4000
-          );
+          setTimeout(() => {
+            dispatch({
+              type: 'STARTING_NODES',
+              payload: {
+                loader: false,
+              },
+            });
+            return clearInterval(totalProgressPercentage);
+          }, 4000);
           dispatch({
             type: 'TEZSTER_START_NODES',
             payload: {
@@ -211,7 +211,7 @@ function runExec({ container, args }) {
           dispatch(getBalanceAction(args));
         }
         if (isTezsterRunning && totalProgressPercentage > 100) {
-          return clearInterval(progressInterval);
+          return clearInterval(totalProgressPercentage);
         }
       }, 1000);
       clearInterval(totalProgressPercentage);

@@ -1,4 +1,4 @@
-import { apiEndPoints } from '../../../config/tezster.config';
+import { apiEndPoints } from '../../../db-config/tezster.config';
 const request = require('request');
 
 export function ContractDeployedStatusHelper(args, callback) {

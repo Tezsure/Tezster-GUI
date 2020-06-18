@@ -9,7 +9,7 @@ const {
   CreateFundraiserAccountAPI,
 } = require('./api.accounts');
 
-const config = require('../../../config/tezster.config');
+const config = require('../../../db-config/tezster.config');
 
 const LOCAL_STORAGE_NAME = config.storageName;
 
@@ -75,17 +75,27 @@ export function getAccountsAction(args) {
       }
       Promise.all(accounts)
         .then((response) => {
-          if (!localStorage.hasOwnProperty(LOCAL_STORAGE_NAME)) {
-            userAccounts = {
-              Carthagenet: [],
-              Localnode: [],
-            };
-            userAccounts[networkName] = response;
-            const LocalStorageData = JSON.stringify({
-              ...config,
-              userAccounts,
+          if (response.length > 0 && response[0].hasOwnProperty('label')) {
+            if (!localStorage.hasOwnProperty(LOCAL_STORAGE_NAME)) {
+              userAccounts = {
+                Carthagenet: [],
+                Localnode: [],
+              };
+              userAccounts[networkName] = response;
+              const LocalStorageData = JSON.stringify({
+                ...config,
+                userAccounts,
+              });
+              localStorage.setItem(LOCAL_STORAGE_NAME, LocalStorageData);
+            }
+            dispatch({
+              type: 'TEZSTER_SHOW_STOP_NODES',
+              payload: true,
             });
-            localStorage.setItem(LOCAL_STORAGE_NAME, LocalStorageData);
+            return dispatch({
+              type: 'GET_ACCOUNTS',
+              payload: response,
+            });
           }
           dispatch({
             type: 'TEZSTER_SHOW_STOP_NODES',
@@ -93,7 +103,7 @@ export function getAccountsAction(args) {
           });
           return dispatch({
             type: 'GET_ACCOUNTS',
-            payload: response,
+            payload: [],
           });
         })
         .catch((accountsErr) => {

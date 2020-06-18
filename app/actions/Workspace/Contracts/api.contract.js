@@ -2,7 +2,7 @@ import {
   apiEndPoints,
   ConceilJS,
   storageName,
-} from '../../../config/tezster.config';
+} from '../../../db-config/tezster.config';
 const conseiljs = require('conseiljs');
 
 const LOCAL_STORAGE_NAME = storageName;

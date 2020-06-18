@@ -1,4 +1,4 @@
-const config = require('../../../config/tezster.config');
+const config = require('../../../db-config/tezster.config');
 
 const { GetBlockHeightAPI, GetAllBlockDataAPI } = require('./api.tzstats');
 
