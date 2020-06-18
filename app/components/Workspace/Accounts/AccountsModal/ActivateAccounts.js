@@ -7,6 +7,7 @@ import { NavLink } from 'react-router-dom';
 
 const { shell } = require('electron');
 const { storageName } = require('../../../../db-config/tezster.config');
+
 const LOCAL_STORAGE_NAME = storageName;
 
 class ActivateAccounts extends Component {
