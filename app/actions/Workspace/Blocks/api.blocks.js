@@ -1,7 +1,7 @@
 /* eslint-disable promise/always-return */
 import axios from 'axios';
 
-import { TzStatsApiEndpoint } from '../../../config/tezster.config';
+import { TzStatsApiEndpoint } from '../../../db-config/tezster.config';
 
 export function GetBlockHeightAPI(args, callback) {
   const url = TzStatsApiEndpoint[args.dashboardHeader.networkId];

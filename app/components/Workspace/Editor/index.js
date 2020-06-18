@@ -14,7 +14,6 @@
 /* eslint-disable no-plusplus */
 import React, { Component } from 'react';
 import * as nearley from 'nearley';
-import JSONPretty from 'react-json-pretty';
 import * as Grammer from './Grammer';
 import preProcessMichelsonScript from './preProcessMichelsonScript';
 import DeployContract from './Deploy';
@@ -22,7 +21,7 @@ import DeployContract from './Deploy';
 const conseiljs = require('conseiljs');
 
 const fs = require('fs');
-const { storageName } = require('../../../config/tezster.config');
+const { storageName } = require('../../../db-config/tezster.config');
 
 const LOCAL_STORAGE_NAME = storageName;
 

@@ -1,4 +1,4 @@
-import { apiEndPoints, ConceilJS } from '../../../config/tezster.config';
+import { apiEndPoints, ConceilJS } from '../../../db-config/tezster.config';
 
 const conseiljs = require('conseiljs');
 

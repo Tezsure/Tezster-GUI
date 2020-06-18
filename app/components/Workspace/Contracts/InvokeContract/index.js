@@ -9,7 +9,8 @@ import React, { Component } from 'react';
 import swal from 'sweetalert';
 
 const conseiljs = require('conseiljs');
-const { storageName } = require('../../../../config/tezster.config');
+const { storageName } = require('../../../../db-config/tezster.config');
+
 const LOCAL_STORAGE_NAME = storageName;
 
 class InvokeContract extends Component {

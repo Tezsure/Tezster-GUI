@@ -9,10 +9,11 @@ import swal from 'sweetalert';
 // import JSONPretty from 'react-json-pretty';
 
 const conseiljs = require('conseiljs');
-const { storageName } = require('../../../../config/tezster.config');
-const LOCAL_STORAGE_NAME = storageName;
-
 const fs = require('fs');
+
+const { storageName } = require('../../../../db-config/tezster.config');
+
+const LOCAL_STORAGE_NAME = storageName;
 
 class DeployContract extends Component {
   constructor(props) {

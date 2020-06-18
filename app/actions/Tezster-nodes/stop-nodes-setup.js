@@ -277,7 +277,7 @@ function stopNodesProgress(totalProgressPercentage) {
     dispatch({
       type: 'TEZSTER_STOP_NODES',
       payload: {
-        msg: `Stoping localnodes please wait...`,
+        msg: `Stopping localnodes please wait...`,
         enum: 'STARTING_STREAM',
         totalProgressPercentage,
       },

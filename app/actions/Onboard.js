@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { RpcRequest } from './Workspace/Accounts/helper.accounts';
 
-const config = require('../config/tezster.config');
+const config = require('../db-config/tezster.config');
 
 const url = config.provider;
 
