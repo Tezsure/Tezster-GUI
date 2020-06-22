@@ -23,7 +23,7 @@ function Checkmark(props) {
           width: '10%',
         })}
       />
-      <p className="loader-text">{props.totalImageProgress.toFixed()}%</p>
+      <p className="loader-text">{Math.floor(props.totalImageProgress)}%</p>
     </div>
   );
 }

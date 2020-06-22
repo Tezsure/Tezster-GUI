@@ -3,6 +3,7 @@ import {
   ConceilJS,
   storageName,
 } from '../../../db-config/tezster.config';
+
 const conseiljs = require('conseiljs');
 
 const LOCAL_STORAGE_NAME = storageName;
@@ -130,7 +131,10 @@ export async function InvokeContractAPI(args, callback) {
               30 + 1
             );
           }
-          return callback(null, nodeResult.operationGroupID.replace(/\"/g, ''));
+          return callback(
+            null,
+            nodeResult.operationGroupID.replace(/\\"/g, '')
+          );
         }
         return callback('Contract invocation failed', null);
       })
