@@ -120,10 +120,14 @@ export function executeTransactionAction(args) {
       let currentTransactions = [];
       currentTransactions = LocalStorage.transactions[networkName];
       if (
-        currentTransactions.hasOwnProperty(args.senderAccount) ||
-        currentTransactions[args.senderAccount].length === 0
+        !currentTransactions.hasOwnProperty(args.senderAccount) ||
+        currentTransactions[networkName][args.senderAccount].length === 0
       ) {
-        LocalStorage.transactions[networkName][args.senderAccount] = [];
+        LocalStorage.transactions = {
+          [networkName]: {
+            [args.senderAccount]: [],
+          },
+        };
       }
       LocalStorage.transactions[networkName][args.senderAccount].push({
         op: {
@@ -136,10 +140,7 @@ export function executeTransactionAction(args) {
           operationResultStatus: 'applied',
         },
       });
-      LocalStorage.setItem(
-        LOCAL_STORAGE_NAME,
-        JSON.stringify({ ...LocalStorage })
-      );
+      localStorage.setItem(LOCAL_STORAGE_NAME, JSON.stringify(LocalStorage));
     }
     TransferBalanceTransactionAPI(args, (error, response) => {
       if (error) {

@@ -191,7 +191,7 @@ function runExec({ container, args }) {
                 loader: false,
               },
             });
-            return clearInterval(totalProgressPercentage);
+            return clearInterval(progressInterval);
           }, 4000);
           dispatch({
             type: 'TEZSTER_START_NODES',
@@ -210,8 +210,27 @@ function runExec({ container, args }) {
           args.isAvailableLocalnodes = true;
           dispatch(getBalanceAction(args));
         }
+        if (!isTezsterRunning && totalProgressPercentage > 100) {
+          setTimeout(() => {
+            dispatch({
+              type: 'STARTING_NODES',
+              payload: {
+                loader: false,
+              },
+            });
+            dispatch({
+              type: 'TEZSTER_ERROR',
+              payload: 'Error in starting nodes.',
+            });
+            return clearInterval(progressInterval);
+          }, 4000);
+          dispatch({
+            type: 'TEZSTER_ERROR',
+            payload: 'Error in starting nodes.',
+          });
+        }
         if (isTezsterRunning && totalProgressPercentage > 100) {
-          return clearInterval(totalProgressPercentage);
+          return clearInterval(progressInterval);
         }
       }, 1000);
       clearInterval(totalProgressPercentage);

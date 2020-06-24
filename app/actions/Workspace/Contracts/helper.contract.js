@@ -1,4 +1,8 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-case-declarations */
+/* eslint-disable no-prototype-builtins */
 import { apiEndPoints } from '../../../db-config/tezster.config';
+
 const request = require('request');
 
 export function ContractDeployedStatusHelper(args, callback) {

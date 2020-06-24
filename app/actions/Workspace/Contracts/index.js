@@ -1,3 +1,5 @@
+import swal from 'sweetalert';
+
 import {
   HandleContractErrorsHelper,
   ContractDeployedStatusHelper,
@@ -37,7 +39,7 @@ export function deployContractAction(args) {
     DeployContractAPI(args, (err, response) => {
       if (err) {
         const error = HandleContractErrorsHelper(
-          error.message || 'error in deploying contract'
+          err.message || 'error in deploying contract'
         );
         swal('Error!', `Contract deployment failed ${error}`, 'error');
         dispatch({

@@ -6,7 +6,7 @@
 /* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
 import swal from 'sweetalert';
-// import JSONPretty from 'react-json-pretty';
+import GetExampleStorage from '../GetExampleStorage';
 
 const conseiljs = require('conseiljs');
 const fs = require('fs');
@@ -116,9 +116,11 @@ class DeployContract extends Component {
         [event.target.name]: event.target.files,
       };
       this.handleGetInitialStorage(contract).then((storageFormat) => {
+        const storageValue = GetExampleStorage(storageFormat);
         self.setState({
           ...stateParams,
           storageFormat,
+          storageValue,
         });
       });
     } else if (event.target.name === 'enteredContract') {
