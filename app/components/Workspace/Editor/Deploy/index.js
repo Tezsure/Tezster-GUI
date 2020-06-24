@@ -33,9 +33,11 @@ class DeployContract extends Component {
       parseError,
       michelsonCode,
       dashboardHeader,
+      exampleStorage,
       selectedContractAmountBalance,
     } = this.props;
     let { accounts, contractLabel, storageValue, contractAmount } = this.state;
+    storageValue = storageValue.trim() === '' ? exampleStorage : storageValue;
 
     contractAmount = contractAmount === '' ? 0 : contractAmount;
 
@@ -115,6 +117,10 @@ class DeployContract extends Component {
         return this.setState({ error: '' });
       });
     }
+    const { storageValue } = this.state;
+    const { exampleStorage } = this.props;
+    const initialStorage =
+      storageValue.trim() === '' ? exampleStorage : storageValue;
     return (
       <div className="deploy-contents">
         <div className="modal-input">
@@ -203,7 +209,7 @@ class DeployContract extends Component {
             name="storageValue"
             className="form-control"
             placeholder="Initial value for account"
-            value={this.state.storageValue}
+            value={initialStorage}
             onChange={this.handleInputChange}
           />
         </div>
