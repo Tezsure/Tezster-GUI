@@ -31,6 +31,7 @@ export function getAccountsAction(args) {
   const networkName = networkId.split('-')[0];
   const LocalStorage = JSON.parse(localStorage.getItem(LOCAL_STORAGE_NAME));
   const payload = { ...args, ...LocalStorage };
+  payload.dashboardHeader = args.dashboardHeader;
   let { userAccounts } = args;
   return (dispatch) => {
     switch (true) {

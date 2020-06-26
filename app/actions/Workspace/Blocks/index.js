@@ -13,6 +13,24 @@ const localnodeData = {
   rpcServer: 'http://localhost:18731',
 };
 
+const CarthagenetTezsterData = {
+  chainId: '516790',
+  currentBlock: '00',
+  gas_limit: '42601',
+  gas_price: '0.12002',
+  networkId: 'Carthagenet-Tezster',
+  rpcServer: 'https://testnet.tezster.tech',
+};
+
+const CarthagenetSmartpyData = {
+  chainId: '516790',
+  currentBlock: '00',
+  gas_limit: '42601',
+  gas_price: '0.12002',
+  networkId: 'Carthagenet-Smartpy',
+  rpcServer: 'https://carthagenet.SmartPy.io',
+};
+
 export function getBlockHeadsActions(args) {
   const { networkId } = args.dashboardHeader;
   const networkName = networkId.split('-')[0];
@@ -27,9 +45,25 @@ export function getBlockHeadsActions(args) {
         payload: localnodeData,
       });
     } else {
+      if (networkId === 'Carthagenet-Smartpy') {
+        dispatch({
+          type: 'GET_DASHBOARD_HEADER',
+          payload: CarthagenetSmartpyData,
+        });
+      }
+      if (networkId === 'Carthagenet-Tezster') {
+        dispatch({
+          type: 'GET_DASHBOARD_HEADER',
+          payload: CarthagenetTezsterData,
+        });
+      }
       GetBlockHeightAPI(args, (blockHeightError, blockHeightResponse) => {
         if (blockHeightError) {
           dispatch({
+            type: 'GET_BLOCKS',
+            payload: [],
+          });
+          return dispatch({
             type: 'GET_BLOCKS_ERR',
             payload: blockHeightError,
           });
@@ -40,7 +74,7 @@ export function getBlockHeadsActions(args) {
         };
         GetAllBlockDataAPI(payload, (blockDataError, blockDataResponse) => {
           if (blockDataError) {
-            dispatch({
+            return dispatch({
               type: 'GET_BLOCKS_ERR',
               payload: blockDataError,
             });
@@ -52,7 +86,7 @@ export function getBlockHeadsActions(args) {
               gas_used: '',
             },
           });
-          dispatch({
+          return dispatch({
             type: 'GET_BLOCKS',
             payload: {
               blockDataResponse,
@@ -83,16 +117,16 @@ export function searchBlockHead(args) {
       };
       GetBlockDataAPI(payload, (blockDataError, blockDataResponse) => {
         if (blockDataError) {
-          dispatch({
+          return dispatch({
             type: 'GET_BLOCKS',
-            payload: blockDataError,
+            payload: [],
           });
         }
         // eslint-disable-next-line no-prototype-builtins
         const gasUsed = blockDataResponse.hasOwnProperty('gas_used')
           ? blockDataResponse.gas_used
           : '';
-        dispatch({
+        return dispatch({
           type: 'GET_BLOCKS_SEARCH',
           payload: {
             searchBlockResponse: [blockDataResponse],
