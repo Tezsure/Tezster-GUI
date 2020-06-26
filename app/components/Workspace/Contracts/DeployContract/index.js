@@ -140,6 +140,10 @@ class DeployContract extends Component {
           pkh: this.state.accounts,
         });
       });
+    } else if (event.target.type === 'number') {
+      if (event.target.value >= 0) {
+        this.setState({ [event.target.name]: event.target.value });
+      }
     } else {
       this.setState({ [event.target.name]: event.target.value });
     }
@@ -213,6 +217,7 @@ class DeployContract extends Component {
           </div>
           <input
             type="number"
+            min="0"
             name="contractAmount"
             className="form-control"
             placeholder="Enter amount to deploy contract"

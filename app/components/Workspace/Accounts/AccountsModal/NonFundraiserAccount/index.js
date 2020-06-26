@@ -1,3 +1,7 @@
+/* eslint-disable jsx-a11y/interactive-supports-focus */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable react/prop-types */
+/* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
 import CreateAccount from './CreateAccount';
 import RestoreAccount from './RestoreAccount';
@@ -106,10 +110,6 @@ class index extends Component {
         errFlag = true;
       }
     }
-    if (stateParams.password === '') {
-      stateParams.passwordErr = 'Please enter password';
-      errFlag = true;
-    }
     if (errFlag === false) {
       const keystore = await conseiljs.TezosWalletUtil.unlockIdentityWithMnemonic(
         this.state.mnemonic,
@@ -140,7 +140,6 @@ class index extends Component {
         .split('"')
         .join('')
         .replace(/\n/g, '')
-        .replace(/\s/g, '')
         .split(',')
         .join(' ');
       this.setState({ mnemonic });

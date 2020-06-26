@@ -140,19 +140,25 @@ class TransactionModal extends Component {
 
   handleInputChange(event) {
     const argsName = event.target.name;
-    this.setState(
-      {
-        [argsName]: event.target.value,
-      },
-      () => {
-        if (argsName === 'senderAccount') {
-          this.props.getAccountBalanceAction({
-            ...this.props,
-            pkh: this.state.senderAccount,
-          });
-        }
+    if (event.target.name === 'amount' && event.target.type === 'number') {
+      if (event.target.value >= 0) {
+        this.setState({ [event.target.name]: event.target.value });
       }
-    );
+    } else {
+      this.setState(
+        {
+          [argsName]: event.target.value,
+        },
+        () => {
+          if (argsName === 'senderAccount') {
+            this.props.getAccountBalanceAction({
+              ...this.props,
+              pkh: this.state.senderAccount,
+            });
+          }
+        }
+      );
+    }
   }
 
   render() {
@@ -224,7 +230,7 @@ class TransactionModal extends Component {
               </select>
             </div>
             {this.state.senderAccount !== '0' ? (
-              <div className="container-msg">
+              <div className="container-msg transaction-balance-message">
                 <b>
                   &emsp;&ensp;Available balance in the account{' '}
                   <span className="tezos-icon">
@@ -256,6 +262,7 @@ class TransactionModal extends Component {
               </div>
               <input
                 type="number"
+                min="0"
                 name="amount"
                 className="form-control"
                 placeholder="Enter your amount"
@@ -280,6 +287,7 @@ class TransactionModal extends Component {
               </div>
               <input
                 type="number"
+                min="0"
                 name="gasPrice"
                 className="form-control"
                 placeholder="Enter your gas price eg 1500"

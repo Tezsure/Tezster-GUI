@@ -167,6 +167,7 @@ class DeployContract extends Component {
           >
             <input
               type="number"
+              min="0"
               name="contractAmount"
               className="form-control"
               placeholder="Enter amount to deploy contract"
