@@ -35,7 +35,7 @@ export async function DeployContractAPI(args, callback) {
       100000,
       '',
       10000,
-      100000,
+      500000,
       contract,
       storage,
       conseiljs.TezosParameterFormat.Michelson

@@ -12,6 +12,8 @@ export function showMainDashboard(initialState = false, action) {
       return action.payload;
     case 'TEZSTER_SHOW_DASHBOARD_PENDING':
       return 'pending';
+    case 'TEZSTER_NODES_ERR':
+      return true;
     default:
       return initialState;
   }
