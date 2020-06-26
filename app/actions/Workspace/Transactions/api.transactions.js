@@ -166,11 +166,7 @@ export async function TransferBalanceTransactionAPI(args, callback) {
     10,
     10
   );
-  const revelationResult = await conseiljs.TezosNodeWriter.sendKeyRevealOperation(
-    tezosNode,
-    keystore
-  );
   return callback(null, {
-    operationGroupID: revelationResult.operationGroupID,
+    operationGroupID: transactionResult.operationGroupID,
   });
 }

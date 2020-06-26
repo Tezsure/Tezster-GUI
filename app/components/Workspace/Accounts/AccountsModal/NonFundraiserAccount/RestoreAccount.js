@@ -1,3 +1,5 @@
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/prop-types */
 import React from 'react';
 
 function RestoreAccount(props) {
@@ -24,7 +26,7 @@ function RestoreAccount(props) {
         <span className="error-msg">{props.stateParams.labelErr}</span>
       )}
       <div className="modal-input">
-        <div className="input-container">Password* </div>
+        <div className="input-container">Password </div>
         <input
           type="password"
           onChange={props.handleInputChange}

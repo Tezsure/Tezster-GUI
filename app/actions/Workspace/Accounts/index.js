@@ -29,7 +29,8 @@ function reducedLocalNodesAccounts(args) {
 export function getAccountsAction(args) {
   const { networkId } = args.dashboardHeader;
   const networkName = networkId.split('-')[0];
-  const payload = { ...args };
+  const LocalStorage = JSON.parse(localStorage.getItem(LOCAL_STORAGE_NAME));
+  const payload = { ...args, ...LocalStorage };
   let { userAccounts } = args;
   return (dispatch) => {
     switch (true) {
@@ -40,12 +41,12 @@ export function getAccountsAction(args) {
         });
       case args.isAvailableLocalnodes && userAccounts.length === 0:
         if (localStorage.hasOwnProperty(LOCAL_STORAGE_NAME)) {
-          const LocalStorage = JSON.parse(
-            localStorage.getItem(LOCAL_STORAGE_NAME)
-          );
           payload.userAccounts[networkName] =
             LocalStorage.userAccounts[networkName];
-        } else if (networkName === 'Localnode') {
+        } else if (
+          networkName === 'Localnode' &&
+          !localStorage.hasOwnProperty(LOCAL_STORAGE_NAME)
+        ) {
           payload.userAccounts.Localnode = config.identities;
         }
         break;
@@ -55,9 +56,6 @@ export function getAccountsAction(args) {
             userAccounts
           );
         } else if (networkName !== 'Localnode') {
-          const LocalStorage = JSON.parse(
-            localStorage.getItem(LOCAL_STORAGE_NAME)
-          );
           payload.userAccounts[networkName] =
             LocalStorage.userAccounts[networkName];
         }
@@ -238,14 +236,15 @@ export function restoreFaucetAccountAction(args) {
       Promise.all([GetBalanceAPI({ ...account, ...args })])
         .then((response) => {
           const restoredAccount = { ...response[0] };
-          const LocalConfig = JSON.stringify({ ...LocalStorage, ...args });
+          const LocalConfig = { ...LocalStorage, ...args };
           const msg = args.hasOwnProperty('msg')
             ? args.msg
             : 'Account restored successfully';
 
           restoredAccount.label = args.label;
           userAccounts[networkName].push(restoredAccount);
-          localStorage.setItem(LOCAL_STORAGE_NAME, LocalConfig);
+          LocalConfig.userAccounts = userAccounts;
+          localStorage.setItem(LOCAL_STORAGE_NAME, JSON.stringify(LocalConfig));
 
           swal('Success!', msg, 'success');
           dispatch({

@@ -135,6 +135,10 @@ class InvokeContract extends Component {
       this.setState({ [event.target.name]: event.target.value }, () => {
         this.handleEntryPoints();
       });
+    } else if (event.target.type === 'number') {
+      if (event.target.value >= 0) {
+        this.setState({ [event.target.name]: event.target.value });
+      }
     } else {
       this.setState({ [event.target.name]: event.target.value });
     }
@@ -250,6 +254,7 @@ class InvokeContract extends Component {
           </div>
           <input
             type="number"
+            min="0"
             name="contractAmount"
             className="form-control"
             placeholder="Enter amount to invoke contract"
