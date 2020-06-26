@@ -30,6 +30,10 @@ export function getBlockHeadsActions(args) {
       GetBlockHeightAPI(args, (blockHeightError, blockHeightResponse) => {
         if (blockHeightError) {
           dispatch({
+            type: 'GET_BLOCKS',
+            payload: [],
+          });
+          return dispatch({
             type: 'GET_BLOCKS_ERR',
             payload: blockHeightError,
           });
@@ -40,7 +44,7 @@ export function getBlockHeadsActions(args) {
         };
         GetAllBlockDataAPI(payload, (blockDataError, blockDataResponse) => {
           if (blockDataError) {
-            dispatch({
+            return dispatch({
               type: 'GET_BLOCKS_ERR',
               payload: blockDataError,
             });
@@ -52,7 +56,7 @@ export function getBlockHeadsActions(args) {
               gas_used: '',
             },
           });
-          dispatch({
+          return dispatch({
             type: 'GET_BLOCKS',
             payload: {
               blockDataResponse,
@@ -83,16 +87,16 @@ export function searchBlockHead(args) {
       };
       GetBlockDataAPI(payload, (blockDataError, blockDataResponse) => {
         if (blockDataError) {
-          dispatch({
+          return dispatch({
             type: 'GET_BLOCKS',
-            payload: blockDataError,
+            payload: [],
           });
         }
         // eslint-disable-next-line no-prototype-builtins
         const gasUsed = blockDataResponse.hasOwnProperty('gas_used')
           ? blockDataResponse.gas_used
           : '';
-        dispatch({
+        return dispatch({
           type: 'GET_BLOCKS_SEARCH',
           payload: {
             searchBlockResponse: [blockDataResponse],
