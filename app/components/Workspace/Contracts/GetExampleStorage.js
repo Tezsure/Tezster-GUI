@@ -1,5 +1,22 @@
+/* eslint-disable no-plusplus */
 /* eslint-disable no-fallthrough */
 /* eslint-disable no-param-reassign */
+function balancedString(str) {
+  let resultString = '';
+  let count = 0;
+  const n = str.length;
+  for (let i = 0; i < n; i++) {
+    if (str[i] === '(') {
+      resultString += str[i];
+      count++;
+    } else if (str[i] === ')' && count !== 0) {
+      resultString += str[i];
+      count--;
+    } else if (str[i] !== ')') resultString += str[i];
+  }
+  if (count !== 0) for (let i = 0; i < count; i++) resultString += ')';
+  return resultString;
+}
 export default function getExampleStorage(initialStorage) {
   let regex;
   switch (true) {
@@ -154,6 +171,11 @@ export default function getExampleStorage(initialStorage) {
       initialStorage = initialStorage.replace(regex, '{} ');
       regex = /\(big_map .*?\)\s+/gm;
       initialStorage = initialStorage.replace(regex, '{} )');
+      regex = /\(map .*?\)/gm;
+      initialStorage = initialStorage.replace(regex, '{} ');
+      regex = /\(big_map .*?\)/gm;
+      initialStorage = initialStorage.replace(regex, '{} )');
+      initialStorage = balancedString(initialStorage);
       return initialStorage;
   }
 }
