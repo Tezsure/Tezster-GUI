@@ -193,6 +193,11 @@ function runExec({ container, args }) {
             });
             return clearInterval(progressInterval);
           }, 4000);
+
+          // eslint-disable-next-line no-param-reassign
+          args.isAvailableLocalnodes = true;
+          dispatch(getBalanceAction(args));
+          dispatch(setTezsterConfigAction());
           dispatch({
             type: 'TEZSTER_START_NODES',
             payload: {
@@ -205,10 +210,6 @@ function runExec({ container, args }) {
             type: 'TEZSTER_SHOW_STOP_NODES',
             payload: true,
           });
-          dispatch(setTezsterConfigAction());
-          // eslint-disable-next-line no-param-reassign
-          args.isAvailableLocalnodes = true;
-          dispatch(getBalanceAction(args));
         }
         if (!isTezsterRunning && totalProgressPercentage > 100) {
           setTimeout(() => {

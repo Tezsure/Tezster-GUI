@@ -19,6 +19,7 @@ import * as Grammer from './Grammer';
 import preProcessMichelsonScript from './preProcessMichelsonScript';
 import DeployContract from './Deploy';
 import GetExampleStorage from './GetExampleStorage';
+import SideBarIcon from './SideBarIcon';
 
 import 'ace-builds/src-noconflict/mode-elixir';
 import 'ace-builds/src-noconflict/theme-xcode';
@@ -51,7 +52,7 @@ class App extends Component {
       parseError: '',
       michelsonCode: '',
       storageFormat: '',
-      exampleStorage: '',
+      storageValue: '',
       uploadedContract: '',
       uploadedContractName: '',
       selectedContractFromDropdown: '0',
@@ -63,10 +64,15 @@ class App extends Component {
     this.handleGetInitialStorage = this.handleGetInitialStorage.bind(this);
     this.handleEditorCodeOnChange = this.handleEditorCodeOnChange.bind(this);
     this.handleSidebarToggle = this.handleSidebarToggle.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
   }
 
   componentDidMount() {
     this.props.handleContractsTabChangeAction('Output');
+  }
+
+  handleInputChange(event) {
+    this.setState({ [event.target.name]: event.target.value });
   }
 
   handleSidebarToggle() {
@@ -98,13 +104,17 @@ class App extends Component {
   }
 
   async compileContract() {
-    this.setState({ siderBarCollapsed: false });
+    this.setState({
+      siderBarCollapsed: false,
+      parseError: '',
+      sucessMsg: 'Please wait while we compile your code...',
+    });
+    this.props.handleContractsTabChangeAction('Output');
     const { michelsonCode } = this.state;
     let parseError = '';
     let sucessMsg = '';
     let storageFormat = '';
-    let exampleStorage = '';
-    this.props.handleContractsTabChangeAction('Output');
+    let storageValue = '';
     const parser = new nearley.Parser(
       nearley.Grammar.fromCompiled(Grammer.default)
     );
@@ -154,14 +164,14 @@ class App extends Component {
 
     if (index === result.length && parseError === '') {
       storageFormat = await this.handleGetInitialStorage(michelsonCode);
-      exampleStorage = GetExampleStorage(storageFormat);
+      storageValue = GetExampleStorage(storageFormat);
       sucessMsg = 'Code compiled sucessfully without any errors.';
     }
     this.setState(
       {
         parseError: '',
         sucessMsg: 'Please wait while we compile your code...',
-        exampleStorage,
+        storageValue,
       },
       () => {
         setTimeout(() => {
@@ -169,7 +179,7 @@ class App extends Component {
             parseError,
             sucessMsg,
             storageFormat,
-            exampleStorage,
+            storageValue,
           });
         }, 2000);
       }
@@ -277,7 +287,7 @@ class App extends Component {
                     style={{ marginLeft: '1%' }}
                     className="btn btn-secondary"
                   >
-                    {siderBarCollapsed ? '<<<' : '>>>'}
+                    <SideBarIcon siderBarCollapsed={siderBarCollapsed} />
                   </button>
                 </div>
               </span>
@@ -392,7 +402,11 @@ class App extends Component {
               role="tabpanel"
               aria-labelledby="nav-deploy-tab"
             >
-              <DeployContract {...this.state} {...this.props} />
+              <DeployContract
+                {...this.state}
+                {...this.props}
+                handleInputChange={this.handleInputChange}
+              />
             </div>
             <div
               className={

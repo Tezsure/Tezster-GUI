@@ -102,7 +102,9 @@ class DeployContract extends Component {
         });
       });
     } else {
-      this.setState({ [event.target.name]: event.target.value });
+      this.setState({
+        [event.target.name]: event.target.value,
+      });
     }
   }
 
@@ -117,10 +119,7 @@ class DeployContract extends Component {
         return this.setState({ error: '' });
       });
     }
-    const { storageValue } = this.state;
-    const { exampleStorage } = this.props;
-    const initialStorage =
-      storageValue.trim() === '' ? exampleStorage : storageValue;
+    const { storageValue } = this.props;
     return (
       <div className="deploy-contents">
         <div className="modal-input">
@@ -209,8 +208,8 @@ class DeployContract extends Component {
             name="storageValue"
             className="form-control"
             placeholder="Initial value for account"
-            value={initialStorage}
-            onChange={this.handleInputChange}
+            value={storageValue}
+            onChange={this.props.handleInputChange}
           />
         </div>
         <div className="cards-container">
