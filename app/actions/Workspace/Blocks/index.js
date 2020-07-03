@@ -2,6 +2,7 @@ const {
   GetBlockHeightAPI,
   GetBlockDataAPI,
   GetAllBlockDataAPI,
+  SearchBlocksApi,
 } = require('./api.blocks');
 
 const localnodeData = {
@@ -31,10 +32,14 @@ const CarthagenetSmartpyData = {
   rpcServer: 'https://carthagenet.SmartPy.io',
 };
 
-export function getBlockHeadsActions(args) {
+export function getBlockHeadsAction(args) {
   const { networkId } = args.dashboardHeader;
   const networkName = networkId.split('-')[0];
   return (dispatch) => {
+    dispatch({
+      type: 'SET_SEARCH_TEXT',
+      payload: '',
+    });
     if (networkName === 'Localnode') {
       dispatch({
         type: 'GET_DASHBOARD_HEADER',
@@ -135,5 +140,48 @@ export function searchBlockHead(args) {
         });
       });
     }
+  };
+}
+
+export function searchBlocksAction(args) {
+  return (dispatch) => {
+    dispatch({
+      type: 'GET_BLOCKS_SEARCH',
+      payload: [],
+    });
+    dispatch({
+      type: 'SET_SEARCH_TEXT',
+      payload: '',
+    });
+    SearchBlocksApi(args, (error, response) => {
+      if (error) {
+        dispatch({
+          type: 'TEZSTER_ERROR',
+          payload: error,
+        });
+        dispatch({
+          type: 'SET_SEARCH_TEXT',
+          payload: '',
+        });
+        dispatch({
+          type: 'GET_BLOCKS_SEARCH',
+          payload: [],
+        });
+        return setTimeout(() => {
+          dispatch({
+            type: 'TEZSTER_ERROR',
+            payload: '',
+          });
+        }, 4000);
+      }
+      dispatch({
+        type: 'SET_SEARCH_TEXT',
+        payload: args.SearchText,
+      });
+      return dispatch({
+        type: 'GET_BLOCKS_SEARCH',
+        payload: response,
+      });
+    });
   };
 }

@@ -37,7 +37,7 @@ function Sidebar(props) {
           }
           onClick={() => {
             props.handleTabChangeAction('blocks');
-            props.getBlockHeadsActions({ ...props });
+            props.getBlockHeadsAction({ ...props });
           }}
         >
           <span className="blocks-icon" />

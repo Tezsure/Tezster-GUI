@@ -15,7 +15,7 @@ class Header extends Component {
     const payload = JSON.parse(JSON.stringify({ ...this.props }));
     payload.dashboardHeader.networkId = event.target.value;
     this.props.handleNetworkChangeAction(payload);
-    this.props.getBlockHeadsActions(payload);
+    this.props.getBlockHeadsAction(payload);
     this.props.getAccountsAction(payload);
   }
 

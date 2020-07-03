@@ -99,7 +99,7 @@ class ActivateAccounts extends Component {
       errorFlag = true;
     }
     if (this.state.faucet.secret === '') {
-      error.errorSecret = 'Please enter secret key';
+      error.errorSecret = 'Please enter secret';
       errorFlag = true;
     }
     if (
@@ -156,7 +156,7 @@ class ActivateAccounts extends Component {
       errorFlag = true;
     }
     if (this.state.faucet.secret === '') {
-      error.errorSecret = 'Please enter secret key';
+      error.errorSecret = 'Please enter secret';
       errorFlag = true;
     }
     if (
@@ -278,7 +278,7 @@ class ActivateAccounts extends Component {
             value={this.state.faucet.secret}
             className="form-control"
             onChange={this.handleInputChange}
-            placeholder="Enter your secret key"
+            placeholder="Enter your secret"
           />
         </div>
         <span className="error-msg">{errorSecret}</span>

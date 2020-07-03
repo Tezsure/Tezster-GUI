@@ -17,10 +17,12 @@ class Header extends Component {
       if (this.props.currentTab !== 'blocks') {
         this.props.handleTabChangeAction('blocks');
       }
-      this.props.searchBlockHead({
-        searchData: event.target.value.replace(/[^a-zA-Z0-9]/g, ''),
+      this.props.searchBlocksAction({
         ...this.props,
+        SearchText: event.target.value,
       });
+    } else {
+      this.props.getBlockHeadsAction({ ...this.props });
     }
   }
 

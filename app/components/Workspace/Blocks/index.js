@@ -1,118 +1,122 @@
-/* eslint-disable no-prototype-builtins */
 /* eslint-disable react/destructuring-assignment */
+/* eslint-disable no-prototype-builtins */
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/prop-types */
-import React from 'react';
+/* eslint-disable func-names */
+/* eslint-disable react/jsx-no-undef */
+/* eslint-disable no-undef */
+import React, { Component } from 'react';
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import Blocks from './Blocks';
+import Contract from './Contract';
+import Accounts from './Accounts';
+import Operations from './Operations';
+import SearchedBlock from './SearchedBlock';
+import 'react-circular-progressbar/dist/styles.css';
 
-function index(props) {
-  let header = '';
-  let BlocksData = props.blocks.hasOwnProperty('blockDataResponse')
-    ? props.blocks.blockDataResponse
-    : [];
-  if (
-    props.blockSearch.hasOwnProperty('searchBlockResponse') &&
-    props.blockSearch.searchBlockResponse.length > 0
-  ) {
-    BlocksData = props.blockSearch.searchBlockResponse;
-    header = (
-      <div className="cards-container">
-        <p>
-          Showing filtered block data click on show blocks button to display all
-          blocks
-        </p>
-        <div
-          className="cards button-card accounts-button-container"
-          style={{ width: '40%' }}
-        >
-          <div className="button-accounts">
-            <button
-              type="button"
-              className="btn btn-success"
-              onClick={() => {
-                props.handleTabChangeAction('blocks');
-                props.getBlockHeadsActions({ ...props });
-              }}
-            >
-              Show All Blocks
-            </button>
+class index extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+  render() {
+    const { searchText } = this.props;
+    const { blockDataResponse } = this.props.blocks;
+    const { networkId } = this.props.blocks;
+    const showBlockData =
+      networkId !== 'Localnode' &&
+      (this.props.blocks.hasOwnProperty('blockDataResponse') ||
+        this.props.hasOwnProperty('blockSearch')) &&
+      this.props.blocks.blockDataResponse.length !== 0;
+    const ExplorerComponent = function (props) {
+      switch (true) {
+        case searchText === undefined || searchText === '':
+          return <Blocks {...props} />;
+        case searchText.startsWith('KT'):
+          return <Contract {...props} />;
+        case searchText.startsWith('tz'):
+          return <Accounts {...props} />;
+        case searchText.startsWith('op'):
+          return <Operations {...props} />;
+        case searchText.startsWith('oo'):
+          return <Operations {...props} />;
+        case searchText.startsWith('BM'):
+          return <SearchedBlock {...props} />;
+        case searchText.startsWith('BK'):
+          return <SearchedBlock {...props} />;
+        case searchText.startsWith('BL'):
+          return <SearchedBlock {...props} />;
+        default:
+          return <div>NOT FOUND</div>;
+      }
+    };
+    return (
+      <div className="blocks-container accounts-container">
+        {showBlockData ? (
+          <div className="blocks-sidebar-container sidebar-container">
+            <div className="blocks-cycle-container">
+              <div
+                className="cards"
+                style={{ textAlign: 'center', markerBottom: '0.5rem' }}
+              >
+                <div className="cards-header blocks-cards-header">
+                  <CircularProgressbar
+                    value={blockDataResponse.progress}
+                    text="ꜩ"
+                    background
+                    backgroundPadding={6}
+                    styles={buildStyles({
+                      backgroundColor: '#3dcc8e',
+                      textColor: '#fff',
+                      pathColor: '#fff',
+                      trailColor: 'transparent',
+                      width: '50%',
+                    })}
+                  />
+                </div>
+              </div>
+              <div className="cards blocks-cards">
+                <div className="cards-header">
+                  <h4>{Math.floor(blockDataResponse.cycle)}</h4>
+                </div>
+                <div className="cards-contents">
+                  <p>Current cycle</p>
+                </div>
+              </div>
+              <div className="cards blocks-cards">
+                <div className="cards-header">
+                  <h4>{blockDataResponse.end_height}</h4>
+                </div>
+                <div className="cards-contents">
+                  <p>Latest Block</p>
+                </div>
+              </div>
+              <div className="cards blocks-cards">
+                <div className="cards-header">
+                  <h4>{blockDataResponse.blocks_per_cycle}</h4>
+                </div>
+                <div className="cards-contents">
+                  <p>Blocks per cycle</p>
+                </div>
+              </div>
+              <div className="cards blocks-cards">
+                <div className="cards-header">
+                  <h4>1.25 ꜩ</h4>
+                </div>
+                <div className="cards-contents">
+                  <p>Endorsement reward</p>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div>No blocks found.</div>
+        )}
+        {showBlockData ? ExplorerComponent(this.props) : ''}
       </div>
     );
   }
-  const Blocks = BlocksData.map((elem, index) => {
-    return (
-      <tr className="table-row" key={elem.hash + index}>
-        <td className="table-body-cell">
-          <div className="cards-header">
-            <h4>GAS USED</h4>
-          </div>
-          <div className="cards-contents">
-            <p className="account-address-content">{elem.gas_used}</p>
-          </div>
-        </td>
-        <td className="table-body-cell">
-          <div className="cards-header">
-            <h4>GAS LIMIT</h4>
-          </div>
-          <div className="cards-contents">
-            <p className="account-address-content">{elem.gas_limit}</p>
-          </div>
-        </td>
-        <td className="table-body-cell">
-          <div className="cards-header">
-            <h4>MINED ON</h4>
-          </div>
-          <div className="cards-contents">
-            <p className="account-address-content">{elem.time}</p>
-          </div>
-        </td>
-        <td className="table-body-cell">
-          <div className="cards-header">
-            <h4>BLOCK HASH</h4>
-          </div>
-          <div className="cards-contents">
-            <p className="account-address-content">{elem.hash}</p>
-          </div>
-        </td>
-        <td className="table-body-cell">
-          <div className="cards-header">
-            <h4>BLOCK TYPE</h4>
-          </div>
-          <div className="cards-contents">
-            <p className="account-address-content">{elem.type || 'N/A'}</p>
-          </div>
-        </td>
-        <td className="table-body-cell">
-          <div className="cards-header">
-            <h4>BLOCK ID</h4>
-          </div>
-          <div className="cards-contents">
-            <p className="account-address-content">{elem.block || 'N/A'}</p>
-          </div>
-        </td>
-      </tr>
-    );
-  });
-  return (
-    <div className="accounts-container">
-      {props.blocks.hasOwnProperty('gas_used') ? (
-        <>
-          {header}
-          <div className="blocks-table-container">
-            <table className="table table-striped table-bordered">
-              <tbody>{Blocks}</tbody>
-            </table>
-          </div>
-        </>
-      ) : (
-        <div>
-          {props.dashboardHeader.networkId === 'Localnode'
-            ? 'No blocks available for the Selected network type.'
-            : 'No blocks found.'}
-        </div>
-      )}
-    </div>
-  );
 }
 
 export default index;

@@ -1,37 +1,8 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-case-declarations */
 /* eslint-disable no-prototype-builtins */
-import { apiEndPoints } from '../../../db-config/tezster.config';
 
-const request = require('request');
-
-export function ContractDeployedStatusHelper(args, callback) {
-  const { networkId } = args.dashboardHeader;
-  const networkName = networkId.split('-')[0];
-  const contract = args.selectedContracts;
-  const END_POINT_URL = apiEndPoints[networkId];
-  let URL;
-
-  if (networkName === 'Localnode') {
-    URL = `${END_POINT_URL}/chains/main/blocks/head/context/contracts/${contract}`;
-  } else {
-    URL = `${END_POINT_URL}/explorer/contract/${contract}`;
-  }
-  request(URL, (error, response, body) => {
-    switch (true) {
-      case error !== null:
-        return callback(error.toString(), null);
-      case response.hasOwnProperty('errors'):
-        const errorMsg = `Invalid contract address`;
-        return callback(errorMsg, null);
-      default:
-        const msg = `valid-contract`;
-        return callback(null, msg);
-    }
-  });
-}
-
-export function HandleContractErrorsHelper(error) {
+export default function HandleAccountErrorsHelper(error) {
   const EMPTY_IMPLICIT_CONTRACT =
     'Account is not yet revealed on the blockchain.\n You can reveal the account by sending some tezos to the account.';
   const EMPTY_TRANSACTION = `please wait.\n contract might take some time to get deployed on the tezos network`;
@@ -52,7 +23,7 @@ export function HandleContractErrorsHelper(error) {
     'Make sure account is revealed on the current provider.';
   const INVALID_CONTRACT_PARAMETER =
     '\n Invalid parameter value provided for the given parameter type';
-  const ACCOUNT_ALREADY_ACTIVATED = `Account has already been activated please restore the account`;
+  const ACCOUNT_ALREADY_ACTIVATED = `Account has already been activated on selected network \n please restore the account`;
   switch (true) {
     case error.toString().includes('Unexpected word token'):
       return error.toString().replace(/(?:\r\n|\r|\n|\s\s+)/g, ' ');
@@ -72,14 +43,6 @@ export function HandleContractErrorsHelper(error) {
       return HTTP_PROTOCOL;
     case error.toString().includes(`Cannot read property '0' of undefined`):
       return CANNOT_READ_PROPERTY;
-    case error
-      .toString()
-      .includes(`proto.006-PsCARTHA.michelson_v1.bad_contract_parameter`):
-      return INVALID_CONTRACT_PARAMETER;
-    case error
-      .toString()
-      .includes(`temporary: proto.006-PsCARTHA.michelson_v1.script_rejected`):
-      return INVALID_CONTRACT_PARAMETER;
     case error
       .toString()
       .includes(`proto.006-PsCARTHA.operation.invalid_activation`):
