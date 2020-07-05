@@ -176,14 +176,6 @@ class Header extends Component {
           </div>
           <div className="cards">
             <div className="cards-header">
-              <h4>Quick Access</h4>
-            </div>
-            <div className="cards-contents">
-              <p>Workspace</p>
-            </div>
-          </div>
-          <div className="cards">
-            <div className="cards-header">
               <h4 title="running">
                 {activeStatus ? (
                   <span className="active-status" title="online" />

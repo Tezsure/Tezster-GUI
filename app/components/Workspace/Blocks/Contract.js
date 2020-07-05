@@ -20,59 +20,20 @@ class Contracts extends Component {
       : [];
     const contracts = ContractsData.map((elem, index) => {
       return (
-        <tr key={elem.hash + index} className="table-row">
-          <td className="table-body-cell">
-            <p className="account-address-content">{elem.address}</p>
-          </td>
-          <td className="table-body-cell">
-            <p className="account-address-content">{elem.delegate}</p>
-          </td>
-          <td className="table-body-cell">{elem.gas_used}</td>
-          <td className="table-body-cell">
-            <p className="account-address-content">{elem.gas_price}</p>
-          </td>
-          <td className="table-body-cell">
-            <p className="account-address-content">{elem.fee || 'N/A'}</p>
-          </td>
-        </tr>
+        <div key={elem.address + index} className="block-cards">
+          <div className="block-contents">
+            <div className="gas-used details-container">{`Address: ${elem.address}`}</div>
+            <div className="gas-limit details-container">{`Delegate: ${elem.delegate}`}</div>
+            <div className="time details-container">{`Gas-used: ${elem.gas_used}`}</div>
+            <div className="hash details-container">{`Gas-price: ${elem.gas_price}`}</div>
+            <div className="type details-container">{`Fee: ${
+              elem.fee || 'N/A'
+            }`}</div>
+          </div>
+        </div>
       );
     });
-    return (
-      <div className="accounts-table-container">
-        <table className="table table-striped table-bordered table-hover">
-          <thead>
-            <tr>
-              <th scope="col">
-                <div className="cards-header">
-                  <h4>ADDRESS</h4>
-                </div>
-              </th>
-              <th scope="col">
-                <div className="cards-header">
-                  <h4>DELEGATE</h4>
-                </div>
-              </th>
-              <th scope="col">
-                <div className="cards-header">
-                  <h4>GAS USED</h4>
-                </div>
-              </th>
-              <th scope="col">
-                <div className="cards-header">
-                  <h4>GAS PRICE</h4>
-                </div>
-              </th>
-              <th scope="col">
-                <div className="cards-header">
-                  <h4>FEE</h4>
-                </div>
-              </th>
-            </tr>
-          </thead>
-          <tbody>{contracts}</tbody>
-        </table>
-      </div>
-    );
+    return <div className="block-cards-container">{contracts}</div>;
   }
 }
 

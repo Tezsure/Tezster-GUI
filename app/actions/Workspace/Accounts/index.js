@@ -255,6 +255,8 @@ export function restoreFaucetAccountAction(args) {
             : 'Account restored successfully';
 
           restoredAccount.label = args.label;
+          restoredAccount.secret = account.secretKey;
+          restoredAccount.sk = account.secretKey;
           userAccounts[networkName].push(restoredAccount);
           LocalConfig.userAccounts = userAccounts;
           localStorage.setItem(LOCAL_STORAGE_NAME, JSON.stringify(LocalConfig));

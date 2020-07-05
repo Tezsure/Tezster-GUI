@@ -76,7 +76,7 @@ export function SearchBlocksApi(args, callback) {
       url += `/explorer/block/${args.SearchText}`;
       break;
     default:
-      callback('Invalid search text provided', null);
+      return callback('Invalid search text provided', null);
   }
   axios
     .get(url)

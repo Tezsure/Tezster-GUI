@@ -5,7 +5,6 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable react/no-unescaped-entities */
 import React, { Component } from 'react';
-import Moment from 'react-moment';
 
 class Operations extends Component {
   constructor(props) {
@@ -19,97 +18,22 @@ class Operations extends Component {
       : [];
     const operations = SearchData.map((elem, index) => {
       return (
-        <tr key={elem.hash + index} className="table-row">
-          <td className="table-body-cell">
-            <p className="account-address-content">{elem.gas_limit}</p>
-          </td>
-          <td className="table-body-cell">
-            <p className="account-address-content">{elem.gas_used}</p>
-          </td>
-          <td className="table-body-cell">
-            <p className="account-address-content">{elem.gas_price}</p>
-          </td>
-          <td className="table-body-cell">
-            <p className="account-address-content">{elem.block}</p>
-          </td>
-          <td className="table-body-cell">
-            <div className="cards-contents">
-              <p className="account-address-content" style={{ width: '270px' }}>
-                <Moment>{elem.time}</Moment>
-              </p>
-            </div>
-          </td>
-          <td className="table-body-cell">
-            <p className="account-address-content">{elem.hash}</p>
-          </td>
-          <td className="table-body-cell">
-            <p className="account-address-content">{elem.fee || 'N/A'}</p>
-          </td>
-          <td className="table-body-cell">
-            <p className="account-address-content">{elem.sender || 'N/A'}</p>
-          </td>
-          <td className="table-body-cell">
-            <p className="account-address-content">{elem.receiver || 'N/A'}</p>
-          </td>
-        </tr>
+        <div key={elem.address + index} className="block-cards">
+          <div className="block-contents">
+            <div className="gas-used details-container">{`Gas-limit: ${elem.gas_limit}`}</div>
+            <div className="gas-limit details-container">{`Gas-used: ${elem.gas_used}`}</div>
+            <div className="time details-container">{`Gas-price: ${elem.gas_price}`}</div>
+            <div className="hash details-container">{`Block: ${elem.block}`}</div>
+            <div className="type details-container">{`Time: ${elem.time}`}</div>
+            <div className="type details-container">{`Hash: ${elem.hash}`}</div>
+            <div className="type details-container">{`Fee: ${elem.fee}`}</div>
+            <div className="type details-container">{`Sender: ${elem.sender}`}</div>
+            <div className="type details-container">{`Reciever: ${elem.receiver}`}</div>
+          </div>
+        </div>
       );
     });
-    return (
-      <div className="accounts-table-container">
-        <table className="table table-striped table-bordered table-hover">
-          <thead>
-            <tr>
-              <th scope="col">
-                <div className="cards-header">
-                  <h4>GAS USED</h4>
-                </div>
-              </th>
-              <th scope="col">
-                <div className="cards-header">
-                  <h4>GAS LIMIT</h4>
-                </div>
-              </th>
-              <th scope="col">
-                <div className="cards-header">
-                  <h4>GAS PRICE</h4>
-                </div>
-              </th>
-              <th scope="col">
-                <div className="cards-header">
-                  <h4>BLOCK</h4>
-                </div>
-              </th>
-              <th scope="col">
-                <div className="cards-header">
-                  <h4>TIME</h4>
-                </div>
-              </th>
-              <th scope="col">
-                <div className="cards-header">
-                  <h4>HASH</h4>
-                </div>
-              </th>
-              <th scope="col">
-                <div className="cards-header">
-                  <h4>FEE</h4>
-                </div>
-              </th>
-              <th scope="col">
-                <div className="cards-header">
-                  <h4>SENDER</h4>
-                </div>
-              </th>
-              <th scope="col">
-                <div className="cards-header">
-                  <h4>RECIEVER</h4>
-                </div>
-              </th>
-            </tr>
-          </thead>
-          <tbody>{operations}</tbody>
-        </table>
-      </div>
-    );
+    return <div className="block-cards-container">{operations}</div>;
   }
 }
 

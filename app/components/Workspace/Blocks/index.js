@@ -111,7 +111,11 @@ class index extends Component {
             </div>
           </div>
         ) : (
-          <div>No blocks found.</div>
+          <div>
+            {networkId === 'Localnode'
+              ? 'We currently donot have api to support blocks on localnode.'
+              : 'No blocks found'}
+          </div>
         )}
         {showBlockData ? ExplorerComponent(this.props) : ''}
       </div>

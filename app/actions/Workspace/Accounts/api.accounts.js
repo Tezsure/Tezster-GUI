@@ -111,5 +111,6 @@ export async function CreateFundraiserAccountAPI(args, callback) {
   keystore.sk = keystore.privateKey;
   keystore.pkh = args.pkh;
   keystore.pk = keystore.publicKey;
+  keystore.secretKey = keystore.privateKey;
   return callback(null, keystore);
 }

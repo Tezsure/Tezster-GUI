@@ -283,7 +283,9 @@ class App extends Component {
                   <button
                     type="button"
                     onClick={this.handleSidebarToggle}
-                    title="Expand/Collapse sidebar"
+                    title={
+                      siderBarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'
+                    }
                     style={{ marginLeft: '1%' }}
                     className="btn btn-secondary"
                   >
