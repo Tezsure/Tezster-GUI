@@ -1,3 +1,4 @@
+/* eslint-disable no-prototype-builtins */
 import swal from 'sweetalert';
 
 import {
@@ -16,7 +17,7 @@ export function getAccountBalanceAction(args) {
   return (dispatch) => {
     GetBalanceAPI(args)
       .then((response) => {
-        dispatch({
+        return dispatch({
           type: 'GET_CONTRACT_AMOUNT',
           payload: response.balance,
         });
@@ -103,6 +104,7 @@ export function handleInvokeContractAction(args) {
       type: 'BUTTON_LOADING_STATE',
       payload: true,
     });
+    // eslint-disable-next-line no-unused-vars
     ContractDeployedStatusHelper(args, (contractError, contractResponse) => {
       if (contractError) {
         dispatch({
@@ -118,10 +120,10 @@ export function handleInvokeContractAction(args) {
     });
     InvokeContractAPI(args, (err, response) => {
       if (err) {
-        const error = err.hasOwnProperty('message')
-          ? err.message.replace(/(?:\r\n|\r|\n|\s\s+)/g, ' ')
-          : '';
-        swal('Error!', `Contract call failed ${error || errorFlag}`, 'error');
+        const error = HandleContractErrorsHelper(
+          err.message || 'error in deploying contract'
+        );
+        swal('Error!', `Contract call failed ${error}`, 'error');
         dispatch({
           type: 'BUTTON_LOADING_STATE',
           payload: false,

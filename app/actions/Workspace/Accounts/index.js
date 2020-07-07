@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-prototype-builtins */
 import swal from 'sweetalert';
+import HandleAccountErrorsHelper from './error.accounts';
 
 const {
   GetBalanceAPI,
@@ -32,7 +33,8 @@ export function getAccountsAction(args) {
   const LocalStorage = JSON.parse(localStorage.getItem(LOCAL_STORAGE_NAME));
   const payload = { ...args, ...LocalStorage };
   payload.dashboardHeader = args.dashboardHeader;
-  let { userAccounts } = args;
+  let userAccounts =
+    LocalStorage === null ? args : LocalStorage.userAccounts[networkName];
   return (dispatch) => {
     switch (true) {
       case !args.isAvailableLocalnodes:
@@ -40,6 +42,12 @@ export function getAccountsAction(args) {
           type: 'GET_ACCOUNTS',
           payload: [],
         });
+      case LocalStorage === null &&
+        args.userAccounts.length === 0 &&
+        networkName === 'Localnode':
+        payload.userAccounts.Localnode = config.identities;
+        payload.userAccounts.Carthagenet = [];
+        break;
       case args.isAvailableLocalnodes && userAccounts.length === 0:
         if (localStorage.hasOwnProperty(LOCAL_STORAGE_NAME)) {
           payload.userAccounts[networkName] =
@@ -149,7 +157,11 @@ export function createFaucetAccountsAction(args) {
             );
             break;
           default:
-            swal('Error!', error.toString(), 'error');
+            swal(
+              'Error!',
+              HandleAccountErrorsHelper(error.toString()),
+              'error'
+            );
             break;
         }
         dispatch({
@@ -243,6 +255,8 @@ export function restoreFaucetAccountAction(args) {
             : 'Account restored successfully';
 
           restoredAccount.label = args.label;
+          restoredAccount.secret = account.secretKey;
+          restoredAccount.sk = account.secretKey;
           userAccounts[networkName].push(restoredAccount);
           LocalConfig.userAccounts = userAccounts;
           localStorage.setItem(LOCAL_STORAGE_NAME, JSON.stringify(LocalConfig));

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
@@ -5,10 +6,34 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
+import AccountsModal from '../AccountsInfoModal';
 
 class Table extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      modalType: '',
+      currentAccount: '',
+    };
+    this.handleModalToggle = this.handleModalToggle.bind(this);
+    this.handleWalletModalShow = this.handleWalletModalShow.bind(this);
+  }
+
+  handleModalToggle(modalType) {
+    this.setState({ modalType });
+  }
+
+  handleWalletModalShow({ ...args }) {
+    const userState = { ...this.state };
+    const currentAccount = {
+      label: args.label,
+      amount: args.balance,
+      publicKey: args.pk,
+      secretKey: args.sk,
+      publicKeyHash: args.pkh,
+    };
+    userState.currentAccount = currentAccount;
+    this.setState({ ...userState, modalType: 'show-user-wallet' });
   }
 
   render() {
@@ -62,7 +87,7 @@ class Table extends Component {
           <td className="table-body-cell">
             <span
               className="icon-key"
-              onClick={() => this.props.handleWalletModalShow(elem)}
+              onClick={() => this.handleWalletModalShow(elem)}
             />
           </td>
         </tr>
@@ -83,10 +108,20 @@ class Table extends Component {
       );
     }
     return (
-      <div className="accounts-table-container">
+      <div className="accounts-table-container" style={{ width: '100%' }}>
         <table className="table table-striped table-bordered">
           <tbody>{Accounts}</tbody>
         </table>
+        {this.state.modalType === '' ? (
+          <></>
+        ) : (
+          <AccountsModal
+            {...this.state}
+            {...this.props}
+            modalType={this.state.modalType}
+            handleModalToggle={this.handleModalToggle}
+          />
+        )}
       </div>
     );
   }

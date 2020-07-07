@@ -16,8 +16,9 @@ import {
 } from '../actions/Tezster-nodes/stop-nodes-setup';
 
 import {
-  getBlockHeadsActions,
+  getBlockHeadsAction,
   searchBlockHead,
+  searchBlocksAction,
 } from '../actions/Workspace/Blocks';
 
 import {
@@ -56,7 +57,8 @@ class WorkspacePage extends Component {
   componentDidMount() {
     this.props.checkLocalnodesAction();
     this.props.getLocalConfigAction();
-    this.props.getBlockHeadsActions({ ...this.props });
+    this.props.getBlockHeadsAction({ ...this.props });
+    this.props.handleContractsTabChangeAction('listAccounts');
   }
 
   render() {
@@ -77,7 +79,8 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(toggleTransactionModalAction(payload)),
   getBalanceAction: (payload) => dispatch(getBalanceAction(payload)),
   getAccountsAction: (payload) => dispatch(getAccountsAction(payload)),
-  getBlockHeadsActions: (payload) => dispatch(getBlockHeadsActions(payload)),
+  getBlockHeadsAction: (payload) => dispatch(getBlockHeadsAction(payload)),
+  searchBlocksAction: (payload) => dispatch(searchBlocksAction(payload)),
   searchBlockHead: (payload) => dispatch(searchBlockHead(payload)),
   getTransactionsAction: (payload) => dispatch(getTransactionsAction(payload)),
   handleInvokeContractAction: (payload) =>
@@ -124,6 +127,7 @@ const mapStateToProps = (state) => ({
   dashboardHeader: state.dashboardHeader,
   userBalances: state.userBalances,
   sidebarToggleState: state.sidebarToggleState,
+  searchText: state.searchText,
   blockAccordionIndex: state.blockAccordionIndex,
   userTransactions: state.userTransactions,
   selectedTransactionWallet: state.selectedTransactionWallet,

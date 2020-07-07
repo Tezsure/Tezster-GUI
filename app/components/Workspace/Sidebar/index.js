@@ -15,7 +15,10 @@ function Sidebar(props) {
               ? 'sidebar-content-active'
               : 'sidebar-content'
           }
-          onClick={() => props.handleTabChangeAction('accounts')}
+          onClick={() => {
+            props.handleContractsTabChangeAction('listAccounts');
+            props.handleTabChangeAction('accounts');
+          }}
         >
           <span className="accounts-icon" />
           <span
@@ -37,7 +40,7 @@ function Sidebar(props) {
           }
           onClick={() => {
             props.handleTabChangeAction('blocks');
-            props.getBlockHeadsActions({ ...props });
+            props.getBlockHeadsAction({ ...props });
           }}
         >
           <span className="blocks-icon" />

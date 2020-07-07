@@ -7,6 +7,7 @@
 /* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
 import swal from 'sweetalert';
+import GetSampleEntryPoint from './GetSampleEntryPoint';
 
 const conseiljs = require('conseiljs');
 const { storageName } = require('../../../../db-config/tezster.config');
@@ -69,14 +70,10 @@ class InvokeContract extends Component {
         p.parameters.map((pp) => pp.name)[0] === undefined
           ? ['X']
           : p.parameters.map((pp) => pp.name);
-      const stateValues =
-        p.parameters.map((pp) => pp.name)[0] === undefined
-          ? [
-              {
-                X: '',
-              },
-            ]
-          : p.parameters.map((pp) => ({ [pp.name]: '' }));
+      const stateValues = p.parameters.map((pp) => {
+        const variableName = pp.name ? pp.name : 'X';
+        return { [variableName]: GetSampleEntryPoint(pp.type) };
+      });
       return {
         name: p.name === undefined ? 'default' : p.name,
         structure: p.structure,
@@ -153,22 +150,25 @@ class InvokeContract extends Component {
         {elem}
       </th>
     ));
-    const tableBody = selectedEntryPoint[0].parameter.map((elem, index) => (
-      <td className="table-body-cell" key={elem + index}>
-        <input
-          type={
-            selectedEntryPoint[0].parameterTypes[index] === 'nat'
-              ? 'number'
-              : 'text'
-          }
-          name={elem}
-          value={selectedEntryPoint[0].stateValues[elem]}
-          placeholder={`type - ${selectedEntryPoint[0].parameterTypes[index]}`}
-          className="form-control"
-          onChange={this.handleEntryPointsInputValues}
-        />
-      </td>
-    ));
+    const tableBody = selectedEntryPoint[0].parameter.map((elem, index) => {
+      return (
+        <td className="table-body-cell" key={elem + index}>
+          <input
+            type={
+              selectedEntryPoint[0].parameterTypes[index] === 'nat'
+                ? 'number'
+                : 'text'
+            }
+            name={elem}
+            value={selectedEntryPoint[0].stateValues[index][elem]}
+            placeholder={`type - ${selectedEntryPoint[0].parameterTypes[index]}`}
+            className="form-control"
+            onChange={this.handleEntryPointsInputValues}
+          />
+        </td>
+      );
+    });
+
     return (
       <table className="table table-bordered">
         <thead>
@@ -303,14 +303,25 @@ class InvokeContract extends Component {
         <div className="cards-container">
           <div className="cards button-card accounts-button-container">
             <div className="button-accounts">
-              <button
-                type="button"
-                className="btn btn-success"
-                disabled={this.props.buttonState}
-                onClick={this.handleInvokeContract}
-              >
-                {this.props.buttonState ? 'Please wait....' : 'Invoke Contract'}
-              </button>
+              {this.props.buttonState ? (
+                <button className="btn btn-success" type="button" disabled>
+                  <span
+                    className="spinner-border spinner-border-sm"
+                    role="status"
+                    aria-hidden="true"
+                  />
+                  &nbsp;Please wait...
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  className="btn btn-success"
+                  disabled={this.props.buttonState}
+                  onClick={this.handleInvokeContract}
+                >
+                  Invoke Contract
+                </button>
+              )}
             </div>
           </div>
         </div>

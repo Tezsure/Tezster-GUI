@@ -2,6 +2,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/prop-types */
 import React from 'react';
+// import Accounts from '../Accounts';
 import Accounts from '../Accounts';
 import Blocks from '../Blocks';
 import Transactions from '../Transactions';

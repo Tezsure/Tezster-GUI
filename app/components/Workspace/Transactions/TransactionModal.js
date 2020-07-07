@@ -314,14 +314,25 @@ class TransactionModal extends Component {
               >
                 Cancel
               </button>
-              <button
-                type="button"
-                className="btn btn-success"
-                disabled={this.props.buttonState}
-                onClick={() => this.handleExecuteTransaction()}
-              >
-                {this.props.buttonState ? 'Please wait....' : 'Pay Amount'}
-              </button>
+              {this.props.buttonState ? (
+                <button className="btn btn-success" type="button" disabled>
+                  <span
+                    className="spinner-border spinner-border-sm"
+                    role="status"
+                    aria-hidden="true"
+                  />
+                  &nbsp;Please wait...
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  className="btn btn-success"
+                  disabled={this.props.buttonState}
+                  onClick={() => this.handleExecuteTransaction()}
+                >
+                  Pay Amount
+                </button>
+              )}
             </div>
           </div>
         </div>

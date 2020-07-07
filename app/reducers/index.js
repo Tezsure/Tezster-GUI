@@ -3,7 +3,7 @@
 import { combineReducers } from 'redux';
 import { connectRouter } from 'connected-react-router';
 import type { HashHistory } from 'history';
-import { blocks, blockSearch } from './Workspace/blocks';
+import { blocks, blockSearch, searchText } from './Workspace/blocks';
 import {
   sidebarToggleState,
   currentTab,
@@ -49,6 +49,7 @@ export default function createRootReducer(history: HashHistory) {
     router: connectRouter(history),
     blocks,
     blockSearch,
+    searchText,
     buttonState,
     sidebarToggleState,
     showAccountsModal,

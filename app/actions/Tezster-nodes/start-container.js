@@ -1,6 +1,6 @@
 /* eslint-disable func-names */
 import Docker from 'dockerode';
-import { getBalanceAction } from '../Workspace/Accounts';
+import { getAccountsAction } from '../Workspace/Accounts';
 import { setTezsterConfigAction } from '../Onboard';
 
 import CheckConnectionStatus from './Helper/index';
@@ -126,7 +126,7 @@ export default function installTezsterContainer(args) {
       dispatch(setTezsterConfigAction());
       // eslint-disable-next-line no-param-reassign
       args.isAvailableLocalnodes = true;
-      dispatch(getBalanceAction(args));
+      dispatch(getAccountsAction(args));
       return dispatch({
         type: 'TEZSTER_START_NODES',
         payload: { msg: 'Nodes are already running.' },
@@ -196,7 +196,7 @@ function runExec({ container, args }) {
 
           // eslint-disable-next-line no-param-reassign
           args.isAvailableLocalnodes = true;
-          dispatch(getBalanceAction(args));
+          dispatch(getAccountsAction(args));
           dispatch(setTezsterConfigAction());
           dispatch({
             type: 'TEZSTER_START_NODES',

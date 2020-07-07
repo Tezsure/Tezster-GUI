@@ -57,6 +57,7 @@ div#nav-michelson {
 }
 .editor-siderbar-nav {
   width: 33.3%;
+  text-align: center;
 }
 .nav-tabs .nav-item.show .nav-link,
 .nav-tabs .nav-link.active {
@@ -72,9 +73,8 @@ a:hover {
   margin-right: 10px;
 }
 .code-editor-deploy {
-  width: 30%;
+  width: 40%;
   border: 1px solid #cccc;
-  border-right: 0;
 }
 .editor-container {
   display: flex;
@@ -128,7 +128,7 @@ a:hover {
   margin-left: 0;
 }
 .ace-editor-container {
-  width: 70%;
+  width: 60%;
   margin-right: 10px;
   border: 1px solid #fff;
 }
@@ -139,7 +139,7 @@ a:hover {
   justify-content: space-between;
 }
 .left-navbar-container {
-  width: 50%;
+  width: 40%;
   margin-right: 2%;
 }
 .editor-navbar {
