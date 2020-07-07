@@ -58,6 +58,7 @@ class WorkspacePage extends Component {
     this.props.checkLocalnodesAction();
     this.props.getLocalConfigAction();
     this.props.getBlockHeadsAction({ ...this.props });
+    this.props.handleContractsTabChangeAction('listAccounts');
   }
 
   render() {

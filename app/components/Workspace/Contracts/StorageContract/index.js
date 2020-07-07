@@ -54,25 +54,37 @@ class index extends Component {
         <div className="cards-container">
           <div className="cards button-card accounts-button-container">
             <div className="button-accounts">
-              <button
-                type="button"
-                className="btn btn-success"
-                disabled={this.props.buttonState}
-                onClick={() => {
-                  this.props.getContractStorageAction({
-                    ...this.props,
-                    ...this.state,
-                  });
-                }}
-              >
-                {this.props.buttonState ? 'Please wait....' : 'Show Storage'}
-              </button>
+              {this.props.buttonState ? (
+                <button className="btn btn-success" type="button" disabled>
+                  <span
+                    className="spinner-border spinner-border-sm"
+                    role="status"
+                    aria-hidden="true"
+                  />
+                  &nbsp;Please wait...
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  className="btn btn-success"
+                  disabled={this.props.buttonState}
+                  onClick={() => {
+                    this.props.getContractStorageAction({
+                      ...this.props,
+                      ...this.state,
+                    });
+                  }}
+                >
+                  Show Storage
+                </button>
+              )}
             </div>
           </div>
         </div>
         <div className="modal-input">
           {this.props.selectedContractStorage === '' ||
-          this.props.selectedContractStorage === 'Not Found' ? (
+          this.props.selectedContractStorage === 'Not Found' ||
+          this.state.selectedContracts === '0' ? (
             ''
           ) : (
             <div className="input-container">Initial Storage* </div>
@@ -80,7 +92,8 @@ class index extends Component {
         </div>
         <div className="modal-input">
           {this.props.selectedContractStorage === '' ||
-          this.props.selectedContractStorage === 'Not Found' ? (
+          this.props.selectedContractStorage === 'Not Found' ||
+          this.state.selectedContracts === '0' ? (
             ''
           ) : (
             <JSONPretty

@@ -1,3 +1,5 @@
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
@@ -96,23 +98,32 @@ class Transactions extends Component {
               className="cards button-card accounts-button-container"
             >
               <div className="button-accounts" style={{ marginLeft: '26%' }}>
-                <button
-                  type="button"
-                  className="btn btn-success"
-                  disabled={
-                    this.state.accountId === '0' || this.props.buttonState
-                  }
-                  onClick={() => {
-                    this.props.selectTransactionWalletAction({
-                      accountId: this.state.accountId,
-                      ...this.props,
-                    });
-                  }}
-                >
-                  {this.props.buttonState
-                    ? 'Please wait....'
-                    : 'Show transactions'}
-                </button>
+                {this.props.buttonState ? (
+                  <button className="btn btn-success" type="button" disabled>
+                    <span
+                      className="spinner-border spinner-border-sm"
+                      role="status"
+                      aria-hidden="true"
+                    />
+                    &nbsp;Please wait...
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    className="btn btn-success"
+                    disabled={
+                      this.state.accountId === '0' || this.props.buttonState
+                    }
+                    onClick={() => {
+                      this.props.selectTransactionWalletAction({
+                        accountId: this.state.accountId,
+                        ...this.props,
+                      });
+                    }}
+                  >
+                    Show transactions
+                  </button>
+                )}
               </div>
             </div>
           </div>

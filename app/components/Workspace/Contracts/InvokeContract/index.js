@@ -303,14 +303,25 @@ class InvokeContract extends Component {
         <div className="cards-container">
           <div className="cards button-card accounts-button-container">
             <div className="button-accounts">
-              <button
-                type="button"
-                className="btn btn-success"
-                disabled={this.props.buttonState}
-                onClick={this.handleInvokeContract}
-              >
-                {this.props.buttonState ? 'Please wait....' : 'Invoke Contract'}
-              </button>
+              {this.props.buttonState ? (
+                <button className="btn btn-success" type="button" disabled>
+                  <span
+                    className="spinner-border spinner-border-sm"
+                    role="status"
+                    aria-hidden="true"
+                  />
+                  &nbsp;Please wait...
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  className="btn btn-success"
+                  disabled={this.props.buttonState}
+                  onClick={this.handleInvokeContract}
+                >
+                  Invoke Contract
+                </button>
+              )}
             </div>
           </div>
         </div>

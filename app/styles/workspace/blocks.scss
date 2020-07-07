@@ -98,3 +98,28 @@ time.account-address-content {
 td.table-body-cell {
   color: #727d95 !important;
 }
+.block-cards {
+  border: 1px solid #cccc;
+  padding: 10px;
+  word-break: break-word;
+}
+.block-cards-container {
+  overflow: auto;
+  max-height: 100%;
+  width: 75%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+.block-cards {
+  font-size: 0.875rem;
+  color: #727d95 !important;
+  margin: 5px;
+  position: relative;
+  word-break: break-all;
+  border: 1px solid #cccc;
+  padding: 10px;
+  width: 45%;
+}
