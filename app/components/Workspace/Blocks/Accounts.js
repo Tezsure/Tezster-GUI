@@ -21,11 +21,21 @@ class Accounts extends Component {
       return (
         <div key={elem.hash + index} className="block-cards">
           <div className="block-contents">
-            <div className="gas-used details-container">{`Address: ${elem.address}`}</div>
-            <div className="gas-limit details-container">{`Delegate: ${elem.delegate}`}</div>
-            <div className="time details-container">{`Total-fees-paid: ${elem.total_fees_paid}`}</div>
-            <div className="hash details-container">{`Total-reward-earned: ${elem.total_rewards_earned}`}</div>
-            <div className="type details-container">{`Total-fees-earned: ${elem.total_fees_earned}`}</div>
+            <div className="gas-used details-container">
+              <b>Address:</b> {`${elem.address}`}
+            </div>
+            <div className="gas-limit details-container">
+              <b>Delegate:</b> {`${elem.delegate}`}
+            </div>
+            <div className="time details-container">
+              <b>Total-fees-paid:</b> {`${elem.total_fees_paid}`}
+            </div>
+            <div className="hash details-container">
+              <b>Total-reward-earned:</b> {`${elem.total_rewards_earned}`}
+            </div>
+            <div className="type details-container">
+              <b>Total-fees-earned:</b> {`${elem.total_fees_earned}`}
+            </div>
           </div>
         </div>
       );

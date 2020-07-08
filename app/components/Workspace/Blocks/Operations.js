@@ -20,15 +20,33 @@ class Operations extends Component {
       return (
         <div key={elem.address + index} className="block-cards">
           <div className="block-contents">
-            <div className="gas-used details-container">{`Gas-limit: ${elem.gas_limit}`}</div>
-            <div className="gas-limit details-container">{`Gas-used: ${elem.gas_used}`}</div>
-            <div className="time details-container">{`Gas-price: ${elem.gas_price}`}</div>
-            <div className="hash details-container">{`Block: ${elem.block}`}</div>
-            <div className="type details-container">{`Time: ${elem.time}`}</div>
-            <div className="type details-container">{`Hash: ${elem.hash}`}</div>
-            <div className="type details-container">{`Fee: ${elem.fee}`}</div>
-            <div className="type details-container">{`Sender: ${elem.sender}`}</div>
-            <div className="type details-container">{`Reciever: ${elem.receiver}`}</div>
+            <div className="gas-used details-container">
+              <b>Gas-limit:</b> {`${elem.gas_limit}`}
+            </div>
+            <div className="gas-limit details-container">
+              <b>Gas-used:</b> {`${elem.gas_used}`}
+            </div>
+            <div className="time details-container">
+              <b>Gas-price:</b> {`${elem.gas_price}`}
+            </div>
+            <div className="hash details-container">
+              <b>Block:</b> {`${elem.block}`}
+            </div>
+            <div className="type details-container">
+              <b>Time:</b> {`${elem.time}`}
+            </div>
+            <div className="type details-container">
+              <b>Hash:</b> {`${elem.hash}`}
+            </div>
+            <div className="type details-container">
+              <b>Fee:</b> {`${elem.fee}`}
+            </div>
+            <div className="type details-container">
+              <b>Sender:</b> {`${elem.sender}`}
+            </div>
+            <div className="type details-container">
+              <b>Reciever:</b> {`${elem.receiver}`}
+            </div>
           </div>
         </div>
       );

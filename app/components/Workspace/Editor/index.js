@@ -305,7 +305,7 @@ class App extends Component {
               name="editor"
               onChange={this.handleEditorCodeOnChange}
               fontSize={parseInt(this.state.currentFont, 10)}
-              showPrintMargin
+              showPrintMargin={false}
               showGutter
               highlightActiveLine
               wrapEnabled={this.state.wordWrap}

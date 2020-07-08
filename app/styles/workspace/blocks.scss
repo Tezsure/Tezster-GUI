@@ -122,4 +122,8 @@ td.table-body-cell {
   border: 1px solid #cccc;
   padding: 10px;
   width: 45%;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+}
+.cards.blocks-cards {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
 }

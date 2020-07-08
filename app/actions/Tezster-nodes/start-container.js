@@ -231,7 +231,32 @@ function runExec({ container, args }) {
           });
         }
         if (isTezsterRunning && totalProgressPercentage > 100) {
-          return clearInterval(progressInterval);
+          setTimeout(() => {
+            dispatch({
+              type: 'STARTING_NODES',
+              payload: {
+                loader: false,
+              },
+            });
+            return clearInterval(progressInterval);
+          }, 4000);
+
+          // eslint-disable-next-line no-param-reassign
+          args.isAvailableLocalnodes = true;
+          dispatch(getAccountsAction(args));
+          dispatch(setTezsterConfigAction());
+          dispatch({
+            type: 'TEZSTER_START_NODES',
+            payload: {
+              msg: 'Nodes started successfully.',
+              totalProgressPercentage: 100,
+              data,
+            },
+          });
+          dispatch({
+            type: 'TEZSTER_SHOW_STOP_NODES',
+            payload: true,
+          });
         }
       }, 1000);
       clearInterval(totalProgressPercentage);

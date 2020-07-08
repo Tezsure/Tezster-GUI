@@ -20,18 +20,24 @@ class SearchedBlock extends Component {
       return (
         <div key={elem.hash + index} className="block-cards">
           <div className="block-contents">
-            <div className="gas-used details-container">{`Gas-used: ${elem.gas_used}`}</div>
-            <div className="gas-limit details-container">{`Gas-limit: ${elem.gas_limit}`}</div>
-            <div className="time details-container">{`Time: ${elem.time}`}</div>
-            <div className="hash details-container">{`Hash: ${
-              elem.hash || 'N/A'
-            }`}</div>
-            <div className="type details-container">{`Type: ${
-              elem.type || 'N/A'
-            }`}</div>
-            <div className="block  details-container">{`Block: ${
-              elem.block || 'N/A'
-            }`}</div>
+            <div className="gas-used details-container">
+              <b>Gas-used:</b> {`${elem.gas_used}`}
+            </div>
+            <div className="gas-limit details-container">
+              <b>Gas-limit:</b> {`${elem.gas_limit}`}
+            </div>
+            <div className="time details-container">
+              <b>Time:</b> {`${elem.time}`}
+            </div>
+            <div className="hash details-container">
+              <b>Hash:</b> {`${elem.hash || 'N/A'}`}
+            </div>
+            <div className="type details-container">
+              <b>Type:</b> {`${elem.type || 'N/A'}`}
+            </div>
+            <div className="block  details-container">
+              <b>Block:</b> {`${elem.block || 'N/A'}`}
+            </div>
           </div>
         </div>
       );

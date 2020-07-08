@@ -18,8 +18,7 @@ function Onboard() {
           </div>
           <p className="workplace-description">
             A desktop app to interact & deploy smart contracts with tezos
-            testnet nodes either running on locally (using Tezster-CLI) or
-            remotely
+            testnet nodes either running on locally or remotely
           </p>
         </div>
         <div className="workplace-button-container">
