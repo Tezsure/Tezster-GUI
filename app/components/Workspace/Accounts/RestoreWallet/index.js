@@ -76,6 +76,11 @@ class index extends Component {
         ...userParams,
         ...this.props,
       });
+      this.setState({
+        mnemonic: '',
+        label: '',
+        password: '',
+      });
     } else {
       this.setState(stateParams);
     }

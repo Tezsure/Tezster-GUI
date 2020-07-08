@@ -3,8 +3,6 @@
 /* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
-import JSONInput from 'react-json-editor-ajrm';
-import locale from 'react-json-editor-ajrm/locale/en';
 import { RpcRequest } from './checkAccountStatus';
 
 const { shell } = require('electron');
@@ -13,18 +11,32 @@ class index extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      faucet: `{"value":"Enter the faucet json"}`,
+      faucet: '',
       label: '',
       error: '',
     };
-    this.handleEditorCodeOnChange = this.handleEditorCodeOnChange.bind(this);
+    this.handleFaucetInput = this.handleFaucetInput.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleAddFaucetAccount = this.handleAddFaucetAccount.bind(this);
+    this.handleIsValidJson = this.handleIsValidJson.bind(this);
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  handleIsValidJson(str) {
+    try {
+      return JSON.parse(str) && !!str;
+    } catch (e) {
+      return false;
+    }
   }
 
   async handleAddFaucetAccount() {
     let error = '';
-    if (this.state.faucet && this.state.faucet !== '') {
+    if (
+      this.state.faucet &&
+      this.state.faucet !== '' &&
+      this.handleIsValidJson(this.state.faucet)
+    ) {
       const faucet = JSON.parse(this.state.faucet);
       const networkName = this.props.dashboardHeader.networkId.split('-')[0];
       const userAccount = JSON.parse(localStorage.getItem('tezsure'))
@@ -56,12 +68,18 @@ class index extends Component {
           error = 'Please enter password';
         } else if (!faucet.hasOwnProperty('email') || faucet.email === '') {
           error = 'Please enter email';
+        } else if (networkName === 'Localnode') {
+          error =
+            'We currently donot support activating faucet account on localnode, please change network type to continue.';
         }
       }
       if (error === '') {
         faucet.mnemonic = faucet.mnemonic.join(' ');
         faucet.label = this.state.label;
-        const response = await RpcRequest.fetchBalance(faucet.pkh);
+        const response =
+          networkName !== 'Localnode'
+            ? await RpcRequest.fetchBalanceCarthagnet(faucet.pkh)
+            : await RpcRequest.fetchBalanceLocalnode(faucet.pkh);
         if (response) {
           faucet.sk = faucet.secret;
           this.props.restoreFaucetAccountAction({
@@ -74,24 +92,22 @@ class index extends Component {
           this.setState({
             error,
             label: '',
-            faucet: `{"value":"Enter the faucet json"}`,
+            faucet: '',
           });
         }
       } else {
         this.setState({
           error,
-          label: '',
-          faucet: `{"value":"Enter the faucet json"}`,
         });
       }
     } else {
-      this.setState({ error: 'Please enter faucet' });
+      this.setState({ error: 'Please enter your faucet in json format.' });
       return true;
     }
   }
 
-  handleEditorCodeOnChange(event) {
-    this.setState({ faucet: event.json });
+  handleFaucetInput(event) {
+    this.setState({ [event.target.name]: event.target.value });
   }
 
   handleInputChange(event) {
@@ -99,6 +115,7 @@ class index extends Component {
   }
 
   render() {
+    const { faucet } = this.state;
     const button = () => {
       switch (true) {
         case !this.props.buttonState:
@@ -155,15 +172,24 @@ class index extends Component {
             <span className="error-msg">{this.state.labelErr}</span>
           )}
           <div style={{ maxWidth: '1400px', maxHeight: '100%' }}>
-            <JSONInput
-              id="a_unique_id"
-              placeholder={{ value: 'Enter the faucet json' }}
-              theme="dark_vscode_tribute"
-              locale={locale}
-              width="100%"
-              height="50vh"
-              onChange={this.handleEditorCodeOnChange}
-              value={this.state.faucet}
+            <textarea
+              name="faucet"
+              className="faucet-textarea"
+              style={{
+                width: '98%',
+                maxHeight: '50vh',
+                height: '50vh',
+                border: '1px solid #ced4da',
+                backgroundColor: '#f8f9fa',
+                boxShadow: '0 .125rem .25rem rgba(0,0,0,.075)',
+              }}
+              placeholder="Please enter your faucet in json format."
+              onChange={this.handleInputChange}
+              value={
+                typeof faucet === 'object'
+                  ? JSON.stringify(faucet, undefined, 2)
+                  : faucet
+              }
             />
           </div>
         </div>
