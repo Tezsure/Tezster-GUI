@@ -35,7 +35,7 @@ export async function DeployContractAPI(args, callback) {
       100000,
       '',
       10000,
-      500000,
+      args.gasLimit || 100000,
       contract,
       storage,
       conseiljs.TezosParameterFormat.Michelson
@@ -112,7 +112,7 @@ export async function InvokeContractAPI(args, callback) {
       100000,
       '',
       1000,
-      100000,
+      500000,
       undefined,
       storage,
       conseiljs.TezosParameterFormat.Michelson

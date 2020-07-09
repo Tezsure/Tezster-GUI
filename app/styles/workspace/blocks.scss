@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: row;
   padding: 10px;
-  height: 85%;
+  height: 100% !important;
   background: #fff;
   border-top: 0.5px solid #dee2e6;
   height: 500px;
@@ -114,6 +114,7 @@ td.table-body-cell {
   align-items: stretch;
 }
 .block-cards {
+  max-height: 50%;
   font-size: 0.875rem;
   color: #727d95 !important;
   margin: 5px;

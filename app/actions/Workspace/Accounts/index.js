@@ -37,7 +37,7 @@ export function getAccountsAction(args) {
     LocalStorage === null ? args : LocalStorage.userAccounts[networkName];
   return (dispatch) => {
     switch (true) {
-      case !args.isAvailableLocalnodes:
+      case !args.isAvailableLocalnodes && networkName === 'Localnode':
         return dispatch({
           type: 'GET_ACCOUNTS',
           payload: [],
@@ -67,6 +67,17 @@ export function getAccountsAction(args) {
         } else if (networkName !== 'Localnode') {
           payload.userAccounts[networkName] =
             LocalStorage.userAccounts[networkName];
+        }
+        break;
+      case networkName !== 'Localnode' && userAccounts.length > 0:
+        if (
+          localStorage.hasOwnProperty(LOCAL_STORAGE_NAME) &&
+          LocalStorage.userAccounts[networkName].length > 0
+        ) {
+          payload.userAccounts[networkName] =
+            LocalStorage.userAccounts[networkName];
+        } else {
+          payload.userAccounts[networkName] = userAccounts;
         }
         break;
       default:
