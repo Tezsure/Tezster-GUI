@@ -18,7 +18,6 @@ class index extends Component {
       labelErr: '',
       password: '',
       mnemonicSuggestion: '',
-      buttonName: 'Create Wallet',
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleRestoreWallet = this.handleRestoreWallet.bind(this);
@@ -78,8 +77,11 @@ class index extends Component {
       });
       this.setState({
         mnemonic: '',
+        mnemonicErr: '',
         label: '',
+        labelErr: '',
         password: '',
+        mnemonicSuggestion: '',
       });
     } else {
       this.setState(stateParams);

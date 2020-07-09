@@ -81,8 +81,9 @@ class index extends Component {
       this.setState({
         label: '',
         labelErr: '',
-        buttonName: 'Create Wallet',
+        password: '',
         mnemonicSuggestion: '',
+        buttonName: 'Create Wallet',
       });
     } else {
       this.setState(stateParams);

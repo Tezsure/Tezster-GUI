@@ -19,6 +19,7 @@ class DeployContract extends Component {
       accounts: '0',
       contractLabel: '',
       storageValue: '',
+      gasLimit: 100000,
       contractAmount: '',
       error: '',
     };
@@ -34,9 +35,11 @@ class DeployContract extends Component {
       michelsonCode,
       dashboardHeader,
       exampleStorage,
+      gasLimit,
       selectedContractAmountBalance,
     } = this.props;
     let { accounts, contractLabel, storageValue, contractAmount } = this.state;
+    const gasPrice = (parseInt(gasLimit, 10) || 100000 / 1000000).toFixed(3);
     storageValue = storageValue.trim() === '' ? exampleStorage : storageValue;
 
     contractAmount = contractAmount === '' ? 0 : contractAmount;
@@ -49,6 +52,10 @@ class DeployContract extends Component {
       error = 'Please compile contract before deployment';
     } else if (accounts === '0') {
       error = 'Please select an account';
+    } else if (gasLimit < 100000) {
+      error = 'Gas limit cannot be less than 10000';
+    } else if (gasPrice > selectedContractAmountBalance) {
+      error = "Gas limit cannot be greater than selected contract's balance";
     } else if (contractLabel === '') {
       error = 'Please enter contract label';
     } else if (contractLabel !== '') {
@@ -81,6 +88,7 @@ class DeployContract extends Component {
         contractLabel,
         storageValue,
         contractAmount,
+        gasLimit,
         ...this.props,
       });
       this.props.getAccountBalanceAction({
@@ -156,6 +164,18 @@ class DeployContract extends Component {
             className="form-control"
             placeholder="Enter label name to identify contract"
             value={this.state.contractLabel}
+            onChange={this.handleInputChange}
+          />
+        </div>
+        <div className="modal-input">
+          <div className="input-container">Gas Limit </div>
+          <input
+            type="number"
+            name="gasLimit"
+            className="form-control"
+            placeholder="Enter gas limit to deploy contract"
+            style={{ marginRight: '10px' }}
+            value={this.state.gasLimit || 100000}
             onChange={this.handleInputChange}
           />
         </div>

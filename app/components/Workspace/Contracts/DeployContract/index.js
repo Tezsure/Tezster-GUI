@@ -26,6 +26,7 @@ class DeployContract extends Component {
       storageValue: '',
       storageFormat: '',
       contractAmount: '',
+      gasLimit: 100000,
       error: '',
       enteredContract: '',
     };
@@ -49,10 +50,12 @@ class DeployContract extends Component {
       enteredContract,
       contractLabel,
       storageValue,
+      gasLimit,
       contractAmount,
     } = this.state;
 
     contractAmount = contractAmount === '' ? 0 : contractAmount;
+    const gasPrice = (parseInt(gasLimit, 10) || 100000 / 1000000).toFixed(3);
 
     if (accounts === '0') {
       error = 'Please select an account';
@@ -76,6 +79,10 @@ class DeployContract extends Component {
       error = 'Please enter storage value';
     } else if (this.props.selectedContractAmountBalance === '0.000') {
       error = 'Not enough balance to deploy the contract';
+    } else if (gasLimit < 100000) {
+      error = 'Gas limit cannot be less than 10000';
+    } else if (gasPrice > this.props.selectedContractAmountBalance) {
+      error = "Gas limit cannot be greater than selected contract's balance";
     } else if (
       parseInt(contractAmount, 10) >
       parseInt(this.props.selectedContractAmountBalance, 10) * 1000000
@@ -95,6 +102,7 @@ class DeployContract extends Component {
         enteredContract,
         contractLabel,
         storageValue,
+        gasLimit,
         contractAmount,
       });
       this.props.getAccountBalanceAction({
@@ -211,6 +219,23 @@ class DeployContract extends Component {
             value={this.state.contractLabel}
             onChange={this.handleInputChange}
           />
+        </div>
+        <div className="modal-input">
+          <div className="input-container" style={{ width: '28%' }}>
+            Gas Limit{' '}
+          </div>
+          <input
+            type="number"
+            name="gasLimit"
+            className="form-control"
+            placeholder="Enter gas limit to deploy contract"
+            value={this.state.gasLimit || 100000}
+            style={{ width: '50%', marginRight: '10px' }}
+            onChange={this.handleInputChange}
+          />
+          <span className="tezos-icon">
+            <b>mu</b>ꜩ
+          </span>
         </div>
         <div className="modal-input">
           <div className="input-container" style={{ width: '28%' }}>

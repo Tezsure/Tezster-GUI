@@ -82,17 +82,18 @@ class index extends Component {
             : await RpcRequest.fetchBalanceLocalnode(faucet.pkh);
         if (response) {
           faucet.sk = faucet.secret;
-          this.props.restoreFaucetAccountAction({
+          await this.props.restoreFaucetAccountAction({
             ...faucet,
             ...this.props,
           });
           this.setState({ error });
         } else {
-          this.props.createFaucetAccountsAction({ faucet, ...this.props });
+          await this.props.createFaucetAccountsAction({
+            faucet,
+            ...this.props,
+          });
           this.setState({
             error,
-            label: '',
-            faucet: '',
           });
         }
       } else {
