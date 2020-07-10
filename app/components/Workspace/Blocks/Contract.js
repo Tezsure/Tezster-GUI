@@ -41,7 +41,11 @@ class Contracts extends Component {
         </div>
       );
     });
-    return <div className="block-cards-container">{contracts}</div>;
+    return (
+      <div className="block-cards-container">
+        {contracts.length === 0 ? 'No Data found' : contracts}
+      </div>
+    );
   }
 }
 

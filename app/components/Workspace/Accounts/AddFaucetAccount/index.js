@@ -31,79 +31,86 @@ class index extends Component {
   }
 
   async handleAddFaucetAccount() {
-    let error = '';
-    if (
-      this.state.faucet &&
-      this.state.faucet !== '' &&
-      this.handleIsValidJson(this.state.faucet)
-    ) {
-      const faucet = JSON.parse(this.state.faucet);
-      const networkName = this.props.dashboardHeader.networkId.split('-')[0];
-      const userAccount = JSON.parse(localStorage.getItem('tezsure'))
-        .userAccounts[networkName];
-      // eslint-disable-next-line no-lone-blocks
-      {
-        if (this.state.label === '') {
-          error = 'Please enter label';
-        } else if (
-          userAccount.filter((elem) => elem.label === this.state.label).length >
-          0
-        ) {
-          error = 'Label already in use, please choose a different label';
-        } else if (
-          !faucet.hasOwnProperty('mnemonic') ||
-          faucet.mnemonic.length < 15
-        ) {
-          error = 'Please enter mnemonics';
-        } else if (!faucet.hasOwnProperty('secret') || faucet.secret === '') {
-          error = 'Please enter secret key';
-        } else if (!faucet.hasOwnProperty('amount') || faucet.amount === '') {
-          error = 'Please enter amount';
-        } else if (!faucet.hasOwnProperty('pkh') || faucet.pkh === '') {
-          error = 'Please enter public key hash';
-        } else if (
-          !faucet.hasOwnProperty('password') ||
-          faucet.password === ''
-        ) {
-          error = 'Please enter password';
-        } else if (!faucet.hasOwnProperty('email') || faucet.email === '') {
-          error = 'Please enter email';
-        } else if (networkName === 'Localnode') {
-          error =
-            'We currently donot support activating faucet account on localnode, please change network type to continue.';
+    try {
+      let error = '';
+      if (
+        this.state.faucet &&
+        this.state.faucet !== '' &&
+        this.handleIsValidJson(this.state.faucet)
+      ) {
+        const faucet = JSON.parse(this.state.faucet);
+        const networkName = this.props.dashboardHeader.networkId.split('-')[0];
+        const userAccount = JSON.parse(localStorage.getItem('tezsure'))
+          .userAccounts[networkName];
+        // eslint-disable-next-line no-lone-blocks
+        {
+          if (this.state.label === '') {
+            error = 'Please enter label';
+          } else if (
+            userAccount.filter((elem) => elem.label === this.state.label)
+              .length > 0
+          ) {
+            error = 'Label already in use, please choose a different label';
+          } else if (
+            !faucet.hasOwnProperty('mnemonic') ||
+            faucet.mnemonic.length < 15
+          ) {
+            error = 'Please enter mnemonics';
+          } else if (!faucet.hasOwnProperty('secret') || faucet.secret === '') {
+            error = 'Please enter secret key';
+          } else if (!faucet.hasOwnProperty('amount') || faucet.amount === '') {
+            error = 'Please enter amount';
+          } else if (!faucet.hasOwnProperty('pkh') || faucet.pkh === '') {
+            error = 'Please enter public key hash';
+          } else if (
+            !faucet.hasOwnProperty('password') ||
+            faucet.password === ''
+          ) {
+            error = 'Please enter password';
+          } else if (!faucet.hasOwnProperty('email') || faucet.email === '') {
+            error = 'Please enter email';
+          } else if (networkName === 'Localnode') {
+            error =
+              'We currently donot support activating faucet account on localnode, please change network type to continue.';
+          }
         }
-      }
-      if (error === '') {
-        faucet.mnemonic = faucet.mnemonic.join(' ');
-        faucet.label = this.state.label;
-        const response =
-          networkName !== 'Localnode'
-            ? await RpcRequest.fetchBalanceCarthagnet(faucet.pkh)
-            : await RpcRequest.fetchBalanceLocalnode(faucet.pkh);
-        if (response) {
-          faucet.sk = faucet.secret;
-          await this.props.restoreFaucetAccountAction({
-            ...faucet,
-            ...this.props,
-          });
-          this.setState({ error });
+        if (error === '') {
+          faucet.mnemonic = faucet.mnemonic.join(' ');
+          faucet.label = this.state.label;
+          const response =
+            networkName !== 'Localnode'
+              ? await RpcRequest.fetchBalanceCarthagnet(faucet.pkh)
+              : await RpcRequest.fetchBalanceLocalnode(faucet.pkh);
+          if (response) {
+            faucet.sk = faucet.secret;
+            await this.props.restoreFaucetAccountAction({
+              ...faucet,
+              ...this.props,
+            });
+            this.setState({ error });
+          } else {
+            await this.props.createFaucetAccountsAction({
+              faucet,
+              ...this.props,
+            });
+            this.setState({
+              error,
+            });
+          }
         } else {
-          await this.props.createFaucetAccountsAction({
-            faucet,
-            ...this.props,
-          });
           this.setState({
             error,
           });
         }
       } else {
-        this.setState({
-          error,
-        });
+        this.setState({ error: 'Please enter your faucet in json format.' });
+        return true;
       }
-    } else {
-      this.setState({ error: 'Please enter your faucet in json format.' });
-      return true;
+    } catch (exp) {
+      const error = exp.toString().includes('getaddrinfo')
+        ? 'Unresolved url address, Please check your network connection'
+        : exp.toString();
+      this.setState({ error });
     }
   }
 
@@ -117,6 +124,7 @@ class index extends Component {
 
   render() {
     const { faucet } = this.state;
+    const networkName = this.props.dashboardHeader.networkId;
     const button = () => {
       switch (true) {
         case !this.props.buttonState:
@@ -198,6 +206,17 @@ class index extends Component {
           {this.state.error !== '' ? (
             <div className="alert alert-danger" role="alert">
               <p>Error: {this.state.error}</p>
+            </div>
+          ) : (
+            ''
+          )}
+          {!this.state.error.includes('localnode') &&
+          networkName === 'Localnode' ? (
+            <div className="alert alert-warning" role="alert">
+              <p>
+                Note: We currently donot support activating faucet account on
+                localnode, please change network type to continue.
+              </p>
             </div>
           ) : (
             ''
