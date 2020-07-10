@@ -52,6 +52,7 @@ export function HandleContractErrorsHelper(error) {
     'Make sure account is revealed on the current provider.';
   const INVALID_CONTRACT_PARAMETER =
     '\n Invalid parameter value provided for the given parameter type';
+  const CONTRACT_DOESNOT_EXISTS = `Contract no longer exists on the selected network type`;
   const ACCOUNT_ALREADY_ACTIVATED = `Account has already been activated please restore the account`;
   switch (true) {
     case error.toString().includes('Unexpected word token'):
@@ -84,6 +85,8 @@ export function HandleContractErrorsHelper(error) {
       .toString()
       .includes(`proto.006-PsCARTHA.operation.invalid_activation`):
       return ACCOUNT_ALREADY_ACTIVATED;
+    case error.toString().includes(`non_existing_contract`):
+      return CONTRACT_DOESNOT_EXISTS;
     default:
       return error.toString().replace(/(?:\r\n|\r|\n|\s\s+)/g, ' ');
   }
