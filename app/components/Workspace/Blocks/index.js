@@ -86,7 +86,7 @@ class index extends Component {
               </div>
               <div className="cards blocks-cards">
                 <div className="cards-header">
-                  <h4>{blockDataResponse.end_height || 'N/A'}</h4>
+                  <h4>{blockDataResponse.height || 'N/A'}</h4>
                 </div>
                 <div className="cards-contents">
                   <p>Latest Block</p>

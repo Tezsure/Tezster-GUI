@@ -41,7 +41,7 @@ export function GetAllBlockDataAPI(args, callback) {
         endorsement_reward: response.fee,
         cycle: response[1].data.cycle,
         progress: response[1].data.progress,
-        end_height: response[1].data.end_height,
+        height: response[0].data.height,
         blocks_per_cycle: response[2].data.blocks_per_cycle,
       };
       callback(null, payload);
