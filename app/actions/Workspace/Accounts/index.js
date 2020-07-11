@@ -64,12 +64,19 @@ export function getAccountsAction(args) {
           payload.userAccounts.Localnode = reducedLocalNodesAccounts(
             userAccounts
           );
-        } else if (networkName !== 'Localnode') {
+        } else if (networkName !== 'Localnode' && navigator.onLine) {
           payload.userAccounts[networkName] =
             LocalStorage.userAccounts[networkName];
+        } else if (networkName !== 'Localnode' && !navigator.onLine) {
+          return dispatch({
+            type: 'GET_ACCOUNTS',
+            payload: LocalStorage.userAccounts.Carthagenet,
+          });
         }
         break;
-      case networkName !== 'Localnode' && userAccounts.length > 0:
+      case networkName !== 'Localnode' &&
+        userAccounts.length > 0 &&
+        navigator.onLine:
         if (
           localStorage.hasOwnProperty(LOCAL_STORAGE_NAME) &&
           LocalStorage.userAccounts[networkName].length > 0
@@ -80,6 +87,14 @@ export function getAccountsAction(args) {
           payload.userAccounts[networkName] = userAccounts;
         }
         break;
+      case networkName !== 'Localnode' &&
+        navigator.onLine === false &&
+        localStorage.hasOwnProperty(LOCAL_STORAGE_NAME) &&
+        LocalStorage.userAccounts.Carthagenet.length > 0:
+        return dispatch({
+          type: 'GET_ACCOUNTS',
+          payload: LocalStorage.userAccounts.Carthagenet,
+        });
       default:
         payload.userAccounts[networkName] = [];
         break;

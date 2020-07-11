@@ -41,7 +41,7 @@ export function GetAllBlockDataAPI(args, callback) {
         endorsement_reward: response.fee,
         cycle: response[1].data.cycle,
         progress: response[1].data.progress,
-        end_height: response[1].data.end_height,
+        height: response[0].data.height,
         blocks_per_cycle: response[2].data.blocks_per_cycle,
       };
       callback(null, payload);
@@ -51,39 +51,71 @@ export function GetAllBlockDataAPI(args, callback) {
     });
 }
 
+function GetBlockHeightURL(Height) {
+  return `/tables/op?height=${Height}&columns=row_id,sender,receiver,type,hash,volume,fee,reward,is_success,is_contract&type.in=transaction,activate_account,endorsement,delegation,origination,reveal,seed_nonce_revelation,double_baking_evidence,double_endorsement_evidence,proposals,ballot&limit=50`;
+}
+
 export function SearchBlocksApi(args, callback) {
   let url = TzStatsApiEndpoint[args.dashboardHeader.networkId];
+  let BlockHeightURL = TzStatsApiEndpoint[args.dashboardHeader.networkId];
   switch (true) {
+    case args.dashboardHeader.networkId === 'Localnode':
+      return callback(null, []);
     case args.SearchText.startsWith('KT'):
       url += `/explorer/contract/${args.SearchText}`;
+      axios
+        .get(url)
+        .then((response) => {
+          return callback(null, response.data);
+        })
+        .catch((exception) => {
+          return callback(exception, null);
+        });
       break;
     case args.SearchText.startsWith('tz'):
       url += `/explorer/account/${args.SearchText}`;
+      axios
+        .get(url)
+        .then((response) => {
+          return callback(null, response.data);
+        })
+        .catch((exception) => {
+          return callback(exception, null);
+        });
       break;
-    case args.SearchText.startsWith('op'):
+    case args.SearchText.startsWith('op') || args.SearchText.startsWith('oo'):
       url += `/explorer/op/${args.SearchText}`;
+      axios
+        .get(url)
+        .then((response) => {
+          return callback(null, response.data);
+        })
+        .catch((exception) => {
+          return callback(exception, null);
+        });
       break;
-    case args.SearchText.startsWith('BM'):
-      url += `/explorer/block/${args.SearchText}`;
-      break;
-    case args.SearchText.startsWith('oo'):
-      url += `/explorer/op/${args.SearchText}`;
-      break;
-    case args.SearchText.startsWith('BK'):
-      url += `/explorer/block/${args.SearchText}`;
-      break;
-    case args.SearchText.startsWith('BL'):
-      url += `/explorer/block/${args.SearchText}`;
+    case args.SearchText.startsWith('BL') ||
+      args.SearchText.startsWith('BK') ||
+      args.SearchText.startsWith('BM'):
+      BlockHeightURL += `/explorer/block/${args.SearchText}`;
+      axios
+        .get(BlockHeightURL)
+        .then((BlockResponse) => {
+          url += GetBlockHeightURL(BlockResponse.data.height);
+          axios
+            .get(url)
+            .then((response) => {
+              return callback(null, response.data);
+            })
+            .catch((exception) => {
+              return callback(exception, null);
+            });
+        })
+        .catch((exception) => {
+          return callback(exception, null);
+        });
       break;
     default:
       return callback('Invalid search text provided', null);
   }
-  axios
-    .get(url)
-    .then((response) => {
-      callback(null, response.data);
-    })
-    .catch((exception) => {
-      callback(exception, null);
-    });
 }

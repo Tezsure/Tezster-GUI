@@ -1,14 +1,39 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-prototype-builtins */
 /* eslint-disable camelcase */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
+import swal from 'sweetalert';
 import Loader from './Loader';
 
 class Header extends Component {
   constructor(props) {
     super(props);
     this.handleNetworkChange = this.handleNetworkChange.bind(this);
+    this.handleStopNodes = this.handleStopNodes.bind(this);
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  handleStopNodes(args) {
+    const stopNodesMessage =
+      'Stopping localnodes will remove existing activated accounts and deployed contracts on localnode';
+    const title = 'Are you sure?';
+    // eslint-disable-next-line promise/catch-or-return
+    swal({
+      title: 'Are you sure?',
+      text: stopNodesMessage,
+      icon: 'warning',
+      buttons: ['Cancel', 'Proceed'],
+      dangerMode: true,
+    }).then((isConfirm) => {
+      // eslint-disable-next-line promise/always-return
+      if (isConfirm) {
+        this.props.stopTezsterNodesAction(args);
+      } else {
+        swal('Cancelled', 'Localnodes are still running', 'error');
+      }
+    });
   }
 
   handleNetworkChange(event) {
@@ -62,7 +87,7 @@ class Header extends Component {
         <button
           type="button"
           className="save-button"
-          onClick={() => this.props.stopTezsterNodesAction(this.props)}
+          onClick={() => this.handleStopNodes(this.props)}
         >
           Stop nodes
         </button>

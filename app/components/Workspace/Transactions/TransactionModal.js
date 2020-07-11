@@ -275,7 +275,9 @@ class TransactionModal extends Component {
                 ꜩ
               </span>
             </div>
-            <span className="error-msg">{this.state.amountErr}</span>
+            <span className="error-msg" style={{ width: '85%' }}>
+              {this.state.amountErr}
+            </span>
             <div className="modal-input" style={{ paddingBottom: '0px' }}>
               <p style={{ paddingBottom: '0px', marginBottom: '0px' }}>
                 Note: Please enter gas price more than or equals to 1500 <br />{' '}
@@ -300,7 +302,9 @@ class TransactionModal extends Component {
                 <b>mu</b>ꜩ
               </span>
             </div>
-            <span className="error-msg">{this.state.gasPriceErr}</span>
+            <span className="error-msg" style={{ marginRight: '8%' }}>
+              {this.state.gasPriceErr}
+            </span>
             <br />
             <div className="modal-footer">
               <button

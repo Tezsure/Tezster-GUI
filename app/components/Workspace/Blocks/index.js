@@ -26,9 +26,9 @@ class index extends Component {
     const { networkId } = this.props.blocks;
     const showBlockData =
       networkId !== 'Localnode' &&
-      (this.props.blocks.hasOwnProperty('blockDataResponse') ||
-        this.props.hasOwnProperty('blockSearch')) &&
-      this.props.blocks.blockDataResponse.length !== 0;
+      ((this.props.blocks.hasOwnProperty('blockDataResponse') &&
+        this.props.blocks.blockDataResponse.length !== 0) ||
+        this.props.hasOwnProperty('blockSearch'));
     const ExplorerComponent = function (props) {
       switch (true) {
         case searchText === undefined || searchText === '':
@@ -53,7 +53,7 @@ class index extends Component {
     };
     return (
       <div className="blocks-container accounts-container">
-        {showBlockData ? (
+        {showBlockData && blockDataResponse ? (
           <div className="blocks-sidebar-container sidebar-container">
             <div className="blocks-cycle-container">
               <div
@@ -62,7 +62,7 @@ class index extends Component {
               >
                 <div className="cards-header blocks-cards-header">
                   <CircularProgressbar
-                    value={blockDataResponse.progress}
+                    value={blockDataResponse.progress || 0}
                     text="ꜩ"
                     background
                     backgroundPadding={6}
@@ -78,7 +78,7 @@ class index extends Component {
               </div>
               <div className="cards blocks-cards">
                 <div className="cards-header">
-                  <h4>{Math.floor(blockDataResponse.cycle)}</h4>
+                  <h4>{Math.floor(blockDataResponse.cycle) || 'N/A'}</h4>
                 </div>
                 <div className="cards-contents">
                   <p>Current cycle</p>
@@ -86,7 +86,7 @@ class index extends Component {
               </div>
               <div className="cards blocks-cards">
                 <div className="cards-header">
-                  <h4>{blockDataResponse.end_height}</h4>
+                  <h4>{blockDataResponse.height || 'N/A'}</h4>
                 </div>
                 <div className="cards-contents">
                   <p>Latest Block</p>
@@ -94,7 +94,7 @@ class index extends Component {
               </div>
               <div className="cards blocks-cards">
                 <div className="cards-header">
-                  <h4>{blockDataResponse.blocks_per_cycle}</h4>
+                  <h4>{blockDataResponse.blocks_per_cycle || 'N/A'}</h4>
                 </div>
                 <div className="cards-contents">
                   <p>Blocks per cycle</p>
@@ -117,7 +117,9 @@ class index extends Component {
               : 'No blocks found'}
           </div>
         )}
-        {showBlockData ? ExplorerComponent(this.props) : ''}
+        {showBlockData && blockDataResponse
+          ? ExplorerComponent(this.props)
+          : ''}
       </div>
     );
   }

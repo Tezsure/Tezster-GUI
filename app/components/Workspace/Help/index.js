@@ -11,7 +11,7 @@ const telegramIcon =
   'https://images.vexels.com/media/users/3/137414/isolated/preview/3f7486417ddd88060a1818d44b6f3728-telegram-icon-logo-by-vexels.png';
 const noImageIcon =
   'https://i.ya-webdesign.com/images/no-image-available-png-3.png';
-const TelegramIssueLink = 'https://t.me/indiatezosdeveloper';
+const TelegramIssueLink = 'https://t.me/tezster';
 
 function index() {
   return (

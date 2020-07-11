@@ -5,6 +5,7 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable react/no-unescaped-entities */
 import React, { Component } from 'react';
+import Moment from 'react-moment';
 
 class Blocks extends Component {
   constructor(props) {
@@ -28,7 +29,7 @@ class Blocks extends Component {
               <b>Gas-limit:</b> {`${elem.gas_limit}`}
             </div>
             <div className="time details-container">
-              <b>Time:</b> {`${elem.time}`}
+              <b>Time:</b> <Moment>{`${elem.time}`}</Moment>
             </div>
             <div className="hash details-container">
               <b>Hash:</b> {`${elem.hash || 'N/A'}`}
@@ -43,7 +44,11 @@ class Blocks extends Component {
         </div>
       );
     });
-    return <div className="block-cards-container">{blocks}</div>;
+    return (
+      <div className="block-cards-container">
+        {blocks.length === 0 ? 'No Data found' : blocks}
+      </div>
+    );
   }
 }
 
