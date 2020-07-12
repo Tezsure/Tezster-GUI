@@ -6,6 +6,7 @@ import { NavLink } from 'react-router-dom';
 import { RpcRequest } from './checkAccountStatus';
 
 const { shell } = require('electron');
+const config = require('../../../../db-config/tezster.config');
 
 class index extends Component {
   constructor(props) {
@@ -40,7 +41,7 @@ class index extends Component {
       ) {
         const faucet = JSON.parse(this.state.faucet);
         const networkName = this.props.dashboardHeader.networkId.split('-')[0];
-        const userAccount = JSON.parse(localStorage.getItem('tezsure'))
+        const userAccount = JSON.parse(localStorage.getItem(config.storageName))
           .userAccounts[networkName];
         // eslint-disable-next-line no-lone-blocks
         {
