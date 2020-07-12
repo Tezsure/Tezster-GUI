@@ -3,7 +3,7 @@ const ip = require('docker-ip');
 module.exports = {
   TEZSTER_IMAGE: 'tezsureinc/tezster:1.0.3',
   TEZSTER_CONTAINER_NAME: 'tezster',
-  storageName: 'tezsure',
+  storageName: 'tezster-v2.0',
   provider: process.platform.includes('win')
     ? `http://${ip()}:18731`
     : 'http://localhost:18731',
@@ -94,7 +94,7 @@ module.exports = {
     'Carthagenet-Smartpy': 'https://api.carthagenet.tzstats.com',
     'Carthagenet-Tezster': 'https://api.carthagenet.tzstats.com',
   },
-  ConceilJS: {
+  ConseilJS: {
     url: 'https://conseil-dev.cryptonomic-infra.tech',
     apiKey: '04c98bd2-7cc5-49f2-9108-2d48efcbd660',
   },

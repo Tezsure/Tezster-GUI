@@ -45,9 +45,11 @@ class Header extends Component {
             <div className="input-group">
               <input
                 type="text"
+                name="searchText"
                 className="form-control search-bar"
+                value={this.props.searchText}
                 onChange={(event) => this.searchTransaction(event)}
-                placeholder="Search for block numbers or block id's"
+                placeholder="Search for block numbers, block id, public key hash, account hash etc."
               />
             </div>
           </div>

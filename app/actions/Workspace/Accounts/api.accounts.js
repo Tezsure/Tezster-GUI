@@ -1,5 +1,5 @@
 import { RpcRequest } from './helper.accounts';
-import { apiEndPoints, ConceilJS } from '../../../db-config/tezster.config';
+import { apiEndPoints, ConseilJS } from '../../../db-config/tezster.config';
 
 const conseiljs = require('conseiljs');
 
@@ -49,8 +49,8 @@ export async function ActivateAccountsAPI(args, callback) {
     const network = networkName.toLowerCase();
 
     const conseilServer = {
-      url: ConceilJS.url,
-      apiKey: ConceilJS.apiKey,
+      url: ConseilJS.url,
+      apiKey: ConseilJS.apiKey,
       network,
     };
 

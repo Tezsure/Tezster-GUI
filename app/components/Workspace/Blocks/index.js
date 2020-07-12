@@ -113,7 +113,7 @@ class index extends Component {
         ) : (
           <div>
             {networkId === 'Localnode'
-              ? 'We currently donot have api to support blocks on localnode.'
+              ? 'Support to display blocks on localnode will be added soon.'
               : 'No blocks found'}
           </div>
         )}

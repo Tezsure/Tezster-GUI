@@ -115,32 +115,62 @@ export function executeTransactionAction(args) {
       type: 'BUTTON_LOADING_STATE',
       payload: true,
     });
-    if (networkName === 'Localnode') {
-      const LocalStorage = JSON.parse(localStorage.getItem(LOCAL_STORAGE_NAME));
-      let currentTransactions = [];
-      currentTransactions = LocalStorage.transactions[networkName];
-      if (
-        !currentTransactions.hasOwnProperty(args.senderAccount) ||
-        currentTransactions[networkName][args.senderAccount].length === 0
-      ) {
-        LocalStorage.transactions = {
-          [networkName]: {
-            [args.senderAccount]: [],
+    const LocalStorage = JSON.parse(localStorage.getItem(LOCAL_STORAGE_NAME));
+    const Transactions = LocalStorage.transactions;
+    switch (true) {
+      case networkName === 'Localnode' &&
+        !Transactions.hasOwnProperty(networkName):
+        Transactions.Localnode = [];
+        Transactions.Localnode[args.senderAccount] = [];
+        LocalStorage.transactions[networkName][args.senderAccount].push({
+          op: {
+            opHash: 'N/A',
           },
+          tx: {
+            source: args.senderAccount,
+            destination: args.recieverAccount,
+            amount: args.amount,
+            operationResultStatus: 'applied',
+          },
+        });
+        localStorage.setItem(LOCAL_STORAGE_NAME, JSON.stringify(LocalStorage));
+        break;
+      case networkName === 'Localnode' &&
+        Transactions[networkName].hasOwnProperty(args.senderAccount):
+        LocalStorage.transactions[networkName][args.senderAccount].push({
+          op: {
+            opHash: 'N/A',
+          },
+          tx: {
+            source: args.senderAccount,
+            destination: args.recieverAccount,
+            amount: args.amount,
+            operationResultStatus: 'applied',
+          },
+        });
+        localStorage.setItem(LOCAL_STORAGE_NAME, JSON.stringify(LocalStorage));
+        break;
+      case networkName === 'Localnode' &&
+        !Transactions[networkName].hasOwnProperty(args.senderAccount):
+        LocalStorage.transactions[networkName] = {
+          ...LocalStorage.transactions[networkName],
+          [args.senderAccount]: [],
         };
-      }
-      LocalStorage.transactions[networkName][args.senderAccount].push({
-        op: {
-          opHash: 'N/A',
-        },
-        tx: {
-          source: args.senderAccount,
-          destination: args.recieverAccount,
-          amount: args.amount,
-          operationResultStatus: 'applied',
-        },
-      });
-      localStorage.setItem(LOCAL_STORAGE_NAME, JSON.stringify(LocalStorage));
+        LocalStorage.transactions[networkName][args.senderAccount].push({
+          op: {
+            opHash: 'N/A',
+          },
+          tx: {
+            source: args.senderAccount,
+            destination: args.recieverAccount,
+            amount: args.amount,
+            operationResultStatus: 'applied',
+          },
+        });
+        localStorage.setItem(LOCAL_STORAGE_NAME, JSON.stringify(LocalStorage));
+        break;
+      default:
+        break;
     }
     TransferBalanceTransactionAPI(args, (error, response) => {
       if (error) {

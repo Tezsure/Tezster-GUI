@@ -108,7 +108,12 @@ export function getAccountsAction(args) {
       }
       Promise.all(accounts)
         .then((response) => {
-          if (response.length > 0 && response[0].hasOwnProperty('label')) {
+          if (
+            response.length > 0 &&
+            response[0].hasOwnProperty('label') &&
+            response[0].toString() !==
+              'Error: connect ECONNREFUSED 127.0.0.1:18731'
+          ) {
             if (!localStorage.hasOwnProperty(LOCAL_STORAGE_NAME)) {
               userAccounts = {
                 Carthagenet: [],
@@ -132,7 +137,7 @@ export function getAccountsAction(args) {
           }
           dispatch({
             type: 'TEZSTER_SHOW_STOP_NODES',
-            payload: true,
+            payload: false,
           });
           return dispatch({
             type: 'GET_ACCOUNTS',

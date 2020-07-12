@@ -44,7 +44,10 @@ class index extends Component {
           .userAccounts[networkName];
         // eslint-disable-next-line no-lone-blocks
         {
-          if (this.state.label === '') {
+          if (networkName === 'Localnode') {
+            error =
+              'We currently donot support activating faucet account on localnode, please change network type to continue.';
+          } else if (this.state.label === '') {
             error = 'Please enter label';
           } else if (
             userAccount.filter((elem) => elem.label === this.state.label)
@@ -69,9 +72,6 @@ class index extends Component {
             error = 'Please enter password';
           } else if (!faucet.hasOwnProperty('email') || faucet.email === '') {
             error = 'Please enter email';
-          } else if (networkName === 'Localnode') {
-            error =
-              'We currently donot support activating faucet account on localnode, please change network type to continue.';
           }
         }
         if (error === '') {
@@ -103,7 +103,14 @@ class index extends Component {
           });
         }
       } else {
-        this.setState({ error: 'Please enter your faucet in json format.' });
+        const networkName = this.props.dashboardHeader.networkId.split('-')[0];
+        if (networkName === 'Localnode') {
+          error =
+            'We currently donot support activating faucet account on localnode, please change network type to continue.';
+        } else {
+          error = 'Please enter your faucet in json format.';
+        }
+        this.setState({ error });
         return true;
       }
     } catch (exp) {
@@ -214,8 +221,8 @@ class index extends Component {
           networkName === 'Localnode' ? (
             <div className="alert alert-warning" role="alert">
               <p>
-                Note: We currently donot support activating faucet account on
-                localnode, please change network type to continue.
+                Note: We currently don&rsquo;t support activating faucet account
+                on localnode, please change network type to continue.
               </p>
             </div>
           ) : (

@@ -1,3 +1,4 @@
+/* eslint-disable no-prototype-builtins */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable class-methods-use-this */
@@ -218,14 +219,17 @@ class App extends Component {
     const CurrentTab = this.props.selectedContractsTab;
     const { parseError, sucessMsg } = this.state;
     const compilerOutput = parseError === '' ? sucessMsg : parseError;
+    let contracts = [];
     const __localStorage__ = JSON.parse(
       localStorage.getItem(LOCAL_STORAGE_NAME)
-    ).contracts;
-    const contracts = __localStorage__[networkId].map((elem, index) => (
-      <option key={elem.name + index} value={elem.originated_contracts}>
-        {`${elem.name} - ${elem.originated_contracts}`}
-      </option>
-    ));
+    );
+    if (__localStorage__ && __localStorage__.hasOwnProperty('contracts')) {
+      contracts = __localStorage__.contracts[networkId].map((elem, index) => (
+        <option key={elem.name + index} value={elem.originated_contracts}>
+          {`${elem.name} - ${elem.originated_contracts}`}
+        </option>
+      ));
+    }
     return (
       <div className="accounts-container editor-container">
         <span

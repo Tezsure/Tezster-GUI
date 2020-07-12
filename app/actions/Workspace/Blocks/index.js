@@ -161,7 +161,7 @@ export function searchBlocksAction(args) {
         });
         dispatch({
           type: 'SET_SEARCH_TEXT',
-          payload: '',
+          payload: args.SearchText,
         });
         dispatch({
           type: 'GET_BLOCKS_SEARCH',
@@ -183,5 +183,11 @@ export function searchBlocksAction(args) {
         payload: response,
       });
     });
+  };
+}
+export function resetSearchText() {
+  return {
+    type: 'SET_SEARCH_TEXT',
+    payload: '',
   };
 }

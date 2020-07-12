@@ -1,3 +1,4 @@
+/* eslint-disable no-prototype-builtins */
 /* eslint-disable no-shadow */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/prop-types */
@@ -27,14 +28,17 @@ class index extends Component {
 
   render() {
     const networkId = this.props.dashboardHeader.networkId.split('-')[0];
+    let contracts = [];
     const __localStorage__ = JSON.parse(
       localStorage.getItem(LOCAL_STORAGE_NAME)
-    ).contracts;
-    const contracts = __localStorage__[networkId].map((elem, index) => (
-      <option key={elem.name + index} value={elem.originated_contracts}>
-        {`${elem.name} - ${elem.originated_contracts}`}
-      </option>
-    ));
+    );
+    if (__localStorage__ && __localStorage__.hasOwnProperty('contracts')) {
+      contracts = __localStorage__.contracts[networkId].map((elem, index) => (
+        <option key={elem.name + index} value={elem.originated_contracts}>
+          {`${elem.name} - ${elem.originated_contracts}`}
+        </option>
+      ));
+    }
     return (
       <div className="transactions-contents contract-container">
         <div className="modal-input">

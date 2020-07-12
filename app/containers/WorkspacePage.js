@@ -18,6 +18,7 @@ import {
 import {
   getBlockHeadsAction,
   searchBlockHead,
+  resetSearchText,
   searchBlocksAction,
 } from '../actions/Workspace/Blocks';
 
@@ -82,6 +83,7 @@ const mapDispatchToProps = (dispatch) => ({
   getBlockHeadsAction: (payload) => dispatch(getBlockHeadsAction(payload)),
   searchBlocksAction: (payload) => dispatch(searchBlocksAction(payload)),
   searchBlockHead: (payload) => dispatch(searchBlockHead(payload)),
+  resetSearchText: (payload) => dispatch(resetSearchText(payload)),
   getTransactionsAction: (payload) => dispatch(getTransactionsAction(payload)),
   handleInvokeContractAction: (payload) =>
     dispatch(handleInvokeContractAction(payload)),

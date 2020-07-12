@@ -31,7 +31,7 @@ class Transactions extends Component {
         {`${elem.label}-${elem.account}`}
       </option>
     ));
-    const Transactions =
+    const transactions =
       this.state.accountId !== '0' &&
       this.props.userAccounts.length > 0 &&
       this.props.userTransactions.length > 0 ? (
@@ -127,7 +127,7 @@ class Transactions extends Component {
               </div>
             </div>
           </div>
-          <div className="transactions-contents">{Transactions}</div>
+          <div className="transactions-contents">{transactions}</div>
           {this.props.showTransactionModal ? (
             <TransactionModal
               {...this.props}
