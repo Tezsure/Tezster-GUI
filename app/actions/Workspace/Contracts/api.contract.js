@@ -1,6 +1,6 @@
 import {
   apiEndPoints,
-  ConceilJS,
+  ConseilJS,
   storageName,
 } from '../../../db-config/tezster.config';
 
@@ -12,8 +12,8 @@ export async function DeployContractAPI(args, callback) {
   try {
     const network = args.dashboardHeader.networkId.split('-')[0].toLowerCase();
     const conseilServer = {
-      url: ConceilJS.url,
-      apiKey: ConceilJS.apiKey,
+      url: ConseilJS.url,
+      apiKey: ConseilJS.apiKey,
       network,
     };
     const tezosNode = apiEndPoints[args.dashboardHeader.networkId];
@@ -89,8 +89,8 @@ export async function InvokeContractAPI(args, callback) {
   try {
     const network = args.dashboardHeader.networkId.split('-')[0].toLowerCase();
     const conseilServer = {
-      url: ConceilJS.url,
-      apiKey: ConceilJS.apiKey,
+      url: ConseilJS.url,
+      apiKey: ConseilJS.apiKey,
       network,
     };
     const tezosNode = apiEndPoints[args.dashboardHeader.networkId];

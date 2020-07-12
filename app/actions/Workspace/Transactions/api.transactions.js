@@ -1,4 +1,4 @@
-import { apiEndPoints, ConceilJS } from '../../../db-config/tezster.config';
+import { apiEndPoints, ConseilJS } from '../../../db-config/tezster.config';
 
 const conseiljs = require('conseiljs');
 
@@ -11,8 +11,8 @@ export async function ListAccountTransactionsAPI(args, callback) {
 
     const entity = 'operations';
     const conseilServer = {
-      url: ConceilJS.url,
-      apiKey: ConceilJS.apiKey,
+      url: ConseilJS.url,
+      apiKey: ConseilJS.apiKey,
       network,
     };
     let sendQuery = conseiljs.ConseilQueryBuilder.blankQuery();
@@ -125,8 +125,8 @@ export async function TransferBalanceTransactionAPI(args, callback) {
   const network = networkName.toLowerCase();
 
   const conseilServer = {
-    url: ConceilJS.url,
-    apiKey: ConceilJS.apiKey,
+    url: ConseilJS.url,
+    apiKey: ConseilJS.apiKey,
     network,
   };
   const tezosNode = apiEndPoints[args.dashboardHeader.networkId];

@@ -1,3 +1,4 @@
+/* eslint-disable no-prototype-builtins */
 /* eslint-disable react/no-access-state-in-setstate */
 /* eslint-disable array-callback-return */
 /* eslint-disable no-underscore-dangle */
@@ -193,14 +194,17 @@ class InvokeContract extends Component {
         {`${elem.label}-${elem.account}`}
       </option>
     ));
+    let contracts = [];
     const __localStorage__ = JSON.parse(
       localStorage.getItem(LOCAL_STORAGE_NAME)
-    ).contracts;
-    const contracts = __localStorage__[networkId].map((elem, index) => (
-      <option key={elem.name + index} value={elem.originated_contracts}>
-        {`${elem.name} - ${elem.originated_contracts}`}
-      </option>
-    ));
+    );
+    if (__localStorage__ && __localStorage__.hasOwnProperty('contracts')) {
+      contracts = __localStorage__.contracts[networkId].map((elem, index) => (
+        <option key={elem.name + index} value={elem.originated_contracts}>
+          {`${elem.name} - ${elem.originated_contracts}`}
+        </option>
+      ));
+    }
     if (this.state.error !== '') {
       swal('Error!', this.state.error, 'error').then(() => {
         return this.setState({ error: '' });

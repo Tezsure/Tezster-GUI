@@ -178,8 +178,12 @@ class index extends Component {
                 <br />
               </div>
               <div className="modal-input" style={{ paddingBottom: '0px' }}>
-                <div className="alert alert-warning" role="alert">
-                  {this.state.mnemonicSuggestion}
+                <div
+                  className="alert alert-dark"
+                  role="alert"
+                  style={{ borderRadius: '0' }}
+                >
+                  <b>{this.state.mnemonicSuggestion}</b>
                 </div>
               </div>
             </>

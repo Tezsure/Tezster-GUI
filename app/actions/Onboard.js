@@ -1,3 +1,4 @@
+/* eslint-disable no-prototype-builtins */
 /* eslint-disable no-unused-vars */
 import { RpcRequest } from './Workspace/Accounts/helper.accounts';
 
@@ -14,12 +15,46 @@ export function handleLocalnodesActionChange() {
   };
 }
 
+function handleIsValidJson(str) {
+  try {
+    return JSON.parse(str) && !!str;
+  } catch (e) {
+    return false;
+  }
+}
+
+function handleMigrateLocalStorage() {
+  let oldLocalStorage = localStorage.getItem('tezsure');
+  let newLocalStorage = localStorage.getItem(config.storageName);
+  if (
+    !newLocalStorage &&
+    handleIsValidJson(oldLocalStorage) &&
+    JSON.parse(oldLocalStorage).hasOwnProperty('userAccounts') &&
+    JSON.parse(oldLocalStorage).hasOwnProperty('contracts')
+  ) {
+    newLocalStorage = config;
+    oldLocalStorage = JSON.parse(oldLocalStorage);
+    newLocalStorage.userAccounts = {
+      Localnode: config.identities,
+      Carthagenet: [],
+    };
+    newLocalStorage.contracts.Localnode = oldLocalStorage.contracts.Localnode;
+    newLocalStorage.contracts.Carthagenet =
+      oldLocalStorage.contracts.Carthagenet;
+    localStorage.clear();
+    localStorage.setItem(config.storageName, JSON.stringify(newLocalStorage));
+    return true;
+  }
+  return true;
+}
+
 export function checkLocalnodesAction() {
   return (dispatch) => {
     dispatch({
       type: 'TEZSTER_SHOW_DASHBOARD_PENDING',
       payload: false,
     });
+    handleMigrateLocalStorage();
     RpcRequest.checkNodeStatus(url)
       .then((res) => {
         if (res.protocol.startsWith('PsCARTHAG')) {
