@@ -299,6 +299,11 @@ class InvokeContract extends Component {
             <p>
               Note: please use quotes for string eg: &quot;hello world&quot;
             </p>
+            <p>
+              Note: We have generated an example initial storage for your
+              purpose it&rsquo;s 95% accurate hence we recommend you to use it
+              at your own risk
+            </p>
           </div>
         )}
         {this.state.selectedEntryPoint !== '0' && (
