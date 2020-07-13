@@ -30,22 +30,22 @@ export default function installTezsterContainer(args) {
           Image: `${TEZSTER_IMAGE}`,
           Tty: true,
           ExposedPorts: {
-            '18731/tcp': {},
-            '18732/tcp': {},
-            '18733/tcp': {},
+            '18731/tchildprocess': {},
+            '18732/tchildprocess': {},
+            '18733/tchildprocess': {},
           },
           PortBindings: {
-            '18731/tcp': [
+            '18731/tchildprocess': [
               {
                 HostPort: '18731',
               },
             ],
-            '18732/tcp': [
+            '18732/tchildprocess': [
               {
                 HostPort: '18732',
               },
             ],
-            '18733/tcp': [
+            '18733/tchildprocess': [
               {
                 HostPort: '18733',
               },

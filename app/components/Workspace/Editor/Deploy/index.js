@@ -198,18 +198,6 @@ class DeployContract extends Component {
             <span className="tezos-icon">ꜩ</span>
           </span>
         </div>
-        {this.props.dashboardHeader.networkId !== 'Localnode' ? (
-          <div className="transactions-contents">
-            <div className="modal-input" style={{ paddingBottom: '0px' }}>
-              <p style={{ marginBottom: '0px' }}>
-                Note: It may take upto 1 minute for the contract to get commited
-                on carthagenet network.
-              </p>
-            </div>
-          </div>
-        ) : (
-          ''
-        )}
         {this.props.storageFormat ? (
           <span>
             Please enter initial storage in the following format
@@ -218,6 +206,11 @@ class DeployContract extends Component {
             </div>
             <p>
               Note: please use quotes for string eg: &quot;hello world&quot;
+            </p>
+            <p>
+              Note: We have generated an example initial storage for your
+              purpose it&rsquo;s 95% accurate hence we recommend you to use it
+              at your own risk
             </p>
           </span>
         ) : (
