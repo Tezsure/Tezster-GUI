@@ -31,7 +31,7 @@ body {
   justify-content: space-around;
   flex-flow: row wrap;
   margin-top: 10px;
-  margin-bottom: 10%;
+  margin-bottom: 6%;
 }
 .quick-start-button {
   font-family: Gilroy-light;
@@ -92,7 +92,7 @@ body {
 }
 .description-container {
   font-family: Gilroy-light;
-  margin-bottom: 10%;
+  margin-bottom: 6%;
 }
 .update-button-container {
   position: absolute;
@@ -129,9 +129,6 @@ body {
   padding-left: 2%;
   color: #727d95;
   font-size: 12px;
-}
-.privacy-text {
-  cursor: pointer;
 }
 .language-text {
   cursor: pointer;

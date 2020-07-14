@@ -15,7 +15,11 @@ function Sidebar(props) {
               ? 'sidebar-content-active'
               : 'sidebar-content'
           }
-          onClick={() => props.handleTabChangeAction('accounts')}
+          onClick={() => {
+            props.handleContractsTabChangeAction('listAccounts');
+            props.handleTabChangeAction('accounts');
+            props.resetSearchText();
+          }}
         >
           <span className="accounts-icon" />
           <span
@@ -37,7 +41,8 @@ function Sidebar(props) {
           }
           onClick={() => {
             props.handleTabChangeAction('blocks');
-            props.getBlockHeadsActions({ ...props });
+            props.getBlockHeadsAction({ ...props });
+            props.resetSearchText();
           }}
         >
           <span className="blocks-icon" />
@@ -58,7 +63,10 @@ function Sidebar(props) {
               ? 'sidebar-content-active'
               : 'sidebar-content'
           }
-          onClick={() => props.handleTabChangeAction('transactions')}
+          onClick={() => {
+            props.handleTabChangeAction('transactions');
+            props.resetSearchText();
+          }}
         >
           <span className="wallet-icon" />
           <span
@@ -74,11 +82,38 @@ function Sidebar(props) {
         </li>
         <li
           className={
+            props.currentTab === 'editor'
+              ? 'sidebar-content-active'
+              : 'sidebar-content'
+          }
+          onClick={() => {
+            props.handleTabChangeAction('editor');
+            props.resetSearchText();
+          }}
+        >
+          <span className="fill-icon" />
+          <span
+            className={
+              props.sidebarToggleState
+                ? 'sidebar-text'
+                : 'sidebar-text-collapsed'
+            }
+          >
+            {' '}
+            Editor
+          </span>
+        </li>
+        <li
+          className={
             props.currentTab === 'contracts'
               ? 'sidebar-content-active'
               : 'sidebar-content'
           }
-          onClick={() => props.handleTabChangeAction('contracts')}
+          onClick={() => {
+            props.handleContractsTabChangeAction('deployContract');
+            props.handleTabChangeAction('contracts');
+            props.resetSearchText();
+          }}
         >
           <span className="card-icon" />
           <span
@@ -98,7 +133,10 @@ function Sidebar(props) {
               ? 'sidebar-content-active'
               : 'sidebar-content'
           }
-          onClick={() => props.handleTabChangeAction('help')}
+          onClick={() => {
+            props.handleTabChangeAction('help');
+            props.resetSearchText();
+          }}
         >
           <span className="email-icon" />
           <span

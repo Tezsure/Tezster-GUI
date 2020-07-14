@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -6,12 +8,19 @@ import {
   sidebarToggleAction,
   handleAccordionAction,
   handleTabChangeAction,
-} from '../actions/Workspace/sidebar';
+} from '../actions/Workspace/Sidebar';
+import installLocalnodesAction from '../actions/Tezster-nodes';
+import {
+  startTezsterNodesAction,
+  stopTezsterNodesAction,
+} from '../actions/Tezster-nodes/stop-nodes-setup';
 
 import {
-  getBlockHeadsActions,
+  getBlockHeadsAction,
   searchBlockHead,
-} from '../actions/Workspace/blocks';
+  resetSearchText,
+  searchBlocksAction,
+} from '../actions/Workspace/Blocks';
 
 import {
   toggleButtonState,
@@ -20,43 +29,42 @@ import {
   restoreFaucetAccountAction,
   toggleAccountsModalAction,
   getBalanceAction,
-} from '../actions/Workspace/accounts';
+} from '../actions/Workspace/Accounts';
 import {
   toggleTransactionModalAction,
   executeTransactionAction,
   getTransactionsAction,
   selectTransactionWalletAction,
-} from '../actions/Workspace/transactions';
+} from '../actions/Workspace/Transactions';
 import {
   handleContractsTabChangeAction,
   handleInvokeContractAction,
   deployContractAction,
   getContractStorageAction,
   getAccountBalanceAction,
-} from '../actions/Workspace/contracts';
+} from '../actions/Workspace/Contracts';
 import {
   getDashboardHeaderAction,
   handleNetworkChangeAction,
-} from '../actions/Workspace/dashboardHeader';
+} from '../actions/Workspace/DashboardHeader';
 import {
-  handleTezsterCliActionChange,
-  checkTezsterCliAction,
+  handleLocalnodesActionChange,
+  checkLocalnodesAction,
   getLocalConfigAction,
 } from '../actions/Onboard';
 import Error from '../components/Error';
 
 class WorkspacePage extends Component {
   componentDidMount() {
-    this.props.checkTezsterCliAction();
+    this.props.checkLocalnodesAction();
     this.props.getLocalConfigAction();
-    this.props.getBlockHeadsActions({ ...this.props });
+    this.props.getBlockHeadsAction({ ...this.props });
+    this.props.handleContractsTabChangeAction('listAccounts');
   }
 
   render() {
-    if (
-      this.props.isAvailableTezsterCli &&
-      this.props.isAvailableTezsterCli !== 'pending'
-    ) {
+    const { showMainDashboard } = this.props;
+    if (showMainDashboard && showMainDashboard !== 'pending') {
       return <Workspace {...this.props} />;
     }
     return <Error {...this.props} />;
@@ -72,8 +80,10 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(toggleTransactionModalAction(payload)),
   getBalanceAction: (payload) => dispatch(getBalanceAction(payload)),
   getAccountsAction: (payload) => dispatch(getAccountsAction(payload)),
-  getBlockHeadsActions: (payload) => dispatch(getBlockHeadsActions(payload)),
+  getBlockHeadsAction: (payload) => dispatch(getBlockHeadsAction(payload)),
+  searchBlocksAction: (payload) => dispatch(searchBlocksAction(payload)),
   searchBlockHead: (payload) => dispatch(searchBlockHead(payload)),
+  resetSearchText: (payload) => dispatch(resetSearchText(payload)),
   getTransactionsAction: (payload) => dispatch(getTransactionsAction(payload)),
   handleInvokeContractAction: (payload) =>
     dispatch(handleInvokeContractAction(payload)),
@@ -96,11 +106,17 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(handleContractsTabChangeAction(payload)),
   getContractStorageAction: (payload) =>
     dispatch(getContractStorageAction(payload)),
-  handleTezsterCliActionChange: (payload) =>
-    dispatch(handleTezsterCliActionChange(payload)),
-  checkTezsterCliAction: (payload) => dispatch(checkTezsterCliAction(payload)),
+  handleLocalnodesActionChange: (payload) =>
+    dispatch(handleLocalnodesActionChange(payload)),
+  checkLocalnodesAction: (payload) => dispatch(checkLocalnodesAction(payload)),
   getLocalConfigAction: (payload) => dispatch(getLocalConfigAction(payload)),
   handleAccordionAction: (payload) => dispatch(handleAccordionAction(payload)),
+  installLocalnodesAction: (payload) =>
+    dispatch(installLocalnodesAction(payload)),
+  startTezsterNodesAction: (payload) =>
+    dispatch(startTezsterNodesAction(payload)),
+  stopTezsterNodesAction: (payload) =>
+    dispatch(stopTezsterNodesAction(payload)),
 });
 const mapStateToProps = (state) => ({
   blocks: state.blocks,
@@ -113,6 +129,7 @@ const mapStateToProps = (state) => ({
   dashboardHeader: state.dashboardHeader,
   userBalances: state.userBalances,
   sidebarToggleState: state.sidebarToggleState,
+  searchText: state.searchText,
   blockAccordionIndex: state.blockAccordionIndex,
   userTransactions: state.userTransactions,
   selectedTransactionWallet: state.selectedTransactionWallet,
@@ -121,7 +138,14 @@ const mapStateToProps = (state) => ({
   selectedContractsTab: state.selectedContractsTab,
   selectedContractStorage: state.selectedContractStorage,
   selectedContractAmountBalance: state.selectedContractAmountBalance,
-  isAvailableTezsterCli: state.isAvailableTezsterCli,
+  isAvailableLocalnodes: state.isAvailableLocalnodes,
+  showMainDashboard: state.showMainDashboard,
+  tezsterError: state.tezsterError,
+  tezsterSetup: state.tezsterSetup,
+  tezsterShowStopNodes: state.tezsterShowStopNodes,
+  tezsterStartNodes: state.tezsterStartNodes,
+  tezsterImageDownload: state.tezsterImageDownload,
+  tezsterLoaderStatus: state.tezsterLoaderStatus,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WorkspacePage);
