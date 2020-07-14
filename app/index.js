@@ -8,7 +8,6 @@ import './styles/app.global.css';
 require('jquery');
 require('bootstrap');
 require('popper.js');
-require('./apis/eztz.min');
 
 const store = configureStore();
 

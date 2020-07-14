@@ -3,9 +3,11 @@
   overflow-y: scroll;
   background-color: #ffff !important;
   color: #727d95 !important;
-  font-weight: 700;
   padding: 10px;
   border-top: 0.5px solid #dee2e6;
+}
+.contracts-table-container .contract-container {
+  font-weight: 700;
 }
 .contract-deployed {
   background: #39b999;
@@ -37,4 +39,7 @@
 }
 .info {
   cursor: pointer;
+}
+.contract-container > .input-container {
+  width: 28%;
 }

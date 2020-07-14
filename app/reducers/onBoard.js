@@ -1,11 +1,19 @@
-export function isAvailableTezsterCli(initialState = false, action) {
+export function isAvailableLocalnodes(initialState = false, action) {
   switch (action.type) {
-    case 'TEZSTER_CLI_ERR':
+    case 'LOCAL_NODE_RUNNING_STATUS':
       return action.payload;
-    case 'TEZSTER_CLI_SUCCESS':
+    default:
+      return initialState;
+  }
+}
+export function showMainDashboard(initialState = false, action) {
+  switch (action.type) {
+    case 'TEZSTER_SHOW_DASHBOARD':
       return action.payload;
-    case 'TEZSTER_CLI_PENDING':
+    case 'TEZSTER_SHOW_DASHBOARD_PENDING':
       return 'pending';
+    case 'TEZSTER_NODES_ERR':
+      return true;
     default:
       return initialState;
   }

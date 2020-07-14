@@ -17,10 +17,12 @@ class Header extends Component {
       if (this.props.currentTab !== 'blocks') {
         this.props.handleTabChangeAction('blocks');
       }
-      this.props.searchBlockHead({
-        searchData: event.target.value.replace(/[^a-zA-Z0-9]/g, ''),
+      this.props.searchBlocksAction({
         ...this.props,
+        SearchText: event.target.value,
       });
+    } else {
+      this.props.getBlockHeadsAction({ ...this.props });
     }
   }
 
@@ -43,9 +45,11 @@ class Header extends Component {
             <div className="input-group">
               <input
                 type="text"
+                name="searchText"
                 className="form-control search-bar"
+                value={this.props.searchText}
                 onChange={(event) => this.searchTransaction(event)}
-                placeholder="Search for block numbers or block id's"
+                placeholder="Search for block numbers, block id, public key hash, account hash etc."
               />
             </div>
           </div>

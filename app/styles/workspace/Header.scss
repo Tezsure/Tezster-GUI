@@ -82,13 +82,13 @@ body {
 .search-bar {
   background-color: #f1f3f5;
   border-color: #f1f3f5;
-  border-radius: 18px 18px 18px 18px;
+  border-radius: 18px 18px 18px 18px !important;
   border: 1px solid #f1f3f5;
 }
 .search-bar:focus {
   background-color: #f1f3f5;
   border-color: #f1f3f5;
-  border-radius: 18px 18px 18px 18px;
+  border-radius: 18px 18px 18px 18px !important;
   border: 1px solid #f1f3f5;
 }
 .button-search {

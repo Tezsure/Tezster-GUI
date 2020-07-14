@@ -29,16 +29,14 @@
   justify-content: space-between;
 }
 .save-button {
-  width: 50%;
+  width: 100%;
   border: 1px solid #39b999;
   color: #fff;
   background-color: #39b999;
-  padding-right: 18px;
-  padding-left: 18px;
   font-size: medium;
   align-self: center;
   text-align: center;
-  border-radius: 15px 0 0 15px;
+  border-radius: 15px 15px;
 }
 .switch-button {
   width: 50%;
@@ -76,7 +74,7 @@ h4 {
   cursor: pointer;
 }
 .inactive-status {
-  background: #cccc;
+  background: red;
   width: 10px;
   height: 10px;
   border-radius: 50%;
@@ -98,4 +96,30 @@ h4 {
   border-color: #39b999 !important;
   border: 1px solid #39b999;
   border-radius: 0;
+}
+.CircularProgressbar {
+  width: 35%;
+}
+.loader-text {
+  margin-top: 8px;
+  margin-left: 15px;
+  margin-bottom: 0px;
+}
+.success-message {
+  padding: 10px;
+  border-top: 0.5px solid rgb(222, 226, 230);
+  background: #39b999;
+  color: rgb(255, 255, 255);
+  word-break: break-word;
+  font-family: Gilroy-light;
+  font-weight: 700;
+}
+.error-message {
+  padding: 10px;
+  border-top: 0.5px solid rgb(222, 226, 230);
+  background: #dc3545;
+  color: rgb(255, 255, 255);
+  word-break: break-word;
+  font-family: Gilroy-light;
+  font-weight: 700;
 }

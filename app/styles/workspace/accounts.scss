@@ -53,11 +53,11 @@
 .modal-input {
   display: flex;
   flex-direction: row;
-  padding: 1rem;
+  padding: 0.5rem;
   align-items: baseline;
 }
 .input-container {
-  width: 35%;
+  width: 40%;
 }
 .modal-dialog > .modal-content {
   max-height: 600px;
@@ -107,4 +107,55 @@ button:disabled {
   flex-direction: column;
   background: #fff;
   height: 100%;
+}
+#json-pretty > pre {
+  font-family: Gilroy-light;
+}
+input {
+  border-radius: 0rem !important;
+}
+.mnemonics-container {
+  background: #dee2e6;
+  padding: 2%;
+}
+.mnemonics {
+  font-family: inherit;
+  color: black;
+}
+.wallet-sidebar-container {
+  width: 40%;
+  margin-left: 10px;
+}
+.wallet-input-container {
+  width: 60%;
+  border-right: 1px solid #ced4da;
+}
+.wallet-container {
+  display: inline-flex;
+  width: 100%;
+}
+.wallet-input-container {
+  height: 100vh;
+}
+.wallet-input-container .modal-footer {
+  border-top: none;
+}
+.add-faucet-account {
+  justify-content: space-between;
+}
+.add-faucet-account .input-container {
+  width: 15%;
+}
+.add-faucet-account .form-control {
+  width: 45%;
+  margin-right: 10px;
+}
+.add-faucet-account .btn {
+  border-radius: 0px;
+}
+.alert.alert-warning {
+  border-radius: 0px;
+}
+.alert.alert-danger {
+  border-radius: 0px;
 }
