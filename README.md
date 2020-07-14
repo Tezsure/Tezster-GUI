@@ -18,17 +18,22 @@ This project was generated with React.Js & Electron, Follow below steps to get s
 
 ## Prerequisites
 
-Any Operating System will work !
+1. Node v. 12.x.x
+2. Docker v. 2.3.0.2+
 
-1. Node v. 12.x+
+_Note: We recommend to install Node LTS version i.e. 12.x.x._
 
-2) [Tezster-CLI](https://docs.tezster.tech/tezster-cli)
+### OS Support
+
+1. Linux (Ubuntu and Debian)
+2. Mac OS X
+3. Windows 10 <br />
 
 ## Installation Process :
 
 - Setup your Node.js environment
 
-* Install and setup [Tezster-CLI](https://docs.tezster.tech/tezster-cli)
+* Install and setup [Docker](https://docs.tezster.tech/getting-started/prerequisites#docker-installation)
 
 ## Node.js Installation Guide
 
