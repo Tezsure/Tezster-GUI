@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 /* eslint-disable promise/always-return */
 /* eslint-disable class-methods-use-this */
 /* eslint-disable promise/catch-or-return */
@@ -6,11 +7,14 @@
 /* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
 import swal from 'sweetalert';
-// import JSONPretty from 'react-json-pretty';
+import GetExampleStorage from '../GetExampleStorage';
 
 const conseiljs = require('conseiljs');
-
 const fs = require('fs');
+
+const { storageName } = require('../../../../db-config/tezster.config');
+
+const LOCAL_STORAGE_NAME = storageName;
 
 class DeployContract extends Component {
   constructor(props) {
@@ -22,6 +26,7 @@ class DeployContract extends Component {
       storageValue: '',
       storageFormat: '',
       contractAmount: '',
+      gasLimit: 100000,
       error: '',
       enteredContract: '',
     };
@@ -39,34 +44,47 @@ class DeployContract extends Component {
 
   handleDeployContract() {
     let error = '';
-    if (this.state.accounts === '0') {
+    let {
+      accounts,
+      contractFile,
+      enteredContract,
+      contractLabel,
+      storageValue,
+      gasLimit,
+      contractAmount,
+    } = this.state;
+
+    contractAmount = contractAmount === '' ? 0 : contractAmount;
+    const gasPrice = (parseInt(gasLimit, 10) || 100000 / 1000000).toFixed(3);
+
+    if (accounts === '0') {
       error = 'Please select an account';
-    } else if (
-      this.state.contractFile === '' &&
-      this.state.enteredContract === ''
-    ) {
-      error = 'Please upload a contract or paste a contract code';
-    } else if (this.state.contractLabel === '') {
+    } else if (contractFile === '') {
+      error = 'Please upload a contract';
+    } else if (contractLabel === '') {
       error = 'Please enter contract label';
-    } else if (this.state.contractLabel !== '') {
+    } else if (contractLabel !== '') {
       const networkId = this.props.dashboardHeader.networkId.split('-')[0];
-      const contract = JSON.parse(localStorage.getItem('tezsure')).contracts[
-        networkId
-      ];
+      const contract = JSON.parse(localStorage.getItem(LOCAL_STORAGE_NAME))
+        .contracts[networkId];
       if (
         contract.filter((elem) => elem.name === this.state.contractLabel)
           .length > 0
       ) {
         error = 'Label already in use, please choose a different label';
       }
-    } else if (this.state.contractAmount === '') {
+    } else if (contractAmount === '') {
       error = 'Please enter contract amount';
-    } else if (this.state.storageValue === '') {
+    } else if (storageValue === '') {
       error = 'Please enter storage value';
     } else if (this.props.selectedContractAmountBalance === '0.000') {
       error = 'Not enough balance to deploy the contract';
+    } else if (gasLimit < 100000) {
+      error = 'Gas limit cannot be less than 10000';
+    } else if (gasPrice > this.props.selectedContractAmountBalance) {
+      error = "Gas limit cannot be greater than selected contract's balance";
     } else if (
-      parseInt(this.state.contractAmount, 10) >
+      parseInt(contractAmount, 10) >
       parseInt(this.props.selectedContractAmountBalance, 10) * 1000000
     ) {
       error =
@@ -74,17 +92,18 @@ class DeployContract extends Component {
     }
     if (error === '') {
       let contract = '';
-      if (this.state.contractFile !== '') {
-        contract = fs
-          .readFileSync(this.state.contractFile[0].path)
-          .toString('utf-8');
-      } else if (this.state.enteredContract !== '') {
-        contract = this.state.enteredContract;
+      if (contractFile !== '') {
+        contract = fs.readFileSync(contractFile[0].path).toString('utf-8');
       }
       this.props.deployContractAction({
-        contract,
         ...this.props,
-        ...this.state,
+        accounts,
+        contract,
+        enteredContract,
+        contractLabel,
+        storageValue,
+        gasLimit,
+        contractAmount,
       });
       this.props.getAccountBalanceAction({
         ...this.props,
@@ -106,9 +125,11 @@ class DeployContract extends Component {
         [event.target.name]: event.target.files,
       };
       this.handleGetInitialStorage(contract).then((storageFormat) => {
+        const storageValue = GetExampleStorage(storageFormat);
         self.setState({
           ...stateParams,
           storageFormat,
+          storageValue,
         });
       });
     } else if (event.target.name === 'enteredContract') {
@@ -128,6 +149,10 @@ class DeployContract extends Component {
           pkh: this.state.accounts,
         });
       });
+    } else if (event.target.type === 'number') {
+      if (event.target.value >= 0) {
+        this.setState({ [event.target.name]: event.target.value });
+      }
     } else {
       this.setState({ [event.target.name]: event.target.value });
     }
@@ -145,9 +170,9 @@ class DeployContract extends Component {
       });
     }
     return (
-      <div className="transactions-contents">
+      <div className="transactions-contents contract-container">
         <div className="modal-input">
-          <div className="input-container">Select Wallet </div>
+          <div className="input-container">Select Wallet* </div>
           <select
             className="custom-select"
             name="accounts"
@@ -161,9 +186,9 @@ class DeployContract extends Component {
           </select>
         </div>
         {this.state.accounts !== '0' ? (
-          <div className="container-msg">
+          <div className="container-msg" style={{ marginLeft: '28%' }}>
             <b>
-              &nbsp;&nbsp;Available balance in the account{' '}
+              &nbsp;Available balance in the account{' '}
               <span className="tezos-icon">
                 {this.props.selectedContractAmountBalance} ꜩ
               </span>
@@ -173,7 +198,7 @@ class DeployContract extends Component {
           ''
         )}
         <div className="modal-input">
-          <div className="input-container">Upload Contract </div>
+          <div className="input-container">Upload Contract* </div>
           <div className="custom-file">
             <input
               type="file"
@@ -185,7 +210,7 @@ class DeployContract extends Component {
           </div>
         </div>
         <div className="modal-input">
-          <div className="input-container">Contract label </div>
+          <div className="input-container">Contract label* </div>
           <input
             type="text"
             name="contractLabel"
@@ -196,11 +221,29 @@ class DeployContract extends Component {
           />
         </div>
         <div className="modal-input">
-          <div className="input-container" style={{ width: '26%' }}>
+          <div className="input-container" style={{ width: '28%' }}>
+            Gas Limit{' '}
+          </div>
+          <input
+            type="number"
+            name="gasLimit"
+            className="form-control"
+            placeholder="Enter gas limit to deploy contract"
+            value={this.state.gasLimit || 100000}
+            style={{ width: '50%', marginRight: '10px' }}
+            onChange={this.handleInputChange}
+          />
+          <span className="tezos-icon">
+            <b>mu</b>ꜩ
+          </span>
+        </div>
+        <div className="modal-input">
+          <div className="input-container" style={{ width: '28%' }}>
             Contract Amount{' '}
           </div>
           <input
             type="number"
+            min="0"
             name="contractAmount"
             className="form-control"
             placeholder="Enter amount to deploy contract"
@@ -231,12 +274,17 @@ class DeployContract extends Component {
             <p>
               Note: please use quotes for string eg: &quot;hello world&quot;
             </p>
+            <p>
+              Note: We have generated an example initial storage for your
+              purpose it&rsquo;s 95% accurate hence we recommend you to use it
+              at your own risk
+            </p>
           </span>
         ) : (
           ''
         )}
         <div className="modal-input">
-          <div className="input-container">Initial Storage </div>
+          <div className="input-container">Initial Storage* </div>
           <textarea
             name="storageValue"
             className="form-control"
@@ -248,14 +296,25 @@ class DeployContract extends Component {
         <div className="cards-container">
           <div className="cards button-card accounts-button-container">
             <div className="button-accounts">
-              <button
-                type="button"
-                className="btn btn-success"
-                disabled={this.props.buttonState}
-                onClick={this.handleDeployContract}
-              >
-                {this.props.buttonState ? 'Please wait....' : 'Deploy Contract'}
-              </button>
+              {this.props.buttonState ? (
+                <button className="btn btn-success" type="button" disabled>
+                  <span
+                    className="spinner-border spinner-border-sm"
+                    role="status"
+                    aria-hidden="true"
+                  />
+                  &nbsp;Please wait...
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  className="btn btn-success"
+                  disabled={this.props.buttonState}
+                  onClick={this.handleDeployContract}
+                >
+                  Deploy Contract
+                </button>
+              )}
             </div>
           </div>
         </div>

@@ -1,3 +1,4 @@
+/* eslint-disable no-prototype-builtins */
 /* eslint-disable react/no-access-state-in-setstate */
 /* eslint-disable array-callback-return */
 /* eslint-disable no-underscore-dangle */
@@ -7,8 +8,12 @@
 /* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
 import swal from 'sweetalert';
+import GetSampleEntryPoint from './GetSampleEntryPoint';
 
 const conseiljs = require('conseiljs');
+const { storageName } = require('../../../../db-config/tezster.config');
+
+const LOCAL_STORAGE_NAME = storageName;
 
 class InvokeContract extends Component {
   constructor(props) {
@@ -53,9 +58,9 @@ class InvokeContract extends Component {
 
   handleEntryPoints() {
     const networkId = this.props.dashboardHeader.networkId.split('-')[0];
-    const contract = JSON.parse(localStorage.getItem('tezsure')).contracts[
-      networkId
-    ].filter(
+    const contract = JSON.parse(
+      localStorage.getItem(LOCAL_STORAGE_NAME)
+    ).contracts[networkId].filter(
       (elem) => elem.originated_contracts === this.state.selectedContracts
     );
     const entryPoints = conseiljs.TezosContractIntrospector.generateEntryPointsFromCode(
@@ -66,14 +71,10 @@ class InvokeContract extends Component {
         p.parameters.map((pp) => pp.name)[0] === undefined
           ? ['X']
           : p.parameters.map((pp) => pp.name);
-      const stateValues =
-        p.parameters.map((pp) => pp.name)[0] === undefined
-          ? [
-              {
-                X: '',
-              },
-            ]
-          : p.parameters.map((pp) => ({ [pp.name]: '' }));
+      const stateValues = p.parameters.map((pp) => {
+        const variableName = pp.name ? pp.name : 'X';
+        return { [variableName]: GetSampleEntryPoint(pp.type) };
+      });
       return {
         name: p.name === undefined ? 'default' : p.name,
         structure: p.structure,
@@ -87,6 +88,9 @@ class InvokeContract extends Component {
 
   handleInvokeContract() {
     let index = 0;
+    let { contractAmount } = this.state;
+    contractAmount = contractAmount === '' ? 0 : contractAmount;
+
     this.state.entryPoints.some((elem) => {
       if (elem.name === this.state.selectedEntryPoint) {
         const storageValue = elem.structure
@@ -104,6 +108,7 @@ class InvokeContract extends Component {
           this.props.handleInvokeContractAction({
             ...this.props,
             ...this.state,
+            contractAmount,
           });
           this.props.getAccountBalanceAction({
             ...this.props,
@@ -128,6 +133,10 @@ class InvokeContract extends Component {
       this.setState({ [event.target.name]: event.target.value }, () => {
         this.handleEntryPoints();
       });
+    } else if (event.target.type === 'number') {
+      if (event.target.value >= 0) {
+        this.setState({ [event.target.name]: event.target.value });
+      }
     } else {
       this.setState({ [event.target.name]: event.target.value });
     }
@@ -142,22 +151,25 @@ class InvokeContract extends Component {
         {elem}
       </th>
     ));
-    const tableBody = selectedEntryPoint[0].parameter.map((elem, index) => (
-      <td className="table-body-cell" key={elem + index}>
-        <input
-          type={
-            selectedEntryPoint[0].parameterTypes[index] === 'nat'
-              ? 'number'
-              : 'text'
-          }
-          name={elem}
-          value={selectedEntryPoint[0].stateValues[elem]}
-          placeholder={`type - ${selectedEntryPoint[0].parameterTypes[index]}`}
-          className="form-control"
-          onChange={this.handleEntryPointsInputValues}
-        />
-      </td>
-    ));
+    const tableBody = selectedEntryPoint[0].parameter.map((elem, index) => {
+      return (
+        <td className="table-body-cell" key={elem + index}>
+          <input
+            type={
+              selectedEntryPoint[0].parameterTypes[index] === 'nat'
+                ? 'number'
+                : 'text'
+            }
+            name={elem}
+            value={selectedEntryPoint[0].stateValues[index][elem]}
+            placeholder={`type - ${selectedEntryPoint[0].parameterTypes[index]}`}
+            className="form-control"
+            onChange={this.handleEntryPointsInputValues}
+          />
+        </td>
+      );
+    });
+
     return (
       <table className="table table-bordered">
         <thead>
@@ -182,22 +194,26 @@ class InvokeContract extends Component {
         {`${elem.label}-${elem.account}`}
       </option>
     ));
-    const __localStorage__ = JSON.parse(localStorage.getItem('tezsure'))
-      .contracts;
-    const contracts = __localStorage__[networkId].map((elem, index) => (
-      <option key={elem.name + index} value={elem.originated_contracts}>
-        {`${elem.name} - ${elem.originated_contracts}`}
-      </option>
-    ));
+    let contracts = [];
+    const __localStorage__ = JSON.parse(
+      localStorage.getItem(LOCAL_STORAGE_NAME)
+    );
+    if (__localStorage__ && __localStorage__.hasOwnProperty('contracts')) {
+      contracts = __localStorage__.contracts[networkId].map((elem, index) => (
+        <option key={elem.name + index} value={elem.originated_contracts}>
+          {`${elem.name} - ${elem.originated_contracts}`}
+        </option>
+      ));
+    }
     if (this.state.error !== '') {
       swal('Error!', this.state.error, 'error').then(() => {
         return this.setState({ error: '' });
       });
     }
     return (
-      <div className="transactions-contents">
+      <div className="transactions-contents contract-container">
         <div className="modal-input">
-          <div className="input-container">Select Wallet </div>
+          <div className="input-container">Select Wallet* </div>
           <select
             className="custom-select"
             name="accounts"
@@ -205,15 +221,15 @@ class InvokeContract extends Component {
             onChange={this.handleInputChange}
           >
             <option value="0" disabled>
-              Select account to deploy contract
+              Select account to invoke contract
             </option>
             {Accounts}
           </select>
         </div>
         {this.state.accounts !== '0' ? (
-          <div className="container-msg">
+          <div className="container-msg" style={{ marginLeft: '28%' }}>
             <b>
-              &nbsp;&nbsp;Available balance in the account{' '}
+              &nbsp;Available balance in the account{' '}
               <span className="tezos-icon">
                 {this.props.selectedContractAmountBalance} ꜩ
               </span>
@@ -223,7 +239,7 @@ class InvokeContract extends Component {
           ''
         )}
         <div className="modal-input">
-          <div className="input-container">Select Contract </div>
+          <div className="input-container">Select Contract* </div>
           <select
             className="custom-select"
             name="selectedContracts"
@@ -237,14 +253,15 @@ class InvokeContract extends Component {
           </select>
         </div>
         <div className="modal-input">
-          <div className="input-container" style={{ width: '26%' }}>
+          <div className="input-container" style={{ width: '28%' }}>
             Contract Amount{' '}
           </div>
           <input
             type="number"
+            min="0"
             name="contractAmount"
             className="form-control"
-            placeholder="Enter amount to deploy contract"
+            placeholder="Enter amount to invoke contract"
             value={this.state.contractAmount}
             onChange={this.handleInputChange}
             style={{ width: '50%', marginRight: '10px' }}
@@ -252,7 +269,7 @@ class InvokeContract extends Component {
           <span className="tezos-icon">ꜩ</span>
         </div>
         <div className="modal-input">
-          <div className="input-container">Entry Points </div>
+          <div className="input-container">Entry Points* </div>
           <select
             className="custom-select"
             name="selectedEntryPoint"
@@ -282,6 +299,11 @@ class InvokeContract extends Component {
             <p>
               Note: please use quotes for string eg: &quot;hello world&quot;
             </p>
+            <p>
+              Note: We have generated an example initial storage for your
+              purpose it&rsquo;s 95% accurate hence we recommend you to use it
+              at your own risk
+            </p>
           </div>
         )}
         {this.state.selectedEntryPoint !== '0' && (
@@ -290,14 +312,25 @@ class InvokeContract extends Component {
         <div className="cards-container">
           <div className="cards button-card accounts-button-container">
             <div className="button-accounts">
-              <button
-                type="button"
-                className="btn btn-success"
-                disabled={this.props.buttonState}
-                onClick={this.handleInvokeContract}
-              >
-                {this.props.buttonState ? 'Please wait....' : 'Invoke Contract'}
-              </button>
+              {this.props.buttonState ? (
+                <button className="btn btn-success" type="button" disabled>
+                  <span
+                    className="spinner-border spinner-border-sm"
+                    role="status"
+                    aria-hidden="true"
+                  />
+                  &nbsp;Please wait...
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  className="btn btn-success"
+                  disabled={this.props.buttonState}
+                  onClick={this.handleInvokeContract}
+                >
+                  Invoke Contract
+                </button>
+              )}
             </div>
           </div>
         </div>

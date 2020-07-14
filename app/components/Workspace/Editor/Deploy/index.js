@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 /* eslint-disable promise/always-return */
 /* eslint-disable class-methods-use-this */
 /* eslint-disable promise/catch-or-return */
@@ -6,19 +7,21 @@
 /* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
 import swal from 'sweetalert';
-// import JSONPretty from 'react-json-pretty';
+
+const { storageName } = require('../../../../db-config/tezster.config');
+
+const LOCAL_STORAGE_NAME = storageName;
 
 class DeployContract extends Component {
   constructor(props) {
     super(props);
     this.state = {
       accounts: '0',
-      contractFile: '',
       contractLabel: '',
       storageValue: '',
+      gasLimit: 100000,
       contractAmount: '',
       error: '',
-      enteredContract: '',
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleDeployContract = this.handleDeployContract.bind(this);
@@ -26,50 +29,67 @@ class DeployContract extends Component {
 
   handleDeployContract() {
     let error = '';
-    const { sucessMsg, parseError } = this.props;
-    if (this.props.michelsonCode === '') {
+    const {
+      sucessMsg,
+      parseError,
+      michelsonCode,
+      dashboardHeader,
+      exampleStorage,
+      gasLimit,
+      selectedContractAmountBalance,
+    } = this.props;
+    let { accounts, contractLabel, storageValue, contractAmount } = this.state;
+    const gasPrice = (parseInt(gasLimit, 10) || 100000 / 1000000).toFixed(3);
+    storageValue = storageValue.trim() === '' ? exampleStorage : storageValue;
+
+    contractAmount = contractAmount === '' ? 0 : contractAmount;
+
+    if (michelsonCode === '') {
       error = 'Please upload a contract or write a michelson contract';
-    } else if (sucessMsg === '') {
-      error = 'Please compile contract before deployment';
     } else if (parseError !== '') {
       error = 'Please resolve compilation error before deployment';
-    } else if (this.state.accounts === '0') {
+    } else if (sucessMsg === '') {
+      error = 'Please compile contract before deployment';
+    } else if (accounts === '0') {
       error = 'Please select an account';
-    } else if (this.state.contractLabel === '') {
+    } else if (gasLimit < 100000) {
+      error = 'Gas limit cannot be less than 10000';
+    } else if (gasPrice > selectedContractAmountBalance) {
+      error = "Gas limit cannot be greater than selected contract's balance";
+    } else if (contractLabel === '') {
       error = 'Please enter contract label';
-    } else if (this.state.contractLabel !== '') {
-      const networkId = this.props.dashboardHeader.networkId.split('-')[0];
-      const contract = JSON.parse(localStorage.getItem('tezsure')).contracts[
-        networkId
-      ];
-      if (
-        contract.filter((elem) => elem.name === this.state.contractLabel)
-          .length > 0
-      ) {
+    } else if (contractLabel !== '') {
+      const networkId = dashboardHeader.networkId.split('-')[0];
+      const contract = JSON.parse(localStorage.getItem(LOCAL_STORAGE_NAME))
+        .contracts[networkId];
+      if (contract.filter((elem) => elem.name === contractLabel).length > 0) {
         error = 'Label already in use, please choose a different label';
       }
-    } else if (this.state.contractAmount === '') {
-      error = 'Please enter contract amount';
-    } else if (this.state.storageValue === '') {
+    }
+    if (error === '' && storageValue === '') {
       error = 'Please enter storage value';
-    } else if (this.props.selectedContractAmountBalance === '0.000') {
+    } else if (error === '' && selectedContractAmountBalance === '0.000') {
       error = 'Not enough balance to deploy the contract';
     } else if (
-      parseInt(this.state.contractAmount, 10) >
-      parseInt(this.props.selectedContractAmountBalance, 10) * 1000000
+      parseInt(contractAmount, 10) >
+      parseInt(selectedContractAmountBalance, 10) * 1000000
     ) {
       error =
         'The entered contract amount should be less than available account balance';
     }
     if (error === '' && sucessMsg !== '' && parseError === '') {
       let contract = '';
-      if (this.props.michelsonCode !== '') {
-        contract = this.props.michelsonCode;
+      if (michelsonCode !== '') {
+        contract = michelsonCode;
       }
       this.props.deployContractAction({
         contract,
+        accounts,
+        contractLabel,
+        storageValue,
+        contractAmount,
+        gasLimit,
         ...this.props,
-        ...this.state,
       });
       this.props.getAccountBalanceAction({
         ...this.props,
@@ -90,7 +110,9 @@ class DeployContract extends Component {
         });
       });
     } else {
-      this.setState({ [event.target.name]: event.target.value });
+      this.setState({
+        [event.target.name]: event.target.value,
+      });
     }
   }
 
@@ -105,10 +127,11 @@ class DeployContract extends Component {
         return this.setState({ error: '' });
       });
     }
+    const { storageValue } = this.props;
     return (
       <div className="deploy-contents">
         <div className="modal-input">
-          <div className="input-container">Select Wallet </div>
+          <div className="input-container">Select Wallet* </div>
           <select
             className="custom-select"
             name="accounts"
@@ -124,7 +147,7 @@ class DeployContract extends Component {
         {this.state.accounts !== '0' ? (
           <div className="container-msg">
             <b>
-              &nbsp;&nbsp;Available balance in the account{' '}
+              Available balance in the account{' '}
               <span className="tezos-icon">
                 {this.props.selectedContractAmountBalance} ꜩ
               </span>
@@ -134,13 +157,25 @@ class DeployContract extends Component {
           ''
         )}
         <div className="modal-input">
-          <div className="input-container">Contract label </div>
+          <div className="input-container">Contract label* </div>
           <input
             type="text"
             name="contractLabel"
             className="form-control"
             placeholder="Enter label name to identify contract"
             value={this.state.contractLabel}
+            onChange={this.handleInputChange}
+          />
+        </div>
+        <div className="modal-input">
+          <div className="input-container">Gas Limit </div>
+          <input
+            type="number"
+            name="gasLimit"
+            className="form-control"
+            placeholder="Enter gas limit to deploy contract"
+            style={{ marginRight: '10px' }}
+            value={this.state.gasLimit || 100000}
             onChange={this.handleInputChange}
           />
         </div>
@@ -152,6 +187,7 @@ class DeployContract extends Component {
           >
             <input
               type="number"
+              min="0"
               name="contractAmount"
               className="form-control"
               placeholder="Enter amount to deploy contract"
@@ -162,18 +198,6 @@ class DeployContract extends Component {
             <span className="tezos-icon">ꜩ</span>
           </span>
         </div>
-        {this.props.dashboardHeader.networkId !== 'Localnode' ? (
-          <div className="transactions-contents">
-            <div className="modal-input" style={{ paddingBottom: '0px' }}>
-              <p style={{ marginBottom: '0px' }}>
-                Note: It may take upto 1 minute for the contract to get commited
-                on carthagenet network.
-              </p>
-            </div>
-          </div>
-        ) : (
-          ''
-        )}
         {this.props.storageFormat ? (
           <span>
             Please enter initial storage in the following format
@@ -183,33 +207,47 @@ class DeployContract extends Component {
             <p>
               Note: please use quotes for string eg: &quot;hello world&quot;
             </p>
+            <p>
+              Note: We have generated an example initial storage for your
+              purpose it&rsquo;s 95% accurate hence we recommend you to use it
+              at your own risk
+            </p>
           </span>
         ) : (
           ''
         )}
         <div className="modal-input">
-          <div className="input-container">Initial Storage </div>
+          <div className="input-container">Initial Storage* </div>
           <textarea
             name="storageValue"
             className="form-control"
             placeholder="Initial value for account"
-            value={this.state.storageValue}
-            onChange={this.handleInputChange}
+            value={storageValue}
+            onChange={this.props.handleInputChange}
           />
         </div>
         <div className="cards-container">
           <div className="cards button-card accounts-button-container">
             <div className="button-accounts">
-              <button
-                type="button"
-                className="btn btn-success"
-                disabled={this.props.buttonState}
-                onClick={this.handleDeployContract}
-              >
-                {this.props.buttonState
-                  ? 'Please wait....'
-                  : 'Save and Deploy Contract'}
-              </button>
+              {this.props.buttonState ? (
+                <button className="btn btn-success" type="button" disabled>
+                  <span
+                    className="spinner-border spinner-border-sm"
+                    role="status"
+                    aria-hidden="true"
+                  />
+                  &nbsp;Please wait...
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  className="btn btn-success"
+                  disabled={this.props.buttonState}
+                  onClick={this.handleDeployContract}
+                >
+                  Save and Deploy Contract
+                </button>
+              )}
             </div>
           </div>
         </div>

@@ -1,6 +1,9 @@
 /* eslint-disable no-script-url */
 import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
+import SidebarIcon from './SidebarIcon';
+
+const { shell } = require('electron');
 
 function Onboard() {
   return (
@@ -11,11 +14,11 @@ function Onboard() {
         </div>
         <div className="description-container">
           <div className="workplace-header">
-            <b>create</b> a workspace
+            <b>Welcome to Tezster-GUI</b>
           </div>
           <p className="workplace-description">
-            Quick start for a one-click blockchain or create a new
-            <br /> workspace for advanced setup options.
+            A desktop app to interact & deploy smart contracts with tezos
+            testnet nodes either running locally or remotely
           </p>
         </div>
         <div className="workplace-button-container">
@@ -24,21 +27,22 @@ function Onboard() {
             className="btn btn-success btn-lg
                           quick-start-button"
           >
-            Quick Start
+            Enter workspace &nbsp;
+            <SidebarIcon />
           </Link>
         </div>
         <div className="workplace-update-container">
           <div className="footer-text">
-            learn more about products &amp; upcomming updates
+            To learn about our products &amp; it&rsquo;s feature&rsquo;s
           </div>
-          <NavLink to="#" className="update-link">
-            check for updates
+          <NavLink
+            to="#"
+            onClick={() => shell.openExternal('https://docs.tezster.tech/')}
+            className="update-link"
+          >
+            Follow our documentation link
           </NavLink>
         </div>
-      </div>
-      <div className="workplace-footer">
-        <div className="privacy-text">Terms of Privacy</div>
-        <div className="language-text">LN · EN</div>
       </div>
     </div>
   );

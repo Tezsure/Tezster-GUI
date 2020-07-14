@@ -1,6 +1,8 @@
 .blocks-container {
+  display: flex;
+  flex-direction: row;
   padding: 10px;
-  height: 85%;
+  height: 100% !important;
   background: #fff;
   border-top: 0.5px solid #dee2e6;
   height: 500px;
@@ -18,17 +20,16 @@
 }
 .blocks-table-container {
   background-color: #ffff !important;
-  color: #727d95 !important;
   font-weight: 700;
   overflow: auto;
-  max-height: -webkit-fill-available;
+  max-height: 100%;
+  width: 75%;
 }
 .blocks-container tbody {
   line-height: 0 !important;
 }
 .blocks-container table {
   margin-bottom: 0 !important;
-  background: #dee2e6 !important;
 }
 .blocks-container .dropdown-toggle {
   line-height: 3 !important;
@@ -73,4 +74,57 @@
 .send-button:hover {
   background-color: #39b999;
   border: 1px solid #39b999;
+}
+.blocks-sidebar-container {
+  width: 24%;
+  margin-right: 1%;
+}
+.blocks-main-container {
+  width: 75%;
+}
+.blocks-cards {
+  text-align: center;
+  align-items: center;
+  border: 1px solid #cccc;
+  margin-bottom: 0.5rem;
+}
+.blocks-cards-header .CircularProgressbar {
+  width: 50%;
+}
+time.account-address-content {
+  font-size: 0.875rem;
+  color: #727d95 !important;
+}
+td.table-body-cell {
+  color: #727d95 !important;
+}
+.block-cards {
+  border: 1px solid #cccc;
+  padding: 10px;
+  word-break: break-word;
+}
+.block-cards-container {
+  overflow: auto;
+  max-height: 100%;
+  width: 75%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+.block-cards {
+  max-height: 50%;
+  font-size: 0.875rem;
+  color: #727d95 !important;
+  margin: 5px;
+  position: relative;
+  word-break: break-all;
+  border: 1px solid #cccc;
+  padding: 10px;
+  width: 45%;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+}
+.cards.blocks-cards {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
 }

@@ -2,12 +2,17 @@
   padding: 10px;
   border: 0;
   border-bottom: 10px;
-  background-color: #d6d6d6;
+  background-color: #dee2e6;
   width: 100%;
   overflow: auto;
-  height: 100vh;
+  height: 100%;
 }
+div#nav-tabContent {
+  height: 90%;
+}
+
 div#nav-michelson {
+  height: 100%;
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -19,7 +24,9 @@ div#nav-michelson {
 }
 .code-editor-navbar {
   padding: 10px;
+  position: fixed !important;
   display: flex;
+  position: inherit !important;
   flex-direction: row;
   justify-content: space-between;
 }
@@ -48,6 +55,10 @@ div#nav-michelson {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+.editor-siderbar-nav {
+  width: 33.3%;
+  text-align: center;
+}
 .nav-tabs .nav-item.show .nav-link,
 .nav-tabs .nav-link.active {
   color: black;
@@ -59,21 +70,16 @@ a:hover {
   color: #495057;
 }
 .code-editor {
-  width: 70%;
   margin-right: 10px;
 }
 .code-editor-deploy {
-  width: 30%;
+  width: 40%;
   border: 1px solid #cccc;
-  border-right: 0;
 }
 .editor-container {
   display: flex;
   flex-direction: row;
   background: #fff;
-  height: 100%;
-  border-top: 0.5px solid #dee2e6;
-  overflow: hidden;
 }
 .editor {
   background: url(http://i.imgur.com/2cOaJ.png);
@@ -92,15 +98,11 @@ a:hover {
 .tab-pane {
   padding: 5px;
 }
-#json-pretty > pre {
-  word-wrap: break-word;
-  white-space: pre-wrap;
-}
 
 .deploy-contents .modal-input {
   display: flex;
   flex-direction: column;
-  padding: 1rem;
+  padding: 0.5rem;
   align-items: baseline;
 }
 .deploy-contents .input-container {
@@ -110,4 +112,40 @@ a:hover {
   max-height: 100vh;
   height: 70vh;
   overflow: auto;
+}
+.custom-file-input {
+  cursor: pointer;
+}
+.nav-link {
+  cursor: pointer;
+  background: #f1f3f5;
+}
+.nav-link active {
+  background: #fff;
+}
+.container-msg {
+  padding-left: 1rem;
+  margin-left: 0;
+}
+.ace-editor-container {
+  width: 60%;
+  margin-right: 10px;
+  border: 1px solid #fff;
+}
+.editor-navbar {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.left-navbar-container {
+  width: 40%;
+  margin-right: 2%;
+}
+.editor-navbar {
+  margin-bottom: 1%;
+}
+button:focus {
+  outline: 0 !important;
+  box-shadow: none !important;
 }

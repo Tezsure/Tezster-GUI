@@ -3,8 +3,7 @@
 import { combineReducers } from 'redux';
 import { connectRouter } from 'connected-react-router';
 import type { HashHistory } from 'history';
-import counter from './counter';
-import { blocks, blockSearch } from './Workspace/blocks';
+import { blocks, blockSearch, searchText } from './Workspace/blocks';
 import {
   sidebarToggleState,
   currentTab,
@@ -29,14 +28,28 @@ import {
   selectedContractStorage,
   selectedContractAmountBalance,
 } from './Workspace/contracts';
-import { isAvailableTezsterCli, localConfig } from './onBoard';
+
+import {
+  tezsterError,
+  tezsterImageDownload,
+  tezsterSetup,
+  tezsterStartNodes,
+  tezsterShowStopNodes,
+  tezsterLoaderStatus,
+} from './Tezster';
+
+import {
+  isAvailableLocalnodes,
+  showMainDashboard,
+  localConfig,
+} from './onBoard';
 
 export default function createRootReducer(history: HashHistory) {
   return combineReducers<{}, *>({
     router: connectRouter(history),
     blocks,
     blockSearch,
-    counter,
+    searchText,
     buttonState,
     sidebarToggleState,
     showAccountsModal,
@@ -51,8 +64,15 @@ export default function createRootReducer(history: HashHistory) {
     userTransactions,
     transactionsSuccess,
     selectedTransactionWallet,
-    isAvailableTezsterCli,
+    showMainDashboard,
+    isAvailableLocalnodes,
     localConfig,
     currentTab,
+    tezsterError,
+    tezsterImageDownload,
+    tezsterSetup,
+    tezsterStartNodes,
+    tezsterShowStopNodes,
+    tezsterLoaderStatus,
   });
 }

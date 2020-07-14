@@ -1,68 +1,120 @@
+/* eslint-disable no-prototype-builtins */
 /* eslint-disable no-unused-vars */
-import { exec, spawn } from 'child_process';
+import { RpcRequest } from './Workspace/Accounts/helper.accounts';
 
-const config = require('../apis/config');
+const config = require('../db-config/tezster.config');
 
-export function handleTezsterCliActionChange() {
-  return {
-    type: 'TEZSTER_CLI_SUCCESS',
-    payload: true,
+const url = config.provider;
+
+export function handleLocalnodesActionChange() {
+  return (dispatch) => {
+    dispatch({
+      type: 'TEZSTER_SHOW_DASHBOARD',
+      payload: true,
+    });
   };
 }
 
-export function checkTezsterCliAction() {
+function handleIsValidJson(str) {
+  try {
+    return JSON.parse(str) && !!str;
+  } catch (e) {
+    return false;
+  }
+}
+
+function handleMigrateLocalStorage() {
+  let oldLocalStorage = localStorage.getItem('tezsure');
+  let newLocalStorage = localStorage.getItem(config.storageName);
+  if (
+    !newLocalStorage &&
+    handleIsValidJson(oldLocalStorage) &&
+    JSON.parse(oldLocalStorage).hasOwnProperty('userAccounts') &&
+    JSON.parse(oldLocalStorage).hasOwnProperty('contracts')
+  ) {
+    newLocalStorage = config;
+    oldLocalStorage = JSON.parse(oldLocalStorage);
+    newLocalStorage.userAccounts = {
+      Localnode: config.identities,
+      Carthagenet: [],
+    };
+    newLocalStorage.contracts.Localnode = oldLocalStorage.contracts.Localnode;
+    newLocalStorage.contracts.Carthagenet =
+      oldLocalStorage.contracts.Carthagenet;
+    localStorage.clear();
+    localStorage.setItem(config.storageName, JSON.stringify(newLocalStorage));
+    return true;
+  }
+  if (!newLocalStorage) {
+    localStorage.clear();
+    const payload = {
+      ...config,
+      userAccounts: {
+        Localnode: config.identities,
+        Carthagenet: [],
+      },
+    };
+    localStorage.setItem(config.storageName, JSON.stringify(payload));
+  }
+  return true;
+}
+
+export function checkLocalnodesAction() {
   return (dispatch) => {
     dispatch({
-      type: 'TEZSTER_CLI_PENDING',
+      type: 'TEZSTER_SHOW_DASHBOARD_PENDING',
       payload: false,
     });
-    setTimeout(() => {
-      if (process.platform.split('win').length > 1) {
-        const ls = spawn(
-          'cmd.exe',
-          [
-            '/c',
-            `powershell.exe tezster get-balance ${config.identities[0].pkh}`,
-          ],
-          { detached: false }
-        );
-        ls.stdout.on('data', (data) => {
-          dispatch({
-            type: 'TEZSTER_CLI_ERR',
-            payload: true,
-          });
-        });
-        ls.stderr.on('data', (data) => {
-          dispatch({
-            type: 'TEZSTER_CLI_ERR',
-            payload: false,
-          });
-        });
-        ls.on('close', (code) => {
-          console.log(`child process exited with code ${code}`);
-        });
-      } else {
-        exec(
-          `tezster get-balance ${config.identities[0].pkh}`,
-          (err, stdout) => {
-            if (
-              err ||
-              stdout.includes('ECONNREFUSED') ||
-              stdout.includes('Error')
-            ) {
-              return dispatch({
-                type: 'TEZSTER_CLI_ERR',
-                payload: false,
-              });
-            }
-            return dispatch({
-              type: 'TEZSTER_CLI_SUCCESS',
+    handleMigrateLocalStorage();
+    RpcRequest.checkNodeStatus(url)
+      .then((res) => {
+        if (res.protocol.startsWith('PsCARTHAG')) {
+          return setTimeout(() => {
+            dispatch({
+              type: 'LOCAL_NODE_RUNNING_STATUS',
               payload: true,
             });
-          }
-        );
-      }
-    }, 1000);
+            dispatch({
+              type: 'TEZSTER_SHOW_STOP_NODES',
+              payload: true,
+            });
+            return dispatch({
+              type: 'TEZSTER_SHOW_DASHBOARD',
+              payload: true,
+            });
+          }, 4000);
+        }
+        dispatch({
+          type: 'LOCAL_NODE_RUNNING_STATUS',
+          payload: false,
+        });
+        dispatch({
+          type: 'TEZSTER_SHOW_STOP_NODES',
+          payload: false,
+        });
+        return dispatch({
+          type: 'TEZSTER_NODES_ERR',
+          payload: false,
+        });
+      })
+      .catch((exp) => {
+        dispatch({
+          type: 'TEZSTER_SHOW_STOP_NODES',
+          payload: false,
+        });
+        dispatch({
+          type: 'LOCAL_NODE_RUNNING_STATUS',
+          payload: false,
+        });
+        dispatch({
+          type: 'TEZSTER_SHOW_DASHBOARD',
+          payload: true,
+        });
+        return dispatch({
+          type: 'TEZSTER_NODES_ERR',
+          payload: false,
+        });
+      });
   };
 }
 
@@ -70,5 +122,56 @@ export function getLocalConfigAction() {
   return {
     type: 'TEZSTER_LOCAL_CONFIG',
     payload: config,
+  };
+}
+export function setTezsterConfigAction() {
+  return (dispatch) => {
+    RpcRequest.checkNodeStatus(url)
+      .then((res) => {
+        if (res.protocol.startsWith('PsCARTHAG')) {
+          return setTimeout(() => {
+            dispatch({
+              type: 'LOCAL_NODE_RUNNING_STATUS',
+              payload: true,
+            });
+            dispatch({
+              type: 'TEZSTER_SHOW_STOP_NODES',
+              payload: true,
+            });
+            return dispatch({
+              type: 'TEZSTER_SHOW_DASHBOARD',
+              payload: true,
+            });
+          }, 1000);
+        }
+        dispatch({
+          type: 'LOCAL_NODE_RUNNING_STATUS',
+          payload: false,
+        });
+        dispatch({
+          type: 'TEZSTER_SHOW_STOP_NODES',
+          payload: false,
+        });
+        return dispatch({
+          type: 'TEZSTER_NODES_ERR',
+          payload: false,
+        });
+      })
+      .catch((exp) => {
+        setTimeout(() => {
+          dispatch({
+            type: 'TEZSTER_SHOW_STOP_NODES',
+            payload: false,
+          });
+          dispatch({
+            type: 'LOCAL_NODE_RUNNING_STATUS',
+            payload: false,
+          });
+          return dispatch({
+            type: 'TEZSTER_NODES_ERR',
+            payload: false,
+          });
+        }, 1000);
+      });
   };
 }

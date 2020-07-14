@@ -19,3 +19,12 @@ export function blockSearch(initialState = [], action) {
       return initialState;
   }
 }
+
+export function searchText(initialState = '', action) {
+  switch (action.type) {
+    case 'SET_SEARCH_TEXT':
+      return action.payload;
+    default:
+      return initialState;
+  }
+}
