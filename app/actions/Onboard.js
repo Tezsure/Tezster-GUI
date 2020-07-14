@@ -45,6 +45,17 @@ function handleMigrateLocalStorage() {
     localStorage.setItem(config.storageName, JSON.stringify(newLocalStorage));
     return true;
   }
+  if (!newLocalStorage) {
+    localStorage.clear();
+    const payload = {
+      ...config,
+      userAccounts: {
+        Localnode: config.identities,
+        Carthagenet: [],
+      },
+    };
+    localStorage.setItem(config.storageName, JSON.stringify(payload));
+  }
   return true;
 }
 
