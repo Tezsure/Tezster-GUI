@@ -15,6 +15,7 @@ class index extends Component {
       faucet: '',
       label: '',
       error: '',
+      spinner: false,
     };
     this.handleFaucetInput = this.handleFaucetInput.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -33,6 +34,7 @@ class index extends Component {
 
   async handleAddFaucetAccount() {
     try {
+      this.setState({ spinner: true });
       let error = '';
       if (
         this.state.faucet &&
@@ -88,7 +90,7 @@ class index extends Component {
               ...faucet,
               ...this.props,
             });
-            this.setState({ error });
+            this.setState({ error, spinner: false });
           } else {
             await this.props.createFaucetAccountsAction({
               faucet,
@@ -96,11 +98,13 @@ class index extends Component {
             });
             this.setState({
               error,
+              spinner: false,
             });
           }
         } else {
           this.setState({
             error,
+            spinner: false,
           });
         }
       } else {
@@ -111,14 +115,14 @@ class index extends Component {
         } else {
           error = 'Please enter your faucet in json format.';
         }
-        this.setState({ error });
+        this.setState({ error, spinner: false });
         return true;
       }
     } catch (exp) {
       const error = exp.toString().includes('getaddrinfo')
         ? 'Unresolved url address, Please check your network connection'
         : exp.toString();
-      this.setState({ error });
+      this.setState({ error, spinner: false });
     }
   }
 
@@ -131,10 +135,21 @@ class index extends Component {
   }
 
   render() {
-    const { faucet } = this.state;
+    const { faucet, spinner } = this.state;
     const networkName = this.props.dashboardHeader.networkId;
     const button = () => {
       switch (true) {
+        case this.props.buttonState || spinner:
+          return (
+            <button className="btn btn-success" type="button" disabled>
+              <span
+                className="spinner-border spinner-border-sm"
+                role="status"
+                aria-hidden="true"
+              />
+              &nbsp;Please wait...
+            </button>
+          );
         case !this.props.buttonState:
           return (
             <button
@@ -144,17 +159,6 @@ class index extends Component {
               onClick={this.handleAddFaucetAccount}
             >
               Add Faucet Account
-            </button>
-          );
-        case this.props.buttonState:
-          return (
-            <button className="btn btn-success" type="button" disabled>
-              <span
-                className="spinner-border spinner-border-sm"
-                role="status"
-                aria-hidden="true"
-              />
-              &nbsp;Please wait...
             </button>
           );
         default:
