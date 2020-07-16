@@ -6,7 +6,7 @@
 
 <div align="center"><strong>Start interacting with Tezos Chain within seconds</strong></div>
 
-<div align="center">Use this GUI version of Tezster which is ready to use Desktop app, made with React and Electron. Primarily can be used to interact with <a  href="https://docs.tezster.tech/tezster-cli">Tezster CLI</a> ( i.e Local Node ) as well as remote Nodes. The below documentation will help you get started with Tezster-GUI, although to get complete understanding of components usage and visual demo follow the visual demo follow <a  href="https://docs.tezster.tech/"><b>Tezster-GUI Guide</b></a>
+<div align="center">Use this GUI version of Tezster which is ready to use Desktop app, made with React and Electron. Primarily can be used to interact with Local-Nodes as well as remote Nodes. The below documentation will help you get started with Tezster-GUI, although to get complete understanding of components usage and visual demo follow the visual demo follow <a  href="https://docs.tezster.tech/"><b>Tezster-GUI Guide</b></a>
 
 </div>
 

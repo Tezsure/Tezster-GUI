@@ -315,8 +315,8 @@ class InvokeContract extends Component {
           <div className="modal-input" style={{ paddingBottom: '0rem' }}>
             <p>
               Note: We have generated an example initial storage for your
-              purpose it&rsquo;s 95% accurate hence we recommend you to use it
-              at your own risk
+              purpose it&rsquo;s currently in beta state hence we recommend you
+              to use it at your own risk.
             </p>
           </div>
         )}
