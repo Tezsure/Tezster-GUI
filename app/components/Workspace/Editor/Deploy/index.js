@@ -32,7 +32,7 @@ class DeployContract extends Component {
     const {
       sucessMsg,
       parseError,
-      michelsonCode,
+      editorMichelsonCode,
       dashboardHeader,
       exampleStorage,
       gasLimit,
@@ -44,7 +44,7 @@ class DeployContract extends Component {
 
     contractAmount = contractAmount === '' ? 0 : contractAmount;
 
-    if (michelsonCode === '') {
+    if (editorMichelsonCode === '') {
       error = 'Please upload a contract or write a michelson contract';
     } else if (parseError !== '') {
       error = 'Please resolve compilation error before deployment';
@@ -79,8 +79,8 @@ class DeployContract extends Component {
     }
     if (error === '' && sucessMsg !== '' && parseError === '') {
       let contract = '';
-      if (michelsonCode !== '') {
-        contract = michelsonCode;
+      if (editorMichelsonCode !== '') {
+        contract = editorMichelsonCode;
       }
       this.props.deployContractAction({
         contract,
