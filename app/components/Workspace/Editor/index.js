@@ -51,7 +51,6 @@ class App extends Component {
       siderBarCollapsed: false,
       sucessMsg: '',
       parseError: '',
-      michelsonCode: '',
       storageFormat: '',
       storageValue: '',
       uploadedContract: '',
@@ -63,7 +62,6 @@ class App extends Component {
     this.handleUploadContract = this.handleUploadContract.bind(this);
     this.fetchSelectedContract = this.fetchSelectedContract.bind(this);
     this.handleGetInitialStorage = this.handleGetInitialStorage.bind(this);
-    this.handleEditorCodeOnChange = this.handleEditorCodeOnChange.bind(this);
     this.handleSidebarToggle = this.handleSidebarToggle.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
   }
@@ -99,9 +97,9 @@ class App extends Component {
     )[0];
     const michelsonCode = selectedContract.contract;
     this.setState({
-      michelsonCode,
       selectedContractFromDropdown: contractLabel,
     });
+    this.props.handleEditorCodeOnChange(michelsonCode);
   }
 
   async compileContract() {
@@ -111,7 +109,7 @@ class App extends Component {
       sucessMsg: 'Please wait while we compile your code...',
     });
     this.props.handleContractsTabChangeAction('Output');
-    const { michelsonCode } = this.state;
+    const { editorMichelsonCode } = this.props;
     let parseError = '';
     let sucessMsg = '';
     let storageFormat = '';
@@ -119,7 +117,7 @@ class App extends Component {
     const parser = new nearley.Parser(
       nearley.Grammar.fromCompiled(Grammer.default)
     );
-    const result = await preProcessMichelsonScript(michelsonCode);
+    const result = await preProcessMichelsonScript(editorMichelsonCode);
 
     for (var index = 0; index < result.length; index++) {
       try {
@@ -131,7 +129,7 @@ class App extends Component {
     }
     if (parseError !== '') {
       var commentsRegex = /\s+(#.*)/g;
-      var codeSection = michelsonCode.replace(commentsRegex, '');
+      var codeSection = editorMichelsonCode.replace(commentsRegex, '');
       var row;
       var col;
       var michelsonCodeRow;
@@ -143,7 +141,7 @@ class App extends Component {
         }
         return false;
       });
-      michelsonCode.split('\n').some((elem, michelsonIndex) => {
+      editorMichelsonCode.split('\n').some((elem, michelsonIndex) => {
         if (elem.indexOf(parseError.token.value) !== -1) {
           michelsonCodeRow = michelsonIndex + 1;
           return true;
@@ -164,7 +162,7 @@ class App extends Component {
     }
 
     if (index === result.length && parseError === '') {
-      storageFormat = await this.handleGetInitialStorage(michelsonCode);
+      storageFormat = await this.handleGetInitialStorage(editorMichelsonCode);
       storageValue = GetExampleStorage(storageFormat);
       sucessMsg = 'Code compiled sucessfully without any errors.';
     }
@@ -198,19 +196,13 @@ class App extends Component {
     const uploadedContract = fs
       .readFileSync(event.target.files[0].path)
       .toString('utf-8');
-    this.setState({
-      uploadedContractName: event.target.files[0].name,
-      uploadedContract,
-      michelsonCode: uploadedContract,
-    });
-  }
-
-  handleEditorCodeOnChange(michelsonCode) {
-    this.setState({
-      parseError: '',
-      sucessMsg: '',
-      michelsonCode,
-    });
+    this.setState(
+      {
+        uploadedContractName: event.target.files[0].name,
+        uploadedContract,
+      },
+      () => this.props.handleEditorCodeOnChange(uploadedContract)
+    );
   }
 
   render() {
@@ -307,13 +299,13 @@ class App extends Component {
               height="90%"
               theme={this.state.currentTheme}
               name="editor"
-              onChange={this.handleEditorCodeOnChange}
+              onChange={this.props.handleEditorCodeOnChange}
               fontSize={parseInt(this.state.currentFont, 10)}
               showPrintMargin={false}
               showGutter
               highlightActiveLine
               wrapEnabled={this.state.wordWrap}
-              value={this.state.michelsonCode}
+              value={this.props.editorMichelsonCode}
               setOptions={{
                 autoScrollEditorIntoView: true,
                 showLineNumbers: true,
