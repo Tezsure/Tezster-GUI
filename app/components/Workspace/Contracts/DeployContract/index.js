@@ -81,7 +81,10 @@ class DeployContract extends Component {
       error = 'Not enough balance to deploy the contract';
     } else if (gasLimit < 100000) {
       error = 'Gas limit cannot be less than 10000';
-    } else if (gasPrice > this.props.selectedContractAmountBalance) {
+    } else if (
+      gasPrice >
+      parseInt(this.props.selectedContractAmountBalance, 10) * 1000000
+    ) {
       error = "Gas limit cannot be greater than selected contract's balance";
     } else if (
       parseInt(contractAmount, 10) >
