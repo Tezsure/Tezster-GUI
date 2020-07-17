@@ -32,19 +32,19 @@ class DeployContract extends Component {
     const {
       sucessMsg,
       parseError,
-      michelsonCode,
+      editorMichelsonCode,
       dashboardHeader,
       exampleStorage,
-      gasLimit,
       selectedContractAmountBalance,
     } = this.props;
+    const { gasLimit } = this.state;
     let { accounts, contractLabel, storageValue, contractAmount } = this.state;
     const gasPrice = (parseInt(gasLimit, 10) || 100000 / 1000000).toFixed(3);
     storageValue = storageValue.trim() === '' ? exampleStorage : storageValue;
 
     contractAmount = contractAmount === '' ? 0 : contractAmount;
 
-    if (michelsonCode === '') {
+    if (editorMichelsonCode === '') {
       error = 'Please upload a contract or write a michelson contract';
     } else if (parseError !== '') {
       error = 'Please resolve compilation error before deployment';
@@ -54,7 +54,10 @@ class DeployContract extends Component {
       error = 'Please select an account';
     } else if (gasLimit < 100000) {
       error = 'Gas limit cannot be less than 10000';
-    } else if (gasPrice > selectedContractAmountBalance) {
+    } else if (
+      gasPrice >
+      parseInt(selectedContractAmountBalance, 10) * 1000000
+    ) {
       error = "Gas limit cannot be greater than selected contract's balance";
     } else if (contractLabel === '') {
       error = 'Please enter contract label';
@@ -79,8 +82,8 @@ class DeployContract extends Component {
     }
     if (error === '' && sucessMsg !== '' && parseError === '') {
       let contract = '';
-      if (michelsonCode !== '') {
-        contract = michelsonCode;
+      if (editorMichelsonCode !== '') {
+        contract = editorMichelsonCode;
       }
       this.props.deployContractAction({
         contract,
@@ -175,7 +178,7 @@ class DeployContract extends Component {
             className="form-control"
             placeholder="Enter gas limit to deploy contract"
             style={{ marginRight: '10px' }}
-            value={this.state.gasLimit || 100000}
+            value={this.state.gasLimit}
             onChange={this.handleInputChange}
           />
         </div>
@@ -209,8 +212,8 @@ class DeployContract extends Component {
             </p>
             <p>
               Note: We have generated an example initial storage for your
-              purpose it&rsquo;s 95% accurate hence we recommend you to use it
-              at your own risk
+              purpose it&rsquo;s currently in beta state hence we recommend you
+              to use it at your own risk.
             </p>
           </span>
         ) : (

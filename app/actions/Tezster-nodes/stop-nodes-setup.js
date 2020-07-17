@@ -177,35 +177,12 @@ export function stopTezsterNodesAction() {
               if (isTezsterRunning && totalProgressPercentage < 100) {
                 dispatch(stopNodesProgress(totalProgressPercentage));
               }
-              if (!isTezsterRunning && totalProgressPercentage === 100) {
-                setTimeout(
-                  () =>
-                    dispatch({
-                      type: 'STARTING_NODES',
-                      payload: {
-                        loader: false,
-                      },
-                    }),
-                  4000
-                );
-                dispatch({
-                  type: 'TEZSTER_STOP_NODES',
-                  payload: {
-                    msg: 'Nodes stopped successfully.',
-                    totalProgressPercentage: 100,
-                  },
-                });
-                dispatch({
-                  type: 'TEZSTER_SHOW_STOP_NODES',
-                  payload: false,
-                });
-                dispatch({
-                  type: 'GET_ACCOUNTS',
-                  payload: [],
-                });
-                dispatch(setTezsterConfigAction());
+              if (!isTezsterRunning && totalProgressPercentage <= 100) {
+                dispatch(PostStopNodesTask(totalProgressPercentage));
+                return clearInterval(progressInterval);
               }
               if (!isTezsterRunning && totalProgressPercentage > 100) {
+                dispatch(PostStopNodesTask(totalProgressPercentage));
                 return clearInterval(progressInterval);
               }
             }, 1000);
@@ -281,6 +258,45 @@ function stopNodesProgress(totalProgressPercentage) {
         enum: 'STARTING_STREAM',
         totalProgressPercentage,
       },
+    });
+  };
+}
+
+function PostStopNodesTask(containerId) {
+  const docker = new Docker();
+  return (dispatch) => {
+    setTimeout(
+      () =>
+        dispatch({
+          type: 'STARTING_NODES',
+          payload: {
+            loader: false,
+          },
+        }),
+      4000
+    );
+    dispatch({
+      type: 'TEZSTER_STOP_NODES',
+      payload: {
+        msg: 'Nodes stopped successfully.',
+        totalProgressPercentage: 100,
+      },
+    });
+    dispatch({
+      type: 'TEZSTER_SHOW_STOP_NODES',
+      payload: false,
+    });
+    dispatch({
+      type: 'GET_ACCOUNTS',
+      payload: [],
+    });
+    dispatch(setTezsterConfigAction());
+    docker.listContainers({ all: true }, (err, containers) => {
+      const tezsterContainerId = containers.filter((elem) =>
+        elem.Names[0].includes('tezster')
+      )[0].Id;
+      if (tezsterContainerId)
+        docker.getContainer(tezsterContainerId).remove({ force: true });
     });
   };
 }
