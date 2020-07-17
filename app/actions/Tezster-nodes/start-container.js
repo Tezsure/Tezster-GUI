@@ -112,6 +112,7 @@ export default function installTezsterContainer(args) {
       });
     } else {
       setTimeout(() => {
+        dispatch(getAccountsAction(args));
         return dispatch({
           type: 'STARTING_NODES',
           payload: {

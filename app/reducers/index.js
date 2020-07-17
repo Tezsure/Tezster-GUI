@@ -4,6 +4,7 @@ import { combineReducers } from 'redux';
 import { connectRouter } from 'connected-react-router';
 import type { HashHistory } from 'history';
 import { blocks, blockSearch, searchText } from './Workspace/blocks';
+import editorMichelsonCode from './Workspace/editor';
 import {
   sidebarToggleState,
   currentTab,
@@ -68,6 +69,7 @@ export default function createRootReducer(history: HashHistory) {
     isAvailableLocalnodes,
     localConfig,
     currentTab,
+    editorMichelsonCode,
     tezsterError,
     tezsterImageDownload,
     tezsterSetup,
