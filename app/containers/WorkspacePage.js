@@ -4,6 +4,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Workspace from '../components/Workspace';
+import handleEditorCodeOnChange from '../actions/Workspace/Editor';
 import {
   sidebarToggleAction,
   handleAccordionAction,
@@ -111,6 +112,8 @@ const mapDispatchToProps = (dispatch) => ({
   checkLocalnodesAction: (payload) => dispatch(checkLocalnodesAction(payload)),
   getLocalConfigAction: (payload) => dispatch(getLocalConfigAction(payload)),
   handleAccordionAction: (payload) => dispatch(handleAccordionAction(payload)),
+  handleEditorCodeOnChange: (payload) =>
+    dispatch(handleEditorCodeOnChange(payload)),
   installLocalnodesAction: (payload) =>
     dispatch(installLocalnodesAction(payload)),
   startTezsterNodesAction: (payload) =>
@@ -140,6 +143,7 @@ const mapStateToProps = (state) => ({
   selectedContractAmountBalance: state.selectedContractAmountBalance,
   isAvailableLocalnodes: state.isAvailableLocalnodes,
   showMainDashboard: state.showMainDashboard,
+  editorMichelsonCode: state.editorMichelsonCode,
   tezsterError: state.tezsterError,
   tezsterSetup: state.tezsterSetup,
   tezsterShowStopNodes: state.tezsterShowStopNodes,

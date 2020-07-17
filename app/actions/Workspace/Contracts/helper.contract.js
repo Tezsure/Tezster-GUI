@@ -54,6 +54,8 @@ export function HandleContractErrorsHelper(error) {
     '\n Invalid parameter value provided for the given parameter type';
   const CONTRACT_DOESNOT_EXISTS = `Contract no longer exists on the selected network type`;
   const ACCOUNT_ALREADY_ACTIVATED = `Account has already been activated please restore the account`;
+  const GAS_LIMIT_ERROR =
+    '\nNot enough gas provided please increase the gas limit.\nWe recommend to increase it to 500000';
   switch (true) {
     case error.toString().includes('Unexpected word token'):
       return error.toString().replace(/(?:\r\n|\r|\n|\s\s+)/g, ' ');
@@ -87,6 +89,10 @@ export function HandleContractErrorsHelper(error) {
       return ACCOUNT_ALREADY_ACTIVATED;
     case error.toString().includes(`non_existing_contract`):
       return CONTRACT_DOESNOT_EXISTS;
+    case error
+      .toString()
+      .includes(`proto.006-PsCARTHA.gas_exhausted.operation`):
+      return GAS_LIMIT_ERROR;
     default:
       return error.toString().replace(/(?:\r\n|\r|\n|\s\s+)/g, ' ');
   }

@@ -33,7 +33,7 @@ function Onboard() {
         </div>
         <div className="workplace-update-container">
           <div className="footer-text">
-            To learn about our products &amp; it&rsquo;s feature&rsquo;s
+            Learn more about our products and their features
           </div>
           <NavLink
             to="#"

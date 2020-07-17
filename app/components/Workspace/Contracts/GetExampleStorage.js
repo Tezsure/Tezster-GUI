@@ -1,6 +1,34 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable no-fallthrough */
 /* eslint-disable no-param-reassign */
+function occurrence(string, substring) {
+  let counter = 0;
+  // eslint-disable-next-line no-unused-vars
+  let i = 0;
+  const sub = substring.toLowerCase();
+  const str = string.toLowerCase();
+  const array = [];
+  let index = -1;
+
+  do {
+    index = str.indexOf(sub, index + 1);
+    if (index !== -1) {
+      array[counter++] = index;
+      i = index;
+    }
+  } while (index !== -1);
+  return counter;
+}
+
+function createRegexPattern(regex, initialStorage, patternString) {
+  let preparedRegex = regex;
+  const ln = occurrence(initialStorage.split(patternString)[0], '(') + 1;
+  for (let i = 0; i < ln; i++) {
+    preparedRegex += '\\)';
+  }
+  return preparedRegex;
+}
+
 function balancedString(str) {
   let resultString = '';
   let count = 0;
@@ -17,8 +45,28 @@ function balancedString(str) {
   if (count !== 0) for (let i = 0; i < count; i++) resultString += ')';
   return resultString;
 }
+function reduceMapAndBigMap(initialStorage) {
+  let pattern = `\\(map .*?\\)`;
+  const mapRegex = new RegExp(
+    createRegexPattern(pattern, initialStorage, 'map'),
+    'g'
+  );
+  pattern = '\\(big_map .*?\\)';
+  const bigMapRegex = new RegExp(
+    createRegexPattern(pattern, initialStorage, 'big_map'),
+    'g'
+  );
+  if (mapRegex.test(initialStorage)) {
+    initialStorage = initialStorage.replace(mapRegex, `{}`);
+  }
+  if (bigMapRegex.test(initialStorage)) {
+    initialStorage = initialStorage.replace(bigMapRegex, `{}`);
+  }
+  return initialStorage;
+}
 export default function getExampleStorage(initialStorage) {
   let regex;
+  initialStorage = reduceMapAndBigMap(initialStorage);
   switch (true) {
     case /\(address .*?\)/gm.test(initialStorage):
       regex = /\(address .*?\)/gm;
@@ -176,6 +224,6 @@ export default function getExampleStorage(initialStorage) {
       regex = /\(big_map .*?\)/gm;
       initialStorage = initialStorage.replace(regex, '{} )');
       initialStorage = balancedString(initialStorage);
-      return initialStorage;
+      return initialStorage.trim();
   }
 }

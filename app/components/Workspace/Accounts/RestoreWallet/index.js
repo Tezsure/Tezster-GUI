@@ -24,7 +24,7 @@ class index extends Component {
   }
 
   handleInputChange(event) {
-    this.setState({ [event.target.name]: event.target.value });
+    this.setState({ [event.target.name]: event.target.value.trim() });
   }
 
   async handleRestoreWallet() {
@@ -121,7 +121,7 @@ class index extends Component {
               disabled={this.props.buttonState}
               onClick={this.handleRestoreWallet}
             >
-              Create Wallet
+              Restore Wallet
             </button>
           );
       }

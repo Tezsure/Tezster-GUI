@@ -81,7 +81,10 @@ class DeployContract extends Component {
       error = 'Not enough balance to deploy the contract';
     } else if (gasLimit < 100000) {
       error = 'Gas limit cannot be less than 10000';
-    } else if (gasPrice > this.props.selectedContractAmountBalance) {
+    } else if (
+      gasPrice >
+      parseInt(this.props.selectedContractAmountBalance, 10) * 1000000
+    ) {
       error = "Gas limit cannot be greater than selected contract's balance";
     } else if (
       parseInt(contractAmount, 10) >
@@ -271,15 +274,27 @@ class DeployContract extends Component {
             <div className="modal-input" style={{ backgroundColor: '#f1f3f5' }}>
               <p>{this.state.storageFormat}</p>
             </div>
+          </span>
+        ) : (
+          ''
+        )}
+        {this.state.storageFormat ? (
+          <div className="modal-input" style={{ paddingBottom: '0rem' }}>
             <p>
               Note: please use quotes for string eg: &quot;hello world&quot;
             </p>
+          </div>
+        ) : (
+          ''
+        )}
+        {this.state.storageFormat ? (
+          <div className="modal-input" style={{ paddingBottom: '0rem' }}>
             <p>
               Note: We have generated an example initial storage for your
-              purpose it&rsquo;s 95% accurate hence we recommend you to use it
-              at your own risk
+              purpose it&rsquo;s currently in beta state hence we recommend you
+              to use it at your own risk.
             </p>
-          </span>
+          </div>
         ) : (
           ''
         )}

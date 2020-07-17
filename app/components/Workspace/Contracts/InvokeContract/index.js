@@ -151,6 +151,15 @@ class InvokeContract extends Component {
         {elem}
       </th>
     ));
+    const tableBodyDataType = selectedEntryPoint[0].parameter.map(
+      (elem, index) => {
+        return (
+          <td className="table-body-cell" key={elem + index}>
+            {`type : ${selectedEntryPoint[0].parameterTypes[index]}`}
+          </td>
+        );
+      }
+    );
     const tableBody = selectedEntryPoint[0].parameter.map((elem, index) => {
       return (
         <td className="table-body-cell" key={elem + index}>
@@ -176,6 +185,7 @@ class InvokeContract extends Component {
           <tr className="thead-dark">{tableHeaders}</tr>
         </thead>
         <tbody>
+          <tr className="table-row">{tableBodyDataType}</tr>
           <tr className="table-row">{tableBody}</tr>
         </tbody>
       </table>
@@ -295,14 +305,18 @@ class InvokeContract extends Component {
           ''
         )}
         {this.state.selectedEntryPoint !== '0' && (
-          <div className="modal-input">
+          <div className="modal-input" style={{ paddingBottom: '0rem' }}>
             <p>
               Note: please use quotes for string eg: &quot;hello world&quot;
             </p>
+          </div>
+        )}
+        {this.state.selectedEntryPoint !== '0' && (
+          <div className="modal-input" style={{ paddingBottom: '0rem' }}>
             <p>
               Note: We have generated an example initial storage for your
-              purpose it&rsquo;s 95% accurate hence we recommend you to use it
-              at your own risk
+              purpose it&rsquo;s currently in beta state hence we recommend you
+              to use it at your own risk.
             </p>
           </div>
         )}
