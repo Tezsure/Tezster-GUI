@@ -96,7 +96,7 @@ module.exports = {
   },
   ConseilJS: {
     url: 'https://conseil-dev.cryptonomic-infra.tech',
-    apiKey: '04c98bd2-7cc5-49f2-9108-2d48efcbd660',
+    apiKey: '60d7bbd0-ad43-4768-9ee3-64c722874f96',
   },
   transactions: {
     Carthagenet: [],

@@ -128,3 +128,27 @@
   width: 2rem;
   background-repeat: no-repeat;
 }
+.delete-icon {
+  background: url('../../../resources/icons/delete.png');
+  display: inline-flex;
+  height: 2rem;
+  width: 2rem;
+  cursor: pointer;
+  background-repeat: no-repeat;
+}
+.delete-icon-red {
+  background: url('../../../resources/icons/delete-red.png');
+  display: inline-flex;
+  height: 2rem;
+  width: 2rem;
+  cursor: pointer;
+  background-repeat: no-repeat;
+}
+.checkmark-icon {
+  background: url('../../../resources/icons/correct.png');
+  display: inline-flex;
+  height: 2rem;
+  width: 2rem;
+  cursor: pointer;
+  background-repeat: no-repeat;
+}

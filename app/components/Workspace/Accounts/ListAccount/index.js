@@ -8,6 +8,14 @@
 import React, { Component } from 'react';
 import AccountsModal from '../AccountsInfoModal';
 
+const DISABLED_LABELS = [
+  'bootstrap1',
+  'bootstrap2',
+  'bootstrap3',
+  'bootstrap4',
+  'bootstrap5',
+];
+
 class Table extends Component {
   constructor(props) {
     super(props);
@@ -40,6 +48,8 @@ class Table extends Component {
     const { networkId } = this.props.dashboardHeader;
     const { userAccounts } = this.props;
     const Accounts = userAccounts.map((elem, index) => {
+      const DISABLED_DELETE =
+        DISABLED_LABELS.filter((label) => label === elem.label).length > 0;
       return (
         <tr className="table-row" key={elem.account + index}>
           <td className="table-body-cell">
@@ -77,17 +87,40 @@ class Table extends Component {
             </div>
           </td>
           <td className="table-body-cell">
-            <div className="cards-header">
-              <h4>INDEX</h4>
-            </div>
-            <div className="cards-contents">
-              <p className="account-address-content">0</p>
-            </div>
-          </td>
-          <td className="table-body-cell">
             <span
               className="icon-key"
+              style={{ marginTop: '5px' }}
               onClick={() => this.handleWalletModalShow(elem)}
+            />
+          </td>
+          <td
+            className="table-body-cell"
+            style={
+              DISABLED_DELETE
+                ? {
+                    cursor: 'not-allowed',
+                    pointerEvents: 'none',
+                    textAlign: 'center',
+                  }
+                : { textAlign: 'center' }
+            }
+            disabled={DISABLED_DELETE}
+          >
+            <span
+              className="delete-icon"
+              style={
+                DISABLED_DELETE
+                  ? {
+                      cursor: 'not-allowed',
+                      pointerEvents: 'none',
+                      marginTop: '10px',
+                    }
+                  : { marginTop: '10px' }
+              }
+              disabled={DISABLED_DELETE}
+              onClick={() =>
+                this.props.deleteAccountAction({ ...this.props, ...elem })
+              }
             />
           </td>
         </tr>

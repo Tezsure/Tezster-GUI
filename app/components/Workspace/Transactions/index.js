@@ -53,7 +53,7 @@ class Transactions extends Component {
                   onClick={this.handleModalToggle}
                   className="btn btn-success"
                 >
-                  Transfer Tezos
+                  Transfer Tez
                 </button>
               </div>
             </div>
