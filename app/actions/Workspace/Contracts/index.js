@@ -5,13 +5,17 @@ import {
   HandleContractErrorsHelper,
   ContractDeployedStatusHelper,
 } from './helper.contract';
+import { storageName } from '../../../db-config/tezster.config';
 
 const {
   DeployContractAPI,
   InvokeContractAPI,
   GetStorageAPI,
+  GetContractFromContractIdAPI,
 } = require('./api.contract');
 const { GetBalanceAPI } = require('../Accounts/api.accounts');
+
+const LOCAL_STORAGE_NAME = storageName;
 
 export function getAccountBalanceAction(args) {
   return (dispatch) => {
@@ -150,5 +154,61 @@ export function handleContractsTabChangeAction(TAB_NAME) {
   return {
     type: 'CONTRACTS_TAB_TOGGLE',
     payload: TAB_NAME,
+  };
+}
+
+export function handleAddContractAction(args) {
+  const { contractAddress } = args;
+  return (dispatch) => {
+    dispatch({
+      type: 'BUTTON_LOADING_STATE',
+      payload: true,
+    });
+    GetContractFromContractIdAPI(args, (err, response) => {
+      if (err) {
+        swal('Error!', `Contract addition failed ${err.toString()}`, 'error');
+        dispatch({
+          type: 'BUTTON_LOADING_STATE',
+          payload: false,
+        });
+        return dispatch({
+          type: 'DEPLOY_CONTRACT_ERR',
+          payload: response,
+        });
+      }
+      swal(
+        'Success!',
+        `Contract ${contractAddress} added successfully`,
+        'success'
+      );
+      dispatch({
+        type: 'BUTTON_LOADING_STATE',
+        payload: false,
+      });
+      return dispatch({
+        type: 'DEPLOY_CONTRACT_SUCCESS',
+        payload: contractAddress,
+      });
+    });
+  };
+}
+
+export function deleteContractAction(args) {
+  return (dispatch) => {
+    const { networkId } = args.dashboardHeader;
+    const networkName = networkId.split('-')[0];
+    const LocalStorage = JSON.parse(localStorage.getItem(LOCAL_STORAGE_NAME));
+    LocalStorage.contracts[networkName] = LocalStorage.contracts[
+      networkName
+    ].filter((elem) => elem.contractAddress !== args.contractAddress);
+    localStorage.setItem(
+      LOCAL_STORAGE_NAME,
+      JSON.stringify({ ...LocalStorage })
+    );
+    swal('Success!', 'Contract deleted sucessfully', 'success');
+    return dispatch({
+      type: 'DEPLOY_CONTRACT_SUCCESS',
+      payload: LocalStorage.contracts[networkName],
+    });
   };
 }

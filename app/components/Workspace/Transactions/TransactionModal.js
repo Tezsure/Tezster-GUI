@@ -17,7 +17,7 @@ class TransactionModal extends Component {
       amount: '',
       suggestions: [],
       amountErr: '',
-      gasPrice: '',
+      gasPrice: '1500',
       gasPriceErr: '',
     };
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -110,8 +110,7 @@ class TransactionModal extends Component {
       errorFlag = true;
     }
     if (stateParams.gasPrice === '') {
-      stateParams.gasPriceErr = 'Please enter gas price';
-      errorFlag = true;
+      stateParams.gasPrice = 1500;
     }
     if (parseInt(stateParams.gasPrice, 10) < 1500) {
       stateParams.gasPriceErr =
@@ -162,6 +161,8 @@ class TransactionModal extends Component {
   }
 
   render() {
+    const gasPrice =
+      this.state.gasPrice === 'undefined' ? '1500' : this.state.gasPrice;
     const { recieverAccount, suggestions } = this.state;
     const sendersAccounts = this.props.userAccounts.map((elem, index) => (
       <option key={elem.account + index} value={elem.account}>
@@ -201,7 +202,7 @@ class TransactionModal extends Component {
         <div className="modal-dialog" role="document">
           <div className="modal-content" style={{ width: '600px' }}>
             <div className="modal-header">
-              <h5 className="modal-title">Transfer/Send Tezos</h5>
+              <h5 className="modal-title">Transfer/Send Tez</h5>
               <button
                 type="button"
                 className="close"
@@ -293,7 +294,7 @@ class TransactionModal extends Component {
                 name="gasPrice"
                 className="form-control"
                 placeholder="Enter your gas price eg 1500"
-                value={this.state.gasPrice}
+                value={gasPrice}
                 onChange={this.handleInputChange}
                 style={{ width: '60%' }}
               />

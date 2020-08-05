@@ -131,6 +131,7 @@ export function executeTransactionAction(args) {
             destination: args.recieverAccount,
             amount: args.amount,
             operationResultStatus: 'applied',
+            timestamp: new Date(),
           },
         });
         localStorage.setItem(LOCAL_STORAGE_NAME, JSON.stringify(LocalStorage));
@@ -146,6 +147,7 @@ export function executeTransactionAction(args) {
             destination: args.recieverAccount,
             amount: args.amount,
             operationResultStatus: 'applied',
+            timestamp: new Date(),
           },
         });
         localStorage.setItem(LOCAL_STORAGE_NAME, JSON.stringify(LocalStorage));
@@ -165,6 +167,7 @@ export function executeTransactionAction(args) {
             destination: args.recieverAccount,
             amount: args.amount,
             operationResultStatus: 'applied',
+            timestamp: new Date(),
           },
         });
         localStorage.setItem(LOCAL_STORAGE_NAME, JSON.stringify(LocalStorage));

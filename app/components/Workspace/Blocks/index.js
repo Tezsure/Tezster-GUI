@@ -13,11 +13,25 @@ import Accounts from './Accounts';
 import Operations from './Operations';
 import SearchedBlock from './SearchedBlock';
 import 'react-circular-progressbar/dist/styles.css';
+import RefreshIcon from './RefreshIcon';
 
 class index extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      spinnerLoading: false,
+    };
+    this.handleSpinnerloading = this.handleSpinnerloading.bind(this);
+  }
+
+  handleSpinnerloading() {
+    const { spinnerLoading } = this.state;
+    this.props.getBlockHeadsAction(this.props);
+    this.setState({ spinnerLoading: !spinnerLoading }, () => {
+      setTimeout(() => {
+        this.setState({ spinnerLoading });
+      }, 1000);
+    });
   }
 
   render() {
@@ -80,8 +94,18 @@ class index extends Component {
                 <div className="cards-header">
                   <h4>{Math.floor(blockDataResponse.cycle) || 'N/A'}</h4>
                 </div>
-                <div className="cards-contents">
+                <div
+                  className="cards-contents"
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                  }}
+                >
                   <p>Current cycle</p>
+                  <RefreshIcon
+                    {...this.state}
+                    handleSpinnerloading={this.handleSpinnerloading}
+                  />
                 </div>
               </div>
               <div className="cards blocks-cards">

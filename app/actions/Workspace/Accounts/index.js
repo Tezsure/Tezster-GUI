@@ -288,6 +288,7 @@ export function restoreFaucetAccountAction(args) {
           restoredAccount.label = args.label;
           restoredAccount.secret = account.secretKey;
           restoredAccount.sk = account.secretKey;
+          userAccounts[networkName] = args.userAccounts;
           userAccounts[networkName].push(restoredAccount);
           LocalConfig.userAccounts = userAccounts;
           localStorage.setItem(LOCAL_STORAGE_NAME, JSON.stringify(LocalConfig));
@@ -334,5 +335,21 @@ export function toggleAccountsModalAction(MODAL_STATE) {
   return {
     type: 'TOGGLE_ACCOUNTS_MODAL',
     payload: MODAL_STATE,
+  };
+}
+export function deleteAccountAction(args) {
+  return (dispatch) => {
+    const { networkId } = args.dashboardHeader;
+    const networkName = networkId.split('-')[0];
+    const LocalStorage = JSON.parse(localStorage.getItem(LOCAL_STORAGE_NAME));
+    LocalStorage.userAccounts[networkName] = args.userAccounts.filter(
+      (elem) => elem.pkh !== args.pkh
+    );
+    localStorage.setItem(LOCAL_STORAGE_NAME, JSON.stringify(LocalStorage));
+    swal('Success!', 'Account deleted sucessfully', 'success');
+    return dispatch({
+      type: 'GET_ACCOUNTS',
+      payload: LocalStorage.userAccounts[networkName],
+    });
   };
 }

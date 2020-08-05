@@ -158,3 +158,39 @@ export async function GetStorageAPI(args, callback) {
     callback(error, null);
   }
 }
+export async function GetContractFromContractIdAPI(args, callback) {
+  try {
+    const network = args.dashboardHeader.networkId.split('-')[0].toLowerCase();
+    const conseilServer = {
+      url: ConseilJS.url,
+      apiKey: ConseilJS.apiKey,
+      network,
+    };
+    const { contractLabel, contractAddress } = args;
+    const contract = await conseiljs.TezosConseilClient.getAccount(
+      conseilServer,
+      conseilServer.network,
+      contractAddress
+    );
+    const contractCode = contract.script;
+    const LocalStorage = JSON.parse(localStorage.getItem(LOCAL_STORAGE_NAME));
+    LocalStorage.contracts[args.dashboardHeader.networkId.split('-')[0]].push({
+      name: contractLabel,
+      originated_contracts: contractAddress,
+      contract: contractCode,
+    });
+    localStorage.setItem(
+      LOCAL_STORAGE_NAME,
+      JSON.stringify({ ...LocalStorage })
+    );
+    return callback(null, contractCode);
+  } catch (error) {
+    if (error.toString().includes('accounts with 404')) {
+      return callback(
+        'https://conseil-dev.cryptonomic-infra.tech/v2/data/tezos/localnode \n accounts with 404',
+        null
+      );
+    }
+    return callback(error, null);
+  }
+}

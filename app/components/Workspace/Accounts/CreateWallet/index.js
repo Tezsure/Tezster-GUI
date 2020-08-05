@@ -194,7 +194,10 @@ class index extends Component {
         </div>
         <div className="wallet-sidebar-container">
           <div className="alert alert-warning" role="alert">
-            <p>Note: The account created will be a non fundraiser account.</p>
+            <p>
+              Note: Do not import production keys / wallets / fundraiser
+              wallets.
+            </p>
           </div>
           <div className="alert alert-warning" role="alert">
             <p>
