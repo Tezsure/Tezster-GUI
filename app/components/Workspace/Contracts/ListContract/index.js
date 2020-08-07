@@ -133,8 +133,13 @@ export default class ListContract extends Component {
                 className={
                   this.state.addContract ? 'btn btn-warning' : 'btn btn-success'
                 }
-                disabled={this.props.buttonState}
+                disabled={this.props.buttonState || networkId === 'Localnode'}
                 style={{ borderRadius: '0px' }}
+                title={
+                  networkId === 'Localnode'
+                    ? 'Cannot add contract on Localnode'
+                    : 'Click to add contract'
+                }
                 onClick={() => this.toggleAddContract()}
               >
                 {this.state.addContract ? 'Cancel' : 'Add Contract'}

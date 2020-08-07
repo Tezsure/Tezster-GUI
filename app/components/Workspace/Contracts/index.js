@@ -79,7 +79,7 @@ class index extends Component {
                 this.props.handleContractsTabChangeAction('listContract')
               }
             >
-              Add contract
+              List/Add contract
             </span>
           </li>
         </ul>

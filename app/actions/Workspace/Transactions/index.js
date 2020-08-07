@@ -122,6 +122,7 @@ export function executeTransactionAction(args) {
         !Transactions.hasOwnProperty(networkName):
         Transactions.Localnode = [];
         Transactions.Localnode[args.senderAccount] = [];
+        Transactions.Localnode[args.recieverAccount] = [];
         LocalStorage.transactions[networkName][args.senderAccount].push({
           op: {
             opHash: 'N/A',
@@ -129,7 +130,19 @@ export function executeTransactionAction(args) {
           tx: {
             source: args.senderAccount,
             destination: args.recieverAccount,
-            amount: args.amount,
+            amount: parseInt(args.amount, 10) * 1000000,
+            operationResultStatus: 'applied',
+            timestamp: new Date(),
+          },
+        });
+        LocalStorage.transactions[networkName][args.recieverAccount].push({
+          op: {
+            opHash: 'N/A',
+          },
+          tx: {
+            source: args.senderAccount,
+            destination: args.recieverAccount,
+            amount: parseInt(args.amount, 10) * 1000000,
             operationResultStatus: 'applied',
             timestamp: new Date(),
           },
@@ -145,7 +158,19 @@ export function executeTransactionAction(args) {
           tx: {
             source: args.senderAccount,
             destination: args.recieverAccount,
-            amount: args.amount,
+            amount: parseInt(args.amount, 10) * 1000000,
+            operationResultStatus: 'applied',
+            timestamp: new Date(),
+          },
+        });
+        LocalStorage.transactions[networkName][args.recieverAccount].push({
+          op: {
+            opHash: 'N/A',
+          },
+          tx: {
+            source: args.senderAccount,
+            destination: args.recieverAccount,
+            amount: parseInt(args.amount, 10) * 1000000,
             operationResultStatus: 'applied',
             timestamp: new Date(),
           },
@@ -157,6 +182,7 @@ export function executeTransactionAction(args) {
         LocalStorage.transactions[networkName] = {
           ...LocalStorage.transactions[networkName],
           [args.senderAccount]: [],
+          [args.recieverAccount]: [],
         };
         LocalStorage.transactions[networkName][args.senderAccount].push({
           op: {
@@ -165,7 +191,19 @@ export function executeTransactionAction(args) {
           tx: {
             source: args.senderAccount,
             destination: args.recieverAccount,
-            amount: args.amount,
+            amount: parseInt(args.amount, 10) * 1000000,
+            operationResultStatus: 'applied',
+            timestamp: new Date(),
+          },
+        });
+        LocalStorage.transactions[networkName][args.recieverAccount].push({
+          op: {
+            opHash: 'N/A',
+          },
+          tx: {
+            source: args.senderAccount,
+            destination: args.recieverAccount,
+            amount: parseInt(args.amount, 10) * 1000000,
             operationResultStatus: 'applied',
             timestamp: new Date(),
           },

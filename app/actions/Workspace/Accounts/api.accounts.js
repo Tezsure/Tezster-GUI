@@ -104,13 +104,27 @@ export async function ActivateAccountsAPI(args, callback) {
 }
 
 export async function CreateFundraiserAccountAPI(args, callback) {
-  const keystore = await conseiljs.TezosWalletUtil.unlockIdentityWithMnemonic(
-    args.mnemonic,
-    args.password || ''
-  );
-  keystore.sk = keystore.privateKey;
-  keystore.pkh = args.pkh;
-  keystore.pk = keystore.publicKey;
-  keystore.secretKey = keystore.privateKey;
-  return callback(null, keystore);
+  try {
+    if (args.mnemonic) {
+      const keystore = await conseiljs.TezosWalletUtil.unlockIdentityWithMnemonic(
+        args.mnemonic,
+        args.password || ''
+      );
+      keystore.sk = keystore.privateKey;
+      keystore.pkh = args.pkh;
+      keystore.pk = keystore.publicKey;
+      keystore.secretKey = keystore.privateKey;
+      return callback(null, keystore);
+    }
+    const keystore = await conseiljs.TezosWalletUtil.restoreIdentityWithSecretKey(
+      args.privateKey
+    );
+    keystore.sk = keystore.privateKey;
+    keystore.pkh = args.pkh;
+    keystore.pk = keystore.publicKey;
+    keystore.secretKey = keystore.privateKey;
+    return callback(null, keystore);
+  } catch (exp) {
+    return callback(exp.toString(), null);
+  }
 }
