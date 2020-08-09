@@ -48,12 +48,6 @@ export async function ActivateAccountsAPI(args, callback) {
     const networkName = networkId.split('-')[0];
     const network = networkName.toLowerCase();
 
-    const conseilServer = {
-      url: ConseilJS.url,
-      apiKey: ConseilJS.apiKey,
-      network,
-    };
-
     const tezosNode = apiEndPoints[args.dashboardHeader.networkId];
     const faucet = await conseiljs.TezosWalletUtil.unlockFundraiserIdentity(
       args.faucet.mnemonic,
@@ -73,30 +67,41 @@ export async function ActivateAccountsAPI(args, callback) {
       keystore,
       args.faucet.secret
     );
-    if (
-      JSON.parse(activationResult.operationGroupID)[0].id &&
-      JSON.parse(activationResult.operationGroupID)[0].id === 'failure'
-    ) {
-      return callback(
-        JSON.parse(activationResult.operationGroupID)[0].msg,
-        null
+    if (networkName !== 'Localnode') {
+      if (
+        JSON.parse(activationResult.operationGroupID)[0].id &&
+        JSON.parse(activationResult.operationGroupID)[0].id === 'failure'
+      ) {
+        return callback(
+          JSON.parse(activationResult.operationGroupID)[0].msg,
+          null
+        );
+      }
+      const conseilServer = {
+        url: ConseilJS[networkName].url,
+        apiKey: ConseilJS[networkName].apiKey,
+        network,
+      };
+      await conseiljs.TezosConseilClient.awaitOperationConfirmation(
+        conseilServer,
+        network,
+        JSON.parse(activationResult.operationGroupID),
+        10,
+        10
       );
+      const revelationResult = await conseiljs.TezosNodeWriter.sendKeyRevealOperation(
+        tezosNode,
+        keystore
+      );
+      return callback(null, {
+        ...activationResult,
+        ...faucet,
+        operationGroupID: revelationResult.operationGroupID,
+      });
     }
-    await conseiljs.TezosConseilClient.awaitOperationConfirmation(
-      conseilServer,
-      network,
-      JSON.parse(activationResult.operationGroupID),
-      10,
-      10
-    );
-    const revelationResult = await conseiljs.TezosNodeWriter.sendKeyRevealOperation(
-      tezosNode,
-      keystore
-    );
     return callback(null, {
       ...activationResult,
       ...faucet,
-      operationGroupID: revelationResult.operationGroupID,
     });
   } catch (exp) {
     return callback(exp, null);

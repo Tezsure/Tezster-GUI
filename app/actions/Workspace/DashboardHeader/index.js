@@ -28,6 +28,15 @@ const CarthagenetSmartpyData = {
   networkId: 'Carthagenet-Smartpy',
   rpcServer: 'https://carthagenet.SmartPy.io',
 };
+
+const MainnetSmartpyData = {
+  chainId: '1074097',
+  currentBlock: '00',
+  gas_limit: '61400',
+  gas_price: '0.29392',
+  networkId: 'Mainnet-Smartpy',
+  rpcServer: 'https://mainnet.SmartPy.io',
+};
 const { apiEndPoints } = config;
 
 export function getDashboardHeaderAction(args) {
@@ -92,6 +101,12 @@ export function handleNetworkChangeAction(args) {
       dispatch({
         type: 'GET_DASHBOARD_HEADER',
         payload: CarthagenetTezsterData,
+      });
+    }
+    if (networkId === 'Mainnet-Smartpy') {
+      dispatch({
+        type: 'GET_DASHBOARD_HEADER',
+        payload: MainnetSmartpyData,
       });
     }
 

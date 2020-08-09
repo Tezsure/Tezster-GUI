@@ -47,6 +47,7 @@ export function getAccountsAction(args) {
         networkName === 'Localnode':
         payload.userAccounts.Localnode = config.identities;
         payload.userAccounts.Carthagenet = [];
+        payload.userAccounts.Mainnet = [];
         break;
       case args.isAvailableLocalnodes && userAccounts.length === 0:
         if (localStorage.hasOwnProperty(LOCAL_STORAGE_NAME)) {
@@ -70,7 +71,7 @@ export function getAccountsAction(args) {
         } else if (networkName !== 'Localnode' && !navigator.onLine) {
           return dispatch({
             type: 'GET_ACCOUNTS',
-            payload: LocalStorage.userAccounts.Carthagenet,
+            payload: LocalStorage.userAccounts[networkName],
           });
         }
         break;
@@ -90,10 +91,10 @@ export function getAccountsAction(args) {
       case networkName !== 'Localnode' &&
         navigator.onLine === false &&
         localStorage.hasOwnProperty(LOCAL_STORAGE_NAME) &&
-        LocalStorage.userAccounts.Carthagenet.length > 0:
+        LocalStorage.userAccounts[networkName].length > 0:
         return dispatch({
           type: 'GET_ACCOUNTS',
-          payload: LocalStorage.userAccounts.Carthagenet,
+          payload: LocalStorage.userAccounts[networkName],
         });
       default:
         payload.userAccounts[networkName] = [];
@@ -116,6 +117,7 @@ export function getAccountsAction(args) {
           ) {
             if (!localStorage.hasOwnProperty(LOCAL_STORAGE_NAME)) {
               userAccounts = {
+                Mainnet: [],
                 Carthagenet: [],
                 Localnode: [],
               };
