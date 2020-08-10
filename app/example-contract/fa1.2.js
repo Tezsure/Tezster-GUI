@@ -1,4 +1,5 @@
-parameter (or (or (or (pair %approve (address %spender) (nat %value)) (pair %burn (address %address) (nat %value))) (or (pair %getAdministrator unit address) (or (pair %getAllowance (pair (address %owner) (address %spender)) address) (pair %getBalance address address)))) (or (or (pair %getTotalSupply unit address) (pair %mint (address %address) (nat %value))) (or (address %setAdministrator) (or (bool %setPause) (pair %transfer (address %from) (pair (address %to) (nat %value)))))));
+module.exports = {
+  contract: `parameter (or (or (or (pair %approve (address %spender) (nat %value)) (pair %burn (address %address) (nat %value))) (or (pair %getAdministrator unit address) (or (pair %getAllowance (pair (address %owner) (address %spender)) address) (pair %getBalance address address)))) (or (or (pair %getTotalSupply unit address) (pair %mint (address %address) (nat %value))) (or (address %setAdministrator) (or (bool %setPause) (pair %transfer (address %from) (pair (address %to) (nat %value)))))));
 storage   (pair (pair (address %administrator) (big_map %balances address (pair (map %approvals address nat) (nat %balance)))) (pair (bool %paused) (nat %totalSupply)));
 code
   {
@@ -910,4 +911,5 @@ code
           }; # list operation : @storage
       }; # list operation : pair (pair address (big_map address (pair (map address nat) nat))) (pair (bool %paused) (nat %totalSupply))
     PAIR;       # pair (list operation) (pair (pair address (big_map address (pair (map address nat) nat))) (pair (bool %paused) (nat %totalSupply)))
-  };
+  };`,
+};

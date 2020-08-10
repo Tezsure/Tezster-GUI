@@ -2,10 +2,9 @@ import CheckConnectionStatus from './Helper/index';
 import installTezsterImage from './install-localnode-image';
 
 // eslint-disable-next-line camelcase
-const {
-  TEZSTER_IMAGE,
-  TEZSTER_CONTAINER_NAME,
-} = require('../../db-config/tezster.config');
+const { TEZSTER_IMAGE, TEZSTER_CONTAINER_NAME } = JSON.parse(
+  localStorage.getItem('db-config')
+);
 
 const CHECK_DOCKER_VERSION = 'docker -v';
 

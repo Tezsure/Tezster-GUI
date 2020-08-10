@@ -33,18 +33,15 @@ import 'ace-builds/src-noconflict/ext-language_tools';
 
 import EditorSettings from './EditorSettings';
 
+const fs = require('fs');
+
 const conseiljs = require('conseiljs');
 
-const fs = require('fs');
-const path = require('path');
+const calculatorCode = require('../../../example-contract/calculator');
 
-const calculatorCodePath = path.join(
-  __dirname,
-  '/example-contract/calculator.tz'
-);
-const escrowCodePath = path.join(__dirname, '/example-contract/escrow.tz');
+const escrowCode = require('../../../example-contract/escrow');
 // eslint-disable-next-line camelcase
-const fa1_2CodePath = path.join(__dirname, '/example-contract/fa1.2.tz');
+const fa1_2Code = require('../../../example-contract/fa1.2');
 
 const EXAMPLE_SMART_CONTRACT = ['calculator', 'escrow', 'fa1.2'];
 
@@ -99,12 +96,12 @@ class App extends Component {
     const contractLabel = event.target.value;
     let michelsonCode = '';
     if (contractLabel === 'calculator') {
-      console.log('calculatorCodePath', calculatorCodePath);
-      michelsonCode = fs.readFileSync(calculatorCodePath).toString('utf-8');
+      michelsonCode = calculatorCode.contract;
     } else if (contractLabel === 'escrow') {
-      michelsonCode = fs.readFileSync(escrowCodePath).toString('utf-8');
+      michelsonCode = escrowCode.contract;
     } else if (contractLabel === 'fa1.2') {
-      michelsonCode = fs.readFileSync(fa1_2CodePath).toString('utf-8');
+      // eslint-disable-next-line camelcase
+      michelsonCode = fa1_2Code.contract;
     }
     this.setState({
       selectedContractFromDropdown: contractLabel,

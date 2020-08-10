@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 import { RpcRequest } from './Workspace/Accounts/helper.accounts';
 
-const config = require('../db-config/tezster.config');
+const config = JSON.parse(localStorage.getItem('db-config'));
 
 const url = config.provider;
 
@@ -26,6 +26,7 @@ function handleIsValidJson(str) {
 function handleMigrateLocalStorage() {
   let oldLocalStorage = localStorage.getItem('tezster-v2.1');
   let newLocalStorage = localStorage.getItem(config.storageName);
+  // const DbConfig = localStorage.getItem('db-config');
   if (
     !newLocalStorage &&
     handleIsValidJson(oldLocalStorage) &&
@@ -68,6 +69,9 @@ function handleMigrateLocalStorage() {
     };
     localStorage.setItem(config.storageName, JSON.stringify(payload));
   }
+  // if (!DbConfig || !handleIsValidJson(DbConfig)) {
+  //   localStorage.setItem('db-config', JSON.stringify(config));
+  // }
   return true;
 }
 

@@ -1,8 +1,6 @@
-import {
-  apiEndPoints,
-  ConseilJS,
-  storageName,
-} from '../../../db-config/tezster.config';
+const { apiEndPoints, ConseilJS, storageName } = JSON.parse(
+  localStorage.getItem('db-config')
+);
 
 const conseiljs = require('conseiljs');
 

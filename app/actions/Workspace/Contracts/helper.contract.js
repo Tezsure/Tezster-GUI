@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-case-declarations */
 /* eslint-disable no-prototype-builtins */
-import { apiEndPoints } from '../../../db-config/tezster.config';
+const { apiEndPoints } = JSON.parse(localStorage.getItem('db-config'));
 
 const request = require('request');
 

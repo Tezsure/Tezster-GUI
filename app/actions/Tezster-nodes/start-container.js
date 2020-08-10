@@ -6,10 +6,10 @@ import { setTezsterConfigAction } from '../Onboard';
 import CheckConnectionStatus from './Helper/index';
 
 // eslint-disable-next-line camelcase
-const {
-  TEZSTER_IMAGE,
-  TEZSTER_CONTAINER_NAME,
-} = require('../../db-config/tezster.config');
+
+const { TEZSTER_IMAGE, TEZSTER_CONTAINER_NAME } = JSON.parse(
+  localStorage.getItem('db-config')
+);
 
 export default function installTezsterContainer(args) {
   const { isTezsterContainerPresent, isTezsterContainerRunning } = args;

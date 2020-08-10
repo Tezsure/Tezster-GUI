@@ -5,7 +5,8 @@ import {
   HandleContractErrorsHelper,
   ContractDeployedStatusHelper,
 } from './helper.contract';
-import { storageName } from '../../../db-config/tezster.config';
+
+const { storageName } = JSON.parse(localStorage.getItem('db-config'));
 
 const {
   DeployContractAPI,

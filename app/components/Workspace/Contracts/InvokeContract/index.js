@@ -13,7 +13,8 @@ import swal from 'sweetalert';
 import GetSampleEntryPoint from './GetSampleEntryPoint';
 
 const conseiljs = require('conseiljs');
-const { storageName } = require('../../../../db-config/tezster.config');
+
+const { storageName } = JSON.parse(localStorage.getItem('db-config'));
 
 const LOCAL_STORAGE_NAME = storageName;
 

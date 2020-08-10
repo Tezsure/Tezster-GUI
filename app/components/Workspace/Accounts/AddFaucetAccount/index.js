@@ -6,7 +6,8 @@ import { NavLink } from 'react-router-dom';
 import { RpcRequest } from './checkAccountStatus';
 
 const { shell } = require('electron');
-const config = require('../../../../db-config/tezster.config');
+
+const config = JSON.parse(localStorage.getItem('db-config'));
 
 class index extends Component {
   constructor(props) {

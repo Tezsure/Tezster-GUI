@@ -7,7 +7,7 @@
 import React, { Component } from 'react';
 import JSONPretty from 'react-json-pretty';
 
-const { storageName } = require('../../../../db-config/tezster.config');
+const { storageName } = JSON.parse(localStorage.getItem('db-config'));
 
 const LOCAL_STORAGE_NAME = storageName;
 

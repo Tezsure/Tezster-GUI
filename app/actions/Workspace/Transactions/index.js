@@ -2,7 +2,7 @@
 
 import swal from 'sweetalert';
 
-const config = require('../../../db-config/tezster.config');
+const config = JSON.parse(localStorage.getItem('db-config'));
 
 const LOCAL_STORAGE_NAME = config.storageName;
 

@@ -1,6 +1,8 @@
 import { RpcRequest } from './helper.accounts';
-import { apiEndPoints, ConseilJS } from '../../../db-config/tezster.config';
 
+const { apiEndPoints, ConseilJS } = JSON.parse(
+  localStorage.getItem('db-config')
+);
 const conseiljs = require('conseiljs');
 
 export async function GetAccountsAPI(args, callback) {

@@ -129,6 +129,29 @@ function Sidebar(props) {
         </li>
         <li
           className={
+            props.currentTab === 'settings'
+              ? 'sidebar-content-active'
+              : 'sidebar-content'
+          }
+          onClick={() => {
+            props.handleTabChangeAction('settings');
+            props.resetSearchText();
+          }}
+        >
+          <span className="settings-icon" />
+          <span
+            className={
+              props.sidebarToggleState
+                ? 'sidebar-text'
+                : 'sidebar-text-collapsed'
+            }
+          >
+            {' '}
+            Settings
+          </span>
+        </li>
+        <li
+          className={
             props.currentTab === 'help'
               ? 'sidebar-content-active'
               : 'sidebar-content'

@@ -3,10 +3,10 @@ import { exec } from 'child_process';
 import Docker from 'dockerode';
 import { RpcRequest } from '../../Workspace/Accounts/helper.accounts';
 
-const config = require('../../../db-config/tezster.config');
+const config = JSON.parse(localStorage.getItem('db-config'));
 const { GetBalanceAPI } = require('../../Workspace/Accounts/api.accounts');
 
-const { TEZSTER_IMAGE } = require('../../../db-config/tezster.config');
+const { TEZSTER_IMAGE } = JSON.parse(localStorage.getItem('db-config'));
 
 const url = config.provider;
 const testPkh = config.identities[0].pkh;
