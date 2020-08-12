@@ -17,7 +17,7 @@ class TransactionModal extends Component {
       amount: '',
       suggestions: [],
       amountErr: '',
-      gasPrice: '1500',
+      gasPrice: '2000',
       gasPriceErr: '',
     };
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -29,6 +29,10 @@ class TransactionModal extends Component {
     this.onSuggestionsClearRequested = this.onSuggestionsClearRequested.bind(
       this
     );
+  }
+
+  componentDidMount() {
+    this.setState({ gasPrice: '2000' });
   }
 
   handleAutosuggestOnChange(event) {
@@ -110,11 +114,11 @@ class TransactionModal extends Component {
       errorFlag = true;
     }
     if (stateParams.gasPrice === '') {
-      stateParams.gasPrice = 1500;
+      stateParams.gasPrice = 2000;
     }
-    if (parseInt(stateParams.gasPrice, 10) < 1500) {
+    if (parseInt(stateParams.gasPrice, 10) < 2000) {
       stateParams.gasPriceErr =
-        'Please enter gas price more than or equals to 1500';
+        'Please enter gas price more than or equals to 2000';
       errorFlag = true;
     }
 
@@ -162,7 +166,7 @@ class TransactionModal extends Component {
 
   render() {
     const gasPrice =
-      this.state.gasPrice === 'undefined' ? '1500' : this.state.gasPrice;
+      this.state.gasPrice === 'undefined' ? '2000' : this.state.gasPrice;
     const { recieverAccount, suggestions } = this.state;
     const sendersAccounts = this.props.userAccounts.map((elem, index) => (
       <option key={elem.account + index} value={elem.account}>
@@ -281,7 +285,7 @@ class TransactionModal extends Component {
             </span>
             <div className="modal-input" style={{ paddingBottom: '0px' }}>
               <p style={{ paddingBottom: '0px', marginBottom: '0px' }}>
-                Note: Please enter gas price more than or equals to 1500 <br />{' '}
+                Note: Please enter gas price more than or equals to 2000 <br />{' '}
               </p>
             </div>
             <div className="modal-input">
@@ -293,7 +297,7 @@ class TransactionModal extends Component {
                 min="0"
                 name="gasPrice"
                 className="form-control"
-                placeholder="Enter your gas price eg 1500"
+                placeholder="Enter your gas price eg 2000"
                 value={gasPrice}
                 onChange={this.handleInputChange}
                 style={{ width: '60%' }}

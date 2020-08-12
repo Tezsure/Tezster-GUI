@@ -10,17 +10,17 @@ const {
   CreateFundraiserAccountAPI,
 } = require('./api.accounts');
 
-const config = require('../../../db-config/tezster.config');
+const config = require('../../../db-config/helper.dbConfig');
 
-const LOCAL_STORAGE_NAME = config.storageName;
+const LOCAL_STORAGE_NAME = config.GetLocalStorage().storageName;
 
 function reducedLocalNodesAccounts(args) {
   const userAccounts = {};
-  userAccounts.Localnode = config.identities;
+  userAccounts.Localnode = config.GetLocalStorage().identities;
   args.forEach((account) => {
-    const LocalnodeAccounts = config.identities.filter(
-      (elem) => account.label === elem.label
-    );
+    const LocalnodeAccounts = config
+      .GetLocalStorage()
+      .identities.filter((elem) => account.label === elem.label);
     if (LocalnodeAccounts.length === 0) {
       userAccounts.Localnode.push(account);
     }
@@ -45,8 +45,9 @@ export function getAccountsAction(args) {
       case LocalStorage === null &&
         args.userAccounts.length === 0 &&
         networkName === 'Localnode':
-        payload.userAccounts.Localnode = config.identities;
+        payload.userAccounts.Localnode = config.GetLocalStorage().identities;
         payload.userAccounts.Carthagenet = [];
+        payload.userAccounts.Mainnet = [];
         break;
       case args.isAvailableLocalnodes && userAccounts.length === 0:
         if (localStorage.hasOwnProperty(LOCAL_STORAGE_NAME)) {
@@ -56,7 +57,7 @@ export function getAccountsAction(args) {
           networkName === 'Localnode' &&
           !localStorage.hasOwnProperty(LOCAL_STORAGE_NAME)
         ) {
-          payload.userAccounts.Localnode = config.identities;
+          payload.userAccounts.Localnode = config.GetLocalStorage().identities;
         }
         break;
       case args.isAvailableLocalnodes && userAccounts.length > 0:
@@ -70,7 +71,7 @@ export function getAccountsAction(args) {
         } else if (networkName !== 'Localnode' && !navigator.onLine) {
           return dispatch({
             type: 'GET_ACCOUNTS',
-            payload: LocalStorage.userAccounts.Carthagenet,
+            payload: LocalStorage.userAccounts[networkName],
           });
         }
         break;
@@ -90,10 +91,10 @@ export function getAccountsAction(args) {
       case networkName !== 'Localnode' &&
         navigator.onLine === false &&
         localStorage.hasOwnProperty(LOCAL_STORAGE_NAME) &&
-        LocalStorage.userAccounts.Carthagenet.length > 0:
+        LocalStorage.userAccounts[networkName].length > 0:
         return dispatch({
           type: 'GET_ACCOUNTS',
-          payload: LocalStorage.userAccounts.Carthagenet,
+          payload: LocalStorage.userAccounts[networkName],
         });
       default:
         payload.userAccounts[networkName] = [];
@@ -116,12 +117,13 @@ export function getAccountsAction(args) {
           ) {
             if (!localStorage.hasOwnProperty(LOCAL_STORAGE_NAME)) {
               userAccounts = {
+                Mainnet: [],
                 Carthagenet: [],
                 Localnode: [],
               };
               userAccounts[networkName] = response;
               const LocalStorageData = JSON.stringify({
-                ...config,
+                ...config.GetLocalStorage(),
                 userAccounts,
               });
               localStorage.setItem(LOCAL_STORAGE_NAME, LocalStorageData);
@@ -279,33 +281,39 @@ export function restoreFaucetAccountAction(args) {
       }
       Promise.all([GetBalanceAPI({ ...account, ...args })])
         .then((response) => {
-          const restoredAccount = { ...response[0] };
-          const LocalConfig = { ...LocalStorage, ...args };
-          const msg = args.hasOwnProperty('msg')
-            ? args.msg
-            : 'Account restored successfully';
+          if (!response.toString().includes('Error')) {
+            const restoredAccount = { ...response[0] };
+            const LocalConfig = { ...LocalStorage, ...args };
+            const msg = args.hasOwnProperty('msg')
+              ? args.msg
+              : 'Account restored successfully';
 
-          restoredAccount.label = args.label;
-          restoredAccount.secret = account.secretKey;
-          restoredAccount.sk = account.secretKey;
-          userAccounts[networkName] = args.userAccounts;
-          userAccounts[networkName].push(restoredAccount);
-          LocalConfig.userAccounts = userAccounts;
-          localStorage.setItem(LOCAL_STORAGE_NAME, JSON.stringify(LocalConfig));
+            restoredAccount.label = args.label;
+            restoredAccount.secret = account.secretKey;
+            restoredAccount.sk = account.secretKey;
+            userAccounts[networkName] = args.userAccounts;
+            userAccounts[networkName].push(restoredAccount);
+            LocalConfig.userAccounts = userAccounts;
+            localStorage.setItem(
+              LOCAL_STORAGE_NAME,
+              JSON.stringify(LocalConfig)
+            );
 
-          swal('Success!', msg, 'success');
-          dispatch({
-            type: 'GET_ACCOUNTS',
-            payload: userAccounts[networkName],
-          });
-          dispatch({
-            type: 'BUTTON_LOADING_STATE',
-            payload: false,
-          });
-          return dispatch({
-            type: 'TOGGLE_ACCOUNTS_MODAL',
-            payload: '',
-          });
+            swal('Success!', msg, 'success');
+            dispatch({
+              type: 'GET_ACCOUNTS',
+              payload: userAccounts[networkName],
+            });
+            dispatch({
+              type: 'BUTTON_LOADING_STATE',
+              payload: false,
+            });
+            return dispatch({
+              type: 'TOGGLE_ACCOUNTS_MODAL',
+              payload: '',
+            });
+          }
+          throw Error(response.toString());
         })
         // eslint-disable-next-line no-unused-vars
         .catch((error) => {
@@ -317,6 +325,7 @@ export function restoreFaucetAccountAction(args) {
             type: 'GET_ACCOUNTS',
             payload: args.userAccounts,
           });
+          swal('Error!', error.toString(), 'error');
           return dispatch({
             type: 'TOGGLE_ACCOUNTS_MODAL',
             payload: '',

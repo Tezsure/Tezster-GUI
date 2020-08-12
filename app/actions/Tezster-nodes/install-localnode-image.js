@@ -2,7 +2,9 @@
 import Docker from 'dockerode';
 import installTezsterContainer from './start-container';
 // eslint-disable-next-line camelcase
-const { TEZSTER_IMAGE } = require('../../db-config/tezster.config');
+const {
+  TEZSTER_IMAGE,
+} = require('../../db-config/helper.dbConfig').GetLocalStorage();
 
 export default function installTezsterImage(args) {
   let payload = {};

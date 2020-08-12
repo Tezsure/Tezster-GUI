@@ -1,6 +1,6 @@
-import { apiEndPoints, ConseilJS } from '../../../db-config/tezster.config';
-
 const conseiljs = require('conseiljs');
+
+const Config = require('../../../db-config/helper.dbConfig');
 
 export async function ListAccountTransactionsAPI(args, callback) {
   try {
@@ -11,8 +11,8 @@ export async function ListAccountTransactionsAPI(args, callback) {
 
     const entity = 'operations';
     const conseilServer = {
-      url: ConseilJS.url,
-      apiKey: ConseilJS.apiKey,
+      url: Config.GetLocalStorage().ConseilJS[networkName].url,
+      apiKey: Config.GetLocalStorage().ConseilJS[networkName].apiKey,
       network,
     };
     let sendQuery = conseiljs.ConseilQueryBuilder.blankQuery();
@@ -125,12 +125,9 @@ export async function TransferBalanceTransactionAPI(args, callback) {
     const networkName = networkId.split('-')[0];
     const network = networkName.toLowerCase();
 
-    const conseilServer = {
-      url: ConseilJS.url,
-      apiKey: ConseilJS.apiKey,
-      network,
-    };
-    const tezosNode = apiEndPoints[args.dashboardHeader.networkId];
+    const tezosNode = Config.GetLocalStorage().apiEndPoints[
+      args.dashboardHeader.networkId
+    ];
     const keystore = {
       publicKey: keys.pk,
       privateKey: keys.sk,
@@ -146,28 +143,38 @@ export async function TransferBalanceTransactionAPI(args, callback) {
       parseInt(args.gasPrice, 10),
       ''
     );
-    if (
-      JSON.parse(transactionResult.operationGroupID)[0].id &&
-      JSON.parse(transactionResult.operationGroupID)[0].id === 'failure'
-    ) {
-      return callback(
-        JSON.parse(transactionResult.operationGroupID)[0].msg,
-        null
+    if (networkName !== 'Localnode') {
+      const conseilServer = {
+        url: Config.GetLocalStorage().ConseilJS[networkName].url,
+        apiKey: Config.GetLocalStorage().ConseilJS[networkName].apiKey,
+        network,
+      };
+      if (
+        JSON.parse(transactionResult.operationGroupID)[0].id &&
+        JSON.parse(transactionResult.operationGroupID)[0].id === 'failure'
+      ) {
+        return callback(
+          JSON.parse(transactionResult.operationGroupID)[0].msg,
+          null
+        );
+      }
+      if (args.dashboardHeader.networkId === 'Localnode') {
+        return callback(null, {
+          operationGroupID: transactionResult.operationGroupID,
+        });
+      }
+      await conseiljs.TezosConseilClient.awaitOperationConfirmation(
+        conseilServer,
+        network,
+        JSON.parse(transactionResult.operationGroupID),
+        10,
+        10
       );
-    }
-    if (args.dashboardHeader.networkId === 'Localnode') {
       return callback(null, {
         operationGroupID: transactionResult.operationGroupID,
       });
     }
-    await conseiljs.TezosConseilClient.awaitOperationConfirmation(
-      conseilServer,
-      network,
-      JSON.parse(transactionResult.operationGroupID),
-      10,
-      10
-    );
-    return callback(null, {
+    callback(null, {
       operationGroupID: transactionResult.operationGroupID,
     });
   } catch (error) {

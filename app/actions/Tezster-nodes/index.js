@@ -5,7 +5,7 @@ import installTezsterImage from './install-localnode-image';
 const {
   TEZSTER_IMAGE,
   TEZSTER_CONTAINER_NAME,
-} = require('../../db-config/tezster.config');
+} = require('../../db-config/helper.dbConfig').GetLocalStorage();
 
 const CHECK_DOCKER_VERSION = 'docker -v';
 

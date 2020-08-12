@@ -5,7 +5,9 @@ import SidebarIcon from '../../../Onboard/SidebarIcon';
 
 const conseiljs = require('conseiljs');
 
-const { storageName } = require('../../../../db-config/tezster.config');
+const {
+  storageName,
+} = require('../../../../db-config/helper.dbConfig').GetLocalStorage();
 
 const LOCAL_STORAGE_NAME = storageName;
 

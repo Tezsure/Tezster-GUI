@@ -8,7 +8,9 @@
 import React, { Component } from 'react';
 import swal from 'sweetalert';
 
-const { storageName } = require('../../../../db-config/tezster.config');
+const {
+  storageName,
+} = require('../../../../db-config/helper.dbConfig').GetLocalStorage();
 
 const LOCAL_STORAGE_NAME = storageName;
 

@@ -10,7 +10,9 @@
 import React, { Component } from 'react';
 import swal from 'sweetalert';
 
-const { storageName } = require('../../../../db-config/tezster.config');
+const {
+  storageName,
+} = require('../../../../db-config/helper.dbConfig').GetLocalStorage();
 
 const LOCAL_STORAGE_NAME = storageName;
 
@@ -26,6 +28,7 @@ export default class ListContract extends Component {
     this.handleAddContract = this.handleAddContract.bind(this);
     this.toggleAddContract = this.toggleAddContract.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleDeleteContract = this.handleDeleteContract.bind(this);
   }
 
   handleInputChange(event) {
@@ -71,6 +74,12 @@ export default class ListContract extends Component {
     }
   }
 
+  async handleDeleteContract(args) {
+    // eslint-disable-next-line no-unused-vars
+    const response = await this.props.deleteContractAction(args);
+    this.setState({ error: '' });
+  }
+
   render() {
     if (this.state.error !== '') {
       swal('Error!', this.state.error, 'error').then(() => {
@@ -107,7 +116,7 @@ export default class ListContract extends Component {
               className="delete-icon"
               style={{ marginTop: '10px' }}
               onClick={() =>
-                this.props.deleteContractAction({ ...this.props, ...elem })
+                this.handleDeleteContract({ ...this.props, ...elem })
               }
             />
           </td>
@@ -133,8 +142,13 @@ export default class ListContract extends Component {
                 className={
                   this.state.addContract ? 'btn btn-warning' : 'btn btn-success'
                 }
-                disabled={this.props.buttonState}
+                disabled={this.props.buttonState || networkId === 'Localnode'}
                 style={{ borderRadius: '0px' }}
+                title={
+                  networkId === 'Localnode'
+                    ? 'Cannot add contract on Localnode'
+                    : 'Click to add contract'
+                }
                 onClick={() => this.toggleAddContract()}
               >
                 {this.state.addContract ? 'Cancel' : 'Add Contract'}

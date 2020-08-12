@@ -1,9 +1,12 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-case-declarations */
 /* eslint-disable no-prototype-builtins */
-import { apiEndPoints } from '../../../db-config/tezster.config';
 
 const request = require('request');
+
+const {
+  apiEndPoints,
+} = require('../../../db-config/helper.dbConfig').GetLocalStorage();
 
 export function ContractDeployedStatusHelper(args, callback) {
   const { networkId } = args.dashboardHeader;

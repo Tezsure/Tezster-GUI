@@ -3,7 +3,7 @@ const ip = require('docker-ip');
 module.exports = {
   TEZSTER_IMAGE: 'tezsureinc/tezster:1.0.3',
   TEZSTER_CONTAINER_NAME: 'tezster',
-  storageName: 'tezster-v2.1',
+  storageName: 'tezster-v2.1.1',
   provider: process.platform.includes('win')
     ? `http://${ip()}:18731`
     : 'http://localhost:18731',
@@ -73,19 +73,27 @@ module.exports = {
       },
     ],
     Carthagenet: [],
+    Mainnet: [],
   },
   contracts: {
     Carthagenet: [],
     Localnode: [],
+    Mainnet: [],
   },
   programs: [],
-  Nodes: ['Localnode', 'Carthagenet-Tezster', 'Carthagenet-Smartpy'],
+  Nodes: [
+    'Localnode',
+    'Carthagenet-Tezster',
+    'Carthagenet-Smartpy',
+    'Mainnet-Smartpy',
+  ],
   apiEndPoints: {
     Localnode: process.platform.includes('win')
       ? `http://${ip()}:18731`
       : 'http://localhost:18731',
-    'Carthagenet-Smartpy': 'https://carthagenet.SmartPy.io',
+    'Carthagenet-Smartpy': 'https://carthagenet.smartpy.io',
     'Carthagenet-Tezster': 'https://testnet.tezster.tech',
+    'Mainnet-Smartpy': 'https://mainnet.smartpy.io',
   },
   TzStatsApiEndpoint: {
     Localnode: process.platform.includes('win')
@@ -93,13 +101,21 @@ module.exports = {
       : 'http://localhost:18731',
     'Carthagenet-Smartpy': 'https://api.carthagenet.tzstats.com',
     'Carthagenet-Tezster': 'https://api.carthagenet.tzstats.com',
+    'Mainnet-Smartpy': 'https://api.tzstats.com',
   },
   ConseilJS: {
-    url: 'https://conseil-dev.cryptonomic-infra.tech',
-    apiKey: '60d7bbd0-ad43-4768-9ee3-64c722874f96',
+    Carthagenet: {
+      url: 'https://conseil-dev.cryptonomic-infra.tech',
+      apiKey: '60d7bbd0-ad43-4768-9ee3-64c722874f96',
+    },
+    Mainnet: {
+      url: 'https://conseil-prod.cryptonomic-infra.tech',
+      apiKey: '19f49afb-c33d-4251-8565-e95121df519d',
+    },
   },
   transactions: {
     Carthagenet: [],
     Localnode: [],
+    Mainnet: [],
   },
 };
