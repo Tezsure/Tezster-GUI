@@ -6,7 +6,7 @@ import {
   ContractDeployedStatusHelper,
 } from './helper.contract';
 
-const { storageName } = JSON.parse(localStorage.getItem('db-config'));
+const Config = require('../../../db-config/helper.dbConfig');
 
 const {
   DeployContractAPI,
@@ -16,7 +16,7 @@ const {
 } = require('./api.contract');
 const { GetBalanceAPI } = require('../Accounts/api.accounts');
 
-const LOCAL_STORAGE_NAME = storageName;
+const LOCAL_STORAGE_NAME = Config.GetLocalStorage().storageName;
 
 export function getAccountBalanceAction(args) {
   return (dispatch) => {

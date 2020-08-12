@@ -2,9 +2,9 @@
 
 import swal from 'sweetalert';
 
-const config = JSON.parse(localStorage.getItem('db-config'));
+const config = require('../../../db-config/helper.dbConfig');
 
-const LOCAL_STORAGE_NAME = config.storageName;
+const LOCAL_STORAGE_NAME = config.GetLocalStorage().storageName;
 
 const {
   ListAccountTransactionsAPI,

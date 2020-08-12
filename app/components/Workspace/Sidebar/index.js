@@ -136,6 +136,7 @@ function Sidebar(props) {
           onClick={() => {
             props.handleTabChangeAction('settings');
             props.resetSearchText();
+            props.handleContractsTabChangeAction('AddRpc');
           }}
         >
           <span className="settings-icon" />

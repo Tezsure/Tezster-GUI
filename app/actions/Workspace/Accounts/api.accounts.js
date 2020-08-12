@@ -1,9 +1,8 @@
 import { RpcRequest } from './helper.accounts';
 
-const { apiEndPoints, ConseilJS } = JSON.parse(
-  localStorage.getItem('db-config')
-);
 const conseiljs = require('conseiljs');
+
+const Config = require('../../../db-config/helper.dbConfig');
 
 export async function GetAccountsAPI(args, callback) {
   try {
@@ -24,7 +23,7 @@ export async function GetAccountsAPI(args, callback) {
 export async function GetBalanceAPI(args) {
   try {
     const { networkId } = args.dashboardHeader;
-    const URL = apiEndPoints[networkId];
+    const URL = Config.GetLocalStorage().apiEndPoints[networkId];
 
     const response = await RpcRequest.fetchBalance(URL, args.pkh);
     const balance = (parseInt(response, 10) / 1000000).toFixed(3);
@@ -50,7 +49,9 @@ export async function ActivateAccountsAPI(args, callback) {
     const networkName = networkId.split('-')[0];
     const network = networkName.toLowerCase();
 
-    const tezosNode = apiEndPoints[args.dashboardHeader.networkId];
+    const tezosNode = Config.GetLocalStorage().apiEndPoints[
+      args.dashboardHeader.networkId
+    ];
     const faucet = await conseiljs.TezosWalletUtil.unlockFundraiserIdentity(
       args.faucet.mnemonic,
       args.faucet.email,
@@ -80,8 +81,8 @@ export async function ActivateAccountsAPI(args, callback) {
         );
       }
       const conseilServer = {
-        url: ConseilJS[networkName].url,
-        apiKey: ConseilJS[networkName].apiKey,
+        url: Config.GetLocalStorage().ConseilJS[networkName].url,
+        apiKey: Config.GetLocalStorage().ConseilJS[networkName].apiKey,
         network,
       };
       await conseiljs.TezosConseilClient.awaitOperationConfirmation(

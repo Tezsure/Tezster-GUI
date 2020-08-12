@@ -7,7 +7,7 @@ import { RpcRequest } from './checkAccountStatus';
 
 const { shell } = require('electron');
 
-const config = JSON.parse(localStorage.getItem('db-config'));
+const config = require('../../../../db-config/helper.dbConfig').GetLocalStorage();
 
 class index extends Component {
   constructor(props) {
@@ -246,9 +246,6 @@ class index extends Component {
                 https://faucet.tzalpha.net/
               </NavLink>
             </p>
-          </div>
-          <div className="alert alert-warning" role="alert">
-            <p>Note: The account created will be a non fundraiser account.</p>
           </div>
         </div>
       </div>

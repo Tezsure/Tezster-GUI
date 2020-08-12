@@ -91,7 +91,7 @@ module.exports = {
     Localnode: process.platform.includes('win')
       ? `http://${ip()}:18731`
       : 'http://localhost:18731',
-    'Carthagenet-Smartpy': 'https://carthagenet.SmartPy.io',
+    'Carthagenet-Smartpy': 'https://carthagenet.smartpy.io',
     'Carthagenet-Tezster': 'https://testnet.tezster.tech',
     'Mainnet-Smartpy': 'https://mainnet.smartpy.io',
   },

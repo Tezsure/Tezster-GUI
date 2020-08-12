@@ -1,8 +1,6 @@
-const { apiEndPoints, ConseilJS } = JSON.parse(
-  localStorage.getItem('db-config')
-);
-
 const conseiljs = require('conseiljs');
+
+const Config = require('../../../db-config/helper.dbConfig');
 
 export async function ListAccountTransactionsAPI(args, callback) {
   try {
@@ -13,8 +11,8 @@ export async function ListAccountTransactionsAPI(args, callback) {
 
     const entity = 'operations';
     const conseilServer = {
-      url: ConseilJS[networkName].url,
-      apiKey: ConseilJS[networkName].apiKey,
+      url: Config.GetLocalStorage().ConseilJS[networkName].url,
+      apiKey: Config.GetLocalStorage().ConseilJS[networkName].apiKey,
       network,
     };
     let sendQuery = conseiljs.ConseilQueryBuilder.blankQuery();
@@ -127,7 +125,9 @@ export async function TransferBalanceTransactionAPI(args, callback) {
     const networkName = networkId.split('-')[0];
     const network = networkName.toLowerCase();
 
-    const tezosNode = apiEndPoints[args.dashboardHeader.networkId];
+    const tezosNode = Config.GetLocalStorage().apiEndPoints[
+      args.dashboardHeader.networkId
+    ];
     const keystore = {
       publicKey: keys.pk,
       privateKey: keys.sk,
@@ -145,8 +145,8 @@ export async function TransferBalanceTransactionAPI(args, callback) {
     );
     if (networkName !== 'Localnode') {
       const conseilServer = {
-        url: ConseilJS[networkName].url,
-        apiKey: ConseilJS[networkName].apiKey,
+        url: Config.GetLocalStorage().ConseilJS[networkName].url,
+        apiKey: Config.GetLocalStorage().ConseilJS[networkName].apiKey,
         network,
       };
       if (

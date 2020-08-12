@@ -1,15 +1,16 @@
-const { apiEndPoints, ConseilJS, storageName } = JSON.parse(
-  localStorage.getItem('db-config')
-);
-
 const conseiljs = require('conseiljs');
 
-const LOCAL_STORAGE_NAME = storageName;
+const Config = require('../../../db-config/helper.dbConfig');
+
+const LOCAL_STORAGE_NAME = Config.GetLocalStorage().storageName;
 
 export async function DeployContractAPI(args, callback) {
   try {
     const network = args.dashboardHeader.networkId.split('-')[0].toLowerCase();
-    const tezosNode = apiEndPoints[args.dashboardHeader.networkId];
+    const networkName = args.dashboardHeader.networkId.split('-')[0];
+    const tezosNode = Config.GetLocalStorage().apiEndPoints[
+      args.dashboardHeader.networkId
+    ];
     const { contract } = args;
     const keys = args.userAccounts.find((elem) => elem.pkh === args.accounts);
     const keystore = {
@@ -53,8 +54,8 @@ export async function DeployContractAPI(args, callback) {
       );
       if (network !== 'localnode') {
         const conseilServer = {
-          url: ConseilJS[network].url,
-          apiKey: ConseilJS[network].apiKey,
+          url: Config.GetLocalStorage().ConseilJS[networkName].url,
+          apiKey: Config.GetLocalStorage().ConseilJS[networkName].apiKey,
           network,
         };
         await conseiljs.TezosConseilClient.awaitOperationConfirmation(
@@ -79,8 +80,11 @@ export async function DeployContractAPI(args, callback) {
 export async function InvokeContractAPI(args, callback) {
   try {
     const network = args.dashboardHeader.networkId.split('-')[0].toLowerCase();
+    const networkName = args.dashboardHeader.networkId.split('-')[0];
 
-    const tezosNode = apiEndPoints[args.dashboardHeader.networkId];
+    const tezosNode = Config.GetLocalStorage().apiEndPoints[
+      args.dashboardHeader.networkId
+    ];
     const keys = args.userAccounts.find((elem) => elem.pkh === args.accounts);
     const keystore = {
       publicKey: keys.pk,
@@ -111,8 +115,8 @@ export async function InvokeContractAPI(args, callback) {
     ) {
       if (network !== 'localnode') {
         const conseilServer = {
-          url: ConseilJS[network].url,
-          apiKey: ConseilJS[network].apiKey,
+          url: Config.GetLocalStorage().ConseilJS[networkName].url,
+          apiKey: Config.GetLocalStorage().ConseilJS[networkName].apiKey,
           network,
         };
         await conseiljs.TezosConseilClient.awaitOperationConfirmation(
@@ -132,7 +136,9 @@ export async function InvokeContractAPI(args, callback) {
 }
 export async function GetStorageAPI(args, callback) {
   try {
-    const tezosNode = apiEndPoints[args.dashboardHeader.networkId];
+    const tezosNode = Config.GetLocalStorage().apiEndPoints[
+      args.dashboardHeader.networkId
+    ];
     const contract = args.selectedContracts;
     const storage = await conseiljs.TezosNodeReader.getContractStorage(
       tezosNode,
@@ -146,9 +152,11 @@ export async function GetStorageAPI(args, callback) {
 export async function GetContractFromContractIdAPI(args, callback) {
   try {
     const network = args.dashboardHeader.networkId.split('-')[0].toLowerCase();
+    const networkName = args.dashboardHeader.networkId.split('-')[0];
+
     const conseilServer = {
-      url: ConseilJS[network].url,
-      apiKey: ConseilJS[network].apiKey,
+      url: Config.GetLocalStorage().ConseilJS[networkName].url,
+      apiKey: Config.GetLocalStorage().ConseilJS[networkName].apiKey,
       network,
     };
     const { contractLabel, contractAddress } = args;

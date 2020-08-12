@@ -12,7 +12,9 @@ import GetExampleStorage from '../GetExampleStorage';
 const conseiljs = require('conseiljs');
 const fs = require('fs');
 
-const { storageName } = JSON.parse(localStorage.getItem('db-config'));
+const {
+  storageName,
+} = require('../../../../db-config/helper.dbConfig').GetLocalStorage();
 
 const LOCAL_STORAGE_NAME = storageName;
 

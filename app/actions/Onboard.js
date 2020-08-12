@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 import { RpcRequest } from './Workspace/Accounts/helper.accounts';
 
-const config = JSON.parse(localStorage.getItem('db-config'));
+const config = require('../db-config/helper.dbConfig').GetLocalStorage();
 
 const url = config.provider;
 
@@ -26,7 +26,7 @@ function handleIsValidJson(str) {
 function handleMigrateLocalStorage() {
   let oldLocalStorage = localStorage.getItem('tezster-v2.1');
   let newLocalStorage = localStorage.getItem(config.storageName);
-  // const DbConfig = localStorage.getItem('db-config');
+  const DbConfig = localStorage.getItem('db-config');
   if (
     !newLocalStorage &&
     handleIsValidJson(oldLocalStorage) &&
@@ -69,9 +69,9 @@ function handleMigrateLocalStorage() {
     };
     localStorage.setItem(config.storageName, JSON.stringify(payload));
   }
-  // if (!DbConfig || !handleIsValidJson(DbConfig)) {
-  //   localStorage.setItem('db-config', JSON.stringify(config));
-  // }
+  if (!DbConfig || !handleIsValidJson(DbConfig)) {
+    localStorage.setItem('db-config', JSON.stringify(config));
+  }
   return true;
 }
 
@@ -135,9 +135,10 @@ export function checkLocalnodesAction() {
 }
 
 export function getLocalConfigAction() {
+  const Localconfig = JSON.parse(localStorage.getItem(config.storageName));
   return {
     type: 'TEZSTER_LOCAL_CONFIG',
-    payload: config,
+    payload: Localconfig,
   };
 }
 export function setTezsterConfigAction() {

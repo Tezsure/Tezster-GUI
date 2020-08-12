@@ -1,4 +1,4 @@
-const config = JSON.parse(localStorage.getItem('db-config'));
+const config = require('../../../db-config/helper.dbConfig');
 
 const { GetBlockHeightAPI, GetAllBlockDataAPI } = require('./api.tzstats');
 
@@ -37,9 +37,9 @@ const MainnetSmartpyData = {
   networkId: 'Mainnet-Smartpy',
   rpcServer: 'https://mainnet.SmartPy.io',
 };
-const { apiEndPoints } = config;
 
 export function getDashboardHeaderAction(args) {
+  const { apiEndPoints } = config.GetLocalStorage();
   return (dispatch) => {
     if (args.dashboardHeader.networkId === 'Localnode') {
       return dispatch({
@@ -82,6 +82,7 @@ export function getDashboardHeaderAction(args) {
 }
 
 export function handleNetworkChangeAction(args) {
+  const { apiEndPoints } = config.GetLocalStorage();
   const { networkId } = args.dashboardHeader;
   const networkName = networkId.split('-')[0];
   return (dispatch) => {
