@@ -113,6 +113,27 @@ export async function ActivateAccountsAPI(args, callback) {
 
 export async function CreateFundraiserAccountAPI(args, callback) {
   try {
+    if (args.mnemonic && args.selectedContractsTab === 'addFaucetAccount') {
+      const faucet = await conseiljs.TezosWalletUtil.unlockFundraiserIdentity(
+        args.mnemonic,
+        args.email,
+        args.password,
+        args.pkh
+      );
+      // eslint-disable-next-line no-unused-vars
+      const keystore = {
+        publicKey: faucet.publicKey,
+        privateKey: faucet.privateKey,
+        publicKeyHash: args.pkh,
+        seed: '',
+        storeType: conseiljs.StoreType.Fundraiser,
+      };
+      keystore.sk = keystore.privateKey;
+      keystore.pkh = args.pkh;
+      keystore.pk = keystore.publicKey;
+      keystore.secretKey = keystore.privateKey;
+      return callback(null, keystore);
+    }
     if (args.mnemonic) {
       const keystore = await conseiljs.TezosWalletUtil.unlockIdentityWithMnemonic(
         args.mnemonic,

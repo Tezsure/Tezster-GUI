@@ -43,125 +43,139 @@ class index extends Component {
   }
 
   async handleRestoreWallet() {
-    if (this.state.restoreAccountInputType === '0') {
-      let errFlag = false;
-      const stateParams = {
-        ...this.state,
-        mnemonicErr: '',
-        labelErr: '',
-        passwordErr: '',
-      };
-      if (stateParams.mnemonic === '') {
-        stateParams.mnemonicErr = 'Please enter mnemonic';
-        errFlag = true;
-      }
-      if (stateParams.label === '') {
-        stateParams.labelErr = 'Please enter label for your account';
-        errFlag = true;
-      }
-      if (stateParams.label !== '') {
-        const networkId = this.props.dashboardHeader.networkId.split('-')[0];
-        const userAccount = JSON.parse(localStorage.getItem(LOCAL_STORAGE_NAME))
-          .userAccounts[networkId];
-        if (
-          userAccount.filter((elem) => elem.label === stateParams.label)
-            .length > 0
-        ) {
-          stateParams.labelErr =
-            'Label already in use, please choose a different label';
+    try {
+      if (this.state.restoreAccountInputType === '0') {
+        let errFlag = false;
+        const stateParams = {
+          ...this.state,
+          mnemonicErr: '',
+          labelErr: '',
+          passwordErr: '',
+        };
+        if (stateParams.mnemonic === '') {
+          stateParams.mnemonicErr = 'Please enter mnemonic';
           errFlag = true;
         }
-      }
-      if (errFlag === false) {
-        const keystore = await conseiljs.TezosWalletUtil.unlockIdentityWithMnemonic(
-          this.state.mnemonic,
-          this.state.password
-        );
-        const userParams = {
-          ...keystore,
-          sk: keystore.secret,
-          pk: keystore.publicKey,
-          secret: keystore.secret,
-          label: stateParams.label,
-          pkh: keystore.publicKeyHash,
-          password: stateParams.password,
-          mnemonic: stateParams.mnemonic,
-        };
-        this.props.restoreFaucetAccountAction({
-          ...userParams,
-          ...this.props,
-        });
-        this.setState({
-          mnemonic: '',
-          mnemonicErr: '',
-          label: '',
-          labelErr: '',
-          password: '',
-          mnemonicSuggestion: '',
-          secretKeyErr: '',
-        });
-      } else {
-        this.setState(stateParams);
-      }
-    } else {
-      let errFlag = false;
-      const stateParams = {
-        ...this.state,
-        secretKeyErr: '',
-        labelErr: '',
-      };
-      if (stateParams.label === '') {
-        stateParams.labelErr = 'Please enter label for your account';
-        errFlag = true;
-      }
-      if (stateParams.label !== '') {
-        const networkId = this.props.dashboardHeader.networkId.split('-')[0];
-        const userAccount = JSON.parse(localStorage.getItem(LOCAL_STORAGE_NAME))
-          .userAccounts[networkId];
-        if (
-          userAccount.filter((elem) => elem.label === stateParams.label)
-            .length > 0
-        ) {
-          stateParams.labelErr =
-            'Label already in use, please choose a different label';
+        if (stateParams.label === '') {
+          stateParams.labelErr = 'Please enter label for your account';
           errFlag = true;
         }
-      }
-      if (stateParams.secretKey === '') {
-        stateParams.secretKeyErr = 'Please enter secret key for your account';
-        errFlag = true;
-      }
-      if (errFlag === false) {
-        const keystore = await conseiljs.TezosWalletUtil.restoreIdentityWithSecretKey(
-          this.state.secretKey
-        );
-        const userParams = {
-          sk: keystore.privateKey,
-          pk: keystore.publicKey,
-          secret: keystore.privateKey,
-          label: stateParams.label,
-          pkh: keystore.publicKeyHash,
-          password: '',
-          mnemonic: '',
-          ...keystore,
-        };
-        this.props.restoreFaucetAccountAction({
-          ...userParams,
-          ...this.props,
-        });
-        this.setState({
-          mnemonic: '',
-          mnemonicErr: '',
-          label: '',
-          labelErr: '',
-          password: '',
-          secretKey: '',
-          secretKeyErr: '',
-          mnemonicSuggestion: '',
-        });
+        if (stateParams.label !== '') {
+          const networkId = this.props.dashboardHeader.networkId.split('-')[0];
+          const userAccount = JSON.parse(
+            localStorage.getItem(LOCAL_STORAGE_NAME)
+          ).userAccounts[networkId];
+          if (
+            userAccount.filter((elem) => elem.label === stateParams.label)
+              .length > 0
+          ) {
+            stateParams.labelErr =
+              'Label already in use, please choose a different label';
+            errFlag = true;
+          }
+        }
+        if (errFlag === false) {
+          const mnemonic = `${this.state.mnemonic
+            .split(',')
+            .join(' ')
+            .split('"')
+            .join('')
+            .split('\n')
+            .join(' ')
+            .replace(/(\s+)/gm, ' ')}`;
+          const keystore = await conseiljs.TezosWalletUtil.unlockIdentityWithMnemonic(
+            mnemonic,
+            this.state.password
+          );
+          const userParams = {
+            ...keystore,
+            sk: keystore.secret,
+            pk: keystore.publicKey,
+            secret: keystore.secret,
+            label: stateParams.label,
+            pkh: keystore.publicKeyHash,
+            password: stateParams.password,
+            mnemonic: stateParams.mnemonic,
+          };
+          this.props.restoreFaucetAccountAction({
+            ...userParams,
+            ...this.props,
+          });
+          this.setState({
+            mnemonic: '',
+            mnemonicErr: '',
+            label: '',
+            labelErr: '',
+            password: '',
+            mnemonicSuggestion: '',
+            secretKeyErr: '',
+          });
+        } else {
+          this.setState(stateParams);
+        }
       } else {
-        this.setState(stateParams);
+        let errFlag = false;
+        const stateParams = {
+          ...this.state,
+          secretKeyErr: '',
+          labelErr: '',
+        };
+        if (stateParams.label === '') {
+          stateParams.labelErr = 'Please enter label for your account';
+          errFlag = true;
+        }
+        if (stateParams.label !== '') {
+          const networkId = this.props.dashboardHeader.networkId.split('-')[0];
+          const userAccount = JSON.parse(
+            localStorage.getItem(LOCAL_STORAGE_NAME)
+          ).userAccounts[networkId];
+          if (
+            userAccount.filter((elem) => elem.label === stateParams.label)
+              .length > 0
+          ) {
+            stateParams.labelErr =
+              'Label already in use, please choose a different label';
+            errFlag = true;
+          }
+        }
+        if (stateParams.secretKey === '') {
+          stateParams.secretKeyErr = 'Please enter secret key for your account';
+          errFlag = true;
+        }
+        if (errFlag === false) {
+          const keystore = await conseiljs.TezosWalletUtil.restoreIdentityWithSecretKey(
+            this.state.secretKey
+          );
+          const userParams = {
+            sk: keystore.privateKey,
+            pk: keystore.publicKey,
+            secret: keystore.privateKey,
+            label: stateParams.label,
+            pkh: keystore.publicKeyHash,
+            password: '',
+            mnemonic: '',
+            ...keystore,
+          };
+          this.props.restoreFaucetAccountAction({
+            ...userParams,
+            ...this.props,
+          });
+          this.setState({
+            mnemonic: '',
+            mnemonicErr: '',
+            label: '',
+            labelErr: '',
+            password: '',
+            secretKey: '',
+            secretKeyErr: '',
+            mnemonicSuggestion: '',
+          });
+        } else {
+          this.setState(stateParams);
+        }
       }
+    } catch (exp) {
+      this.setState({ labelErr: exp.toString() });
     }
   }
 
@@ -307,7 +321,7 @@ class index extends Component {
                 onChange={() => this.handleRestoreAccountView('1')}
               />
               <label className="form-check-label" htmlFor="inlineRadio2">
-                Restore using private key
+                Restore using secret key
               </label>
             </div>
           </div>
