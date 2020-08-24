@@ -1,10 +1,19 @@
-name: Tezster-GUI-package
+name: Tezster-GUI
 on:
   push:
     branches:
       - master
       - development_adi
+
 jobs:
+  build:
+    runs-on: '${{ matrix.os }}'
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
   release:
     runs-on: '${{ matrix.os }}'
     strategy:
@@ -13,16 +22,20 @@ jobs:
           - macos-10.14
           - windows-2019
           - ubuntu-18.04
+
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v1
+
       - name: 'Install Node.js, NPM and Yarn'
         uses: actions/setup-node@v1
         with:
           node-version: 12
+
       - name: yarn install
         run: |
           yarn install
+
       - name: yarn package
         env:
           GITHUB_TOKEN: '${{ secrets.MAIN_GITHUB_TOKEN }}'
@@ -42,5 +55,5 @@ jobs:
           AWS_ACCESS_KEY_ID: '${{ secrets.AWS_ACCESS_KEY_ID }}'
           AWS_SECRET_ACCESS_KEY: '${{ secrets.AWS_SECRET_ACCESS_KEY }}'
           AWS_REGION: ap-southeast-1
-          SOURCE_DIR: 'release'
-          DESTINATION_DIR: 'TEZSTER_GUI/beta_release'
+          SOURCE_DIR: release
+          DESTINATION_DIR: TEZSTER_GUI/beta_release
