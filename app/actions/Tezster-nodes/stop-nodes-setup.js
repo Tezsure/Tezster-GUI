@@ -30,27 +30,16 @@ export function startTezsterNodesAction() {
           Tty: true,
           ExposedPorts: {
             '18731/tcp': {},
-            '18732/tcp': {},
-            '18733/tcp': {},
           },
-          PortBindings: {
-            '18731/tcp': [
-              {
-                HostPort: '18731',
-              },
-            ],
-            '18732/tcp': [
-              {
-                HostPort: '18732',
-              },
-            ],
-            '18733/tcp': [
-              {
-                HostPort: '18733',
-              },
-            ],
+          Hostconfig: {
+            PortBindings: {
+              '18731/tcp': [
+                {
+                  HostPort: '18732',
+                },
+              ],
+            },
           },
-          NetworkMode: 'host',
           Cmd: [
             '/bin/bash',
             '-c',
