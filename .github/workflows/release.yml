@@ -40,7 +40,7 @@ jobs:
         env:
           GITHUB_TOKEN: '${{ secrets.MAIN_GITHUB_TOKEN }}'
         run: |
-          yarn package-all
+          yarn package
 
   deploy:
     needs: build
