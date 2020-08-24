@@ -11,7 +11,7 @@ const localnodeData = {
   gas_limit: '32311',
   gas_price: '0.1228',
   networkId: 'Localnode',
-  rpcServer: 'http://localhost:18731',
+  rpcServer: 'http://localhost:18732',
 };
 
 const CarthagenetTezsterData = {

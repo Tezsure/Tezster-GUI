@@ -5,8 +5,8 @@ module.exports = {
   TEZSTER_CONTAINER_NAME: 'tezster',
   storageName: 'tezster-v2.1.1',
   provider: process.platform.includes('win')
-    ? `http://${ip()}:18731`
-    : 'http://localhost:18731',
+    ? `http://${ip()}:18732`
+    : 'http://localhost:18732',
   identities: [
     {
       sk:
@@ -89,16 +89,16 @@ module.exports = {
   ],
   apiEndPoints: {
     Localnode: process.platform.includes('win')
-      ? `http://${ip()}:18731`
-      : 'http://localhost:18731',
+      ? `http://${ip()}:18732`
+      : 'http://localhost:18732',
     'Carthagenet-Smartpy': 'https://carthagenet.smartpy.io',
     'Carthagenet-Tezster': 'https://testnet.tezster.tech',
     'Mainnet-Smartpy': 'https://mainnet.smartpy.io',
   },
   TzStatsApiEndpoint: {
     Localnode: process.platform.includes('win')
-      ? `http://${ip()}:18731`
-      : 'http://localhost:18731',
+      ? `http://${ip()}:18732`
+      : 'http://localhost:18732',
     'Carthagenet-Smartpy': 'https://api.carthagenet.tzstats.com',
     'Carthagenet-Tezster': 'https://api.carthagenet.tzstats.com',
     'Mainnet-Smartpy': 'https://api.tzstats.com',
