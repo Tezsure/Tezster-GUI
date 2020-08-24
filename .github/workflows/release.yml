@@ -1,5 +1,5 @@
-name: Tezster-GUI
-'on':
+name: Tezster-GUI-package
+on:
   push:
     branches:
       - master
