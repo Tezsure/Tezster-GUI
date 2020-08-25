@@ -47,6 +47,10 @@ jobs:
     runs-on: '${{ matrix.os }}'
     strategy:
       matrix:
+        os:
+          - macos-10.14
+          - windows-2019
+          - ubuntu-18.04
         python-version: [3.8]
         node-version: ['12.x']
         appname: ['aws-codedeploy']
