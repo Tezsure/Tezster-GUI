@@ -40,13 +40,12 @@ jobs:
           GITHUB_TOKEN: '${{ secrets.MAIN_GITHUB_TOKEN }}'
         run: |
           yarn package
+      
+      - name: Check out Git repository
+        uses: actions/checkout@master
 
-  deploy:
-    needs: release
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@master
-      - uses: jakejarvis/s3-sync-action@master
+      - name: Check out Git repository
+        uses: jakejarvis/s3-sync-action@master
         with:
           args: --acl public-read --follow-symlinks --delete
         env:
