@@ -1,0 +1,68 @@
+name: Tezster-GUI
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+  release:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os:
+          - macOS-latest
+          - windows-latest
+          - ubuntu-latest
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v1
+
+      - name: 'Install Node.js, NPM and Yarn'
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: yarn install
+        run: |
+          yarn install
+
+      - name: yarn package
+        env:
+          GITHUB_TOKEN: '${{ secrets.MAIN_GITHUB_TOKEN }}'
+        run: |
+          yarn package
+
+      - name: Upload Release
+        uses: actions/upload-artifact@v1
+        with:
+          name: release
+          path: release
+
+  deploy:
+    needs: release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Release
+        uses: actions/download-artifact@v1
+        with:
+          name: release
+
+      - name: 'Uploading To S3'
+        uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --acl public-read --follow-symlinks --delete
+        env:
+          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: 'ap-southeast-1' # optional: defaults to us-east-1
+          SOURCE_DIR: 'release' # optional: defaults to entire repository
+          DEST_DIR: 'TEZSTER_GUI'
