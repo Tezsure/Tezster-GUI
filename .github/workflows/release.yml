@@ -41,9 +41,7 @@ jobs:
         run: |
           yarn package
 
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
+      - name: deploy-package
       - uses: actions/checkout@master
       - uses: jakejarvis/s3-sync-action@master
         with:
