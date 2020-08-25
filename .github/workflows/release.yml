@@ -41,7 +41,7 @@ jobs:
         run: |
           yarn package
 
-      - name: Upload Artifacts
+      - name: Upload Release
         uses: actions/upload-artifact@v1
         with:
           name: release
@@ -51,7 +51,7 @@ jobs:
     needs: release
     runs-on: ubuntu-latest
     steps:
-      - name: Download Artifacts
+      - name: Download Release
         uses: actions/download-artifact@v1
         with:
           name: release
@@ -66,4 +66,4 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: "ap-southeast-1" # optional: defaults to us-east-1
           SOURCE_DIR: "release" # optional: defaults to entire repository
-          DESTINATION_DIR: "TEZSTER_GUI/beta_release"
+          DEST_DIR: "TEZSTER_GUI/beta_release"
