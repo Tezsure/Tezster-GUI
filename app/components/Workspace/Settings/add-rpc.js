@@ -76,9 +76,6 @@ class AddRpc extends Component {
           Config.TzStatsApiEndpoint[
             `${selectedNetworkType}-${label}`
           ] = tzstatsUrl;
-          Config.accounts[`${selectedNetworkType}`] = [];
-          Config.contracts[`${selectedNetworkType}`] = [];
-          Config.transactions[`${selectedNetworkType}`] = [];
 
           LocalStorage.Nodes = LocalStorage.Nodes.concat(
             `${selectedNetworkType}-${label}`
@@ -87,10 +84,6 @@ class AddRpc extends Component {
           LocalStorage.TzStatsApiEndpoint[
             `${selectedNetworkType}-${label}`
           ] = tzstatsUrl;
-          LocalStorage.userAccounts[`${selectedNetworkType}`] = [];
-          LocalStorage.accounts[`${selectedNetworkType}`] = [];
-          LocalStorage.contracts[`${selectedNetworkType}`] = [];
-          LocalStorage.transactions[`${selectedNetworkType}`] = [];
 
           localStorage.setItem('db-config', JSON.stringify(Config));
           localStorage.setItem(
