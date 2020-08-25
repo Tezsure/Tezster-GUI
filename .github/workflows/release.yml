@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
@@ -25,13 +25,16 @@ jobs:
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v1
+
       - name: 'Install Node.js, NPM and Yarn'
         uses: actions/setup-node@v1
         with:
           node-version: 12
+        
       - name: yarn install
         run: |
           yarn install
+        
       - name: yarn package
         env:
           GITHUB_TOKEN: '${{ secrets.MAIN_GITHUB_TOKEN }}'
