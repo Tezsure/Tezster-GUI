@@ -12,10 +12,16 @@ const {
 } = require('../../db-config/helper.dbConfig').GetLocalStorage();
 
 export default function installTezsterContainer(args) {
-  const { isTezsterContainerPresent, isTezsterContainerRunning } = args;
+  const { isTezsterContainerPresent } = args;
+  const checkConnectionStatus = {
+    connectionType: '',
+  };
   const docker = new Docker();
-  return (dispatch) => {
-    if (!isTezsterContainerPresent && !isTezsterContainerRunning) {
+  return async (dispatch) => {
+    checkConnectionStatus.connectionType = 'TEZSTER_RUNNING';
+    checkConnectionStatus.command = TEZSTER_CONTAINER_NAME;
+    const isTezsterRunning = await CheckConnectionStatus(checkConnectionStatus);
+    if (!isTezsterContainerPresent && !isTezsterRunning) {
       dispatch({
         type: 'TEZSTER_START_NODES',
         payload: {
@@ -67,7 +73,7 @@ export default function installTezsterContainer(args) {
           return dispatch(runExec({ container, args }));
         }
       );
-    } else if (isTezsterContainerPresent && !isTezsterContainerRunning) {
+    } else if (isTezsterContainerPresent && !isTezsterRunning) {
       dispatch({
         type: 'TEZSTER_START_NODES',
         payload: {

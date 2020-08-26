@@ -5,7 +5,7 @@ import installTezsterImage from './install-localnode-image';
 const {
   TEZSTER_IMAGE,
   TEZSTER_CONTAINER_NAME,
-} = require('../../db-config/tezster.config');
+} = require('../../db-config/helper.dbConfig').GetLocalStorage();
 
 const CHECK_DOCKER_VERSION = 'docker -v';
 
@@ -14,28 +14,9 @@ export default function installLocalnodesAction(args) {
     connectionType: '',
   };
   return async (dispatch) => {
-    checkConnectionStatus.connectionType = 'INTERNET';
-    const isInternetAvailable = await CheckConnectionStatus(
-      checkConnectionStatus
-    );
     checkConnectionStatus.connectionType = 'DOCKER_INSTALL_STATUS';
     checkConnectionStatus.command = CHECK_DOCKER_VERSION;
     const isDockerInstalled = await CheckConnectionStatus(
-      checkConnectionStatus
-    );
-    checkConnectionStatus.connectionType = 'CHECK_DOCKER_IMAGE';
-    checkConnectionStatus.command = TEZSTER_IMAGE;
-    const isTezsterImagePresent = await CheckConnectionStatus(
-      checkConnectionStatus
-    );
-    checkConnectionStatus.connectionType = 'CHECK_CONTAINER_PRESENT';
-    checkConnectionStatus.command = TEZSTER_CONTAINER_NAME;
-    const isTezsterContainerPresent = await CheckConnectionStatus(
-      checkConnectionStatus
-    );
-    checkConnectionStatus.connectionType = 'CHECK_CONTAINER_RUNNING';
-    checkConnectionStatus.command = TEZSTER_CONTAINER_NAME;
-    const isTezsterContainerRunning = await CheckConnectionStatus(
       checkConnectionStatus
     );
     dispatch({
@@ -60,6 +41,15 @@ export default function installLocalnodesAction(args) {
         payload: 'Docker is not install on your system.',
       });
     }
+    checkConnectionStatus.connectionType = 'INTERNET';
+    const isInternetAvailable = await CheckConnectionStatus(
+      checkConnectionStatus
+    );
+    checkConnectionStatus.connectionType = 'CHECK_DOCKER_IMAGE';
+    checkConnectionStatus.command = TEZSTER_IMAGE;
+    const isTezsterImagePresent = await CheckConnectionStatus(
+      checkConnectionStatus
+    );
     if (!isInternetAvailable && !isTezsterImagePresent) {
       setTimeout(
         () =>
@@ -73,7 +63,7 @@ export default function installLocalnodesAction(args) {
       );
       return dispatch({
         type: 'TEZSTER_ERROR',
-        payload: 'Internet unavailable.',
+        payload: 'Internet unavailable cannot download Localnodes.',
       });
     }
     // eslint-disable-next-line no-prototype-builtins
@@ -93,6 +83,22 @@ export default function installLocalnodesAction(args) {
         payload: isTezsterImagePresent.msg,
       });
     }
+    checkConnectionStatus.connectionType = 'CHECK_CONTAINER_PRESENT';
+    checkConnectionStatus.command = TEZSTER_CONTAINER_NAME;
+    const isTezsterContainerPresent = await CheckConnectionStatus(
+      checkConnectionStatus
+    );
+    checkConnectionStatus.connectionType = 'CHECK_CONTAINER_RUNNING';
+    checkConnectionStatus.command = TEZSTER_CONTAINER_NAME;
+    const isTezsterContainerRunning = await CheckConnectionStatus(
+      checkConnectionStatus
+    );
+    dispatch({
+      type: 'STARTING_NODES',
+      payload: {
+        loader: true,
+      },
+    });
     return dispatch(
       installTezsterImage({
         isTezsterImagePresent,
