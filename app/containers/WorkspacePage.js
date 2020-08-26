@@ -11,10 +11,7 @@ import {
   handleTabChangeAction,
 } from '../actions/Workspace/Sidebar';
 import installLocalnodesAction from '../actions/Tezster-nodes';
-import {
-  startTezsterNodesAction,
-  stopTezsterNodesAction,
-} from '../actions/Tezster-nodes/stop-nodes-setup';
+import stopTezsterNodesAction from '../actions/Tezster-nodes/stop-nodes-setup';
 
 import {
   getBlockHeadsAction,
@@ -123,8 +120,6 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(handleEditorCodeOnChange(payload)),
   installLocalnodesAction: (payload) =>
     dispatch(installLocalnodesAction(payload)),
-  startTezsterNodesAction: (payload) =>
-    dispatch(startTezsterNodesAction(payload)),
   stopTezsterNodesAction: (payload) =>
     dispatch(stopTezsterNodesAction(payload)),
 });
