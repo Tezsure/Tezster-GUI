@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-import { exec } from 'child_process';
 import Docker from 'dockerode';
 import { RpcRequest } from '../../Workspace/Accounts/helper.accounts';
 
@@ -10,17 +9,6 @@ const { TEZSTER_IMAGE } = config;
 
 const url = config.provider;
 const testPkh = config.identities[0].pkh;
-
-function executeCommandHelper(args, callback) {
-  const { command } = args;
-  exec(command, (err, stdout, stderr) => {
-    if (err || stderr || stdout.toString().toLowerCase().includes('error')) {
-      const dockerError = 'Error: docker not installed';
-      return callback(dockerError, null);
-    }
-    return callback(null, stdout);
-  });
-}
 
 export default async function CheckConnectionStatus(args) {
   const docker = new Docker();
@@ -41,7 +29,7 @@ export default async function CheckConnectionStatus(args) {
           });
         break;
       case 'DOCKER_INSTALL_STATUS':
-        executeCommandHelper(args, (err, result) => {
+        docker.version((err, result) => {
           if (err) {
             return resolve(false);
           }
