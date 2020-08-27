@@ -15,7 +15,9 @@ export default function installTezsterContainer(args) {
   const { isTezsterContainerPresent, isTezsterContainerRunning } = args;
   const docker = new Docker();
   return (dispatch) => {
-    if (!isTezsterContainerPresent && !isTezsterContainerRunning) {
+    if (!isTezsterContainerRunning) {
+      if (isTezsterContainerPresent)
+        docker.getContainer(TEZSTER_CONTAINER_NAME).remove({ force: true });
       dispatch({
         type: 'TEZSTER_START_NODES',
         payload: {
@@ -67,38 +69,6 @@ export default function installTezsterContainer(args) {
           return dispatch(runExec({ container, args }));
         }
       );
-    } else if (isTezsterContainerPresent && !isTezsterContainerRunning) {
-      dispatch({
-        type: 'TEZSTER_START_NODES',
-        payload: {
-          msg: `Starting localnodes please wait...`,
-          enum: 'STARTING_STREAM',
-          totalProgressPercentage: 0,
-        },
-      });
-      docker.listContainers({ all: true }, (err, containers) => {
-        if (err) {
-          setTimeout(
-            () =>
-              dispatch({
-                type: 'STARTING_NODES',
-                payload: {
-                  loader: false,
-                },
-              }),
-            4000
-          );
-          return dispatch({
-            type: 'TEZSTER_ERROR',
-            payload: 'Unable to fetch container running localnodes.',
-          });
-        }
-        const containerId = containers.filter((elem) =>
-          elem.Names[0].includes('tezster')
-        )[0].Id;
-        const container = docker.getContainer(containerId);
-        return dispatch(runExec({ container, args }));
-      });
     } else {
       setTimeout(() => {
         dispatch(getAccountsAction(args));
