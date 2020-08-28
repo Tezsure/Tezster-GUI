@@ -5,7 +5,7 @@ import { RpcRequest } from '../../Workspace/Accounts/helper.accounts';
 const config = require('../../../db-config/helper.dbConfig').GetLocalStorage();
 const { GetBalanceAPI } = require('../../Workspace/Accounts/api.accounts');
 
-const { TEZSTER_IMAGE } = config;
+const { TEZSTER_IMAGE, TEZSTER_CONTAINER_NAME } = config;
 
 const url = config.provider;
 const testPkh = config.identities[0].pkh;
@@ -50,14 +50,18 @@ export default async function CheckConnectionStatus(args) {
             }
             return resolve({ msg: err });
           }
+          const TezsterOldImages = images.filter(
+            (elem) =>
+              elem.RepoTags[0].includes('tezsureinc') &&
+              !elem.RepoTags[0].includes(`${TEZSTER_IMAGE}`)
+          );
+          const TezsterMainImage = images.filter((elem) =>
+            elem.RepoTags[0].includes(`${TEZSTER_IMAGE}`)
+          );
           if (images.length === 0) {
             return resolve(false);
           }
-          if (
-            images.filter((elem) =>
-              elem.RepoTags[0].includes(`${TEZSTER_IMAGE}`)
-            ).length > 0
-          ) {
+          if (TezsterMainImage.length > 0) {
             return resolve(true);
           }
           return resolve(false);
@@ -68,15 +72,26 @@ export default async function CheckConnectionStatus(args) {
           if (err) {
             return resolve(false);
           }
+          const TezsterMainContainer = containers.filter((elem) =>
+            elem.Names[0].includes(`${TEZSTER_CONTAINER_NAME}`)
+          );
+          const TezsterOldContainer = containers.filter(
+            (elem) =>
+              elem.Names[0].includes(`${TEZSTER_CONTAINER_NAME}`) &&
+              !elem.Names[0].includes(`${TEZSTER_CONTAINER_NAME}`)
+          );
+          const TezsterContainers = containers.filter((elem) =>
+            elem.Image.includes(`${TEZSTER_IMAGE}`)
+          );
           if (containers.length === 0) {
             return resolve(false);
           }
-          if (
-            containers.filter((elem) => elem.Names[0].includes('tezster'))
-              .length > 0 ||
-            containers.filter((elem) => elem.Image.includes(`${TEZSTER_IMAGE}`))
-              .length > 0
-          ) {
+          if (TezsterOldContainer.length > 0) {
+            docker
+              .getContainer(TezsterOldContainer[0].Id)
+              .remove({ force: true });
+          }
+          if (TezsterMainContainer.length > 0) {
             return resolve(true);
           }
           return resolve(false);
@@ -87,15 +102,26 @@ export default async function CheckConnectionStatus(args) {
           if (err) {
             return resolve(false);
           }
+          const TezsterMainContainer = containers.filter((elem) =>
+            elem.Names[0].includes(`${TEZSTER_CONTAINER_NAME}`)
+          );
+          const TezsterOldContainer = containers.filter(
+            (elem) =>
+              elem.Names[0].includes(`${TEZSTER_CONTAINER_NAME}`) &&
+              !elem.Names[0].includes(`${TEZSTER_CONTAINER_NAME}`)
+          );
+          const TezsterContainers = containers.filter((elem) =>
+            elem.Image.includes(`${TEZSTER_IMAGE}`)
+          );
           if (containers.length === 0) {
             return resolve(false);
           }
-          if (
-            containers.filter((elem) => elem.Names[0].includes('tezster'))
-              .length > 0 ||
-            containers.filter((elem) => elem.Image.includes(`${TEZSTER_IMAGE}`))
-              .length > 0
-          ) {
+          if (TezsterOldContainer.length > 0) {
+            docker
+              .getContainer(TezsterOldContainer[0].Id)
+              .remove({ force: true });
+          }
+          if (TezsterMainContainer.length > 0) {
             return resolve(true);
           }
           return resolve(false);
