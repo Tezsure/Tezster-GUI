@@ -73,12 +73,12 @@ export default async function CheckConnectionStatus(args) {
             return resolve(false);
           }
           const TezsterMainContainer = containers.filter((elem) =>
-            elem.Names[0].includes(`${TEZSTER_CONTAINER_NAME}`)
+            elem.Image.includes(`${TEZSTER_IMAGE}`)
           );
           const TezsterOldContainer = containers.filter(
             (elem) =>
               elem.Names[0].includes(`${TEZSTER_CONTAINER_NAME}`) &&
-              !elem.Names[0].includes(`${TEZSTER_CONTAINER_NAME}`)
+              !elem.Image.includes(`${TEZSTER_IMAGE}`)
           );
           const TezsterContainers = containers.filter((elem) =>
             elem.Image.includes(`${TEZSTER_IMAGE}`)
@@ -89,12 +89,23 @@ export default async function CheckConnectionStatus(args) {
           if (TezsterOldContainer.length > 0) {
             docker
               .getContainer(TezsterOldContainer[0].Id)
-              .remove({ force: true });
+              .remove({ force: true })
+              .then((res) => {
+                if (TezsterMainContainer.length > 0) {
+                  return resolve(true);
+                }
+                return resolve(false);
+              })
+              .catch((exp) => {
+                return resolve(false);
+              });
           }
-          if (TezsterMainContainer.length > 0) {
+          if (
+            TezsterOldContainer.length === 0 &&
+            TezsterMainContainer.length > 0
+          ) {
             return resolve(true);
           }
-          return resolve(false);
         });
         break;
       case 'CHECK_CONTAINER_RUNNING':
@@ -103,23 +114,13 @@ export default async function CheckConnectionStatus(args) {
             return resolve(false);
           }
           const TezsterMainContainer = containers.filter((elem) =>
-            elem.Names[0].includes(`${TEZSTER_CONTAINER_NAME}`)
-          );
-          const TezsterOldContainer = containers.filter(
-            (elem) =>
-              elem.Names[0].includes(`${TEZSTER_CONTAINER_NAME}`) &&
-              !elem.Names[0].includes(`${TEZSTER_CONTAINER_NAME}`)
+            elem.Image.includes(`${TEZSTER_IMAGE}`)
           );
           const TezsterContainers = containers.filter((elem) =>
             elem.Image.includes(`${TEZSTER_IMAGE}`)
           );
           if (containers.length === 0) {
             return resolve(false);
-          }
-          if (TezsterOldContainer.length > 0) {
-            docker
-              .getContainer(TezsterOldContainer[0].Id)
-              .remove({ force: true });
           }
           if (TezsterMainContainer.length > 0) {
             return resolve(true);
