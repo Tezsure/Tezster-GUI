@@ -9,7 +9,7 @@ import CheckConnectionStatus from './Helper/index';
 const {
   TEZSTER_IMAGE,
   TEZSTER_CONTAINER_NAME,
-} = require('../../db-config/tezster.config');
+} = require('../../db-config/helper.dbConfig').GetLocalStorage();
 
 export default function installTezsterContainer(args) {
   const { isTezsterContainerPresent, isTezsterContainerRunning } = args;
