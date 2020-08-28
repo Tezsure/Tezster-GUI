@@ -4,7 +4,6 @@ import { getAccountsAction } from '../Workspace/Accounts';
 import { setTezsterConfigAction } from '../Onboard';
 
 import CheckConnectionStatus from './Helper/index';
-
 // eslint-disable-next-line camelcase
 const {
   TEZSTER_IMAGE,
