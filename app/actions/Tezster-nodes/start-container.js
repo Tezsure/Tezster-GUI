@@ -13,7 +13,9 @@ const ip = require('docker-ip');
 
 export default function installTezsterContainer(args) {
   const { isTezsterContainerPresent, isTezsterContainerRunning } = args;
-  const docker = new Docker({ host: `http://${ip()}` });
+  const docker = process.platform.includes('win')
+    ? new Docker({ host: `http://${ip()}` })
+    : new Docker();
   return (dispatch) => {
     if (!isTezsterContainerPresent && !isTezsterContainerRunning) {
       dispatch({
