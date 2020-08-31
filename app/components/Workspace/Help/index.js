@@ -22,7 +22,8 @@ function index() {
             src={githubIcon}
             className="card-img-top"
             alt={noImageIcon}
-            style={{ width: '30%' }}
+            style={{ width: '30%', cursor: 'pointer' }}
+            onClick={() => shell.openExternal(GithubIssueLink)}
           />
           <div className="card-body">
             <p className="card-text">
@@ -44,12 +45,13 @@ function index() {
             src={telegramIcon}
             className="card-img-top"
             alt={noImageIcon}
-            style={{ width: '30%' }}
+            style={{ width: '30%', cursor: 'pointer' }}
+            onClick={() => shell.openExternal(TelegramIssueLink)}
           />
           <div className="card-body">
             <p className="card-text">
               You can also keep track of our latest feature’s improvement’s and
-              can get one on one with our developer&rsquo;s{' '}
+              can get one on one with our developers
               <NavLink
                 to="#"
                 onClick={() => shell.openExternal(TelegramIssueLink)}
