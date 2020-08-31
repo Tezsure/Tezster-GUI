@@ -1,29 +1,16 @@
 /* eslint-disable no-unused-vars */
-import { exec } from 'child_process';
 import Docker from 'dockerode';
 import { RpcRequest } from '../../Workspace/Accounts/helper.accounts';
-
-const config = require('../../../db-config/tezster.config');
-const { GetBalanceAPI } = require('../../Workspace/Accounts/api.accounts');
-
-const { TEZSTER_IMAGE } = require('../../../db-config/tezster.config');
-
+const config = require('../../../db-config/helper.dbConfig').GetLocalStorage();
+const { TEZSTER_IMAGE, TEZSTER_CONTAINER_NAME } = config;
 const url = config.provider;
-const testPkh = config.identities[0].pkh;
 
-function executeCommandHelper(args, callback) {
-  const { command } = args;
-  exec(command, (err, stdout, stderr) => {
-    if (err || stderr || stdout.toString().toLowerCase().includes('error')) {
-      const dockerError = 'Error: docker not installed';
-      return callback(dockerError, null);
-    }
-    return callback(null, stdout);
-  });
-}
+const ip = require('docker-ip');
 
 export default async function CheckConnectionStatus(args) {
-  const docker = new Docker();
+  const docker = process.platform.includes('win')
+    ? new Docker({ host: `http://${ip()}` })
+    : new Docker();
   return new Promise((resolve) => {
     switch (args.connectionType) {
       case 'INTERNET':
@@ -41,7 +28,7 @@ export default async function CheckConnectionStatus(args) {
           });
         break;
       case 'DOCKER_INSTALL_STATUS':
-        executeCommandHelper(args, (err, result) => {
+        docker.version((err, result) => {
           if (err) {
             return resolve(false);
           }
@@ -62,14 +49,18 @@ export default async function CheckConnectionStatus(args) {
             }
             return resolve({ msg: err });
           }
+          const TezsterOldImages = images.filter(
+            (elem) =>
+              elem.RepoTags[0].includes('tezsureinc') &&
+              !elem.RepoTags[0].includes(`${TEZSTER_IMAGE}`)
+          );
+          const TezsterMainImage = images.filter((elem) =>
+            elem.RepoTags[0].includes(`${TEZSTER_IMAGE}`)
+          );
           if (images.length === 0) {
             return resolve(false);
           }
-          if (
-            images.filter((elem) =>
-              elem.RepoTags[0].includes(`${TEZSTER_IMAGE}`)
-            ).length > 0
-          ) {
+          if (TezsterMainImage.length > 0) {
             return resolve(true);
           }
           return resolve(false);
@@ -80,18 +71,40 @@ export default async function CheckConnectionStatus(args) {
           if (err) {
             return resolve(false);
           }
+          const TezsterMainContainer = containers.filter((elem) =>
+            elem.Image.includes(`${TEZSTER_IMAGE}`)
+          );
+          const TezsterOldContainer = containers.filter(
+            (elem) =>
+              elem.Names[0].includes(`${TEZSTER_CONTAINER_NAME}`) &&
+              !elem.Image.includes(`${TEZSTER_IMAGE}`)
+          );
+          const TezsterContainers = containers.filter((elem) =>
+            elem.Image.includes(`${TEZSTER_IMAGE}`)
+          );
           if (containers.length === 0) {
             return resolve(false);
           }
+          if (TezsterOldContainer.length > 0) {
+            docker
+              .getContainer(TezsterOldContainer[0].Id)
+              .remove({ force: true })
+              .then((res) => {
+                if (TezsterMainContainer.length > 0) {
+                  return resolve(true);
+                }
+                return resolve(false);
+              })
+              .catch((exp) => {
+                return resolve(false);
+              });
+          }
           if (
-            containers.filter((elem) => elem.Names[0].includes('tezster'))
-              .length > 0 ||
-            containers.filter((elem) => elem.Image.includes(`${TEZSTER_IMAGE}`))
-              .length > 0
+            TezsterOldContainer.length === 0 &&
+            TezsterMainContainer.length > 0
           ) {
             return resolve(true);
           }
-          return resolve(false);
         });
         break;
       case 'CHECK_CONTAINER_RUNNING':
@@ -99,18 +112,40 @@ export default async function CheckConnectionStatus(args) {
           if (err) {
             return resolve(false);
           }
+          const TezsterMainContainer = containers.filter((elem) =>
+            elem.Image.includes(`${TEZSTER_IMAGE}`)
+          );
+          const TezsterContainers = containers.filter((elem) =>
+            elem.Image.includes(`${TEZSTER_IMAGE}`)
+          );
+          const TezsterOldContainer = containers.filter(
+            (elem) =>
+              elem.Names[0].includes(`${TEZSTER_CONTAINER_NAME}`) &&
+              !elem.Image.includes(`${TEZSTER_IMAGE}`)
+          );
           if (containers.length === 0) {
             return resolve(false);
           }
+          if (TezsterOldContainer.length > 0) {
+            docker
+              .getContainer(TezsterOldContainer[0].Id)
+              .remove({ force: true })
+              .then((res) => {
+                if (TezsterMainContainer.length > 0) {
+                  return resolve(true);
+                }
+                return resolve(false);
+              })
+              .catch((exp) => {
+                return resolve(false);
+              });
+          }
           if (
-            containers.filter((elem) => elem.Names[0].includes('tezster'))
-              .length > 0 ||
-            containers.filter((elem) => elem.Image.includes(`${TEZSTER_IMAGE}`))
-              .length > 0
+            TezsterOldContainer.length === 0 &&
+            TezsterMainContainer.length > 0
           ) {
             return resolve(true);
           }
-          return resolve(false);
         });
         break;
       default:

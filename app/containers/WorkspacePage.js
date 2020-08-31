@@ -11,10 +11,7 @@ import {
   handleTabChangeAction,
 } from '../actions/Workspace/Sidebar';
 import installLocalnodesAction from '../actions/Tezster-nodes';
-import {
-  startTezsterNodesAction,
-  stopTezsterNodesAction,
-} from '../actions/Tezster-nodes/stop-nodes-setup';
+import stopTezsterNodesAction from '../actions/Tezster-nodes/stop-nodes-setup';
 
 import {
   getBlockHeadsAction,
@@ -30,6 +27,7 @@ import {
   restoreFaucetAccountAction,
   toggleAccountsModalAction,
   getBalanceAction,
+  deleteAccountAction,
 } from '../actions/Workspace/Accounts';
 import {
   toggleTransactionModalAction,
@@ -43,6 +41,8 @@ import {
   deployContractAction,
   getContractStorageAction,
   getAccountBalanceAction,
+  handleAddContractAction,
+  deleteContractAction,
 } from '../actions/Workspace/Contracts';
 import {
   getDashboardHeaderAction,
@@ -91,6 +91,8 @@ const mapDispatchToProps = (dispatch) => ({
   deployContractAction: (payload) => dispatch(deployContractAction(payload)),
   getAccountBalanceAction: (payload) =>
     dispatch(getAccountBalanceAction(payload)),
+  deleteContractAction: (payload) => dispatch(deleteContractAction(payload)),
+  deleteAccountAction: (payload) => dispatch(deleteAccountAction(payload)),
   createFaucetAccountsAction: (payload) =>
     dispatch(createFaucetAccountsAction(payload)),
   toggleAccountsModalAction: (payload) =>
@@ -112,12 +114,12 @@ const mapDispatchToProps = (dispatch) => ({
   checkLocalnodesAction: (payload) => dispatch(checkLocalnodesAction(payload)),
   getLocalConfigAction: (payload) => dispatch(getLocalConfigAction(payload)),
   handleAccordionAction: (payload) => dispatch(handleAccordionAction(payload)),
+  handleAddContractAction: (payload) =>
+    dispatch(handleAddContractAction(payload)),
   handleEditorCodeOnChange: (payload) =>
     dispatch(handleEditorCodeOnChange(payload)),
   installLocalnodesAction: (payload) =>
     dispatch(installLocalnodesAction(payload)),
-  startTezsterNodesAction: (payload) =>
-    dispatch(startTezsterNodesAction(payload)),
   stopTezsterNodesAction: (payload) =>
     dispatch(stopTezsterNodesAction(payload)),
 });

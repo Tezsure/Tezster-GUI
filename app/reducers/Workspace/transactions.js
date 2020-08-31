@@ -1,5 +1,3 @@
-import swal from 'sweetalert';
-
 export function showTransactionModal(initialState = false, action) {
   switch (action.type) {
     case 'TOGGLE_TRANSACTION_MODAL':

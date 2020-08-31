@@ -159,3 +159,7 @@ input {
 .alert.alert-danger {
   border-radius: 0px;
 }
+button.btn.btn-warning:focus {
+  background-color: #ffc107 !important;
+  border-color: #ffc107 !important;
+}
