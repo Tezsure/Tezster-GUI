@@ -4,16 +4,18 @@ import { getAccountsAction } from '../Workspace/Accounts';
 import { setTezsterConfigAction } from '../Onboard';
 
 import CheckConnectionStatus from './Helper/index';
-
 // eslint-disable-next-line camelcase
 const {
   TEZSTER_IMAGE,
   TEZSTER_CONTAINER_NAME,
-} = require('../../db-config/tezster.config');
+} = require('../../db-config/helper.dbConfig').GetLocalStorage();
+const ip = require('docker-ip');
 
 export default function installTezsterContainer(args) {
   const { isTezsterContainerPresent, isTezsterContainerRunning } = args;
-  const docker = new Docker();
+  const docker = process.platform.includes('win')
+    ? new Docker({ host: `http://${ip()}` })
+    : new Docker();
   return (dispatch) => {
     if (!isTezsterContainerPresent && !isTezsterContainerRunning) {
       dispatch({
@@ -30,28 +32,17 @@ export default function installTezsterContainer(args) {
           Image: `${TEZSTER_IMAGE}`,
           Tty: true,
           ExposedPorts: {
-            '18731/tchildprocess': {},
-            '18732/tchildprocess': {},
-            '18733/tchildprocess': {},
+            '18731/tcp': {},
           },
-          PortBindings: {
-            '18731/tchildprocess': [
-              {
-                HostPort: '18731',
-              },
-            ],
-            '18732/tchildprocess': [
-              {
-                HostPort: '18732',
-              },
-            ],
-            '18733/tchildprocess': [
-              {
-                HostPort: '18733',
-              },
-            ],
+          Hostconfig: {
+            PortBindings: {
+              '18731/tcp': [
+                {
+                  HostPort: '18732',
+                },
+              ],
+            },
           },
-          NetworkMode: 'host',
           Cmd: [
             '/bin/bash',
             '-c',
@@ -194,7 +185,6 @@ function runExec({ container, args }) {
             });
             return clearInterval(progressInterval);
           }, 4000);
-
           // eslint-disable-next-line no-param-reassign
           args.isAvailableLocalnodes = true;
           dispatch(getAccountsAction(args));
@@ -241,7 +231,6 @@ function runExec({ container, args }) {
             });
             return clearInterval(progressInterval);
           }, 4000);
-
           // eslint-disable-next-line no-param-reassign
           args.isAvailableLocalnodes = true;
           dispatch(getAccountsAction(args));

@@ -89,7 +89,7 @@ export default function getExampleStorage(initialStorage) {
       return getExampleStorage(initialStorage);
     case /\(bool .*?\)/gm.test(initialStorage):
       regex = /\(bool .*?\)/gm;
-      initialStorage = initialStorage.replace(regex, 'True');
+      initialStorage = initialStorage.replace(regex, 'False');
       return getExampleStorage(initialStorage);
     case /\(bytes .*?\)/gm.test(initialStorage):
       regex = /\(bytes .*?\)/gm;
@@ -161,7 +161,7 @@ export default function getExampleStorage(initialStorage) {
       return getExampleStorage(initialStorage);
     case /(bool)|\(bool .*?\)/gm.test(initialStorage):
       regex = /(bool)|\(bool .*?\)/gm;
-      initialStorage = initialStorage.replace(regex, 'True');
+      initialStorage = initialStorage.replace(regex, 'False');
       return getExampleStorage(initialStorage);
     case /(bytes)|\(bytes .*?\)/gm.test(initialStorage):
       regex = /(bytes)|\(bytes .*?\)/gm;

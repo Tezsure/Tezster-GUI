@@ -1,6 +1,6 @@
-import { apiEndPoints, ConseilJS } from '../../../db-config/tezster.config';
-
 const conseiljs = require('conseiljs');
+
+const Config = require('../../../db-config/helper.dbConfig');
 
 export async function ListAccountTransactionsAPI(args, callback) {
   try {
@@ -11,8 +11,8 @@ export async function ListAccountTransactionsAPI(args, callback) {
 
     const entity = 'operations';
     const conseilServer = {
-      url: ConseilJS.url,
-      apiKey: ConseilJS.apiKey,
+      url: Config.GetLocalStorage().ConseilJS[networkName].url,
+      apiKey: Config.GetLocalStorage().ConseilJS[networkName].apiKey,
       network,
     };
     let sendQuery = conseiljs.ConseilQueryBuilder.blankQuery();
@@ -117,56 +117,67 @@ export async function ListAccountTransactionsAPI(args, callback) {
 }
 
 export async function TransferBalanceTransactionAPI(args, callback) {
-  const keys = args.userAccounts.find(
-    (elem) => elem.pkh === args.senderAccount
-  );
-  const { networkId } = args.dashboardHeader;
-  const networkName = networkId.split('-')[0];
-  const network = networkName.toLowerCase();
-
-  const conseilServer = {
-    url: ConseilJS.url,
-    apiKey: ConseilJS.apiKey,
-    network,
-  };
-  const tezosNode = apiEndPoints[args.dashboardHeader.networkId];
-  const keystore = {
-    publicKey: keys.pk,
-    privateKey: keys.sk,
-    publicKeyHash: keys.pkh,
-    seed: '',
-    storeType: conseiljs.StoreType.Fundraiser,
-  };
-  const transactionResult = await conseiljs.TezosNodeWriter.sendTransactionOperation(
-    tezosNode,
-    keystore,
-    args.recieverAccount,
-    parseInt(args.amount, 10) * 1000000,
-    args.gasPrice,
-    ''
-  );
-  if (
-    JSON.parse(transactionResult.operationGroupID)[0].id &&
-    JSON.parse(transactionResult.operationGroupID)[0].id === 'failure'
-  ) {
-    return callback(
-      JSON.parse(transactionResult.operationGroupID)[0].msg,
-      null
+  try {
+    const keys = args.userAccounts.find(
+      (elem) => elem.pkh === args.senderAccount
     );
-  }
-  if (args.dashboardHeader.networkId === 'Localnode') {
-    return callback(null, {
+    const { networkId } = args.dashboardHeader;
+    const networkName = networkId.split('-')[0];
+    const network = networkName.toLowerCase();
+
+    const tezosNode = Config.GetLocalStorage().apiEndPoints[
+      args.dashboardHeader.networkId
+    ];
+    const keystore = {
+      publicKey: keys.pk,
+      privateKey: keys.sk,
+      publicKeyHash: keys.pkh,
+      seed: '',
+      storeType: conseiljs.StoreType.Fundraiser,
+    };
+    const transactionResult = await conseiljs.TezosNodeWriter.sendTransactionOperation(
+      tezosNode,
+      keystore,
+      args.recieverAccount,
+      parseInt(args.amount, 10) * 1000000,
+      parseInt(args.gasPrice, 10),
+      ''
+    );
+    if (networkName !== 'Localnode') {
+      const conseilServer = {
+        url: Config.GetLocalStorage().ConseilJS[networkName].url,
+        apiKey: Config.GetLocalStorage().ConseilJS[networkName].apiKey,
+        network,
+      };
+      if (
+        JSON.parse(transactionResult.operationGroupID)[0].id &&
+        JSON.parse(transactionResult.operationGroupID)[0].id === 'failure'
+      ) {
+        return callback(
+          JSON.parse(transactionResult.operationGroupID)[0].msg,
+          null
+        );
+      }
+      if (args.dashboardHeader.networkId === 'Localnode') {
+        return callback(null, {
+          operationGroupID: transactionResult.operationGroupID,
+        });
+      }
+      await conseiljs.TezosConseilClient.awaitOperationConfirmation(
+        conseilServer,
+        network,
+        JSON.parse(transactionResult.operationGroupID),
+        10,
+        10
+      );
+      return callback(null, {
+        operationGroupID: transactionResult.operationGroupID,
+      });
+    }
+    callback(null, {
       operationGroupID: transactionResult.operationGroupID,
     });
+  } catch (error) {
+    return callback(error.toString(), null);
   }
-  await conseiljs.TezosConseilClient.awaitOperationConfirmation(
-    conseilServer,
-    network,
-    JSON.parse(transactionResult.operationGroupID),
-    10,
-    10
-  );
-  return callback(null, {
-    operationGroupID: transactionResult.operationGroupID,
-  });
 }

@@ -3,110 +3,15 @@ import Docker from 'dockerode';
 import CheckConnectionStatus from './Helper/index';
 import { setTezsterConfigAction } from '../Onboard';
 
-const TEZSTER_IMAGE = 'tezsureinc/tezster:1.0.2';
-const TEZSTER_CONTAINER_NAME = 'tezster';
+const config = require('../../db-config/helper.dbConfig').GetLocalStorage();
+const { TEZSTER_CONTAINER_NAME } = config;
+const ip = require('docker-ip');
 
-export function startTezsterNodesAction() {
-  const docker = new Docker();
-  const checkConnectionStatus = {
-    connectionType: '',
-  };
-  return async (dispatch) => {
-    checkConnectionStatus.connectionType = 'CHECK_CONTAINER_PRESENT';
-    checkConnectionStatus.command = TEZSTER_CONTAINER_NAME;
-    const isTezsterContainerPresent = await CheckConnectionStatus(
-      checkConnectionStatus
-    );
-    checkConnectionStatus.connectionType = 'CHECK_CONTAINER_RUNNING';
-    checkConnectionStatus.command = TEZSTER_CONTAINER_NAME;
-    const isTezsterContainerRunning = await CheckConnectionStatus(
-      checkConnectionStatus
-    );
-    if (!isTezsterContainerPresent && !isTezsterContainerRunning) {
-      docker.createContainer(
-        {
-          name: `${TEZSTER_CONTAINER_NAME}`,
-          Image: `${TEZSTER_IMAGE}`,
-          Tty: true,
-          ExposedPorts: {
-            '18731/tcp': {},
-            '18732/tcp': {},
-            '18733/tcp': {},
-          },
-          PortBindings: {
-            '18731/tcp': [
-              {
-                HostPort: '18731',
-              },
-            ],
-            '18732/tcp': [
-              {
-                HostPort: '18732',
-              },
-            ],
-            '18733/tcp': [
-              {
-                HostPort: '18733',
-              },
-            ],
-          },
-          NetworkMode: 'host',
-          Cmd: [
-            '/bin/bash',
-            '-c',
-            'cd /usr/local/bin && start_nodes.sh && tail -f /dev/null',
-          ],
-        },
-        (err, data, container) => {
-          if (err) {
-            return dispatch({
-              type: 'TEZSTER_ERROR',
-              payload: 'Error in starting nodes',
-            });
-          }
-          return dispatch({
-            type: 'TEZSTER_START_NODES',
-            payload: {
-              msg: 'Nodes started successfully',
-              ...data,
-              ...container,
-            },
-          });
-        }
-      );
-    } else if (!isTezsterContainerRunning) {
-      docker.listContainers({ all: true }, (err, containers) => {
-        if (err) {
-          return dispatch({
-            type: 'TEZSTER_ERROR',
-            payload: 'Unable to fetch containers',
-          });
-        }
-        const containerId = containers.filter((elem) =>
-          elem.Names[0].includes('tezster')
-        )[0].Id;
-        const container = docker.getContainer(containerId);
-        container.start((error, data) => {
-          return dispatch({
-            type: 'TEZSTER_START_NODES',
-            payload: {
-              msg: 'Nodes started successfully',
-              data,
-            },
-          });
-        });
-      });
-    } else {
-      return dispatch({
-        type: 'TEZSTER_START_NODES',
-        payload: { msg: 'Nodes already running' },
-      });
-    }
-  };
-}
+export default function stopTezsterNodesAction() {
+  const docker = process.platform.includes('win')
+    ? new Docker({ host: `http://${ip()}` })
+    : new Docker();
 
-export function stopTezsterNodesAction() {
-  const docker = new Docker();
   const checkConnectionStatus = {
     connectionType: '',
   };
@@ -263,7 +168,10 @@ function stopNodesProgress(totalProgressPercentage) {
 }
 
 function PostStopNodesTask(containerId) {
-  const docker = new Docker();
+  const docker = process.platform.includes('win')
+    ? new Docker({ host: `http://${ip()}` })
+    : new Docker();
+
   return (dispatch) => {
     setTimeout(
       () =>
@@ -292,11 +200,13 @@ function PostStopNodesTask(containerId) {
     });
     dispatch(setTezsterConfigAction());
     docker.listContainers({ all: true }, (err, containers) => {
-      const tezsterContainerId = containers.filter((elem) =>
-        elem.Names[0].includes('tezster')
-      )[0].Id;
-      if (tezsterContainerId)
-        docker.getContainer(tezsterContainerId).remove({ force: true });
+      if (!err && containers && containers.length > 0) {
+        const tezsterContainerId = containers.filter((elem) =>
+          elem.Names[0].includes(`${TEZSTER_CONTAINER_NAME}`)
+        )[0].Id;
+        if (tezsterContainerId)
+          docker.getContainer(tezsterContainerId).remove({ force: true });
+      }
     });
   };
 }

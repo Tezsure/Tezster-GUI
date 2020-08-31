@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/prop-types */
@@ -12,12 +13,19 @@ class TransactionTable extends Component {
 
   render() {
     const Transactions = this.props.userTransactions.map((elem, index) => {
+      let time = 'N/A';
+      if (elem.hasOwnProperty('tx')) {
+        if (elem.tx.hasOwnProperty('timestamp')) {
+          time = new Date(elem.tx.timestamp).toGMTString();
+        }
+      } else {
+        time = new Date(elem.timestamp).toGMTString();
+      }
       const transactionData = elem.hasOwnProperty('tx') ? elem.tx : elem;
       const balance = `${(transactionData.amount / 1000000).toFixed(3)}`;
-      const opHash = elem.hasOwnProperty('op') ? elem.op.opHash : 'N/A';
       return (
         <tr className="table-row" key={`trn-${index}`}>
-          <td className="table-body-cell">
+          <td className="table-body-cell" style={{ wordBreak: 'break-word' }}>
             <div className="cards-header">
               <h4>SOURCE</h4>
             </div>
@@ -27,7 +35,7 @@ class TransactionTable extends Component {
               </p>
             </div>
           </td>
-          <td className="table-body-cell">
+          <td className="table-body-cell" style={{ wordBreak: 'break-word' }}>
             <div className="cards-header">
               <h4>DESTINATION</h4>
             </div>
@@ -37,7 +45,7 @@ class TransactionTable extends Component {
               </p>
             </div>
           </td>
-          <td className="table-body-cell">
+          <td className="table-body-cell" style={{ wordBreak: 'break-word' }}>
             <div className="cards-header">
               <h4>AMOUNT</h4>
             </div>
@@ -47,16 +55,26 @@ class TransactionTable extends Component {
               </p>
             </div>
           </td>
-          <td className="table-body-cell">
-            <div className="cards-header">
-              <h4>OP HASH</h4>
+          <td className="table-body-cell" style={{ wordBreak: 'break-word' }}>
+            <div className="cards-header" style={{ wordBreak: 'break-word' }}>
+              <h4 style={{ wordBreak: 'break-word' }}>TRANSACTION TIME</h4>
             </div>
-            <div className="cards-contents">
-              <p className="account-address-content">{opHash}</p>
+            <div className="cards-contents" style={{ wordBreak: 'break-word' }}>
+              <p
+                className="account-address-content"
+                style={{ wordBreak: 'break-word' }}
+              >
+                {time}
+              </p>
             </div>
           </td>
           <td className="table-body-cell">
-            <div className="transaction-status">success</div>
+            <div className="cards-header">
+              <h4>STATUS</h4>
+            </div>
+            <div className="cards-contents">
+              <p className="account-address-content">success</p>
+            </div>
           </td>
         </tr>
       );

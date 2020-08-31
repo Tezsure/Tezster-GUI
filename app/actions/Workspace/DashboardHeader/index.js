@@ -1,4 +1,4 @@
-const config = require('../../../db-config/tezster.config');
+const config = require('../../../db-config/helper.dbConfig');
 
 const { GetBlockHeightAPI, GetAllBlockDataAPI } = require('./api.tzstats');
 
@@ -8,7 +8,7 @@ const localnodeData = {
   gas_limit: '32311',
   gas_price: '0.1228',
   networkId: 'Localnode',
-  rpcServer: 'http://localhost:18731',
+  rpcServer: 'http://localhost:18732',
 };
 
 const CarthagenetTezsterData = {
@@ -28,9 +28,18 @@ const CarthagenetSmartpyData = {
   networkId: 'Carthagenet-Smartpy',
   rpcServer: 'https://carthagenet.SmartPy.io',
 };
-const { apiEndPoints } = config;
+
+const MainnetSmartpyData = {
+  chainId: '1074097',
+  currentBlock: '00',
+  gas_limit: '61400',
+  gas_price: '0.29392',
+  networkId: 'Mainnet-Smartpy',
+  rpcServer: 'https://mainnet.SmartPy.io',
+};
 
 export function getDashboardHeaderAction(args) {
+  const { apiEndPoints } = config.GetLocalStorage();
   return (dispatch) => {
     if (args.dashboardHeader.networkId === 'Localnode') {
       return dispatch({
@@ -73,6 +82,7 @@ export function getDashboardHeaderAction(args) {
 }
 
 export function handleNetworkChangeAction(args) {
+  const { apiEndPoints } = config.GetLocalStorage();
   const { networkId } = args.dashboardHeader;
   const networkName = networkId.split('-')[0];
   return (dispatch) => {
@@ -92,6 +102,12 @@ export function handleNetworkChangeAction(args) {
       dispatch({
         type: 'GET_DASHBOARD_HEADER',
         payload: CarthagenetTezsterData,
+      });
+    }
+    if (networkId === 'Mainnet-Smartpy') {
+      dispatch({
+        type: 'GET_DASHBOARD_HEADER',
+        payload: MainnetSmartpyData,
       });
     }
 
