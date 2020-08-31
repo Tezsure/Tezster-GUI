@@ -11,7 +11,7 @@ const localnodeData = {
   gas_limit: '32311',
   gas_price: '0.1228',
   networkId: 'Localnode',
-  rpcServer: 'http://localhost:18731',
+  rpcServer: 'http://localhost:18732',
 };
 
 const CarthagenetTezsterData = {
@@ -30,6 +30,15 @@ const CarthagenetSmartpyData = {
   gas_price: '0.12002',
   networkId: 'Carthagenet-Smartpy',
   rpcServer: 'https://carthagenet.SmartPy.io',
+};
+
+const MainnetSmartpyData = {
+  chainId: '1074097',
+  currentBlock: '00',
+  gas_limit: '61400',
+  gas_price: '0.29392',
+  networkId: 'Mainnet-Smartpy',
+  rpcServer: 'https://mainnet.SmartPy.io',
 };
 
 export function getBlockHeadsAction(args) {
@@ -60,6 +69,12 @@ export function getBlockHeadsAction(args) {
         dispatch({
           type: 'GET_DASHBOARD_HEADER',
           payload: CarthagenetTezsterData,
+        });
+      }
+      if (networkId === 'Mainnet-Smartpy') {
+        dispatch({
+          type: 'GET_DASHBOARD_HEADER',
+          payload: MainnetSmartpyData,
         });
       }
       GetBlockHeightAPI(args, (blockHeightError, blockHeightResponse) => {

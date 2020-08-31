@@ -1,7 +1,9 @@
 /* eslint-disable promise/always-return */
 import axios from 'axios';
 
-import { TzStatsApiEndpoint } from '../../../db-config/tezster.config';
+const {
+  TzStatsApiEndpoint,
+} = require('../../../db-config/helper.dbConfig').GetLocalStorage();
 
 export function GetBlockHeightAPI(args, callback) {
   const url = TzStatsApiEndpoint[args.dashboardHeader.networkId];

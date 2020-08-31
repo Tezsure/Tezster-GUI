@@ -16,34 +16,17 @@ const TelegramIssueLink = 'https://t.me/tezster';
 function index() {
   return (
     <div className="help-section-container">
-      <div className="cards-container">
-        <div className="cards">
-          <div className="cards-header">
-            <h4>Please follow below link&rsquo;s to create issue on github</h4>
-          </div>
-          <div className="cards-contents" />
-        </div>
-      </div>
-      <div className="cards-container">
-        <div
-          className="card"
-          style={{
-            width: '50%',
-            display: 'flex',
-            flexDirection: 'row',
-            borderRadius: '0px',
-            marginRight: '4rem',
-            cursor: 'pointer',
-          }}
-        >
+      <div className="card-deck">
+        <div className="card">
           <img
             src={githubIcon}
             className="card-img-top"
             alt={noImageIcon}
-            style={{ width: '30%' }}
+            style={{ width: '30%', cursor: 'pointer' }}
+            onClick={() => shell.openExternal(GithubIssueLink)}
           />
-          <div className="card-body" style={{ width: '30%' }}>
-            <p className="card-text" style={{ color: '#727d95' }}>
+          <div className="card-body">
+            <p className="card-text">
               To contribute to our development environment or, to keep track of
               our latest feature’s improvement’s or to report an issue please
               follow our Github development{' '}
@@ -57,27 +40,18 @@ function index() {
             </p>
           </div>
         </div>
-        <div
-          className="card"
-          style={{
-            width: '50%',
-            display: 'flex',
-            flexDirection: 'row',
-            borderRadius: '0px',
-            marginRight: '4rem',
-            cursor: 'pointer',
-          }}
-        >
+        <div className="card">
           <img
             src={telegramIcon}
             className="card-img-top"
             alt={noImageIcon}
-            style={{ width: '30%' }}
+            style={{ width: '30%', cursor: 'pointer' }}
+            onClick={() => shell.openExternal(TelegramIssueLink)}
           />
-          <div className="card-body" style={{ width: '30%' }}>
-            <p className="card-text" style={{ color: '#727d95' }}>
+          <div className="card-body">
+            <p className="card-text">
               You can also keep track of our latest feature’s improvement’s and
-              can get one on one with our developer&rsquo;s{' '}
+              can get one on one with our developers
               <NavLink
                 to="#"
                 onClick={() => shell.openExternal(TelegramIssueLink)}

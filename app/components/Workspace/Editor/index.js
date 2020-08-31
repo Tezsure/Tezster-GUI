@@ -33,12 +33,17 @@ import 'ace-builds/src-noconflict/ext-language_tools';
 
 import EditorSettings from './EditorSettings';
 
+const fs = require('fs');
+
 const conseiljs = require('conseiljs');
 
-const fs = require('fs');
-const { storageName } = require('../../../db-config/tezster.config');
+const calculatorCode = require('../../../example-contract/calculator');
 
-const LOCAL_STORAGE_NAME = storageName;
+const escrowCode = require('../../../example-contract/escrow');
+// eslint-disable-next-line camelcase
+const fa1_2Code = require('../../../example-contract/fa1.2');
+
+const EXAMPLE_SMART_CONTRACT = ['calculator', 'escrow', 'fa1.2'];
 
 class App extends Component {
   constructor(props) {
@@ -89,13 +94,15 @@ class App extends Component {
 
   fetchSelectedContract(event) {
     const contractLabel = event.target.value;
-    const { contracts } = JSON.parse(localStorage.getItem(LOCAL_STORAGE_NAME));
-    const { networkId } = this.props.dashboardHeader;
-    const networkName = networkId.split('-')[0];
-    const selectedContract = contracts[networkName].filter(
-      (elem) => contractLabel === elem.originated_contracts
-    )[0];
-    const michelsonCode = selectedContract.contract;
+    let michelsonCode = '';
+    if (contractLabel === 'calculator') {
+      michelsonCode = calculatorCode.contract;
+    } else if (contractLabel === 'escrow') {
+      michelsonCode = escrowCode.contract;
+    } else if (contractLabel === 'fa1.2') {
+      // eslint-disable-next-line camelcase
+      michelsonCode = fa1_2Code.contract;
+    }
     this.setState({
       selectedContractFromDropdown: contractLabel,
     });
@@ -207,21 +214,16 @@ class App extends Component {
 
   render() {
     const { siderBarCollapsed } = this.state;
-    const networkId = this.props.dashboardHeader.networkId.split('-')[0];
     const CurrentTab = this.props.selectedContractsTab;
     const { parseError, sucessMsg } = this.state;
     const compilerOutput = parseError === '' ? sucessMsg : parseError;
-    let contracts = [];
-    const __localStorage__ = JSON.parse(
-      localStorage.getItem(LOCAL_STORAGE_NAME)
-    );
-    if (__localStorage__ && __localStorage__.hasOwnProperty('contracts')) {
-      contracts = __localStorage__.contracts[networkId].map((elem, index) => (
-        <option key={elem.name + index} value={elem.originated_contracts}>
-          {`${elem.name} - ${elem.originated_contracts}`}
+    const exampleContracts = EXAMPLE_SMART_CONTRACT.map(
+      (contractName, index) => (
+        <option key={contractName + index} value={contractName}>
+          {contractName}
         </option>
-      ));
-    }
+      )
+    );
     return (
       <div className="accounts-container editor-container">
         <span
@@ -238,9 +240,9 @@ class App extends Component {
                 >
                   <option value="0" disabled>
                     {' '}
-                    Select contract{' '}
+                    Select an example contract{' '}
                   </option>
-                  {contracts}
+                  {exampleContracts}
                 </select>
               </span>
             </span>
