@@ -9,10 +9,13 @@ const {
   TEZSTER_IMAGE,
   TEZSTER_CONTAINER_NAME,
 } = require('../../db-config/helper.dbConfig').GetLocalStorage();
+const ip = require('docker-ip');
 
 export default function installTezsterContainer(args) {
   const { isTezsterContainerPresent, isTezsterContainerRunning } = args;
-  const docker = new Docker();
+  const docker = process.platform.includes('win')
+    ? new Docker({ host: `http://${ip()}` })
+    : new Docker();
   return (dispatch) => {
     if (!isTezsterContainerPresent && !isTezsterContainerRunning) {
       dispatch({
@@ -182,7 +185,6 @@ function runExec({ container, args }) {
             });
             return clearInterval(progressInterval);
           }, 4000);
-
           // eslint-disable-next-line no-param-reassign
           args.isAvailableLocalnodes = true;
           dispatch(getAccountsAction(args));
@@ -229,7 +231,6 @@ function runExec({ container, args }) {
             });
             return clearInterval(progressInterval);
           }, 4000);
-
           // eslint-disable-next-line no-param-reassign
           args.isAvailableLocalnodes = true;
           dispatch(getAccountsAction(args));

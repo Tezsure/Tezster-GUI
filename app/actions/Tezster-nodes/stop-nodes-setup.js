@@ -3,11 +3,15 @@ import Docker from 'dockerode';
 import CheckConnectionStatus from './Helper/index';
 import { setTezsterConfigAction } from '../Onboard';
 
-const TEZSTER_IMAGE = 'tezsureinc/tezster:1.0.2';
-const TEZSTER_CONTAINER_NAME = 'tezster';
+const config = require('../../db-config/helper.dbConfig').GetLocalStorage();
+const { TEZSTER_CONTAINER_NAME } = config;
+const ip = require('docker-ip');
 
 export default function stopTezsterNodesAction() {
-  const docker = new Docker();
+  const docker = process.platform.includes('win')
+    ? new Docker({ host: `http://${ip()}` })
+    : new Docker();
+
   const checkConnectionStatus = {
     connectionType: '',
   };
@@ -164,7 +168,10 @@ function stopNodesProgress(totalProgressPercentage) {
 }
 
 function PostStopNodesTask(containerId) {
-  const docker = new Docker();
+  const docker = process.platform.includes('win')
+    ? new Docker({ host: `http://${ip()}` })
+    : new Docker();
+
   return (dispatch) => {
     setTimeout(
       () =>
@@ -193,11 +200,13 @@ function PostStopNodesTask(containerId) {
     });
     dispatch(setTezsterConfigAction());
     docker.listContainers({ all: true }, (err, containers) => {
-      const tezsterContainerId = containers.filter((elem) =>
-        elem.Names[0].includes('tezster')
-      )[0].Id;
-      if (tezsterContainerId)
-        docker.getContainer(tezsterContainerId).remove({ force: true });
+      if (!err && containers && containers.length > 0) {
+        const tezsterContainerId = containers.filter((elem) =>
+          elem.Names[0].includes(`${TEZSTER_CONTAINER_NAME}`)
+        )[0].Id;
+        if (tezsterContainerId)
+          docker.getContainer(tezsterContainerId).remove({ force: true });
+      }
     });
   };
 }

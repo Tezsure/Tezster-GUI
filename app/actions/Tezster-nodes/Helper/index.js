@@ -1,17 +1,16 @@
 /* eslint-disable no-unused-vars */
 import Docker from 'dockerode';
 import { RpcRequest } from '../../Workspace/Accounts/helper.accounts';
-
 const config = require('../../../db-config/helper.dbConfig').GetLocalStorage();
-const { GetBalanceAPI } = require('../../Workspace/Accounts/api.accounts');
-
 const { TEZSTER_IMAGE, TEZSTER_CONTAINER_NAME } = config;
-
 const url = config.provider;
-const testPkh = config.identities[0].pkh;
+
+const ip = require('docker-ip');
 
 export default async function CheckConnectionStatus(args) {
-  const docker = new Docker();
+  const docker = process.platform.includes('win')
+    ? new Docker({ host: `http://${ip()}` })
+    : new Docker();
   return new Promise((resolve) => {
     switch (args.connectionType) {
       case 'INTERNET':
