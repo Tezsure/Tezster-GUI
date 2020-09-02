@@ -15,7 +15,10 @@ export default function installTezsterContainer(args) {
   const { isTezsterContainerPresent, isTezsterContainerRunning } = args;
   const docker = process.platform.includes('win')
     ? new Docker({ host: `http://${ip()}` })
-    : new Docker();
+    : new Docker({
+        socketPath: '/var/run/docker.sock',
+        hosts: 'tcp://0.0.0.0:2376',
+      });
   return (dispatch) => {
     if (!isTezsterContainerPresent && !isTezsterContainerRunning) {
       dispatch({

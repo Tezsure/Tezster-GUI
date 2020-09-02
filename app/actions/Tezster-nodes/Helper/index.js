@@ -10,7 +10,10 @@ const ip = require('docker-ip');
 export default async function CheckConnectionStatus(args) {
   const docker = process.platform.includes('win')
     ? new Docker({ host: `http://${ip()}` })
-    : new Docker();
+    : new Docker({
+        socketPath: '/var/run/docker.sock',
+        hosts: 'tcp://0.0.0.0:2376',
+      });
   return new Promise((resolve) => {
     switch (args.connectionType) {
       case 'INTERNET':

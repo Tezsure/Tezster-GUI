@@ -10,8 +10,10 @@ const ip = require('docker-ip');
 export default function stopTezsterNodesAction() {
   const docker = process.platform.includes('win')
     ? new Docker({ host: `http://${ip()}` })
-    : new Docker();
-
+    : new Docker({
+        socketPath: '/var/run/docker.sock',
+        hosts: 'tcp://0.0.0.0:2376',
+      });
   const checkConnectionStatus = {
     connectionType: '',
   };
@@ -170,7 +172,10 @@ function stopNodesProgress(totalProgressPercentage) {
 function PostStopNodesTask(containerId) {
   const docker = process.platform.includes('win')
     ? new Docker({ host: `http://${ip()}` })
-    : new Docker();
+    : new Docker({
+        socketPath: '/var/run/docker.sock',
+        hosts: 'tcp://0.0.0.0:2376',
+      });
 
   return (dispatch) => {
     setTimeout(

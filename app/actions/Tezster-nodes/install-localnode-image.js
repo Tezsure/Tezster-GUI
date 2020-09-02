@@ -12,7 +12,10 @@ export default function installTezsterImage(args) {
   let subImages = [];
   const docker = process.platform.includes('win')
     ? new Docker({ host: `http://${ip()}` })
-    : new Docker();
+    : new Docker({
+        socketPath: '/var/run/docker.sock',
+        hosts: 'tcp://0.0.0.0:2376',
+      });
   let progressPercentage;
   let totalProgressPercentage;
   let previousProgressPercentage = 0;
