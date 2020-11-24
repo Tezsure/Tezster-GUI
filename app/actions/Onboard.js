@@ -37,17 +37,16 @@ function handleMigrateLocalStorage() {
     oldLocalStorage = JSON.parse(oldLocalStorage);
     newLocalStorage.userAccounts = {
       Localnode: config.identities,
-      Carthagenet: oldLocalStorage.userAccounts.Carthagenet,
+      Delphinet: oldLocalStorage.userAccounts.Delphinet,
       Mainnet: [],
     };
     newLocalStorage.transactions = {
-      Carthagenet: [],
+      Delphinet: [],
       Localnode: [],
       Mainnet: [],
     };
     newLocalStorage.contracts.Localnode = oldLocalStorage.contracts.Localnode;
-    newLocalStorage.contracts.Carthagenet =
-      oldLocalStorage.contracts.Carthagenet;
+    newLocalStorage.contracts.Delphinet = oldLocalStorage.contracts.Delphinet;
     localStorage.clear();
     localStorage.setItem(config.storageName, JSON.stringify(newLocalStorage));
     return true;
@@ -58,11 +57,11 @@ function handleMigrateLocalStorage() {
       ...config,
       userAccounts: {
         Localnode: config.identities,
-        Carthagenet: [],
+        Delphinet: [],
         Mainnet: [],
       },
       transactions: {
-        Carthagenet: [],
+        Delphinet: [],
         Localnode: [],
         Mainnet: [],
       },
@@ -84,7 +83,7 @@ export function checkLocalnodesAction() {
     handleMigrateLocalStorage();
     RpcRequest.checkNodeStatus(url)
       .then((res) => {
-        if (res.protocol.startsWith('PsCARTHAG')) {
+        if (res.protocol.startsWith('PsDELPH1')) {
           return setTimeout(() => {
             dispatch({
               type: 'LOCAL_NODE_RUNNING_STATUS',
@@ -145,7 +144,7 @@ export function setTezsterConfigAction() {
   return (dispatch) => {
     RpcRequest.checkNodeStatus(url)
       .then((res) => {
-        if (res.protocol.startsWith('PsCARTHAG')) {
+        if (res.protocol.startsWith('PsDELPH1')) {
           return setTimeout(() => {
             dispatch({
               type: 'LOCAL_NODE_RUNNING_STATUS',

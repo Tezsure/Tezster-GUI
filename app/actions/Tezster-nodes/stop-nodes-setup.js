@@ -1,9 +1,12 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable import/order */
 /* eslint-disable no-unused-vars */
 import Docker from 'dockerode';
 import CheckConnectionStatus from './Helper/index';
 import { setTezsterConfigAction } from '../Onboard';
 
 const config = require('../../db-config/helper.dbConfig').GetLocalStorage();
+
 const { TEZSTER_CONTAINER_NAME } = config;
 const ip = require('docker-ip');
 
@@ -11,9 +14,9 @@ export default function stopTezsterNodesAction() {
   const docker = process.platform.includes('win')
     ? new Docker({ host: `http://${ip()}` })
     : new Docker({
-        socketPath: '/var/run/docker.sock',
-        hosts: 'tcp://0.0.0.0:2376',
-      });
+      socketPath: '/var/run/docker.sock',
+      hosts: 'tcp://0.0.0.0:2376',
+    });
   const checkConnectionStatus = {
     connectionType: '',
   };
@@ -173,9 +176,9 @@ function PostStopNodesTask(containerId) {
   const docker = process.platform.includes('win')
     ? new Docker({ host: `http://${ip()}` })
     : new Docker({
-        socketPath: '/var/run/docker.sock',
-        hosts: 'tcp://0.0.0.0:2376',
-      });
+      socketPath: '/var/run/docker.sock',
+      hosts: 'tcp://0.0.0.0:2376',
+    });
 
   return (dispatch) => {
     setTimeout(

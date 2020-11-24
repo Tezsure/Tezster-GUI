@@ -49,9 +49,9 @@ class RemoveRpc extends Component {
       let DISABLED_DELETE = false;
       if (
         elem === 'Localnode' ||
-        elem === 'Carthagenet-Tezster' ||
-        elem === 'Carthagenet-Smartpy' ||
-        elem === 'Mainnet-Smartpy'
+        elem === 'Delphinet-Tezster' ||
+        elem === 'Delphinet-Giganode' ||
+        elem === 'Mainnet-Giganode'
       ) {
         DISABLED_DELETE = true;
       }
