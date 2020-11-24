@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import CheckConnectionStatus from './Helper/index';
 import installTezsterImage from './install-localnode-image';
 

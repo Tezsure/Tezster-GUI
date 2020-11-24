@@ -212,7 +212,7 @@ class AddRpc extends Component {
                 Select the network type{' '}
               </option>
               <option value="Local">Local</option>
-              <option value="Carthagenet">Carthagenet</option>
+              <option value="Delphinet">Delphinet</option>
               <option value="Mainnet">Mainnet</option>
             </select>
           </div>

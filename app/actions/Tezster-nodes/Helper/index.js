@@ -1,9 +1,13 @@
+/* eslint-disable no-case-declarations */
+/* eslint-disable import/order */
+/* eslint-disable prettier/prettier */
 /* eslint-disable no-unused-vars */
 import Docker from 'dockerode';
 import { RpcRequest } from '../../Workspace/Accounts/helper.accounts';
+
 const config = require('../../../db-config/helper.dbConfig').GetLocalStorage();
+
 const { TEZSTER_IMAGE, TEZSTER_CONTAINER_NAME } = config;
-const url = config.provider;
 
 const ip = require('docker-ip');
 
@@ -11,17 +15,21 @@ export default async function CheckConnectionStatus(args) {
   const docker = process.platform.includes('win')
     ? new Docker({ host: `http://${ip()}` })
     : new Docker({
-        socketPath: '/var/run/docker.sock',
-        hosts: 'tcp://0.0.0.0:2376',
-      });
+      socketPath: '/var/run/docker.sock',
+      hosts: 'tcp://0.0.0.0:2376',
+    });
   return new Promise((resolve) => {
     switch (args.connectionType) {
       case 'INTERNET':
         return resolve(navigator.onLine);
       case 'TEZSTER_RUNNING':
-        RpcRequest.checkNodeStatus(url)
+        const URL = process.platform.includes('win')
+          ? `http://${ip()}:18732`
+          : 'http://localhost:18732';
+        console.log(URL);
+        RpcRequest.checkNodeStatus(URL)
           .then((res) => {
-            if (res.protocol.startsWith('PsCARTHAG')) {
+            if (res.protocol.startsWith('PsDELPH1')) {
               return resolve(true);
             }
             return resolve(false);

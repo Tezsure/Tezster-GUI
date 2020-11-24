@@ -255,6 +255,8 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.13.0",
     "@hot-loader/react-dom": "^16.13.0",
+    "@taquito/signer": "^7.0.1-beta.0",
+    "@taquito/taquito": "^7.0.1-beta.0",
     "ace-builds": "^1.4.11",
     "axios": "^0.19.2",
     "connected-react-router": "^6.8.0",

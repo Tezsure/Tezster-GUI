@@ -1,9 +1,10 @@
+/* eslint-disable prettier/prettier */
 const ip = require('docker-ip');
 
 module.exports = {
-  TEZSTER_IMAGE: 'tezsureinc/tezster:1.0.4',
+  TEZSTER_IMAGE: 'tezsureinc/tezster:1.0.5-beta',
   TEZSTER_CONTAINER_NAME: 'tezster',
-  storageName: 'tezster-v2.1.1',
+  storageName: 'tezster-v2.1.2',
   provider: process.platform.includes('win')
     ? `http://${ip()}:18732`
     : 'http://localhost:18732',
@@ -72,39 +73,39 @@ module.exports = {
         identity: 'bootstrap5',
       },
     ],
-    Carthagenet: [],
+    Delphinet: [],
     Mainnet: [],
   },
   contracts: {
-    Carthagenet: [],
+    Delphinet: [],
     Localnode: [],
     Mainnet: [],
   },
   programs: [],
   Nodes: [
     'Localnode',
-    'Carthagenet-Tezster',
-    'Carthagenet-Smartpy',
+    'Delphinet-Tezster',
+    'Delphinet-Smartpy',
     'Mainnet-Smartpy',
   ],
   apiEndPoints: {
     Localnode: process.platform.includes('win')
       ? `http://${ip()}:18732`
       : 'http://localhost:18732',
-    'Carthagenet-Smartpy': 'https://carthagenet.smartpy.io',
-    'Carthagenet-Tezster': 'https://testnet.tezster.tech',
+    'Delphinet-Smartpy': 'https://delphinet.smartpy.io',
+    'Delphinet-Tezster': 'https://testnet.tezster.tech',
     'Mainnet-Smartpy': 'https://mainnet.smartpy.io',
   },
   TzStatsApiEndpoint: {
     Localnode: process.platform.includes('win')
       ? `http://${ip()}:18732`
       : 'http://localhost:18732',
-    'Carthagenet-Smartpy': 'https://api.carthagenet.tzstats.com',
-    'Carthagenet-Tezster': 'https://api.carthagenet.tzstats.com',
+    'Delphinet-Smartpy': 'https://api.delphi.tzstats.com',
+    'Delphinet-Tezster': 'https://api.delphi.tzstats.com',
     'Mainnet-Smartpy': 'https://api.tzstats.com',
   },
   ConseilJS: {
-    Carthagenet: {
+    Delphinet: {
       url: 'https://conseil-dev.cryptonomic-infra.tech',
       apiKey: '60d7bbd0-ad43-4768-9ee3-64c722874f96',
     },
@@ -114,7 +115,7 @@ module.exports = {
     },
   },
   transactions: {
-    Carthagenet: [],
+    Delphinet: [],
     Localnode: [],
     Mainnet: [],
   },

@@ -1,3 +1,4 @@
+/* eslint-disable import/order */
 /* eslint-disable func-names */
 import Docker from 'dockerode';
 import installTezsterContainer from './start-container';
@@ -13,9 +14,9 @@ export default function installTezsterImage(args) {
   const docker = process.platform.includes('win')
     ? new Docker({ host: `http://${ip()}` })
     : new Docker({
-        socketPath: '/var/run/docker.sock',
-        hosts: 'tcp://0.0.0.0:2376',
-      });
+      socketPath: '/var/run/docker.sock',
+      hosts: 'tcp://0.0.0.0:2376',
+    });
   let progressPercentage;
   let totalProgressPercentage;
   let previousProgressPercentage = 0;
