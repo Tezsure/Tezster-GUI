@@ -5,12 +5,12 @@ import Docker from 'dockerode';
 import CheckConnectionStatus from './Helper/index';
 import { setTezsterConfigAction } from '../Onboard';
 
-const config = require('../../db-config/helper.dbConfig').GetLocalStorage();
-
-const { TEZSTER_CONTAINER_NAME } = config;
 const ip = require('docker-ip');
+const config = require('../../db-config/helper.dbConfig');
+
 
 export default function stopTezsterNodesAction() {
+  const { TEZSTER_CONTAINER_NAME } = config.GetLocalStorage();
   const docker = process.platform.includes('win')
     ? new Docker({ host: `http://${ip()}` })
     : new Docker({
@@ -173,6 +173,7 @@ function stopNodesProgress(totalProgressPercentage) {
 }
 
 function PostStopNodesTask(containerId) {
+  const { TEZSTER_CONTAINER_NAME } = config.GetLocalStorage();
   const docker = process.platform.includes('win')
     ? new Docker({ host: `http://${ip()}` })
     : new Docker({
