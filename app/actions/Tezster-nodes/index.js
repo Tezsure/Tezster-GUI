@@ -21,6 +21,10 @@ export default function installLocalnodesAction(args) {
       checkConnectionStatus
     );
     dispatch({
+      type: 'TEZSTER_ERROR',
+      payload: '',
+    })
+    dispatch({
       type: 'STARTING_NODES',
       payload: {
         loader: true,
