@@ -2,7 +2,7 @@
 const ip = require('docker-ip');
 
 module.exports = {
-  TEZSTER_IMAGE: 'tezsureinc/tezster:1.0.5-beta',
+  TEZSTER_IMAGE: 'tezsureinc/tezster:1.0.5',
   TEZSTER_CONTAINER_NAME: 'tezster',
   storageName: 'tezster-v2.1.2',
   provider: process.platform.includes('win')

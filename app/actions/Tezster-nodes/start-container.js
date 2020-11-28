@@ -1,3 +1,5 @@
+/* eslint-disable import/order */
+/* eslint-disable prettier/prettier */
 /* eslint-disable func-names */
 import Docker from 'dockerode';
 import { getAccountsAction } from '../Workspace/Accounts';
@@ -16,9 +18,9 @@ export default function installTezsterContainer(args) {
   const docker = process.platform.includes('win')
     ? new Docker({ host: `http://${ip()}` })
     : new Docker({
-        socketPath: '/var/run/docker.sock',
-        hosts: 'tcp://0.0.0.0:2376',
-      });
+      socketPath: '/var/run/docker.sock',
+      hosts: 'tcp://0.0.0.0:2376',
+    });
   return (dispatch) => {
     if (!isTezsterContainerPresent && !isTezsterContainerRunning) {
       dispatch({

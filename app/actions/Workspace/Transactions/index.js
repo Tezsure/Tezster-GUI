@@ -279,7 +279,7 @@ export function executeTransactionAction(args) {
       storeTransaction('applied');
       swal(
         'Success!',
-        `Transfer sucessfull with fee: ${response.fee} mutz`,
+        `Transfer sucessfull with fee: ${response.fee} muꜩ`,
         'success'
       );
       dispatch({

@@ -26,7 +26,6 @@ export default async function CheckConnectionStatus(args) {
         const URL = process.platform.includes('win')
           ? `http://${ip()}:18732`
           : 'http://localhost:18732';
-        console.log(URL);
         RpcRequest.checkNodeStatus(URL)
           .then((res) => {
             if (res.protocol.startsWith('PsDELPH1')) {
@@ -47,13 +46,10 @@ export default async function CheckConnectionStatus(args) {
         });
         break;
       case 'CHECK_DOCKER_IMAGE':
+        const Error = 'Error: connect EACCES /var/run/docker.sock';
         docker.listImages({ all: true }, (err, images) => {
           if (err) {
-            if (
-              err
-                .toString()
-                .includes('Error: connect EACCES /var/run/docker.sock')
-            ) {
+            if (err.toString().includes(Error)) {
               return resolve({
                 msg: 'docker-permission',
               });
@@ -63,10 +59,10 @@ export default async function CheckConnectionStatus(args) {
           const TezsterOldImages = images.filter(
             (elem) =>
               elem.RepoTags[0].includes('tezsureinc') &&
-              !elem.RepoTags[0].includes(`${TEZSTER_IMAGE}`)
+              elem.RepoTags[0] !== args.command
           );
           const TezsterMainImage = images.filter((elem) =>
-            elem.RepoTags[0].includes(`${TEZSTER_IMAGE}`)
+            elem.RepoTags[0] === args.command
           );
           if (images.length === 0) {
             return resolve(false);
@@ -87,7 +83,7 @@ export default async function CheckConnectionStatus(args) {
           );
           const TezsterOldContainer = containers.filter(
             (elem) =>
-              elem.Names[0].includes(`${TEZSTER_CONTAINER_NAME}`) &&
+              elem.Names[0] === args.command &&
               !elem.Image.includes(`${TEZSTER_IMAGE}`)
           );
           const TezsterContainers = containers.filter((elem) =>
@@ -131,7 +127,7 @@ export default async function CheckConnectionStatus(args) {
           );
           const TezsterOldContainer = containers.filter(
             (elem) =>
-              elem.Names[0].includes(`${TEZSTER_CONTAINER_NAME}`) &&
+              elem.Names[0] === args.command &&
               !elem.Image.includes(`${TEZSTER_IMAGE}`)
           );
           if (containers.length === 0) {

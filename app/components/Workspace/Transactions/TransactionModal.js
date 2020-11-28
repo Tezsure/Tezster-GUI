@@ -108,17 +108,9 @@ class TransactionModal extends Component {
       stateParams.senderAccount !== '0' &&
       stateParams.amount !== '' &&
       parseInt(stateParams.senderAccount, 10) <
-        parseInt(stateParams.amount, 10) * 1000000
+      parseInt(stateParams.amount, 10) * 1000000
     ) {
       stateParams.amountErr = `Transaction amount should be less than the sender's account balance`;
-      errorFlag = true;
-    }
-    if (stateParams.gasPrice === '') {
-      stateParams.gasPrice = 2000;
-    }
-    if (parseInt(stateParams.gasPrice, 10) < 2000) {
-      stateParams.gasPriceErr =
-        'Please enter gas price more than or equals to 2000';
       errorFlag = true;
     }
 
@@ -128,8 +120,8 @@ class TransactionModal extends Component {
       const recieverAccount =
         recieverAccountAddressLocation > 0
           ? this.state.recieverAccount.split('-')[
-              recieverAccountAddressLocation
-            ]
+          recieverAccountAddressLocation
+          ]
           : this.state.recieverAccount.split('-')[0];
       this.props.executeTransactionAction({
         ...this.props,
@@ -244,8 +236,8 @@ class TransactionModal extends Component {
                 </b>
               </div>
             ) : (
-              ''
-            )}
+                ''
+              )}
             <span className="error-msg">{this.state.senderAccountErr}</span>
             <div className="modal-input">
               <div className="input-container">To* </div>
@@ -283,14 +275,9 @@ class TransactionModal extends Component {
             <span className="error-msg" style={{ width: '85%' }}>
               {this.state.amountErr}
             </span>
-            <div className="modal-input" style={{ paddingBottom: '0px' }}>
-              <p style={{ paddingBottom: '0px', marginBottom: '0px' }}>
-                Note: Please enter gas price more than or equals to 2000 <br />{' '}
-              </p>
-            </div>
             <div className="modal-input">
               <div className="input-container" style={{ width: '28%' }}>
-                Gas Price{'* '}
+                Gas Price
               </div>
               <input
                 type="number"
@@ -333,15 +320,15 @@ class TransactionModal extends Component {
                   &nbsp;Please wait...
                 </button>
               ) : (
-                <button
-                  type="button"
-                  className="btn btn-success"
-                  disabled={this.props.buttonState}
-                  onClick={() => this.handleExecuteTransaction()}
-                >
-                  Pay Amount
-                </button>
-              )}
+                  <button
+                    type="button"
+                    className="btn btn-success"
+                    disabled={this.props.buttonState}
+                    onClick={() => this.handleExecuteTransaction()}
+                  >
+                    Pay Amount
+                  </button>
+                )}
             </div>
           </div>
         </div>
