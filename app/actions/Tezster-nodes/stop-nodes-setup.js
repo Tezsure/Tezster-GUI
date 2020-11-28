@@ -11,12 +11,18 @@ const config = require('../../db-config/helper.dbConfig');
 
 export default function stopTezsterNodesAction() {
   const { TEZSTER_CONTAINER_NAME } = config.GetLocalStorage();
-  const docker = process.platform.includes('win')
-    ? new Docker({ host: `http://${ip()}` })
-    : new Docker({
+  let ProcessConfig;
+  if (process.platform.includes('win') || process.platform.includes('darwin')) {
+    ProcessConfig = {
+      host: `http://${ip()}`,
+    };
+  } else {
+    ProcessConfig = {
       socketPath: '/var/run/docker.sock',
       hosts: 'tcp://0.0.0.0:2376',
-    });
+    };
+  }
+  const docker = new Docker(ProcessConfig);
   const checkConnectionStatus = {
     connectionType: '',
   };
@@ -174,13 +180,18 @@ function stopNodesProgress(totalProgressPercentage) {
 
 function PostStopNodesTask(containerId) {
   const { TEZSTER_CONTAINER_NAME } = config.GetLocalStorage();
-  const docker = process.platform.includes('win')
-    ? new Docker({ host: `http://${ip()}` })
-    : new Docker({
+  let ProcessConfig;
+  if (process.platform.includes('win') || process.platform.includes('darwin')) {
+    ProcessConfig = {
+      host: `http://${ip()}`,
+    };
+  } else {
+    ProcessConfig = {
       socketPath: '/var/run/docker.sock',
       hosts: 'tcp://0.0.0.0:2376',
-    });
-
+    };
+  }
+  const docker = new Docker(ProcessConfig);
   return (dispatch) => {
     setTimeout(
       () =>
