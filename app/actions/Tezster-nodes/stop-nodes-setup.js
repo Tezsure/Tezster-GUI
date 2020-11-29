@@ -1,13 +1,9 @@
 /* eslint-disable prettier/prettier */
-/* eslint-disable import/order */
-/* eslint-disable no-unused-vars */
 import Docker from 'dockerode';
-import CheckConnectionStatus from './Helper/index';
 import { setTezsterConfigAction } from '../Onboard';
 
 const ip = require('docker-ip');
 const config = require('../../db-config/helper.dbConfig');
-
 
 export default function stopTezsterNodesAction() {
   const { TEZSTER_CONTAINER_NAME } = config.GetLocalStorage();
@@ -23,162 +19,58 @@ export default function stopTezsterNodesAction() {
     };
   }
   const docker = new Docker(ProcessConfig);
-  const checkConnectionStatus = {
-    connectionType: '',
-  };
-  let progressInterval;
-  let totalProgressPercentage = 0;
-  return async (dispatch) => {
-    dispatch(stopNodesProgress(totalProgressPercentage));
-    checkConnectionStatus.connectionType = 'CHECK_CONTAINER_PRESENT';
-    checkConnectionStatus.command = TEZSTER_CONTAINER_NAME;
-    const isTezsterContainerPresent = await CheckConnectionStatus(
-      checkConnectionStatus
-    );
-    checkConnectionStatus.connectionType = 'CHECK_CONTAINER_RUNNING';
-    checkConnectionStatus.command = TEZSTER_CONTAINER_NAME;
-    const isTezsterContainerRunning = await CheckConnectionStatus(
-      checkConnectionStatus
-    );
-    if (isTezsterContainerPresent && isTezsterContainerRunning) {
-      totalProgressPercentage += 10;
-      dispatch(stopNodesProgress(totalProgressPercentage));
-      docker.listContainers({ all: true }, (err, containers) => {
-        if (err) {
-          dispatch({
-            type: 'TEZSTER_SHOW_STOP_NODES',
-            payload: true,
-          });
-          return dispatch({
-            type: 'TEZSTER_ERROR',
-            payload: 'Unable to fetch containers.',
-          });
-        }
-        const containerId = containers.filter((elem) =>
-          elem.Names[0].includes('tezster')
-        )[0].Id;
-        if (containerId) {
-          progressInterval = setInterval(async () => {
-            totalProgressPercentage += 10;
-            const isTezsterRunning = await CheckConnectionStatus(
-              checkConnectionStatus
-            );
-            if (isTezsterRunning && totalProgressPercentage < 100) {
-              dispatch(stopNodesProgress(totalProgressPercentage));
-            }
-            if (!isTezsterRunning || totalProgressPercentage >= 80) {
-              return clearInterval(progressInterval);
-            }
-          }, 1000);
-          docker.getContainer(containerId).stop((error, response) => {
-            if (error) {
-              dispatch({
-                type: 'TEZSTER_SHOW_STOP_NODES',
-                payload: true,
-              });
-              return dispatch({
-                type: 'TEZSTER_ERROR',
-                payload: 'Unable to stop container.',
-              });
-            }
-            checkConnectionStatus.connectionType = 'TEZSTER_RUNNING';
-            checkConnectionStatus.command = TEZSTER_CONTAINER_NAME;
-            totalProgressPercentage += 10;
-            dispatch(stopNodesProgress(totalProgressPercentage));
-            progressInterval = setInterval(async () => {
-              totalProgressPercentage += 10;
-              const isTezsterRunning = await CheckConnectionStatus(
-                checkConnectionStatus
-              );
-              if (isTezsterRunning && totalProgressPercentage < 100) {
-                dispatch(stopNodesProgress(totalProgressPercentage));
-              }
-              if (!isTezsterRunning && totalProgressPercentage <= 100) {
-                dispatch(PostStopNodesTask(totalProgressPercentage));
-                return clearInterval(progressInterval);
-              }
-              if (!isTezsterRunning && totalProgressPercentage > 100) {
-                dispatch(PostStopNodesTask(totalProgressPercentage));
-                return clearInterval(progressInterval);
-              }
-            }, 1000);
-            clearInterval(totalProgressPercentage);
-          });
-        } else {
-          setTimeout(
-            () =>
-              dispatch({
-                type: 'STARTING_NODES',
-                payload: {
-                  loader: false,
-                },
-              }),
-            4000
-          );
-          dispatch({
-            type: 'TEZSTER_SHOW_STOP_NODES',
-            payload: false,
-          });
-          dispatch({
-            type: 'GET_ACCOUNTS',
-            payload: [],
-          });
-          dispatch(setTezsterConfigAction());
-          return dispatch({
-            type: 'TEZSTER_STOP_NODES',
-            payload: { msg: 'Nodes already stopped.' },
-          });
-        }
-      });
-    }
-    if (!isTezsterContainerRunning) {
-      setTimeout(
-        () =>
-          dispatch({
-            type: 'STARTING_NODES',
-            payload: {
-              loader: false,
-            },
-          }),
-        4000
-      );
-      dispatch({
-        type: 'GET_ACCOUNTS',
-        payload: [],
-      });
-      dispatch({
-        type: 'TEZSTER_SHOW_STOP_NODES',
-        payload: false,
-      });
-      dispatch(setTezsterConfigAction());
-      return dispatch({
-        type: 'TEZSTER_STOP_NODES',
-        payload: { msg: 'Nodes already stopped.' },
-      });
-    }
-  };
-}
-
-function stopNodesProgress(totalProgressPercentage) {
   return (dispatch) => {
-    dispatch({
-      type: 'STARTING_NODES',
-      payload: {
-        loader: true,
-      },
-    });
-    dispatch({
-      type: 'TEZSTER_STOP_NODES',
-      payload: {
-        msg: `Stopping localnodes please wait...`,
-        enum: 'STARTING_STREAM',
-        totalProgressPercentage,
-      },
-    });
+    docker
+      .getContainer(TEZSTER_CONTAINER_NAME)
+      .inspect()
+      .then((result) => {
+        if (
+          result.State.Status === 'exited' ||
+          result.State.Status === 'running'
+        ) {
+          return dispatch(stopAndRemoveContainer());
+        }
+        setTimeout(
+          () =>
+            dispatch({
+              type: 'STARTING_NODES',
+              payload: {
+                loader: false,
+              },
+            }),
+          4000
+        );
+        dispatch({
+          type: 'TEZSTER_SHOW_STOP_NODES',
+          payload: false,
+        });
+        dispatch({
+          type: 'GET_ACCOUNTS',
+          payload: [],
+        });
+        dispatch(setTezsterConfigAction());
+        return dispatch({
+          type: 'TEZSTER_STOP_NODES',
+          payload: {
+            msg: 'Nodes already stopped.',
+          },
+        });
+
+      })
+      .catch((error) => {
+        dispatch({
+          type: 'TEZSTER_SHOW_STOP_NODES',
+          payload: true,
+        });
+        return dispatch({
+          type: 'TEZSTER_ERROR',
+          payload: `Error occurred while stopping the nodes: ${error}`,
+        });
+      });
   };
 }
 
-function PostStopNodesTask(containerId) {
+function stopAndRemoveContainer() {
   const { TEZSTER_CONTAINER_NAME } = config.GetLocalStorage();
   let ProcessConfig;
   if (process.platform.includes('win') || process.platform.includes('darwin')) {
@@ -192,7 +84,26 @@ function PostStopNodesTask(containerId) {
     };
   }
   const docker = new Docker(ProcessConfig);
-  return (dispatch) => {
+  const container = docker.getContainer(TEZSTER_CONTAINER_NAME);
+  const totalProgressPercentage = 40;
+  return async (dispatch) => {
+    dispatch(stopNodesProgress(totalProgressPercentage));
+    // eslint-disable-next-line no-unused-vars
+    container.stop((error, data) => {
+      if (error) {
+        dispatch({
+          type: 'TEZSTER_SHOW_STOP_NODES',
+          payload: true,
+        });
+        return dispatch({
+          type: 'TEZSTER_ERROR',
+          payload: `Error occurred while stopping the nodes: ${error}`,
+        });
+      }
+    });
+    await container.remove({
+      force: true,
+    });
     setTimeout(
       () =>
         dispatch({
@@ -218,15 +129,24 @@ function PostStopNodesTask(containerId) {
       type: 'GET_ACCOUNTS',
       payload: [],
     });
-    dispatch(setTezsterConfigAction());
-    docker.listContainers({ all: true }, (err, containers) => {
-      if (!err && containers && containers.length > 0) {
-        const tezsterContainerId = containers.filter((elem) =>
-          elem.Names[0].includes(`${TEZSTER_CONTAINER_NAME}`)
-        )[0].Id;
-        if (tezsterContainerId)
-          docker.getContainer(tezsterContainerId).remove({ force: true });
-      }
+  }
+}
+
+function stopNodesProgress(totalProgressPercentage) {
+  return (dispatch) => {
+    dispatch({
+      type: 'STARTING_NODES',
+      payload: {
+        loader: true,
+      },
+    });
+    dispatch({
+      type: 'TEZSTER_STOP_NODES',
+      payload: {
+        msg: `Stopping localnodes please wait...`,
+        enum: 'STARTING_STREAM',
+        totalProgressPercentage,
+      },
     });
   };
 }
