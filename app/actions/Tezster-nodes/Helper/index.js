@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable no-case-declarations */
 /* eslint-disable import/order */
 /* eslint-disable prettier/prettier */
@@ -12,12 +13,18 @@ const { TEZSTER_IMAGE, TEZSTER_CONTAINER_NAME } = config;
 const ip = require('docker-ip');
 
 export default async function CheckConnectionStatus(args) {
-  const docker = process.platform.includes('win')
-    ? new Docker({ host: `http://${ip()}` })
-    : new Docker({
+  let ProcessConfig;
+  if (process.platform.includes('win') || process.platform.includes('darwin')) {
+    ProcessConfig = {
+      host: `http://${ip()}`,
+    };
+  } else {
+    ProcessConfig = {
       socketPath: '/var/run/docker.sock',
       hosts: 'tcp://0.0.0.0:2376',
-    });
+    };
+  }
+  const docker = new Docker(ProcessConfig);
   return new Promise((resolve) => {
     switch (args.connectionType) {
       case 'INTERNET':
