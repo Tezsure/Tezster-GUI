@@ -11,6 +11,7 @@ const config = require('../../../db-config/helper.dbConfig').GetLocalStorage();
 const { TEZSTER_IMAGE, TEZSTER_CONTAINER_NAME } = config;
 
 const ip = require('docker-ip');
+const { exec } = require('child_process');
 
 export default async function CheckConnectionStatus(args) {
   let ProcessConfig;
@@ -45,7 +46,7 @@ export default async function CheckConnectionStatus(args) {
           });
         break;
       case 'DOCKER_INSTALL_STATUS':
-        docker.version((err, result) => {
+        exec('docker -v', (err, stdout, stderr) => {
           if (err) {
             return resolve(false);
           }
