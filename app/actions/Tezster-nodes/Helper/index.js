@@ -51,15 +51,9 @@ export default async function CheckConnectionStatus(args) {
       case 'DOCKER_INSTALL_STATUS':
         docker.version((error, result) => {
           if (error) {
-            return resolve({
-              status: false,
-              error,
-            });
+            return resolve(false);
           }
-          return resolve({
-            status: true,
-            data: result
-          });
+          return resolve(true);
         });
         break;
       case 'CHECK_DOCKER_IMAGE':
