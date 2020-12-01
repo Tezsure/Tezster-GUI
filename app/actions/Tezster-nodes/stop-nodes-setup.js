@@ -8,9 +8,13 @@ const config = require('../../db-config/helper.dbConfig');
 export default function stopTezsterNodesAction() {
   const { TEZSTER_CONTAINER_NAME } = config.GetLocalStorage();
   let ProcessConfig;
-  if (process.platform.includes('win') || process.platform.includes('darwin')) {
+  if (process.platform.includes('win')) {
     ProcessConfig = {
       host: `http://${ip()}`,
+    };
+  } if (process.platform.includes('darwin')) {
+    ProcessConfig = {
+      socketPath: '/var/run/docker.sock',
     };
   } else {
     ProcessConfig = {
