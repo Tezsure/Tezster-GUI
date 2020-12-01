@@ -14,9 +14,13 @@ const ip = require('docker-ip');
 
 export default async function CheckConnectionStatus(args) {
   let ProcessConfig;
-  if (process.platform.includes('win') || process.platform.includes('darwin')) {
+  if (process.platform.includes('win')) {
     ProcessConfig = {
       host: `http://${ip()}`,
+    };
+  } if (process.platform.includes('darwin')) {
+    ProcessConfig = {
+      socketPath: '/var/run/docker.sock',
     };
   } else {
     ProcessConfig = {

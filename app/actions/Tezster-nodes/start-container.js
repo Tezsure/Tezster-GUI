@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable import/order */
 /* eslint-disable prettier/prettier */
 /* eslint-disable func-names */
@@ -16,9 +17,13 @@ const ip = require('docker-ip');
 export default function installTezsterContainer(args) {
   const { isTezsterContainerPresent, isTezsterContainerRunning } = args;
   let ProcessConfig;
-  if (process.platform.includes('win') || process.platform.includes('darwin')) {
+  if (process.platform.includes('win')) {
     ProcessConfig = {
       host: `http://${ip()}`,
+    };
+  } if (process.platform.includes('darwin')) {
+    ProcessConfig = {
+      socketPath: '/var/run/docker.sock',
     };
   } else {
     ProcessConfig = {
