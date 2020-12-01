@@ -30,7 +30,7 @@ export default function installLocalnodesAction(args) {
         loader: true,
       },
     });
-    if (!isDockerInstalled) {
+    if (!isDockerInstalled.status) {
       setTimeout(
         () =>
           dispatch({
@@ -43,7 +43,7 @@ export default function installLocalnodesAction(args) {
       );
       return dispatch({
         type: 'TEZSTER_ERROR',
-        payload: 'Docker is not install on your system.',
+        payload: `${isDockerInstalled.error.toString()}`,
       });
     }
     checkConnectionStatus.connectionType = 'INTERNET';
