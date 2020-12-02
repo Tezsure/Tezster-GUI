@@ -15,7 +15,6 @@ export default function stopTezsterNodesAction() {
   } if (process.platform.includes('darwin')) {
     ProcessConfig = {
       socketPath: '/var/run/docker.sock',
-      host: `http://${ip()}`,
     };
   } else {
     ProcessConfig = {
@@ -83,10 +82,7 @@ function stopAndRemoveContainer() {
       host: `http://${ip()}`,
     };
   } if (process.platform.includes('darwin')) {
-    ProcessConfig = {
-      socketPath: '/var/run/docker.sock',
-      host: `http://${ip()}`,
-    };
+    ProcessConfig = {};
   } else {
     ProcessConfig = {
       socketPath: '/var/run/docker.sock',
