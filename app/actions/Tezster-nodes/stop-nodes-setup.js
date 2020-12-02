@@ -15,7 +15,7 @@ export default function stopTezsterNodesAction() {
   } if (process.platform.includes('darwin')) {
     ProcessConfig = {
       socketPath: '/var/run/docker.sock',
-      host: 'http://localhost:18732',
+      host: `http://${ip()}`,
     };
   } else {
     ProcessConfig = {
@@ -78,8 +78,13 @@ export default function stopTezsterNodesAction() {
 function stopAndRemoveContainer() {
   const { TEZSTER_CONTAINER_NAME } = config.GetLocalStorage();
   let ProcessConfig;
-  if (process.platform.includes('win') || process.platform.includes('darwin')) {
+  if (process.platform.includes('win')) {
     ProcessConfig = {
+      host: `http://${ip()}`,
+    };
+  } if (process.platform.includes('darwin')) {
+    ProcessConfig = {
+      socketPath: '/var/run/docker.sock',
       host: `http://${ip()}`,
     };
   } else {

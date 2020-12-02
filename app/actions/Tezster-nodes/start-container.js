@@ -24,7 +24,7 @@ export default function installTezsterContainer(args) {
   } if (process.platform.includes('darwin')) {
     ProcessConfig = {
       socketPath: '/var/run/docker.sock',
-      host: 'http://localhost:18732',
+      host: `http://${ip()}`,
     };
   } else {
     ProcessConfig = {
