@@ -21,7 +21,6 @@ export default async function CheckConnectionStatus(args) {
   } if (process.platform.includes('darwin')) {
     ProcessConfig = {
       socketPath: '/var/run/docker.sock',
-      host: `http://${ip()}`,
     };
   } else {
     ProcessConfig = {
