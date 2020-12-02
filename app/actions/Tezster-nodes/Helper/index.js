@@ -8,7 +8,7 @@ import { RpcRequest } from '../../Workspace/Accounts/helper.accounts';
 
 const config = require('../../../db-config/helper.dbConfig').GetLocalStorage();
 
-const { TEZSTER_IMAGE, TEZSTER_CONTAINER_NAME } = config;
+const { TEZSTER_IMAGE } = config;
 
 const ip = require('docker-ip');
 
@@ -21,7 +21,7 @@ export default async function CheckConnectionStatus(args) {
   } if (process.platform.includes('darwin')) {
     ProcessConfig = {
       socketPath: '/var/run/docker.sock',
-      host: 'http://localhost:18732',
+      host: `http://${ip()}`,
     };
   } else {
     ProcessConfig = {
@@ -35,7 +35,7 @@ export default async function CheckConnectionStatus(args) {
       case 'INTERNET':
         return resolve(navigator.onLine);
       case 'TEZSTER_RUNNING':
-        const URL = process.platform.includes('win')
+        const URL = process.platform.includes('win') || process.platform.includes('darwin')
           ? `http://${ip()}:18732`
           : 'http://localhost:18732';
         RpcRequest.checkNodeStatus(URL)
