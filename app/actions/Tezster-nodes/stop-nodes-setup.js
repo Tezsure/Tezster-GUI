@@ -15,6 +15,7 @@ export default function stopTezsterNodesAction() {
   } if (process.platform.includes('darwin')) {
     ProcessConfig = {
       socketPath: '/var/run/docker.sock',
+      host: 'http://localhost:18732',
     };
   } else {
     ProcessConfig = {

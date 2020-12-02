@@ -13,9 +13,14 @@ export default function installTezsterImage(args) {
   let payload = {};
   let subImages = [];
   let ProcessConfig;
-  if (process.platform.includes('win') || process.platform.includes('darwin')) {
+  if (process.platform.includes('win')) {
     ProcessConfig = {
       host: `http://${ip()}`,
+    };
+  } if (process.platform.includes('darwin')) {
+    ProcessConfig = {
+      socketPath: '/var/run/docker.sock',
+      host: 'http://localhost:18732',
     };
   } else {
     ProcessConfig = {
