@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import CheckConnectionStatus from './Helper/index';
 import installTezsterImage from './install-localnode-image';
 
@@ -19,6 +20,10 @@ export default function installLocalnodesAction(args) {
     const isDockerInstalled = await CheckConnectionStatus(
       checkConnectionStatus
     );
+    dispatch({
+      type: 'TEZSTER_ERROR',
+      payload: '',
+    })
     dispatch({
       type: 'STARTING_NODES',
       payload: {

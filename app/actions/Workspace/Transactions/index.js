@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable no-prototype-builtins */
 
 import swal from 'sweetalert';
@@ -66,7 +67,7 @@ export function getTransactionsAction(args) {
               ? currentTransactions[args.accountId]
               : [],
           });
-        case 'Carthagenet':
+        case 'Delphinet':
           ListAccountTransactionsAPI(args, (error, response) => {
             if (error) {
               swal(
@@ -276,7 +277,11 @@ export function executeTransactionAction(args) {
         });
       }
       storeTransaction('applied');
-      swal('Success!', 'Transaction executed successfully', 'success');
+      swal(
+        'Success!',
+        `Transfer sucessfull with fee: ${response.fee} muꜩ`,
+        'success'
+      );
       dispatch({
         type: 'BUTTON_LOADING_STATE',
         payload: false,

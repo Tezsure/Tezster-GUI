@@ -1,24 +1,45 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable no-case-declarations */
+/* eslint-disable import/order */
+/* eslint-disable prettier/prettier */
 /* eslint-disable no-unused-vars */
 import Docker from 'dockerode';
 import { RpcRequest } from '../../Workspace/Accounts/helper.accounts';
+
 const config = require('../../../db-config/helper.dbConfig').GetLocalStorage();
-const { TEZSTER_IMAGE, TEZSTER_CONTAINER_NAME } = config;
-const url = config.provider;
+
+const { TEZSTER_IMAGE } = config;
 
 const ip = require('docker-ip');
 
 export default async function CheckConnectionStatus(args) {
-  const docker = process.platform.includes('win')
-    ? new Docker({ host: `http://${ip()}` })
-    : new Docker();
+  let ProcessConfig;
+  if (process.platform.includes('win')) {
+    ProcessConfig = {
+      host: `http://${ip()}`,
+    };
+  } if (process.platform.includes('darwin')) {
+    ProcessConfig = {
+      socketPath: '/var/run/docker.sock',
+    };
+  } else {
+    ProcessConfig = {
+      socketPath: '/var/run/docker.sock',
+      hosts: 'tcp://0.0.0.0:2376',
+    };
+  }
+  const docker = new Docker(ProcessConfig);
   return new Promise((resolve) => {
     switch (args.connectionType) {
       case 'INTERNET':
         return resolve(navigator.onLine);
       case 'TEZSTER_RUNNING':
-        RpcRequest.checkNodeStatus(url)
+        const URL = process.platform.includes('win') || process.platform.includes('darwin')
+          ? `http://${ip()}:18732`
+          : 'http://localhost:18732';
+        RpcRequest.checkNodeStatus(URL)
           .then((res) => {
-            if (res.protocol.startsWith('PsCARTHAG')) {
+            if (res.protocol.startsWith('PsDELPH1')) {
               return resolve(true);
             }
             return resolve(false);
@@ -28,21 +49,18 @@ export default async function CheckConnectionStatus(args) {
           });
         break;
       case 'DOCKER_INSTALL_STATUS':
-        docker.version((err, result) => {
-          if (err) {
+        docker.version((error, result) => {
+          if (error) {
             return resolve(false);
           }
           return resolve(true);
         });
         break;
       case 'CHECK_DOCKER_IMAGE':
+        const Error = 'Error: connect EACCES /var/run/docker.sock';
         docker.listImages({ all: true }, (err, images) => {
           if (err) {
-            if (
-              err
-                .toString()
-                .includes('Error: connect EACCES /var/run/docker.sock')
-            ) {
+            if (err.toString().includes(Error)) {
               return resolve({
                 msg: 'docker-permission',
               });
@@ -52,10 +70,10 @@ export default async function CheckConnectionStatus(args) {
           const TezsterOldImages = images.filter(
             (elem) =>
               elem.RepoTags[0].includes('tezsureinc') &&
-              !elem.RepoTags[0].includes(`${TEZSTER_IMAGE}`)
+              elem.RepoTags[0] !== args.command
           );
           const TezsterMainImage = images.filter((elem) =>
-            elem.RepoTags[0].includes(`${TEZSTER_IMAGE}`)
+            elem.RepoTags[0] === args.command
           );
           if (images.length === 0) {
             return resolve(false);
@@ -76,7 +94,7 @@ export default async function CheckConnectionStatus(args) {
           );
           const TezsterOldContainer = containers.filter(
             (elem) =>
-              elem.Names[0].includes(`${TEZSTER_CONTAINER_NAME}`) &&
+              elem.Names[0] === args.command &&
               !elem.Image.includes(`${TEZSTER_IMAGE}`)
           );
           const TezsterContainers = containers.filter((elem) =>
@@ -120,7 +138,7 @@ export default async function CheckConnectionStatus(args) {
           );
           const TezsterOldContainer = containers.filter(
             (elem) =>
-              elem.Names[0].includes(`${TEZSTER_CONTAINER_NAME}`) &&
+              elem.Names[0] === args.command &&
               !elem.Image.includes(`${TEZSTER_IMAGE}`)
           );
           if (containers.length === 0) {
