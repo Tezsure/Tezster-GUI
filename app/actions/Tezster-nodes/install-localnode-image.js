@@ -1,3 +1,5 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable import/order */
 /* eslint-disable func-names */
 import Docker from 'dockerode';
 import installTezsterContainer from './start-container';
@@ -10,9 +12,22 @@ const ip = require('docker-ip');
 export default function installTezsterImage(args) {
   let payload = {};
   let subImages = [];
-  const docker = process.platform.includes('win')
-    ? new Docker({ host: `http://${ip()}` })
-    : new Docker();
+  let ProcessConfig;
+  if (process.platform.includes('win')) {
+    ProcessConfig = {
+      host: `http://${ip()}`,
+    };
+  } if (process.platform.includes('darwin')) {
+    ProcessConfig = {
+      socketPath: '/var/run/docker.sock',
+    };
+  } else {
+    ProcessConfig = {
+      socketPath: '/var/run/docker.sock',
+      hosts: 'tcp://0.0.0.0:2376',
+    };
+  }
+  const docker = new Docker(ProcessConfig);
   let progressPercentage;
   let totalProgressPercentage;
   let previousProgressPercentage = 0;

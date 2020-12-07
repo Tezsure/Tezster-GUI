@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-prototype-builtins */
 import swal from 'sweetalert';
@@ -46,7 +47,7 @@ export function getAccountsAction(args) {
         args.userAccounts.length === 0 &&
         networkName === 'Localnode':
         payload.userAccounts.Localnode = config.GetLocalStorage().identities;
-        payload.userAccounts.Carthagenet = [];
+        payload.userAccounts.Delphinet = [];
         payload.userAccounts.Mainnet = [];
         break;
       case args.isAvailableLocalnodes && userAccounts.length === 0:
@@ -113,12 +114,12 @@ export function getAccountsAction(args) {
             response.length > 0 &&
             response[0].hasOwnProperty('label') &&
             response[0].toString() !==
-              'Error: connect ECONNREFUSED 127.0.0.1:18731'
+            'Error: connect ECONNREFUSED 127.0.0.1:18731'
           ) {
             if (!localStorage.hasOwnProperty(LOCAL_STORAGE_NAME)) {
               userAccounts = {
                 Mainnet: [],
-                Carthagenet: [],
+                Delphinet: [],
                 Localnode: [],
               };
               userAccounts[networkName] = response;

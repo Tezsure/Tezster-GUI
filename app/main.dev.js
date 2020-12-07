@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint global-require: off */
 
 /**
@@ -14,6 +15,8 @@ import { app, BrowserWindow } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
+
+import 'v8-compile-cache';
 
 const path = require('path');
 
@@ -86,6 +89,7 @@ const createWindow = async () => {
   if (!gotTheLock) {
     app.quit();
   } else {
+    // eslint-disable-next-line no-unused-vars
     app.on('second-instance', (event, commandLine, workingDirectory) => {
       // Someone tried to run a second instance, we should focus our window.
       if (mainWindow) {

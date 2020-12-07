@@ -1,3 +1,7 @@
+/* eslint-disable prettier/prettier */
+import { TezosToolkit } from '@taquito/taquito';
+import { InMemorySigner } from '@taquito/signer';
+
 const conseiljs = require('conseiljs');
 
 const Config = require('../../../db-config/helper.dbConfig');
@@ -121,10 +125,6 @@ export async function TransferBalanceTransactionAPI(args, callback) {
     const keys = args.userAccounts.find(
       (elem) => elem.pkh === args.senderAccount
     );
-    const { networkId } = args.dashboardHeader;
-    const networkName = networkId.split('-')[0];
-    const network = networkName.toLowerCase();
-
     const tezosNode = Config.GetLocalStorage().apiEndPoints[
       args.dashboardHeader.networkId
     ];
@@ -135,47 +135,24 @@ export async function TransferBalanceTransactionAPI(args, callback) {
       seed: '',
       storeType: conseiljs.StoreType.Fundraiser,
     };
-    const transactionResult = await conseiljs.TezosNodeWriter.sendTransactionOperation(
-      tezosNode,
-      keystore,
-      args.recieverAccount,
-      parseInt(args.amount, 10) * 1000000,
-      parseInt(args.gasPrice, 10),
-      ''
-    );
-    if (networkName !== 'Localnode') {
-      const conseilServer = {
-        url: Config.GetLocalStorage().ConseilJS[networkName].url,
-        apiKey: Config.GetLocalStorage().ConseilJS[networkName].apiKey,
-        network,
-      };
-      if (
-        JSON.parse(transactionResult.operationGroupID)[0].id &&
-        JSON.parse(transactionResult.operationGroupID)[0].id === 'failure'
-      ) {
-        return callback(
-          JSON.parse(transactionResult.operationGroupID)[0].msg,
-          null
-        );
-      }
-      if (args.dashboardHeader.networkId === 'Localnode') {
-        return callback(null, {
-          operationGroupID: transactionResult.operationGroupID,
-        });
-      }
-      await conseiljs.TezosConseilClient.awaitOperationConfirmation(
-        conseilServer,
-        network,
-        JSON.parse(transactionResult.operationGroupID),
-        10,
-        10
-      );
-      return callback(null, {
-        operationGroupID: transactionResult.operationGroupID,
-      });
+    const rpc = tezosNode;
+    const signer = await InMemorySigner.fromSecretKey(keystore.privateKey);
+    const Tezos = new TezosToolkit(rpc);
+    Tezos.setProvider({ signer });
+    const reciever = args.recieverAccount;
+    const amount = parseInt(args.amount, 10);
+    const transferParams = {
+      from: keystore.publicKey,
+      to: reciever,
+      amount,
+    };
+    if (args.gasPrice && parseInt(args.gasPrice, 10) !== 0) {
+      transferParams.fee = parseInt(args.gasPrice, 10);
     }
+    const operation = await Tezos.contract.transfer(transferParams);
     callback(null, {
-      operationGroupID: transactionResult.operationGroupID,
+      fee: operation.params.fee,
+      transaction: operation.hash,
     });
   } catch (error) {
     return callback(error.toString(), null);

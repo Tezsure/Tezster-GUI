@@ -11,22 +11,22 @@ const localnodeData = {
   rpcServer: 'http://localhost:18732',
 };
 
-const CarthagenetTezsterData = {
+const DelphinetTezsterData = {
   chainId: '516790',
   currentBlock: '00',
   gas_limit: '42601',
   gas_price: '0.12002',
-  networkId: 'Carthagenet-Tezster',
+  networkId: 'Delphinet-Tezster',
   rpcServer: 'https://testnet.tezster.tech',
 };
 
-const CarthagenetSmartpyData = {
+const DelphinetSmartpyData = {
   chainId: '516790',
   currentBlock: '00',
   gas_limit: '42601',
   gas_price: '0.12002',
-  networkId: 'Carthagenet-Smartpy',
-  rpcServer: 'https://carthagenet.SmartPy.io',
+  networkId: 'Delphinet-Smartpy',
+  rpcServer: 'https://delphinet-tezos.giganode.io',
 };
 
 const MainnetSmartpyData = {
@@ -35,7 +35,7 @@ const MainnetSmartpyData = {
   gas_limit: '61400',
   gas_price: '0.29392',
   networkId: 'Mainnet-Smartpy',
-  rpcServer: 'https://mainnet.SmartPy.io',
+  rpcServer: 'https://mainnet-tezos.giganode.io',
 };
 
 export function getDashboardHeaderAction(args) {
@@ -92,16 +92,16 @@ export function handleNetworkChangeAction(args) {
         payload: localnodeData,
       });
     }
-    if (networkName === 'Carthagenet-Smartpy') {
+    if (networkName === 'Delphinet-Smartpy') {
       dispatch({
         type: 'GET_DASHBOARD_HEADER',
-        payload: CarthagenetSmartpyData,
+        payload: DelphinetSmartpyData,
       });
     }
-    if (networkName === 'Carthagenet-Tezster') {
+    if (networkName === 'Delphinet-Tezster') {
       dispatch({
         type: 'GET_DASHBOARD_HEADER',
-        payload: CarthagenetTezsterData,
+        payload: DelphinetTezsterData,
       });
     }
     if (networkId === 'Mainnet-Smartpy') {
